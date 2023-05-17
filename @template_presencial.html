@@ -1,0 +1,103 @@
+ <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>Paginated HTML</title>
+    <style type="text/css" media="print">
+      div.page
+      {
+        page-break-after: always;
+        page-break-inside: avoid;
+      }
+    </style>
+	<script>
+function N(){
+	var N=33;
+	Res='<div class="page" >'
+	for(var k=0;k<N;++k){
+		Res+='<br/>'+(k+1)+') '
+		var Sdiv='<div class="page" >'
+			+'<span align="right"><img src="./Tarea_ Pendiente_files/cropped-Banner-2.png"></span><center><h1>Preparatoria</h1>'
+			+'<br><h2>Matemáticas<br>Prerrequisitos para 2.3 Volúmenes y superficie: polígonos regulares.</h2><br></center>'
+			+'<div  style="border:dotted 1px black;">ID: '+(k+1)+'<br></div>'
+			var n=Math.round(Math.random()*8+4)
+			var A=Math.round(Math.random()*250+10)
+			var a=Math.sqrt(A/(n*Math.tan(Math.PI/n)))
+			var L=Math.sqrt(4*A*Math.tan(Math.PI/n)/n)
+			Res+='[1.- L='+L.toFixed(2)+"]"
+			Sdiv+='1.- Una figura regular de '+n+' lados tiene como área '+A+', calcule el lado de la figura<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var A=Math.round(Math.random()*250+10)
+			var a=Math.sqrt(A/(n*Math.tan(Math.PI/n)))
+			var L=Math.sqrt(4*A*Math.tan(Math.PI/n)/n)
+			Res+='[2.- a='+a.toFixed(2)+"]"
+			Sdiv+='2.- Una figura regular de '+n+' lados tiene como área '+A+', calcule el apotema<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var a=Math.round(Math.random()*20+1)
+			var L=2*a*Math.tan(Math.PI/n)
+			Res+='[3.- L='+L.toFixed(2)+"]"
+			Sdiv+='3.- Una figura regular de '+n+' lados tiene como apotema '+a+', calcule el lado de la figura.<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var L=Math.round(Math.random()*20+1)
+			var a=0.5*L/Math.tan(Math.PI/n)
+			Res+='[4.- a='+a.toFixed(2)+"]"
+			Sdiv+='4.- Una figura regular de '+n+' lados tiene como lado '+L+', calcule el apotema de la figura.<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var a=Math.round(Math.random()*20+1)
+			var L=2*a*Math.tan(Math.PI/n)
+			var A=n*L*a/2
+			Res+='[5.- A='+A.toFixed(2)+"]"
+			Sdiv+='5.- Una figura regular de '+n+' lados tiene como apotema '+a+', calcule el área de la figura.<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var L=Math.round(Math.random()*20+1)
+			var a=0.5*L/Math.tan(Math.PI/n)
+			var A=n*L*a/2
+			Res+='[6.- A='+A.toFixed(2)+"]"
+			Sdiv+='6.- Una figura regular de '+n+' lados tiene como lado'+L+', calcule el área de la figura.<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var A=Math.round(Math.random()*250+10)
+			var a=Math.sqrt(A/(n*Math.tan(Math.PI/n)))
+			var L=Math.sqrt(4*A*Math.tan(Math.PI/n)/n)
+			Res+='[7.- L='+L.toFixed(2)+"]"
+			Sdiv+='7.- Una figura regular de '+n+' lados tiene como área '+A+', calcule el lado de la figura<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var A=Math.round(Math.random()*250+10)
+			var a=Math.sqrt(A/(n*Math.tan(Math.PI/n)))
+			var L=Math.sqrt(4*A*Math.tan(Math.PI/n)/n)
+			Res+='[8.- a='+a.toFixed(2)+"]"
+			Sdiv+='8.- Una figura regular de '+n+' lados tiene como área '+A+', calcule el apotema<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var a=Math.round(Math.random()*20+1)
+			var L=2*a*Math.tan(Math.PI/n)
+			Res+='[9.- L='+L.toFixed(2)+"]"
+			Sdiv+='9.- Una figura regular de '+n+' lados tiene como apotema '+a+', calcule el lado de la figura.<br/>'
+			
+			var n=Math.round(Math.random()*8+4)
+			var L=Math.round(Math.random()*20+1)
+			var a=0.5*L/Math.tan(Math.PI/n)
+			Res+='[10.- a='+a.toFixed(2)+"]"
+			Sdiv+='10.- Una figura regular de '+n+' lados tiene como lado '+L+', calcule el apotema de la figura.<br/>'
+			
+			document.getElementsByTagName("body")[0].innerHTML+=Sdiv
+			if((k+1)%25==0){
+				Res+='<div/>Salto<div class="page" >'
+			}
+		}
+		Res+='<div/>'
+		document.getElementsByTagName("body")[0].innerHTML+=Res
+	
+}
+
+</script>
+  </head>
+  <body onload="N()">
+    </div>
+  </body>
+</html>
