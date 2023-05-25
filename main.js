@@ -184,30 +184,7 @@ var Nletras=67;
 				return f;
 			}
 			
-function N(){
-	var n=1;
-	var Clave=ObtenerClave();
-	var d = new Date();
-	var Npreguntas=10;
-	
-	var title=document.getElementById("NameTitle").innerHTML;
-	
-	var Ntest=eval(title.slice(0,3));
-	title=title.slice(3,title.length)
-	
-	document.getElementById("NameTitle").innerHTML="Tarea "+Ntest+":"+title
-	document.getElementById('Pestanna').innerHTML="Tarea "+Ntest+":"+title
-	var Data=[d.getDate(), d.getHours(), d.getMinutes(), Npreguntas, 0,Ntest];
-	
-	x=[];//misnumeros();
-	Data=Data.concat(cargar(x,true,Npreguntas));
-	Data=Data.concat(x);
-	
-	document.getElementById("reloj").setAttribute("Txt",Clave);
-	document.getElementById("reloj").setAttribute("Txt2",Data);
-	
-	ajja([2, 0, 5],x)
-}
+
 function vamos(){
 var Txt=document.getElementById("cadena_respuesta").value;
 var X=Desencriptar(Txt);
