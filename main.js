@@ -88,11 +88,12 @@ var Nletras=67;
 				return As;
 			}
 			function EncriptarInfo(numbers,Clave){
+				var today = new Date();
 				var B=Numbers2Array(numbers,Clave);
 				var B2=Multiplica(Clave,B);
 				var N2=Array2Numbers(B2);
 				var Txt2=N2S(Clave[2])+N2S(Clave[4])+N2S(Clave[6])+N2S(Clave[0])+N2S(Clave[1])+numbers2Symbols(N2);
-				document.getElementById("clave").innerHTML="Clave: "+Txt2;
+				document.getElementById("clave").innerHTML="Clave: "+Txt2+"<br/>Fecha:"+today.toLocaleDateString('pt-PT');;
 				document.getElementById("clave").style.visibility="visible";
 				return Txt2;
 			}
