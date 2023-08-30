@@ -1,3 +1,65 @@
+function Histograma(Datos,tick,dim,color,h,Etiqueta){
+	/*
+	* axis([xmin xmax ymin ymax xscal yscal])
+	* dim([height width])
+	********Mejorar esta función*******************
+	Ejemplo
+	Histograma(		[[4,6,8,10,12,14],[12,18,14,12,22,20]],//Datos
+					[10,12,14,16,18,20,22,24],//tick eje y
+					[300,450],//Dimensiones
+					"#03B",//Color de las barras
+					50,// Espacio para las etiquetas
+					"Eje x")//Etiqueta eje x
+	*/
+	
+		var hy=tick[0]==0?0:h
+		var h2=h/2
+		
+		var p= h+","+h2+" "+(h+","+(dim[0]+h2))+" "
+			p+=(tick[0]==0?"": (h+","+(dim[0]+h2+0.25*h)+" "+0.75*h+","+(dim[0]+h2+0.5*h)+" "+1.25*h+","+(dim[0]+h2+0.5*h)+" "+h+","+(dim[0]+h2+0.75*h)+" "+h+","+(dim[0]+h2+h)))
+			p+=Datos[0][0]==0?" ": " "+(1.25*h)+", "+(dim[0]+h2+hy)+" "+(1.5*h)+", "+(dim[0]+h2+hy-0.25*h)+" "+(1.5*h)+", "+(dim[0]+h2+hy+0.25*h)+" "+(1.75*h)+", "+(dim[0]+h2+hy)
+			p+=" "+(dim[1]+h2)+", "+(dim[0]+hy+h2)
+		
+
+		var S1="<polyline points='"+p+"' fill='none' stroke='black' style='stroke-width: 1'/>"
+	
+	
+	
+	var my=-dim[0]/(tick[tick.length-1]-tick[0])
+	var by=dim[0]+h2-my*tick[0]
+	var xpm=h2+Datos[0][0]==0?h:2*h
+	var xpM=dim[1]+h
+	var nx=Datos[0].length
+	
+	var S="<svg width="+(dim[1]+(Datos[0][0]==0?h:2*h)+h2)+" height="+(dim[0]+(tick[0]==0?h:2*h)+h2)+" style='border:solid red 2px'>"
+	for(var k=0;k<tick.length;++k){
+		S+='<line x1="'+h+'" y1="'+(my*tick[k]+by)+'" x2="'+(dim[1]+h)+'" y2="'+(my*tick[k]+by)+'" stroke="gray" style="stroke-width: 1"/>'
+	}
+	for(var k=0;k<Datos[0].length;++k){
+		S+='<rect width="'+(xpM-xpm)/nx+'" height="'+(dim[0]+hy+h2-my*Datos[1][k]-by)+'" x="'+(k*(xpM-xpm)/nx+xpm)+'" y="'+(my*Datos[1][k]+by)+'" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />'
+	}
+		
+	S+=S1
+	
+	/*Construir ejes*/
+	for(var k=0;k<tick.length;++k){
+		S+='<line x1="'+(.8*h)+'" y1="'+(my*tick[k]+by)+'" x2="'+(h)+'" y2="'+(my*tick[k]+by)+'" stroke="black" style="stroke-width: 2"/>'
+		S+='<text font-size="'+(h*.01)+'em" x="'+(.8*h)+'" y="'+(my*tick[k]+by)+'" dominant-baseline="middle" text-anchor="end">'+tick[k]+'</text> '
+	}
+	
+	
+	
+	for(var k=0;k<Datos[0].length;++k){
+		S+='<line x1="'+((k+1)*(xpM-xpm)/nx+xpm)+'" y1="'+(dim[0]+hy+h2)+'" x2="'+((k+1)*(xpM-xpm)/nx+xpm)+'" y2="'+(dim[0]+hy+h2+4)+'" stroke="black" style="stroke-width: 2"/>'
+		S+='<text font-size="'+(h*.01)+'em" x="'+((k+0.5)*(xpM-xpm)/nx+xpm)+'" y="'+(dim[0]+hy+h2+4)+'" dominant-baseline="hanging" text-anchor="end">'+Datos[0][k]+'</text> '
+	}
+	 
+	S+='<defs><path id="Ejey" d="M '+(h/4+2)+' '+(dim[0]+hy+h2)+' L '+(h/4+2)+' 5 Z" /></defs><text font-size="'+(h*.02)+'em" dominant-baseline="middle" text-anchor="start"><textPath startOffset="25%" text-anchor="middle" xlink:href="#Ejey">Frecuencia</textPath></text>'
+	S+='<text font-size="'+(h*.02)+'em" x="'+(dim[1]/2+h2)+'" y="'+(dim[0]+hy+h+4)+'" dominant-baseline="auto" text-anchor="middle">'+Etiqueta+'</text> '
+	
+	S+="</svg>"
+	return S
+}
 function ejes(axis,dim,color){
 	/*
 	* axis([xmin xmax ymin ymax xscal yscal])

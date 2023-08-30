@@ -1,3 +1,27 @@
+function M_range_count(x,h){
+	/*provee un arreglo del mínimo al máximo de h en h*/
+	var c=M_range(x)
+	var q=[c[0]]
+	var k=0
+	while(q[k]<c[1]){
+		q[++k]=q[k-1]+h
+	}
+	return q
+}
+function M_range(x){
+	/*Provee el mínimo y maximo*/
+	var m_min=x[0]+1
+	var m_max=x[0]-1
+	for(k=0;k<x.length;++k){
+		if(x[k]>m_max){
+			m_max=x[k]
+		}
+		if(x[k]<m_min){
+			m_min=x[k]
+		}
+	}
+	return [m_min, m_max]
+}
 function M_2_var_stat(x,y){
 	/*Emula la función 2 Var Stats de la calculadora*/
 	/*var x=[-21,-17,-15,-14,-13]
