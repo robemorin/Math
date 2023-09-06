@@ -1,3 +1,45 @@
+function Max(x){
+
+	var m=Math.min.apply(Math, x);
+	var M=Math.max.apply(Math, x)
+	
+	if(M>(-m)){
+		return M
+	}else{
+		return -m
+	}
+}
+function MCM(x){
+	var N=x.length;
+	for(var k=2;k<=Max(x)/2;++k){
+		if(MCMHelp(x,k)){
+			for(var i=0;i<x.length;++i){
+				x[i]=x[i]/k;
+			}
+			--k;
+		}
+	}
+	return x
+}
+function mulAtor(min,Max){
+	if(Max==0){
+		return 1;
+	}
+	var M=1
+	for(var k=min;k<=Max;++k){
+		M*=k
+	}
+	return M
+}
+function comb(n,r){
+	var m=n-r;
+	if(m>r){
+		q=m
+		m=r
+		r=q
+	}
+	return mulAtor(r+1,n)/mulAtor(1,m)
+}
 function M_range_count(x,h){
 	/*provee un arreglo del mínimo al máximo de h en h*/
 	var c=M_range(x)
