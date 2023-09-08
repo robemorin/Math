@@ -52,6 +52,13 @@ function M_binomialcdf(n,p,x){
 	}
 	return S
 }
+function M_binomialcdf_R(n,p,xL,xU){
+	var S=0
+	for(var k=xL; k<=xU;++k){
+		S+= M_binomialpdf(n,p,k)
+	}
+	return S
+}
 function M_range_count(x,h){
 	/*provee un arreglo del mínimo al máximo de h en h*/
 	var c=M_range(x)
