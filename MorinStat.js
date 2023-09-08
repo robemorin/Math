@@ -40,6 +40,18 @@ function comb(n,r){
 	}
 	return mulAtor(r+1,n)/mulAtor(1,m)
 }
+function M_binomialpdf(n,p,x){
+	
+	var C=comb(n,x)
+	return C*Math.pow(p,x)*Math.pow(1-p,n-x)
+}
+function M_binomialcdf(n,p,x){
+	var S=0
+	for(var k=0; k<=x;++k){
+		S+= M_binomialpdf(n,p,k)
+	}
+	return S
+}
 function M_range_count(x,h){
 	/*provee un arreglo del mínimo al máximo de h en h*/
 	var c=M_range(x)
