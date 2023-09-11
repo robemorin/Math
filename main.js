@@ -167,7 +167,6 @@ var Nletras=67;
 				return B
 			}
 			function ObtenerClave(){
-				alert(":)")
 			document.getElementById("lienzo").innerHTML=""
 			f=new Date();
 			var A=[[0,0,0],[0,0,0],[0,0,0]];
