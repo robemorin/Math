@@ -228,10 +228,7 @@ function ajja(a){
 	var TagN=document.getElementById("reloj");
 	TagN.innerHTML=a[0]+"h "+a[1]+" min "+a[2]+" s";
 	if(a[0]==0 && a[1]==0 && a[2]==0){
-		if( document.getElementById("Alumnos").value==="14 Terrazas Acosta, Melissa Janett" ){
-			
-			alert("--- Sacaste un cero... es broma solo es para comprobar que soy el administrador") 
-		}
+		
 		document.getElementById("Alumnos").disabled=true;
 		
 		TagN.innerHTML="Tiempo terminado"
