@@ -1,0 +1,155 @@
+ <html>
+  <head>
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <title>Paginated HTML</title>
+    <style type="text/css" media="print">
+      div.page
+      {
+        page-break-after: always;
+        page-break-inside: avoid;
+      }
+    </style>
+	
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+	<script>
+function N(){
+	var N=33;
+	Res='<div class="page" >'
+	for(var k=0;k<N;++k){
+		Res+='<br/>'+(k+1)+') '
+		var Sdiv='<div class="page" >'
+			+'<span align="right"><img src="./Tarea_ Pendiente_files/cropped-Banner-2.png"></span><center><h1>Preparatoria</h1>'
+			+'<br><h2>Matemáticas<br>4.4 Líneas perpendiculares y paralelas Parte II.</h2><br></center>'
+			+'<div  style="border:dotted 1px black;">ID: '+(k+1)+'<br>De sus respuestas en forma decimal<br></div><br>'
+			
+			var M=[ '\\frac{1}{5}','\\frac{2}{5}','\\frac{3}{5}','\\frac{4}{5}','\\frac{1}{4}','\\frac{3}{4}','\\frac{5}{4}',
+					'\\frac{1}{3}','\\frac{2}{3}','\\frac{4}{3}','\\frac{5}{3}','\\frac{1}{2}',
+					'-\\frac{1}{5}','-\\frac{2}{5}','-\\frac{3}{5}','-\\frac{4}{5}','-\\frac{1}{4}','-\\frac{3}{4}','-\\frac{5}{4}',
+					'-\\frac{1}{3}','-\\frac{2}{3}','-\\frac{4}{3}','-\\frac{5}{3}','-\\frac{1}{2}',]
+			var Mp=[ 0.2,0.4,.6,0.8,0.25,.75,5/4,
+					1/3,2/3,4/3,5/3,1/2,
+					-0.2,-0.4,-.6,-0.8,-0.25,-.75,-5/4,
+					-1/3,-2/3,-4/3,-5/3,-1/2]
+				var k1=Math.floor(Math.random()*M.length)
+				var m=M[k1]
+				M=Mp[k1]
+				
+				var b=Math.round(10*(Math.random()))
+				var P=[Math.round(10*(Math.random()-0.5)),Math.round(10*(Math.random()-0.5))]
+			
+			
+			Res+='[1.- L='+(-1/M)+" x +("+(P[0]/M+P[1])+")]"
+			Sdiv+='1.- Calcule la ecuación de la línea perpendicular a \\( y ='+m+ ' x + ' +b+ '\\)  que pase por el punto ('+P+')<br>'
+			
+			
+			
+				Mp=[ 0.2,0.4,.6,0.8,0.25,.75,5/4,
+					1/3,2/3,4/3,5/3,1/2,
+					-0.2,-0.4,-.6,-0.8,-0.25,-.75,-5/4,
+					-1/3,-2/3,-4/3,-5/3,-1/2]
+				k1=Math.floor(Math.random()*Mp.length)
+				M=Mp[k1]
+				var P=[Math.round(5*Math.random())*(M<0?-1:1),Math.round(5*Math.random())]
+				if(Math.random()<0.5){
+					P[0]*=-1;
+					P[1]*=-1;
+				}
+			
+			var mx=15
+	var bx=10.5*mx
+	var a=[Math.round(Math.random()*6-3),Math.round(Math.random()*6-3)]
+	Res+='[2.- L='+(-1/M)+" x +("+(a[0]/M+a[1])+")]"
+	Sdiv+='2.- Dibuje y calcule la línea recta de perpendicular a la mostrada y pase por el punto indicado<br>'
+	
+	Sdiv+='<center><svg width="'+(mx*21)+'px" height="'+(mx*21)+'">'
+	for(var i=-10;i<11;++i){
+	Sdiv+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+	Sdiv+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+	}
+	Sdiv+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+	Sdiv+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+	Sdiv+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+	Sdiv+='<text y="'+bx+'" x="'+(mx*5+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+	
+	Sdiv+='<circle cx="'+(mx*a[0]+bx)+'" cy="'+(-mx*a[1]+bx)+'" r="4"/>'
+	Sdiv+='<text x="'+(mx*a[0]+bx+20)+'" y="'+(-mx*a[1]+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">A </text>'
+	Sdiv+='<line x1="'+(mx*(-10)+bx)+'" y1="'+(mx*(10*M+P[0]+P[1])+bx)+'"  x2="'+(mx*(10)+bx)+'" y2="'+(mx*(-10*M+P[0]+P[1])+bx)+'" style="stroke:black;stroke-width:2"> </line>'
+	
+		
+	Sdiv+='</svg></center><br/>'
+			
+	
+			var M=[ '\\frac{1}{5}','\\frac{2}{5}','\\frac{3}{5}','\\frac{4}{5}','\\frac{1}{4}','\\frac{3}{4}','\\frac{5}{4}',
+					'\\frac{1}{3}','\\frac{2}{3}','\\frac{4}{3}','\\frac{5}{3}','\\frac{1}{2}',
+					'-\\frac{1}{5}','-\\frac{2}{5}','-\\frac{3}{5}','-\\frac{4}{5}','-\\frac{1}{4}','-\\frac{3}{4}','-\\frac{5}{4}',
+					'-\\frac{1}{3}','-\\frac{2}{3}','-\\frac{4}{3}','-\\frac{5}{3}','-\\frac{1}{2}',]
+			var Mp=[ 0.2,0.4,.6,0.8,0.25,.75,5/4,
+					1/3,2/3,4/3,5/3,1/2,
+					-0.2,-0.4,-.6,-0.8,-0.25,-.75,-5/4,
+					-1/3,-2/3,-4/3,-5/3,-1/2]
+				var k1=Math.floor(Math.random()*M.length)
+				var m=M[k1]
+				M=Mp[k1]
+				
+				var b=Math.round(10*(Math.random()))
+				var P=[Math.round(10*(Math.random()-0.5)),Math.round(10*(Math.random()-0.5))]
+			
+			
+			Res+='[3.- L='+(-1/M)+" x +("+(P[0]/M+P[1])+")]"
+			Sdiv+='3.- Calcule la ecuación de la línea perpendicular a \\( y ='+m+ ' x + ' +b+ '\\)  que pase por el punto ('+P+')<br><div/><div class="page" >'
+			
+			
+				Mp=[ 0.2,0.4,.6,0.8,0.25,.75,5/4,
+					1/3,2/3,4/3,5/3,1/2,
+					-0.2,-0.4,-.6,-0.8,-0.25,-.75,-5/4,
+					-1/3,-2/3,-4/3,-5/3,-1/2]
+				k1=Math.floor(Math.random()*Mp.length)
+				M=Mp[k1]
+				var P=[Math.round(5*Math.random())*(M<0?-1:1),Math.round(5*Math.random())]
+				if(Math.random()<0.5){
+					P[0]*=-1;
+					P[1]*=-1;
+				}
+			
+			var mx=15
+	var bx=10.5*mx
+	var a=[Math.round(Math.random()*6-3),Math.round(Math.random()*6-3)]
+	Res+='[4.- L='+(-1/M)+" x +("+(a[0]/M+a[1])+")]"
+	Sdiv+='4.- Dibuje y calcule la ecuacion la línea recta de perpendicular a la mostrada y pase por el punto indicado<br>'
+	
+	Sdiv+='<center><svg width="'+(mx*21)+'px" height="'+(mx*21)+'">'
+	for(var i=-10;i<11;++i){
+	Sdiv+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+	Sdiv+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+	}
+	Sdiv+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+	Sdiv+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+	Sdiv+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+	Sdiv+='<text y="'+bx+'" x="'+(mx*5+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+	
+	Sdiv+='<circle cx="'+(mx*a[0]+bx)+'" cy="'+(-mx*a[1]+bx)+'" r="4"/>'
+	Sdiv+='<text x="'+(mx*a[0]+bx+20)+'" y="'+(-mx*a[1]+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">A </text>'
+	Sdiv+='<line x1="'+(mx*(-10)+bx)+'" y1="'+(mx*(10*M+P[0]+P[1])+bx)+'"  x2="'+(mx*(10)+bx)+'" y2="'+(mx*(-10*M+P[0]+P[1])+bx)+'" style="stroke:black;stroke-width:2"> </line>'
+	
+		
+	Sdiv+='</svg></center><br/>'
+						
+			document.getElementsByTagName("body")[0].innerHTML+=Sdiv
+			if((k+1)%25==0){
+				Res+='<div/>Salto<div class="page" >'
+			}
+		}
+		Res+='<div/>'
+		document.getElementsByTagName("body")[0].innerHTML+=Res
+	
+}
+
+</script>
+  </head>
+  <body onload="N()">
+    </div>
+  </body>
+</html>
