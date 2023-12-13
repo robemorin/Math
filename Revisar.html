@@ -1,0 +1,294 @@
+<html ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Tarea: Pendiente</title>
+
+
+<style type="text/css">
+tr{
+	text-align: center;
+}
+body{
+font-size:1.5em;
+}
+li{
+padding-bottom: 2ex;
+}
+table:has(.correcta){
+	border:solid 2px green;
+}
+table:has(.incorrecta){
+	border:solid 2px red;
+}
+#reloj {
+  border: red 2px solid;
+  position:fixed;
+  right:10%;
+}
+input:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        background-color: #ff0000;
+        content: '';
+        display: inline-block;
+        border: 2px solid black;
+		-webkit-print-color-adjust: exact; 
+}
+@media print{
+  .noprint{
+    display: none !important;
+  }
+}
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+
+
+<script type="text/javascript"  >
+var Nletras=67;
+
+function SizeMatriz(A){
+	const S=[A.length,A[0].length]
+	return S
+}
+function Desencriptar(Txt){
+				let N_cripr=Symbols2numbers(Txt)
+				//Extraer Clave
+				let Claver=N_cripr.slice(0,9)
+				N_cripr=N_cripr.slice(9,N_cripr.length)
+				aClaver=inversaA(Claver)
+				let Nr=[]
+				for (let k=0;k<(N_cripr.length/3);++k){
+					Nr[k]=[N_cripr[3*k],N_cripr[3*k+1],N_cripr[3*k+2]]
+				}
+				let numbersr=Multiplica(Nr,aClaver)
+				
+				let Original = (numbersr) => {
+					const n = numbersr.length
+					let Num=[]
+					for(let k=0;k<n;++k){
+						if(numbersr[k][0]!=numbersr[k][2]) return false;
+						Num[k]=numbersr[k][0]
+					}
+					return Num
+				}
+				
+				if(!Original(numbersr)){
+					alert("Código no válido")
+					return false
+				}
+				const K=Original(numbersr)
+				const NameNum=K.slice(11, K.length)
+				
+				document.getElementById("container").innerHTML="<h1>Código válido</h1><h2>Nombre: "+numbers2Symbols(NameNum).replaceAll('?', ' ')+"</h2>"
+				+"<br><h3>Fecha de la realización: "+K[2]+"/"+K[1]+"/20"+K[0]+"</h3>"
+				+"<h3>Calificación: "+K[6]+"/"+K[5]+": "+Math.round(100*K[6]/K[5])+"</h3>"
+				+"<h3># tema: "+K[7]+"</h3>"
+				+"<div id='oculto' style='visibility:hidden'><h2>Inicio: "+K[3]+":"+K[4]+"</h2><h2>Final: "+K[9]+":"+K[10]+"</h2></div>"
+				<!-- alert("Recuperado "+K.length+": Fecha: "+K[2]+"/"+K[1]+"/20"+K[0]+"/\n Inicio: "+K[3]+":"+K[4]+"\n Cal: "+K[6]+"/"+K[5]+ -->
+			<!-- "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10]+"\n Nombre:"+numbers2Symbols(NameNum).replaceAll('?', ' ')) -->
+			}
+function verificar(T){
+				var a = T[0][2];
+				for(var i=1;i<T.length;i++){
+					if(a!=T[i][2]) return false;
+				}
+				return true;
+			}
+			function RecuperarNumEn(Txt){
+				var Num2=[];
+				for(var i=5;i<Txt.length;++i){
+					Num2[i-5]=S2N(Txt.charCodeAt(i));
+				}
+				return Num2;
+			}
+			function S2N(N){//*
+					if( "a".charCodeAt(0)<=N &&  N <= "z".charCodeAt(0)) return N-"a".charCodeAt(0);
+					else if( "A".charCodeAt(0)<=N &&  N <= "Z".charCodeAt(0)) return N-"A".charCodeAt(0)+26;
+					else if( "0".charCodeAt(0)<=N &&  N <= "9".charCodeAt(0)) return N-"0".charCodeAt(0)+52;
+					else if("_".charCodeAt(0)==N) return 62;
+					else if("-".charCodeAt(0)==N) return 63;
+					else if("+".charCodeAt(0)==N) return 64;
+					else if("*".charCodeAt(0)==N) return 65;
+					else if("?".charCodeAt(0)==N) return 66;
+					else 	return 66;
+			}
+			function inversodet(n){//*
+				if(n==0){
+					var e=0
+					return 0;
+				}
+				for (var i=1;i<Nletras;++i){
+					if(n*i%Nletras==1){
+						e=i; break;
+					}
+				}
+				return e;
+			}
+			function inversaA(A){//*
+				if(A.length>4){
+					A=[	[A[0],A[1],A[2]],
+						[A[3],A[4],A[5]],
+						[A[6],A[7],A[8]]]
+				}
+				var d=inversodet(det(A));
+				var As=new Array();
+				As=[	[(A[1][1]*A[2][2]-A[1][2]*A[2][1]),-(A[0][1]*A[2][2]-A[0][2]*A[2][1]) ,(A[0][1]*A[1][2]-A[0][2]*A[1][1])],
+						[-(A[1][0]*A[2][2]-A[1][2]*A[2][0]), (A[0][0]*A[2][2]-A[0][2]*A[2][0]),-(A[0][0]*A[1][2]-A[0][2]*A[1][0]) ],
+						[(A[1][0]*A[2][1]-A[1][1]*A[2][0]), -(A[0][0]*A[2][1]-A[0][1]*A[2][0]), (A[0][0]*A[1][1]-A[0][1]*A[1][0])]]
+				for(var i=0;i<3;++i) for(var j=0;j<3;++j) As[i][j]=(As[i][j]*d)%Nletras;
+				for(var i=0;i<3;++i) for(var j=0;j<3;++j) if(As[i][j]<0) As[i][j]=As[i][j]+Nletras; 
+				return As;
+			}
+			function EncriptarInfo(numbers){
+				let Clave=eval("["+document.getElementsByTagName('body')[0].getAttribute("key")+"]")
+				const C=[	[Clave[0],Clave[1],Clave[2]],
+							[Clave[3],Clave[4],Clave[5]],
+							[Clave[6],Clave[7],Clave[8]]]
+				let N_crip=Numbers2Array(numbers)
+				N_crip=Multiplica(N_crip,C)
+				// alert(N_crip+" : "+Array2Numbers(N_crip))
+				N_crip=Array2Numbers(N_crip)
+				
+				// alert(Clave+":\n"+Symbols2numbers(numbers2Symbols(Clave)))
+				const Scrip=numbers2Symbols(Clave)+numbers2Symbols(N_crip)
+				
+				document.getElementById("clave").innerHTML="Clave: "+Scrip
+				document.getElementById("clave").style.visibility="visible";
+				
+				
+				/*------ Proceso inverso -------*/
+				Desencriptar(Scrip)
+				
+				
+				return Scrip;
+			}
+			function Symbols2numbers(S){
+				let N=[]
+				const n=S.length
+				for(let i=0;i<n;++i){
+					N[i]=S2N(S[i].charCodeAt(0))
+				}
+				return N
+			}
+			function numbers2Symbols(N){
+				let S="";
+				for(let i=0;i<N.length;++i){
+					S=S+N2S(N[i]);
+				}	
+			return S;
+			}
+			function N2S(L){		
+				if(L<26){ 
+				return String.fromCharCode("a".charCodeAt(0)+L); 
+				}else if(L<52){
+				return String.fromCharCode("A".charCodeAt(0)+L-26);
+				}else if(L<62){
+				return String.fromCharCode("0".charCodeAt(0)+L-52);
+				}else{
+					switch(L){
+						case 62: 
+							return "_";
+						case 63: 
+							return "-";
+						case 64: 
+							return "+";
+						case 65: 
+							return "*";
+						default: 
+							return "?";
+					}
+				}
+			}
+			function Array2Numbers(A){
+			let B=[];
+			for(let i=0;i<A.length;++i){
+				B[3*i+0]=A[i][0];
+				B[3*i+1]=A[i][1];
+				B[3*i+2]=A[i][2];
+			}
+			return B;
+			}
+			function Multiplica(A,B){
+				
+				let C=[];
+				const a=SizeMatriz(A);
+				const b=SizeMatriz(B);
+				if(a[1]!=b[0]){
+					return
+				}
+				const n=a[1]
+				
+				for(let i=0;i<a[0];++i){
+					C[i]=[]
+					for(let j=0;j<b[1];++j){
+						C[i][j]=0
+						for(let k=0;k<n;++k){
+							C[i][j]+=A[i][k]*B[k][j]
+						}
+						C[i][j]=C[i][j]%Nletras
+					}
+				}
+				return C;
+			}
+function Numbers2Array(x){
+	return Sarray2Darray(x);
+}
+function Sarray2Darray(x){
+	let B=[[0,0,0]]
+	for(let i=0;i<x.length;++i){
+		B[i]=[x[i],Math.floor(Math.random()*Nletras),x[i]];//Cada número es una terna
+	}
+	return B
+}
+			function hacerLlave(){// *
+			f=new Date();
+			var A=[[0,0,0],[0,0,0],[0,0,0]];
+			while(det(A)==0){
+				var A=[ [Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras)],
+						[Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras)],
+						[Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras),Math.floor(Math.random()*Nletras)]];
+				}
+				document.getElementsByTagName('body')[0].setAttribute("key",A)
+				return A
+			}
+			function det(A){//*
+				var f=A[0][0]*(A[1][1]*A[2][2]-A[2][1]*A[1][2])
+					f=f-A[0][1]*(A[1][0]*A[2][2]-A[2][0]*A[1][2])
+					f=f+A[0][2]*(A[1][0]*A[2][1]-A[2][0]*A[1][1])
+					f=f%Nletras;
+					f=(f<0)?f+Nletras:f;
+				return f;
+			}
+function vamos(){
+var Txt=document.getElementById("cadena_respuesta").value;
+var X=Desencriptar(Txt);
+
+cargar(X,false,X[3])
+}
+document.addEventListener('keyup', event => {
+  if (event.ctrlKey && event.keyCode ===77 ) {
+	document.getElementById('oculto').style.visibility="visible"
+  }
+}, false)
+
+function Revisar(){
+	const paramURL = window.location.search
+	Desencriptar(paramURL.substring(3))
+	
+}
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script>
+
+</script>
+
+</head>
+
+<body id="container" onload="Revisar()" data-gr-c-s-loaded="true">
+
+ </body></html>
