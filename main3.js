@@ -428,7 +428,6 @@ function LeerGet(){
 }
 function N(){//*
 	const code=LeerGet()
-	alert(code)
 	const Clave=hacerLlave()
 	const d = new Date();
 	const Npreguntas=code[3];
