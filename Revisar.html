@@ -43,7 +43,7 @@ input:checked:after {
 <!--script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
 
-
+<script type="text/javascript"  src="temas2.js"></script>
 <script type="text/javascript"  >
 var Nletras=67;
 
@@ -78,13 +78,13 @@ function Desencriptar(Txt){
 					return false
 				}
 				const K=Original(numbersr)
-				const NameNum=K.slice(11, K.length)
-				
+				const NameNum=K.slice(12, K.length)
+				alert(K[7]+" "+K[8]+" "+K[9])
 				document.getElementById("container").innerHTML="<h1>Código válido</h1><h2>Nombre: "+numbers2Symbols(NameNum).replaceAll('?', ' ')+"</h2>"
 				+"<br><h3>Fecha de la realización: "+K[2]+"/"+K[1]+"/20"+K[0]+"</h3>"
 				+"<h3>Calificación: "+K[6]+"/"+K[5]+": "+Math.round(100*K[6]/K[5])+"</h3>"
-				+"<h3># tema: "+K[7]+"</h3>"
-				+"<div id='oculto' style='visibility:hidden'><h2>Inicio: "+K[3]+":"+K[4]+"</h2><h2>Final: "+K[9]+":"+K[10]+"</h2></div>"
+				+"<h3>Tema: "+tema[K[7]].subtema[K[8]].test[K[9]].Nombre+"</h3>"
+				+"<div id='oculto' style='visibility:hidden'><h2>Inicio: "+K[3]+":"+K[4]+"</h2><h2>Final: "+K[10]+":"+K[11]+"</h2></div>"
 				<!-- alert("Recuperado "+K.length+": Fecha: "+K[2]+"/"+K[1]+"/20"+K[0]+"/\n Inicio: "+K[3]+":"+K[4]+"\n Cal: "+K[6]+"/"+K[5]+ -->
 			<!-- "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10]+"\n Nombre:"+numbers2Symbols(NameNum).replaceAll('?', ' ')) -->
 			}
