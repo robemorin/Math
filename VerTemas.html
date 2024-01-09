@@ -1,0 +1,243 @@
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Temas</title>
+
+
+<style type="text/css">
+@charset "utf-8";
+.accordion {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 80%;
+  height: auto;
+  font-family: Arial, Helvetica, sans-serif;
+  border: 1px solid #dedede;
+  border-radius: 8px;
+  margin:0 auto;
+} 
+/*Contenedor común plegar/desplegar*/
+.accordion-toggle,
+.accordion-header{
+  font-size: 20px;
+  width: 100%;
+  height: 3em;
+  margin: 0;
+  line-height: 3em;
+  cursor: pointer;
+}
+/*El botón que pliega/despliega*/
+.accordion-toggle {
+  opacity: 0;
+  background-color: transparent;
+  z-index: 1;
+  margin-bottom: 2px;
+}
+/*Bloque para el título*/
+.accordion-header{
+  background-color: #ffffff;
+  color: #7f8787;
+  position: relative;
+  margin-top: -3em;
+  padding-left: 10px
+}
+
+/*Bloque replegable con el contenido */
+.accordion-content {
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+  color: #7f8787;
+  overflow: auto;
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  margin-bottom: -250px;
+  padding: 0 20px;
+  transition: margin 0.3s ease 0.1s;
+  }
+.accordion-toggle:checked + .accordion-header + .accordion-content {
+  margin-bottom: 0;
+  margin-right: 0;
+}
+.accordion-header::before,
+.accordion-toggle:checked + .accordion-header::before {
+  content: '+';
+  display: inline-block;
+  text-align: center;
+  width: 1em;
+  font-size: 1.em;
+}
+.accordion-toggle:checked + .accordion-header::before {
+  content:'-';
+}
+
+.accordion-toggle:hover + .accordion-header{
+  background-color: #f7f1f1;
+}
+.accordion-toggle:checked + .accordion-header {
+  background-color: #fff;
+} 
+.flotante{
+  float: right;
+  width: 30%;
+  background-color: #ffffff;
+  overflow: hidden;
+  margin-top: 20px;
+  position: fixed;
+  right: 0;
+  z-index:9999;
+}
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+
+
+<script type="text/javascript"  >
+
+</script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script type="text/javascript"  src="temas2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script>
+  		function numbers2Symbols(N){
+				let S="";
+				for(let i=0;i<N.length;++i){
+					S=S+N2S(N[i]);
+				}	
+			return S;
+			}
+      function N2S(L){		
+				if(L<26){ 
+				return String.fromCharCode("a".charCodeAt(0)+L); 
+				}else if(L<52){
+				return String.fromCharCode("A".charCodeAt(0)+L-26);
+				}else if(L<62){
+				return String.fromCharCode("0".charCodeAt(0)+L-52);
+				}else{
+					switch(L){
+						case 62: 
+							return "_";
+						case 63: 
+							return "-";
+						case 64: 
+							return "+";
+						case 65: 
+							return "*";
+						default: 
+							return "?";
+					}
+				}
+			}
+function crearLink(k,kk,kkk){
+  const Npreguntas=eval(document.getElementById("Npreg").value)
+  const Tiempo=eval(document.getElementById("Tiempo").value)
+  const mos=eval(document.getElementById("mostrar").value)
+  navigator.clipboard.writeText("https://math-ca5.pages.dev/OpcionM%C3%BAltiple3.html?"
+        +numbers2Symbols([k,kk,kkk,Npreguntas,Tiempo,mos]))
+  document.getElementById("link").textContent="Copiado"
+}
+function vertemas(){
+	let div=document.getElementById("container")
+
+	let Cont=document.createElement("div")
+		Cont.classList.add("accordion")
+	for(let k=0;k<tema.length;++k){
+		
+		
+		let R=document.createElement("input")
+		R.type = 'radio';
+		R.setAttribute("name","toggle");
+		R.classList.add("accordion-toggle")
+		Cont.appendChild(R)
+		
+		let Title=document.createElement("div")
+		Title.classList.add("accordion-header")
+		Title.textContent=tema[k].Nombre
+		Cont.appendChild(Title)
+		
+		let Contenido=document.createElement("div")
+		Contenido.classList.add("accordion-content")
+		//Contenido.textContent="Texto "+k
+			let Cont1=document.createElement("div")
+			Cont1.classList.add("accordion")
+			for(let kk=0;kk<tema[k].subtema.length;++kk){
+				let R1=document.createElement("input")
+				R1.type = 'radio';
+				R1.setAttribute("name","toggle"+k);
+				R1.classList.add("accordion-toggle")
+				Cont1.appendChild(R1)
+				let Title1=document.createElement("div")
+				Title1.classList.add("accordion-header")
+				Title1.textContent=tema[k].subtema[kk].Nombre
+				Cont1.appendChild(Title1)
+		
+				let Contenido1=document.createElement("div")
+				Contenido1.classList.add("accordion-content")
+				//Contenido1.textContent="Texto "+kk
+        //alert("Tema:"+k+" sumbtemas:"+kk+"  ***"+tema[k].subtema[kk].test.length)
+        let Ntest=tema[k].subtema[kk].test.length
+        for(let kkk=0;kkk<Ntest;++kkk){
+          let Contenido2=document.createElement("div")
+          Contenido2.setAttribute("onclick","crearLink("+k+","+kk+","+kkk+")");
+          Contenido2.textContent+=tema[k].subtema[kk].test[kkk].Nombre
+          Contenido1.appendChild(Contenido2)
+        }
+				Cont1.appendChild(Contenido1)
+		
+		/*
+			div.innerHTML+="<h2>"+(k+1)+"."+(kk+1)+" "+tema[k].subtema[kk].Nombre+"</h2>"
+			for(let kkk=0;kkk<tema[k].subtema[kk].test.length;++kkk){
+				div.innerHTML+="<center><h3>"+(k+1)+"."+(kk+1)+"."+(kkk+1)+" "+tema[k].subtema[kk].test[kkk].Nombre+"</h3></center>"
+			}*/
+			}
+			Contenido.appendChild(Cont1)
+		Cont.appendChild(Contenido)
+	}
+	div.appendChild(Cont)
+	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+}
+</script>
+
+</head>
+
+<body id="container" onload="vertemas()" data-gr-c-s-loaded="true">
+<div class="flotante">
+  <table>
+    <tr><td><label for="Npreg">Número de preguntas</label></td><td><input id="Npreg" type="number" value="10"></td></tr>
+    <tr><td><label for="Tiempo">Tiempo (min)</label></td><td><input id="Tiempo" type="number" value="60"></td></tr>
+    <tr><td><label for="mostar">Mostar</label></td><td>
+
+      <select  id="mostrar">
+        <option value="2">Correctas & incorrectas</option>
+        <option value="1">Correctas</option>
+        <option value="0">Nada</option>
+      </select>
+
+    </td></tr>
+    <tr><td></td><td><span id="link"></span></td></tr>
+  </table>
+</div>
+
+
+ </body></html>

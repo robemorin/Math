@@ -1,0 +1,363 @@
+<html ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Tarea: Pendiente</title>
+
+
+<style type="text/css">
+tr{
+	text-align: center;
+}
+body{
+font-size:1.5em;
+}
+li{
+padding-bottom: 2ex;
+}
+#reloj {
+  border: red 2px solid;
+  position:fixed;
+  right:10%;
+}
+input:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        background-color: #ff0000;
+        content: '';
+        display: inline-block;
+        border: 2px solid black;
+		-webkit-print-color-adjust: exact; 
+}
+@media print{
+  .noprint{
+    display: none !important;
+  }
+}
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script type="text/javascript"  src="main2.js"></script>
+<script type="text/javascript"  src="https://math-ca5.pages.dev/GraphOP.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script>
+function N(){
+	var n=1;
+	var Clave=ObtenerClave();
+	var d = new Date();
+	var Npreguntas=10;
+	
+	var title=document.getElementById("NameTitle").innerHTML;
+	
+	var Ntest=parseInt(title.slice(0,3))
+	title=title.slice(3,title.length)
+	
+	document.getElementById("NameTitle").innerHTML="Tarea "+Ntest+":"+title
+	document.getElementById('Pestanna').innerHTML="Tarea "+Ntest+":"+title
+	var Data=[d.getDate(), d.getHours(), d.getMinutes(), Npreguntas, 0,Ntest];
+	
+	x=[];//misnumeros();
+	Data=Data.concat(cargar(x,true,Npreguntas));
+	Data=Data.concat(x);
+	
+	document.getElementById("reloj").setAttribute("Txt",Clave);
+	document.getElementById("reloj").setAttribute("Txt2",Data);
+	
+	ajja([0, 30, 10],x)
+}
+function cargar(x,hey,NP){
+if(hey==false){
+	e = document.getElementById("Alumnos")
+	L=document.getElementById("lienzo");
+	//L.innerHTML=L.innerHTML+"</br>Alumno: "+e.options[x[4]].text;
+	L.innerHTML="</br>Alumno: "+e.options[x[4]].text+"<br> Tarea "+x[5];
+	document.getElementById("Alumnos").innerHTML=""
+	var Q=calificar(x)
+}		
+	if(hey){
+		var msm=[];
+		for(var kn=0;kn<NP;++kn) eval("P=P"+((kn%2)+1)+"(x);msm["+kn+"]=Pregunta("+(kn+1)+",P[0],P[1],hey);")
+
+	
+		return msm;
+	}else{
+		//x=x.slice(6+NP)
+		//for(var kn=0;kn<NP;++kn) eval("P=P"+((kn%3)+1)+"(x);Pregunta2("+(kn+1)+",P[0],P[1],Q["+(kn*2)+"],Q["+(kn*2+1)+"]);")
+		
+	}
+}
+function P1(x){
+	var axis=[-6, 6, -10, 10, 2, 2, 1, 1]
+	var dim=[500, 300]
+	do{
+		var x=[0, Math.round(Math.random()*10-5)]
+		var y=(Math.random()<0.5?[Math.round(Math.random()*3-10)]:[Math.round(10-Math.random()*3)])
+		if(y[0]<0){
+			y[1]=y[0]+Math.round(Math.random()*5+1)
+			y[2]=y[0]+Math.round(Math.random()*5+1)
+		}else{
+			y[1]=y[0]-Math.round(Math.random()*5+1)
+			y[2]=y[0]-Math.round(Math.random()*5+1)
+		}
+	}while(x[1]==0 || y[1]==y[2])
+	
+	var Lienzo=plotExpPo(axis,dim,x,y,'#ffa200','#222')
+	
+	
+	
+	var P="Determine la función exponencial que aparece a continuación<br><center>"+Lienzo+"</center>"
+		var E=Exp2fun(x,y)
+	var R=[];
+	
+	R[0]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
+	for(var i=1;i<6;++i){
+		do{
+			var qq=Math.random()
+			if(qq<0.5)
+				R[i]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(Math.round(E[2]+Math.random()*10-5))+"</b></i>"
+			else
+				R[i]="<b><i>f</i> (<i>x</i>)="+Math.round(E[0]+Math.random()*10-5)+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
+				
+		}while(repetido(R))
+	
+	}
+	return [P,R]
+}
+function P2(x){
+	var axis=[-6, 6, -10, 10, 2, 2, 1, 1]
+	var dim=[500, 300]
+	do{
+		var x=[0, Math.round(Math.random()*10-5)]
+		var y=(Math.random()<0.5?[Math.round(Math.random()*3-10)]:[Math.round(10-Math.random()*3)])
+		if(y[0]<0){
+			y[1]=y[0]+Math.round(Math.random()*5+1)
+			y[2]=y[0]+Math.round(Math.random()*5+1)
+		}else{
+			y[1]=y[0]-Math.round(Math.random()*5+1)
+			y[2]=y[0]-Math.round(Math.random()*5+1)
+		}
+	}while(x[1]==0 || y[1]==y[2])
+	
+	var Lienzo=plotExpPo(axis,dim,x,y,'#ffa200','#222')
+	
+	
+	
+	var P="Determine la función exponencial que aparece a continuación<br><center>"+Lienzo+"</center>"
+		var E=Exp2fun(x,y)
+	var R=[];
+	
+	R[0]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
+	for(var i=1;i<6;++i){
+		do{
+			R[i]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+(E[1]+Math.random()*1.5-.75).toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
+		}while(repetido(R))
+	
+	}
+	return [P,R]
+}
+function Exp2fun(xp,yp){
+		var a=yp[1]-yp[0]
+		var c=yp[0]
+		var b=Math.pow((yp[2]-yp[0])/(yp[1]-yp[0]),1/xp[1])
+		return [a,b,c]
+	}
+function plotExpPo(axis,dim,xp,yp,color,color2){
+	/*
+	*
+	* axis([xmin xmax ymin ymax xscal yscal])
+	* dim([height width])
+	* 
+	*/
+	function Exp2points(x,xp,yp){
+		var a=yp[1]-yp[0]
+		var c=yp[0]
+		var b=Math.pow((yp[2]-yp[0])/(yp[1]-yp[0]),1/xp[1])
+		var y=[]
+		for(var k=0;k<x.length;++k) y[k]=a*Math.pow(b,x[k])+c
+		return y
+	}
+	var h=10
+	var my=-dim[0]/(axis[3]-axis[2])
+	var by=h-my*axis[3]
+	var mx=dim[1]/(axis[1]-axis[0])
+	var bx=h-mx*axis[0]
+	var csx=Math.log10(axis[4])<0?Math.ceil(-Math.log10(axis[4])):0
+	var csy=Math.log10(axis[5])<0?Math.ceil(-Math.log10(axis[4])):0
+	//alert(csx)
+	
+	
+	var S="<svg width="+(dim[1]+2*h)+" height="+(dim[0]+2*h)+">"
+	for( var k=Math.floor(axis[0]/axis[6])*axis[6];k<=Math.ceil(axis[1]/axis[6])*axis[6];k+=axis[6])
+		S+='<line x1="'+(mx*k+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*k+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.3"/>'
+	
+	for( var k=Math.floor(axis[2]/axis[7])*axis[7];k<=Math.ceil(axis[3]/axis[7])*axis[7];k+=axis[7])
+		S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*k+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*k+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.3"/>'
+	
+	for( var k=Math.floor(axis[0]/axis[4])*axis[4];k<=Math.ceil(axis[1]/axis[4])*axis[4];k+=axis[4]){
+		S+='<line x1="'+(mx*k+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*k+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.5"/>'
+		if(Math.abs(k)>0.5*axis[4])
+		S+='<text x="'+(mx*k+bx)+'" y="'+(by+1)+'" dominant-baseline="hanging" text-anchor="middle">'+k.toFixed(csx)+'</text> '
+	}
+	for( var k=Math.floor(axis[2]/axis[5])*axis[5];k<=Math.ceil(axis[3]/axis[5])*axis[5];k+=axis[5]){
+		S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*k+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*k+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.5"/>'
+		if(Math.abs(k)>0.5*axis[5])
+		S+='<text x="'+(bx+1)+'" y="'+(my*k+by+1)+'" dominant-baseline="middle" text-anchor="start">'+k.toFixed(csy)+'</text> '
+	}
+	
+	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*0+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*0+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
+	S+='<line x1="'+(mx*0+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*0+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
+	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*yp[0]+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*yp[0]+by)+'" stroke="#D00" style="stroke-width: 2.5" stroke-dasharray="20 9"/>'
+	x=linspace(-10,10,100)
+	y=Exp2points(x,xp,yp)
+	P=coor2px(x,y,mx,bx,my,by)
+	S+='<polyline points="'+P+'" fill="none" stroke="'+(color2==null?'#000':color2)+'" style="stroke-width: 2.5" />'
+	S+='<circle cx="'+(bx)+'" cy="'+(my*yp[1]+by)+'" r="5" />'
+	S+='<circle cx="'+(mx*xp[1]+bx)+'" cy="'+(my*yp[2]+by)+'" r="5" />'
+	
+	S+="</svg>"
+	return S
+	
+}
+</script>
+
+</head>
+
+<body id="container" onload="N()" data-gr-c-s-loaded="true">
+<div id="reloj" class="noprint" style="background-color:#FFF" txt="14,3,57,14,52,3,45,14,3" txt2="14,19,42,20,0,7,3,1,1,3,4,1,1,4,3,3,0,0,4,0,3,2,4,0,2,1">1h 58 min 55 s</div>
+
+        
+
+
+<div id="MathJax_Message" style="display: none;"></div>
+<div class="noprint">
+
+
+</div>
+	<span align="right"><img src="./Tarea_ Pendiente_files/cropped-Banner-2.png"></span><center><h1>Preparatoria</h1>
+	<br><h2>Matemáticas<br><span id="NameTitle">011 Funciones exponenciales</span></h2><br></center>
+	<div>Imprime este examen en PDF desde el navegador.</div>
+	 <fieldset>
+  <legend>Nota</legend>
+  Tema: Funciones > Exponenciales.
+ </fieldset>
+	<div id="clave" style="font-size:50%;border:dotted 1px black;visibility:hidden">Clave:<br></div>
+	<div><center>        <canvas id="qr-code" height="1" width="1"></canvas>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>
+		<script>
+			/* JS comes here */
+			var qr;
+			(function() {
+                    qr = new QRious({
+                    element: document.getElementById('qr-code'),
+                    size: 1,
+                    value: 'Se supone que no debes ver esto.'
+                });
+            })();
+            
+            function generateQRCode(cadena) {
+                var qrtext = cadena
+                qr.set({
+                    foreground: 'black',
+                    size: 200,
+                    value: qrtext
+					
+                });
+            }
+		</script><br></center></div>
+		<div id="calificacion"></div>
+	<label>Alumno:</label>
+<select id="Alumnos" onchange="list()">
+  <optgroup label="3A">
+  <optgroup label="I - A">
+<option>1	Blackaller Aguilar, Aitana</option>
+<option>2	Campos Chávez, Natalia</option>
+<option>3	Carrillo Martinez, Luis Alejandro</option>
+<option>4	Castillo Plascencia, José Antonio</option>
+<option>5	Flores Romero, Jesús Eduardo</option>
+<option>6	García González, Victoria Aracely</option>
+<option>7	García Nañez, Mario Alberto</option>
+<option>8	García Ramos, Silvia</option>
+<option>9	García Romo, Camila</option>
+<option>10	Góngora Cervantes, Jade Lizbeth</option>
+<option>11	González Aguilar, Renata</option>
+<option>12	González Suárez, Pablo Nicolás</option>
+<option>13	Muñoz Cárdenas, Mariangela</option>
+<option>14	Múzquiz Flores, Michelle</option>
+<option>15	Serna Soria, Natalia</option>
+<option>16	Soto Alemán, Ana Karen</option>
+<option>17	Suárez Soto, Jesús Alejandro</option>
+<option>18	Treviño Contreras, Marcela</option>
+<option>19	Villarreal Benavides, Corina</option>
+  </optgroup><optgroup label="I - B">
+<option>1	Arreola Garza, Mauricio
+<option>2	Campos Gutiérrez, Ana Paula
+<option>3	De La Rosa Garza, Aurora Estela
+<option>4	Éxiga González, Carlos Hermilo
+<option>5	García Martínez, Emilio
+<option>6	Garibay Flores, Isabella
+<option>7	Guedea Charles, Marisol
+<option>8	Lozano Suárez, Emiliano
+<option>9	Meza Leyva, Ángel Daniel
+<option>10	Muñoz González, Edilberto
+<option>11	Múzquiz Gutiérrez, Ricardo Ubaldo
+<option>12	Rodríguez Aguirre, Jimena
+<option>13	Rojas Martínez, Jesús
+<option>14	Terrazas Acosta, Melissa Janett
+<option>15	Treviño Zapata, Melissa
+  </optgroup><optgroup label="III - A">
+<option>1	Alcalá Díaz De León, Ayda Alí</option>
+<option>2	De la Rosa García, Ambar</option>
+<option>3	De la Rosa García, Celeste</option>
+<option>4	García Mendoza, Sebastián</option>
+<option>5	Garibay Garibay, Eduardo</option>
+<option>6	Jamin Huerta, Arcelia</option>
+<option>7	Jiménez Villarreal, Sebastian</option>
+<option>8	Lira Martínez, Rafael</option>
+<option>9	Menchaca Villa, Suri Consuelo</option>
+<option>10	Muñoz García, Ana Paula</option>
+<option>11	Neaves Barrera, Abigail</option>
+<option>12	Ramos Armendariz, Cecilia Abigail</option>
+<option>13	Suárez Espinoza, Camila</option>
+<option>14	Treviño De Hoyos, Sofía Michelle</option>
+<option>15	Valdez Cárdenas, Luciana</option>
+<option>16	Valdez Flores, Regina</option>
+</optgroup><optgroup label="III - B">
+<option>1	Barrera Rodríguez, Sofía</option>
+<option>2	Casados Sánchez, Jimena</option>
+<option>3	De León García, Laura Sofía</option>
+<option>4	Garza Salazar, Ximena</option>
+<option>5	Góngora Cervantes, Lesly Verónica</option>
+<option>6	Moreno Martínez, Oscar Alfonso</option>
+<option>7	Ríos Valdés, Emilia Sofía</option>
+<option>9	Sustaita Elizondo, María Daniela</option>
+<option>11	Vázquez Santos, José Pablo</option>
+<option>12	Velázquez Muñoz, Daniela</option>
+<option>13	Villarreal Maldonado, Mario Noé</option>
+<option>14	Villarreal Zertuche, Iván Alejandro</option>
+  </optgroup>
+</select>
+	<div ondragstart="return false" onselectstart="return false" id="lienzo"></div>
+	<button onclick="ajja([0,0,1])" style="width:100%; height:150px;background-color:#FF5722;color:#FFF"><h2>Terminar</h2></button>
+	 
+ </body></html>
