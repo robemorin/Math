@@ -286,8 +286,148 @@ function P4(){
 	Nombre:"Funciones",
 	subtema:[
 		{
+			Nombre:"Polinomios",
+			test:[
+				{
+					Nombre:"División de polinomios",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function multiply(a1, a2) {
+							var result = [];
+							a1.forEach(function (a, i) {
+								a2.forEach(function (b, j) {
+									result[i + j] = (result[i + j] || 0) + a * b;
+								});
+							});
+							return result;
+						}
+						function polinomio(v){
+							var n=v.length;
+							var S="";
+							for(var k=0;k<n;++k){
+								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
+								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
+								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
+							}
+							return S
+						}
+						function P1(x){
+							var a=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
+							var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
+								
+							
+							var P="El valor de la división de $$\\frac{"+polinomio(multiply(a,b))+"}{"+polinomio(a)+"}$$ es:"
+							
+							
+							var R=[];
+							R[0]="$"+polinomio(b)+"$"
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+								
+									var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
+									R[i]="$"+polinomio(b)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						/*fin*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
+					Nombre:"Fórmula general",
+					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
+					fun:function(){
+						function P1(x){
+							do{
+							var a=Math.round(Math.random()*20-11)
+							var b=Math.round(Math.random()*20-11)
+							var c=Math.round(Math.random()*20-11)
+							}while((b*b-4*a*c)<=0 || a==0)
+							var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+							if(x[0]>x[1]){
+								var dummy=x[0]
+								x[0]=x[1]
+								x[1]=dummy;
+							}	
+								
+							
+							var P="La solución de "+a+"<i>x</i><sup>2</sup> "+(b<0?"-":"+")+" "+Math.abs(b)+"<i>x</i> "+(c<0?"-":"+")+" "+Math.abs(c)+" = 0 es"
+							
+							
+							var R=[];
+							R[0]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+								
+								do{
+									var a=Math.round(Math.random()*20-11)
+									var b=Math.round(Math.random()*20-11)
+									var c=Math.round(Math.random()*20-11)
+								}while((b*b-4*a*c)<=0 || a==0)
+								var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+								if(x[0]>x[1]){
+									var dummy=x[0]
+									x[0]=x[1]
+									x[1]=dummy;
+								}
+								
+									R[i]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				}
+			]
+		},
+		{
 			Nombre:"Diferentes formas de expresar la ecuación de una recta",
 			test:[
+				{
+					Nombre:"Pendiente a partir de dos puntos",
+					Nota:"$m=\\frac{y_2-y_1}{x_2-x_1}$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							do{
+										var a=[Math.round(10*(Math.random()-.5)),Math.round(10*(Math.random()-.5))]
+										var b=[Math.round(10*(Math.random()-.5)),Math.round(10*(Math.random()-.5))]
+									}while(a[0]==b[0] || a[1]==b[1])
+									var m=(a[1]-b[1])/(a[0]-b[0])
+							
+							
+							var P='Calcule la pendiente del segmento que une los puntos A:('+a+') y B:('+b+').'
+								
+							var R=[];
+							
+							R[0]=m.toFixed(2)
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(m+(Math.random()-0.5)*2).toFixed(2)
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						/*final*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
 				{
 					Nombre:" Línea recta.- forma pendiente-ordenada al origen (Gráfica)",
 					Nota:"\\(y = mx + c\\)<br>\\(m=\\frac{y_2-y_1}{x_2-x_1}\\)",
@@ -461,17 +601,175 @@ function P2(x){
 							// C[6].innerHTML=P
 							for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}
+				},
+				{
+					Nombre:" Línea recta.- forma pendiente-ordenada al origen (Gráfica) II",
+					Nota:"",
+					fun:function(){
+						/*inicio*/
+						function MCMHelp(x,a){
+							for(var k=0;k<x.length;++k){
+								if((x[k]%a)!=0) return false;
+							}
+							return true;
+						}
+						function Max(x){
+						
+							var m=Math.min.apply(Math, x);
+							var M=Math.max.apply(Math, x)
+							
+							if(M>(-m)){
+								return M
+							}else{
+								return -m
+							}
+						}
+						function MCM(x){
+							var N=x.length;
+							for(var k=2;k<=Max(x)/2;++k){
+								if(MCMHelp(x,k)){
+									for(var i=0;i<x.length;++i){
+										x[i]=x[i]/k;
+									}
+									--k;
+								}
+							}
+							return x
+						}
+						function P1(x){
+							var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+							do{
+								var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+						
+							}while(m[0]==0)
+							m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+							var b=Math.ceil(Math.random()*10-5)	
+							var mx=20
+							var bx=110
+							
+							var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
+								P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
+								for(var i=-10;i<6;++i){
+									P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+									P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+								}
+								P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
+								P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
+								
+									P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+									P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
+								
+								P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
+								
+								P+='</svg></center>'
+								
+							var R=[];
+							
+							if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
+							else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+								do{
+									var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+								}while(m[0]==0)
+								
+								m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+								var b=Math.ceil(Math.random()*10-5)	
+								
+								if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
+								else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+									
+								while(repetido(R)){
+									var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+									do{
+										var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+									}while(m[0]==0)
+									m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+									if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
+									else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+								}
+							}
+							return [P,R]
+						}
+						function P2(x){
+							var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+							do{
+								var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+						
+							}while(m[0]==0)
+							m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+							
+							var b=Math.ceil(Math.random()*10-5)	
+							var mx=20
+							var bx=110
+							
+							var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
+								P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
+								for(var i=-10;i<6;++i){
+									P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+									P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+								}
+								P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
+								P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
+								
+									P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+									P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
+								
+								P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
+								
+								P+='</svg></center>'
+								
+							var R=[];
+							
+							if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
+							else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+								do{
+									var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+								}while(m[0]==0)
+								
+								m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+								
+								if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
+								else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+									
+								while(repetido(R)){
+								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
+									do{
+										var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+									}while(m[0]==0)
+								
+									m=MCM(m)
+							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
+									if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
+									else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
+								}
+							}
+							return [P,R]
+						}
+						/*fin*/
+						function PreguntaTema(){
+							if(Math.random()>0.5){
+								return P1(1)
+							}else {
+								return P2(1)
+							}
+						}
+						//Final
+						let C=abrirPregunta()
+						let [P,R]=PreguntaTema()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
-			]
-		},
-		{
-			Nombre:"Concepto de función, dominio, recorrido y gráfico",
-			test:[
-			]
-		},
-		{
-			Nombre:"Función inversa",
-			test:[
 			]
 		},
 		{
@@ -806,16 +1104,6 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						}
 				}
 			]
-		},
-		{
-			Nombre:"Modelización",
-			test:[
-			]
-		},
-		{
-			Nombre:"Desarrollo y ajuste del modelo",
-			test:[
-			]
 		}
 	]
 },
@@ -823,35 +1111,446 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 	Nombre:"Geometría y trigonometría",
 	subtema:[
 		{
-			Nombre:"La distancia que hay entre dos puntos",
+			Nombre:"Geometría plana",
 			test:[
+				{
+					Nombre:"Sectores circulares",
+					Nota:"$A_c=\\frac{\\pi r^2 \\alpha°}{360°}$<br/><br/> $A_c=\\frac{r^2 \\alpha}{2}$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							var r=Math.round(Math.random()*20+2)
+							var a=Math.round(Math.random()*350+5)
+							
+							
+							var P="Determine el área del sector circular que tiene como radio "+r+" y ángulo $\\theta="+a+"°$"
+							
+							var R=[];
+							
+							R[0]=(Math.PI*a*r*r/360).toFixed(2)
+							for(var i=1;i<6;++i){
+							do{
+							R[i]=(Math.PI*a*r*r/360+(Math.random()-0.5)*10).toFixed(2)
+							}while(repetido(R))
+							
+							}
+							return [P,R]
+							}
+							function P2(x){
+							var r=Math.round(Math.random()*20+2)
+							var a=(Math.random()*5+0.5).toFixed(2)
+							
+							
+							var P="Determine el área del sector circular que tiene como radio "+r+" y ángulo $\\theta="+a+"$ rad"
+							
+							var R=[];
+							
+							R[0]=(a*r*r/2).toFixed(2)
+							for(var i=1;i<6;++i){
+							do{
+							R[i]=(a*r*r/2+(Math.random()-0.5)*10).toFixed(2)
+							}while(repetido(R))
+							
+							}
+							return [P,R]
+							}							
+						/*Final*/
+						function PreguntaTema(){
+							if(Math.random()>0.5){
+								return P1(1)
+							}else {
+								return P2(1)
+							}
+						}
+						//Final
+						let C=abrirPregunta()
+						let [P,R]=PreguntaTema()
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
+					Nombre:"Figuras regulares",
+					Nota:"",
+					fun:function(){
+						function P1(x){
+							var n=Math.round(Math.random()*8+4)
+							var A=Math.round(Math.random()*250+10)
+							var a=Math.sqrt(A/(n*Math.tan(Math.PI/n)))
+							var L=Math.sqrt(4*A*Math.tan(Math.PI/n)/n)
+								
+							
+							var P='Una figura regular de '+n+' lados tiene como área '+A+', calcule el lado de la figura'
+							
+							
+							var R=[];
+							R[0]=L.toFixed(2)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(L+2*(Math.random()-0.5)).toFixed(2)
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
+					}
+				}
 			]
 		},
 		{
-			Nombre:"Volumen y área de la superficie de sólidos tridimensionales",
+			Nombre:"Trigonometría",
 			test:[
+				{
+					Nombre:"Teorema de Pitágoras",
+					Nota:"$c^2 = a^2 + b^2$",
+					fun:function(){
+						function pitagorasSVG(a,b,c){
+							var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
+								P+='<polyline points="20,20 20,150 300,150 20,20"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<polyline points="20,140 30,140 30, 150"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<text x="180" y="75" fill="blue">'+c+'</text>'
+								P+='<text x="25" y="90" fill="blue">'+a+'</text>'
+								P+='<text x="140" y="170" fill="blue">'+b+'</text></svg></center>'
+							return P
+						}
+						function P1(x){
+							if(Math.random()<1/3){
+								var a=Math.round(Math.random()*20+1)
+								var c=a+Math.round(Math.random()*20+1)
+								var b='b'
+								var q=Math.sqrt(c*c-a*a)
+							}else if(Math.random()<1/2){
+								var a='a'
+								
+								var b=Math.round(Math.random()*20+1)
+								var c=b+Math.round(Math.random()*20+1)
+								var q=Math.sqrt(c*c-b*b)
+							}else{
+								var a=Math.round(Math.random()*20+1)
+								var c='c'
+								var b=Math.round(Math.random()*20+1)
+								var q=Math.sqrt(a*a+b*b)
+							}
+							
+							var P="Obtenga el valor del lado faltante del siguiente  triángulo<br>"+pitagorasSVG(a,b,c)
+								
+							var R=[];
+							
+							R[0]=q.toFixed(2)
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(q+Math.random()*8-4).toFixed(2)
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
+					}
+				},
+				{
+					Nombre:"Funciones trigonométricas básicas",
+					Nota:"",
+					fun:function(){
+						function pitagorasSVG(a,b,c){
+							var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
+								P+='<polyline points="20,20 20,150 300,150 20,20"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<polyline points="20,140 30,140 30, 150"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								
+								P+='<text x="25" y="90" fill="blue">'+a+'</text>'
+								P+='<text x="180" y="75" fill="blue">'+c+'</text>'
+								P+='<foreignObject x="200" y="125" width="50" height="50">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:15px">   $\\theta$    </div></foreignObject>'
+								P+='<text x="140" y="170" fill="blue">'+b+'</text></svg></center>'
+								
+							return P
+						}/*
+						function pitagorasSVG2(a,b,c){
+							var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
+								P+='<polyline points="20,20 20,150 300,150 20,20"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<polyline points="20,140 30,140 30, 150"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								
+								P+='<text x="25" y="90" fill="blue">'+b+'</text>'
+								P+='<text x="180" y="75" fill="blue">'+c+'</text>'
+								P+='<foreignObject x="15" y="40" width="50" height="50">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:15px">   $\\theta$    </div></foreignObject>'
+								P+='<text x="140" y="170" fill="blue">'+a+'</text></svg></center>'
+								
+							return P
+						}*/
+						function P1(x){
+							if(Math.random()<1/3){
+								var a=Math.round(Math.random()*20+1)
+								var c=a+Math.round(Math.random()*20+1)
+								var b=''
+								var at=a
+								var bt="\\sqrt{"+(c*c-a*a)+"}"
+								var ct=c
+								var x=[at, bt, ct, "\\sqrt{"+(c*c+a*a)+"}"]
+							}else if(Math.random()<1/2){
+								var a=''
+								var b=Math.round(Math.random()*20+1)
+								var c=b+Math.round(Math.random()*20+1)
+								var at="\\sqrt{"+(c*c-b*b)+"}"
+								var bt=b
+								var ct=c
+								var x=[at, bt, ct, "\\sqrt{"+(c*c+b*b)+"}"]
+							}else{
+								var a=Math.round(Math.random()*20+1)
+								var c=''
+								var b=Math.round(Math.random()*20+1)
+								var at=a
+								var bt=b
+								var ct="\\sqrt{"+(b*b+a*a)+"}"
+								var x=[at, bt, ct, "\\sqrt{"+(b*b-a*a)+"}"]
+							}
+							var op=Math.random()
+							if(op<1/6){
+								var ftrig="$\\sin(\\theta)$"
+								var q="$\\frac{"+at+"}{"+ct+"}$"
+							}else if(op<2/6){
+								var ftrig="$\\cos(\\theta)$"
+								var q="$\\frac{"+bt+"}{"+ct+"}$"
+							}else if(op<3/6){
+								var ftrig="$\\tan(\\theta)$"
+								var q="$\\frac{"+at+"}{"+bt+"}$"
+							}else if(op<4/6){
+								var ftrig="$\\cot(\\theta)$"
+								var q="$\\frac{"+bt+"}{"+at+"}$"
+							}else if(op<5/6){
+								var ftrig="$\\sec(\\theta)$"
+								var q="$\\frac{"+ct+"}{"+bt+"}$"
+							}else{
+								var ftrig="$\\csc(\\theta)$"
+								var q="$\\frac{"+ct+"}{"+at+"}$"
+							}
+							
+							var P="Obtenga el valor "+ftrig+" según el siguiente triángulo<br>"+pitagorasSVG(a,b,c)
+								
+							var R=[];
+							
+							R[0]=q
+							for(var i=1;i<6;++i){
+								do{
+									R[i]="$\\frac{"+x[Math.floor(Math.random()*4)]+"}{"+x[Math.floor(Math.random()*4)]+"}$"
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
+					}
+				},
+				{
+					Nombre:"Relaciones trigonométricas",
+					Nota:"",
+					fun:function(){
+						function pitagorasSVG(a,b,c,angulo){
+							var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
+								P+='<polyline points="20,20 20,150 300,150 20,20"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<polyline points="20,140 30,140 30, 150"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								
+								P+='<text x="25" y="90" fill="blue">'+a+'</text>'
+								P+='<text x="180" y="75" fill="blue">'+c+'</text>'
+								P+='<text x="180" y="140" fill="blue">'+angulo+'°</text>'
+								P+='<text x="140" y="170" fill="blue">'+b+'</text></svg></center>'
+								
+							return P
+						}
+						function pitagorasSVG2(a,b,c,angulo){
+							var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
+								P+='<polyline points="20,20 20,150 300,150 20,20"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								P+='<polyline points="20,140 30,140 30, 150"'
+								P+='style="fill:none;stroke:black;stroke-width:3" />'
+								
+								P+='<text x="25" y="90" fill="blue">'+b+'</text>'
+								P+='<text x="180" y="75" fill="blue">'+c+'</text>'
+								P+='<text x="50" y="30" fill="blue">'+angulo+'°</text>'
+								P+='<text x="140" y="170" fill="blue">'+a+'</text></svg></center>'
+								
+							return P
+						}
+						function P1(x){
+							var op=Math.random()
+							if(op<1/6){
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a=Math.round(Math.random()*20+1)
+								var c='x'
+								var b=''
+								var q=eval(a)/Math.sin(eval(angulo)*Math.PI/180)
+							}else if(op<2/6){
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a=Math.round(Math.random()*20+1)
+								var c=''
+								var b='x'
+								var q=eval(a)/Math.tan(eval(angulo)*Math.PI/180)
+							}else if(op<3/6){
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a=''
+								var c='x'
+								var b=Math.round(Math.random()*20+1)
+								var q=eval(b)/Math.cos(eval(angulo)*Math.PI/180)
+							}else if(op<4/6){
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a='x'
+								var c=''
+								var b=Math.round(Math.random()*20+1)
+								var q=eval(b)*Math.tan(eval(angulo)*Math.PI/180)
+							}else if(op<5/6){
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a='x'
+								var c=Math.round(Math.random()*20+1)
+								var b=''
+								var q=eval(c)*Math.sin(eval(angulo)*Math.PI/180)
+							}else{
+								var angulo=(Math.random()*70+10).toFixed(2)
+								var a=''
+								var c=Math.round(Math.random()*20+1)
+								var b='x'
+								var q=eval(c)*Math.cos(eval(angulo)*Math.PI/180)
+							}
+							
+							var P="Obtenga el valor de $x$ <br>"+(Math.random()<0.5?pitagorasSVG(a,b,c,angulo):pitagorasSVG2(a,b,c,angulo))
+								
+							var R=[];
+							
+							R[0]=q.toFixed(2)
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(q+Math.random()*2-1).toFixed(2)
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
+					}
+				}
 			]
+
 		},
 		{
-			Nombre:"Tamaño del ángulo que forman dos rectas que se cortan o del ángulo que forma una recta con un plano",
+			Nombre:"Diagrama de Voronoi",
 			test:[
+				{
+					Nombre:"Mediatriz",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function P1(x){
+							do{
+								var A=[Math.round(Math.random()*18-9),Math.round(Math.random()*18-9)]
+								var B=[Math.round(Math.random()*18-9),Math.round(Math.random()*18-9)]
+							}while(A[0]==B[0] || A[1]==B[1])
+							var P="Calcule la mediatriz de los siguientes puntos"+puntos(A,B)
+							m=-(B[0]-A[0])/(B[1]-A[1])
+							b=-m*(A[0]+B[0])/2+(A[1]+B[1])/2
+								
+							var R=[];
+							
+							R[0]="$y="+m.toFixed(3)+" x "+(b<0? "- "+(-b).toFixed(3):"+ "+b.toFixed(3))+"$"
+							for(var i=1;i<6;++i){
+								do{
+									do{
+										var A=[Math.round(Math.random()*21-11),Math.round(Math.random()*21-11)]
+										var B=[Math.round(Math.random()*21-11),Math.round(Math.random()*21-11)]
+									}while(A[0]==B[0] || A[1]==B[1])
+									m=-(B[0]-A[0])/(B[1]-A[1])
+							b=-m*(A[0]+B[0])/2+(A[1]+B[1])/2
+									R[i]="$y="+m.toFixed(3)+" x "+(b<0? "- "+(-b).toFixed(3):"+ "+b.toFixed(3))+"$"
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						function P2(x){
+								do{
+								var A=[Math.round(Math.random()*18-9),Math.round(Math.random()*18-9)]
+								var B=[Math.round(Math.random()*18-9),Math.round(Math.random()*18-9)]
+							}while(A[0]==B[0] || A[1]==B[1])
+							var P="Calcule la mediatriz de los siguientes puntos"+puntos(A,B)
+							m=-(B[0]-A[0])/(B[1]-A[1])
+							b=-m*(A[0]+B[0])/2+(A[1]+B[1])/2
+								
+							var R=[];
+							
+							R[0]="$y="+m.toFixed(3)+" x "+(b<0? "- "+(-b).toFixed(3):"+ "+b.toFixed(3))+"$"
+							for(var i=1;i<6;++i){
+								do{
+									do{
+										var A=[Math.round(Math.random()*21-11),Math.round(Math.random()*21-11)]
+										var B=[Math.round(Math.random()*21-11),Math.round(Math.random()*21-11)]
+									}while(A[0]==B[0] || A[1]==B[1])
+									
+							b=-m*(A[0]+B[0])/2+(A[1]+B[1])/2
+									R[i]="$y="+m.toFixed(3)+" x "+(b<0? "- "+(-b).toFixed(3):"+ "+b.toFixed(3))+"$"
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						function puntos(a,b){
+							var mx=30
+							var bx=10.5*mx
+							var Sdiv='<center><svg width="'+(mx*21)+'px" height="'+(mx*21)+'">'
+							for(var i=-10;i<11;++i){
+							Sdiv+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+							Sdiv+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*21)+'" style="stroke:gray;stroke-width:1"> </line>'
+							}
+							Sdiv+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+							Sdiv+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*21)+'" style="stroke:black;stroke-width:3"> </line>'
+							Sdiv+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+							Sdiv+='<text y="'+bx+'" x="'+(mx*5+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
+							
+							Sdiv+='<circle cx="'+(mx*a[0]+bx)+'" cy="'+(-mx*a[1]+bx)+'" r="8" />'
+							Sdiv+='<circle cx="'+(mx*b[0]+bx)+'" cy="'+(-mx*b[1]+bx)+'" r="8"/>'
+							Sdiv+='<text x="'+(mx*a[0]+bx+20)+'" y="'+(-mx*a[1]+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">A</text>'
+							Sdiv+='<text x="'+(mx*b[0]+bx+20)+'" y="'+(-mx*b[1]+bx)+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">B </text>'
+							
+								
+							Sdiv+='</svg></center><br/>'
+							//alert(Sdiv)
+							return Sdiv
+						}
+						/*Final*/
+						function PreguntaTema(){
+							if(Math.random()>0.5){
+								return P1(1)
+							}else {
+								return P2(1)
+							}
+						}
+						//Final
+						let C=abrirPregunta()
+						let [P,R]=PreguntaTema()
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				}
 			]
 		},
-		{
-			Nombre:"Uso de las razones trigonométricas",
-			test:[
-			]
-		},
-		{
-			Nombre:"El teorema del seno y coseno",
-			test:[
-			]
-		},
-		{
-			Nombre:"Área de un triángulo mediante la fórmula $\\frac{1}{2} ab\\sin(C)$",
-			test:[
-			]
-		}
 	]
 
 },
@@ -859,6 +1558,50 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 {
 	Nombre:"Estadística y probabilidad",
 	subtema:[
+		{
+			Nombre:"Representación de la información",
+			test:[
+				{
+					Nombre:"Histograma y promedios",
+					Nota:"$\\overline x=\\frac{\\sum x_i w_i}{\\sum w_i}$",
+					fun:function(){
+						function P1(x){
+							var n=Math.round(Math.random()*6+3)
+							var start=Math.round(Math.random()*10)
+							var d=Math.round(Math.random()*10+1)
+							var x=[[],[]]
+							var mean=0
+							var N=0
+							for(var k=0;k<n;++k){
+								x[0][k]=start+k*d 
+								x[1][k]=Math.round(Math.random()*12)
+								mean+=x[0][k]*x[1][k]
+								N+=x[1][k]
+							}
+							mean=mean/N
+							var P="Calcule el promedio de los datos que aparecen en el histograma<center>"
+								P+=Histograma(x,M_range_count(x[1],1),[300,450],"#03B",50,"Datos")+"</center>"
+							var R=[];
+							
+							R[0]=mean.toFixed(2)
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(mean+2*Math.random()-1).toFixed(2)
+										
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+					//*** */
+					let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])			
+					}
+				}
+			]
+		},
 		{
 			Nombre:"Distribución Binomial",
 			test:[
@@ -1601,4 +2344,17 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 /*
 						fun:function(){
 						}
+						function PreguntaTema(){
+							if(Math.random()>0.5){
+								return P1(1)
+							}else {
+								return P2(1)
+							}
+						}
+						//Final
+						let C=abrirPregunta()
+						let [P,R]=PreguntaTema()
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 */
