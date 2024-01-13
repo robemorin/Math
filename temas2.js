@@ -167,16 +167,17 @@ function P1(){
 	const d=Math.round(Math.random()*50+1)*(Math.random()<0.5?1:-1)
 	const n=Math.round(Math.random()*100+20)
 	
-	const P="Obtenga el término $u_{"+n+"}$ de la secuencia "+u1+", "+(u1+d)+", "+(u1+2*d)+", "+(u1+3*d)+" ... "
+	const P="Obtenga el término $u_{"+n+"}$ de la secuencia "+u1+", "+(u1+d)+", "+(u1+2*d)+", "+(u1+3*d)+" ... "+1
 		
 		
 	let R=[];
 	
 	R[0]=u1+(n-1)*d
-
-	do{
-		for(let k=1;k<6;++k) R[k]=u1+(n+Math.round(Math.random()*10-5))*d
-	}while(repetido(R))
+	for(let k=1;k<6;++k){
+		do{
+			 R[k]=u1+(n+Math.round(Math.random()*10-5))*d
+		}while(repetido(R))
+	}
 	return [P,R]
 }
 function P2(){
@@ -188,16 +189,17 @@ function P2(){
 		n2=Math.round(Math.random()*100+20)
 	}while(n1==n2)
 	
-	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto la diferencia en común es: "
+	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto la diferencia en común es: "+2
 		
 		
 	let R=[];
 	
 	R[0]=d
-
+	for(let k=1;k<6;++k){
 	do{
-		for(let k=1;k<6;++k) R[k]=Math.round(Math.random()*100-50)
+		R[k]=Math.round(Math.random()*100-50)
 	}while(repetido(R))
+	}
 	return [P,R]
 }
 function P3(){
@@ -210,16 +212,17 @@ function P3(){
 		n3=Math.round(Math.random()*100+20)
 	}while(n1==n2 || n1==n3  || n3==n2 )
 	
-	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto $u_{"+n3+"}$ es: "
+	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto $u_{"+n3+"}$ es: "+3
 		
 		
 	let R=[];
 	
 	R[0]=u1+(n3-1)*d
-
+	for(let k=1;k<6;++k){
 	do{
-		for(let k=1;k<6;++k) R[k]=u1+(n3+Math.round(Math.random()*10-5))*d
+		 R[k]=u1+(n3+Math.round(Math.random()*10-5))*d
 	}while(repetido(R))
+	}
 	return [P,R]
 }
 function P4(){
@@ -232,16 +235,17 @@ function P4(){
 		n3=Math.round(Math.random()*100+20)
 	}while(n1==n2 || n1==n3  || n3==n2 )
 	
-	const P="Calcule el valor de $u_{"+n2+"}$ de una serie aritmetica tal que $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y  su tasa en común de $d = "+d+"$: "
+	const P="Calcule el valor de $u_{"+n2+"}$ de una serie aritmetica tal que $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y  su tasa en común de $d = "+d+"$: "+4
 		
 		
 	let R=[];
 	
 	R[0]=u1+(n2-1)*d
-
+	for(let k=1;k<6;++k){
 	do{
-		for(let k=1;k<6;++k) R[k]=u1+(n2+Math.round(Math.random()*10-5))*d
+		 R[k]=u1+(n2+Math.round(Math.random()*10-5))*d
 	}while(repetido(R))
+	}
 	return [P,R]
 }
 	/*No realizado*/
