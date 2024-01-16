@@ -1,6 +1,3 @@
-function A(){
-	return "Vale madre"
-}
 const tema = [{
 	Nombre:"Aritmética y álgebra",
 	subtema:[
@@ -157,8 +154,10 @@ const tema = [{
 			return P1()
 		}else if(a<2/4){
 			return P2()
-		}else{
+		}else if(a<3/4){
 			return P3()
+		}else{
+			return P4()
 		}
 	}
 
@@ -252,7 +251,6 @@ function P4(){
 	let C=abrirPregunta()
 	let [P,R]=PreguntaTema()
 	spanContenido(P,C[6])
-	// C[6].innerHTML=P
 	for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}
 				}
@@ -1921,6 +1919,7 @@ spanContenido(P,C[6])
 for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
+				
 			]
 		},
 		{
@@ -2200,6 +2199,81 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					
 					}
 					return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				}
+			]
+		},
+		{
+			Nombre:"Prueba $\\chi^2$",
+			test:[
+				{
+					Nombre:"Chi cuadrada calculada I",
+					Nota:"",
+					fun:function(){
+						function P1(){
+							const F=[]
+							const n=Math.ceil(Math.random()*3)
+							const m=Math.ceil(Math.random()*4+1)
+							let Tdata, data=""
+							for(let k=0;k<n;k++){
+								F[k]=[]
+								Tdata="<tr><td style='border-right:solid black 2px'>$x_"+(k+1)+"$<td>"
+								for(let k1=0;k1<m;k1++){ 
+									F[k][k1]=Math.ceil(Math.random()*10)
+									Tdata+="<td>"+F[k][k1]+"</td>"
+								}
+								data+=Tdata+"</tr>"
+							}
+							
+							var P="Determina el valor de $\\chi^2_{calc}$ donde los datos observados son:"
+								P+="<center><table width='50%' style='padding: 10px;'>"+data+"</table></center>"
+							
+							
+							var R=[];
+							const sol=chiCuadradaCal(F)
+							R[0]=sol.toFixed(3)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(sol+2*Math.random()-1).toFixed(3)
+									
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
+					Nombre:"Chi cuadrada (tablas)",
+					Nota:"Basarse en el siguiente link:<br>https://estdg.blogs.upv.es/files/2018/04/Tabla-Chi2_cola-derecha.pdf",
+					fun:function(){
+						function P1(){
+							const alpha=[0.01,0.05,0.1]
+							const dof=Math.ceil(Math.random()*28+1)
+							const n=Math.floor(Math.random()*3)
+							
+							var P="El valor de $\\chi^2_{crít}$ para $\\alpha = "+alpha[n]+"$ con DOF="+dof+" es:"
+							
+							
+							var R=[];
+							R[0]=chitablas(dof,alpha[n])
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=chitablas(Math.ceil(Math.random()*28+1),alpha[Math.floor(Math.random()*3)])
+									
+								}while(repetido(R))
+							}
+							return [P,R]
 						}
 						let C=abrirPregunta()
 						let [P,R]=P1()

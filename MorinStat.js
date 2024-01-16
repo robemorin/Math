@@ -255,3 +255,76 @@ function M_AS2N(x){
 	}
 	return v
 }
+
+function chiCuadradaCal(fo,fe=[[0]]) {
+	const filas = fo.length;
+	const columnas = fo[0].length;
+	
+	if(fe[0].length==1){
+	  if(filas>1){
+		  const Tx=[], Ty=[]
+		  let T=0
+		  for (let i = 0; i < filas; i++) {
+			  Ty[i]=0
+			  for (let j = 0; j < columnas; j++) 	Ty[i]+=fo[i][j]
+			  T+=Ty[i]
+		  }
+		  for (let i = 0; i < columnas; i++) {
+			  Tx[i]=0
+			  for (let j = 0; j < filas; j++) 	Tx[i]+=fo[j][i]
+		  }
+		  for (let i = 0; i < filas; i++) {
+			  fe[i]=[]
+			  for (let j = 0; j < columnas; j++) 	fe[i][j]=Ty[i]*Tx[j]/T
+		  }
+	  }else{
+		  let T=0
+		  for (let j = 0; j < columnas; j++) 	T+=fo[0][j]
+		  for (let j = 0; j < columnas; j++) 	fe[0][j]=T/columnas
+	  }
+	}
+	  let x2 = 0;
+	  let diferencia
+	  
+	for (let i = 0; i < filas; i++) {
+	  for (let j = 0; j < columnas; j++) {
+		diferencia = fo[i][j] - fe[i][j]
+		x2 += diferencia * diferencia/fe[i][j]
+	  }
+	}
+	return x2;
+  }
+  function chitablas(dof,alpha) {
+	// 0.01, 0.05, 0.01
+	const q=(alpha==0.01?0:(alpha==0.05?1:2))
+		const chit=[[6.635,	3.842,	2.706],
+	[9.210,	5.992,	4.605],
+	[11.345,	7.815,	6.251],
+	[13.277,	9.488,	7.779],
+	[15.086,	11.071,	9.236],
+	[16.812,	12.592,	10.645],
+	[18.475,	14.067,	12.017],
+	[20.09 ,	15.507,	13.362],
+	[21.666,	16.919,	14.684],
+	[23.209,	18.307,	15.987],
+	[24.725,	19.675,	17.275],
+	[26.217,	21.026,	18.549],
+	[27.688,	22.362,	19.812],
+	[29.141,	23.685,	21.064],
+	[30.578,	24.996,	22.307],
+	[32.000,	26.296,	23.542],
+	[33.409,	27.587,	24.769],
+	[34.805,	28.869,	25.989],
+	[36.191,	30.144,	27.204],
+	[37.566,	31.41,	28.412],
+	[38.932,	32.671,	29.615],
+	[40.289,	33.925,	30.813],
+	[41.638,	35.173,	32.007],
+	[42.98 ,	36.415,	33.196],
+	[44.314,	37.653,	34.382],
+	[45.642,	38.885,	35.563],
+	[46.963,	40.113,	36.741],
+	[48.278,	41.337,	37.916],
+	[49.588,	42.557,	39.088]]
+	  return chit[dof-1][q]
+	}
