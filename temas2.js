@@ -2280,6 +2280,55 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},
+				{
+					Nombre:"Chi cuadrada calculada II",
+					Nota:"",
+					fun:function(){
+						function P1(){
+							const F=[],Fo=[]
+							const n=Math.ceil(Math.random()*3)
+							const m=Math.ceil(Math.random()*4+1)
+							let Tdata, data=""
+							let Tdata2, data2=""
+							for(let k=0;k<n;k++){
+								F[k]=[]
+								Fo[k]=[]
+								Tdata="<tr><td style='border-right:solid black 2px'>$x_"+(k+1)+"$<td>"
+								Tdata2="<tr><td style='border-right:solid black 2px'>$x_"+(k+1)+"$<td>"
+								for(let k1=0;k1<m;k1++){ 
+									F[k][k1]=Math.ceil(Math.random()*10)
+									Fo[k][k1]=Math.ceil(Math.random()*10)
+									Tdata+="<td>"+F[k][k1]+"</td>"
+									Tdata2+="<td>"+Fo[k][k1]+"</td>"
+								}
+								data+=Tdata+"</tr>"
+								data2+=Tdata2+"</tr>"
+							}
+							
+							var P="Determina el valor de $\\chi^2_{calc}$ donde los datos observados son:"
+								P+="<center><table width='50%' style='padding: 10px;'>"+data+"</table></center>"
+								P+="y los datos esperados son:"
+								P+="<center><table width='50%' style='padding: 10px;'>"+data2+"</table></center>"
+							
+							
+							var R=[];
+							const sol=chiCuadradaCal(F,Fo)
+							R[0]=sol.toFixed(3)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(sol+2*Math.random()-1).toFixed(3)
+									
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 			]
 		}
