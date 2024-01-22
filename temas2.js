@@ -2382,11 +2382,11 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						///////////////////////////////Aqui estos trabajando///////////////
 						
 						var R=[];
-						R[0]=num/den
+						R[0]=(num/den).toFixed(2)
 						var dummy=0;
 						for(var i=1;i<6;++i){
 							do{
-								R[i]=Math.round(num+Math.random()*20-10)/den
+								R[i]=(Math.round(num+Math.random()*20-10)/den).toFixed(2)
 								
 							}while(repetido(R))
 						}
