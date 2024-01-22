@@ -2329,6 +2329,74 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},
+				{
+					Nombre:"Chi cuadrada calculada (datos esperados)",
+					Nota:"",
+					fun:function(){function P1(){
+						const F=[]
+						const n=Math.ceil(Math.random()*3)
+						const m=Math.ceil(Math.random()*4+1)
+						let Tdata, data="", total=[], total2=[]
+						
+						Tdata="<tr><td style='border-right:solid black 2px'><td>"
+						for(let k1=0;k1<m;k1++){
+							Tdata+="<td>$y_"+(k1+1)+"$</td>"
+							total2[k1]=0
+						}
+						Tdata+="<td>Total</td>"
+						data+=Tdata+"</tr>"
+
+						for(let k=0;k<n;k++){
+							F[k]=[]
+							total[k]=0
+							Tdata="<tr><td style='border-right:solid black 2px'>$x_"+(k+1)+"$<td>"
+							for(let k1=0;k1<m;k1++){ 
+								F[k][k1]=Math.ceil(Math.random()*10)
+								total[k]+=F[k][k1]
+								total2[k1]+=F[k][k1]
+								Tdata+="<td>"+F[k][k1]+"</td>"
+							}
+							data+=Tdata+"<td>"+total[k]+"</td></tr>"
+						}
+						const i_n=[Math.floor(Math.random()*n),Math.floor(Math.random()*m)]
+						let den, num
+						if(n!=1){
+						Tdata="<tr><td style='border-right:solid black 2px'>Total<td>"
+						total[m]=0
+						for(let k1=0;k1<m;k1++){ 
+							total[m]+=total2[k1]
+							Tdata+="<td>"+total2[k1]+"</td>"
+						}
+						data+=Tdata+"<td>"+total[m]+"</td></tr>"
+						num=total[i_n[0]]*total2[i_n[1]]
+						den=+total[m]
+						}else{
+							num=total[0]
+							den=m
+						}
+						
+						
+						var P="Bajo la suposición que no existe independencia entre los datos, determine el valor esperado de la columna $y_"+(i_n[1]+1)+"$"+(n==1?"": "y la fila $x_"+(i_n[0]+1)+"$")
+							P+="<center><table width='50%' style='padding: 10px;'>"+data+"</table></center>"
+						///////////////////////////////Aqui estos trabajando///////////////
+						
+						var R=[];
+						R[0]=num/den
+						var dummy=0;
+						for(var i=1;i<6;++i){
+							do{
+								R[i]=Math.round(num+Math.random()*20-10)/den
+								
+							}while(repetido(R))
+						}
+						return [P,R]
+					}
+					let C=abrirPregunta()
+					let [P,R]=P1()
+					spanContenido(P,C[6])
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 			]
 		}
