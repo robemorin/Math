@@ -2370,7 +2370,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}
 						data+=Tdata+"<td>"+total[m]+"</td></tr>"
 						num=total[i_n[0]]*total2[i_n[1]]
-						den=+total[m]
+						den=total[m]
 						}else{
 							num=total[0]
 							den=m
