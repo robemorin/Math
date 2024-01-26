@@ -2162,6 +2162,56 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},
+				{
+					Nombre:"Factor de correlación de Pearson",
+					Nota:"$S_{xy}=\\frac{\\sum xy}{n}-\\overline{x}\\cdot\\overline{y}$",
+					fun:function(){
+						function P1(x){
+							do{
+								var a=Math.random()*10-5
+							}while(Math.abs(a)<0.5)
+							var b=Math.random()*10-5
+							var e=30*(Math.random()+0.5);
+							
+						
+							var x=[(Math.random()*10-5).toFixed(1)]
+							var y=[(a*eval(x[0])+b+e*(Math.random()-0.5)).toFixed(1)]
+							var tablex='<table style="border-spacing: 15px;"><tr><td style="border-right:solid black 2px">x</td><td>'+x[0]+"</td>"
+							var tabley='</tr><tr><td style="border-right:solid black 2px">y</td><td>'+y[0]+"</td>"
+							
+							
+							
+							
+							
+							var n=Math.round(Math.random()*5+5)
+							for(var k=1;k<n;++k){
+								x[k]=(eval(x[k-1])+Math.random()*3).toFixed(1)
+								y[k]=(a*eval(x[k])+b+e*(Math.random()-0.5)).toFixed(1)
+								tablex+="<td>"+x[k]+"</td>"
+								tabley+="<td>"+y[k]+"</td>"
+							}
+							const ans=M_FacPearson(M_AS2N(x),M_AS2N(y))
+							
+							
+							var P="Obtenga el valor del factor de correlación de Pearson de los siguientes datos <br><center>"+tablex+tabley+"</tr></table></center>"
+							var R=[];
+							
+							R[0]=ans.toFixed(5)
+							for(var i=1;i<6;++i){
+								do{
+									R[i]=(ans+0.4*(Math.random()-0.5)).toFixed(5)
+										
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 			]
 		},
@@ -2379,7 +2429,6 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						
 						var P="Bajo la suposición que no existe independencia entre los datos, determine el valor esperado de la columna $y_"+(i_n[1]+1)+"$"+(n==1?"": "y la fila $x_"+(i_n[0]+1)+"$")
 							P+="<center><table width='50%' style='padding: 10px;'>"+data+"</table></center>"
-						///////////////////////////////Aqui estos trabajando///////////////
 						
 						var R=[];
 						R[0]=(num/den).toFixed(2)

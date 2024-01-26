@@ -225,6 +225,26 @@ function M_LinReg(x,y){
 	var b=ym-m*xm
 	return [m,b]
 }
+function M_FacPearson(x,y){
+	/*Emula la función LinReg dela calculadora*/
+	/*var x=[-21,-17,-15,-14,-13]
+	var y=[0,1,2,4,5]*/
+	
+	const n=x.length
+	let Sumxy=0
+	let Sumx=0
+	let Sumx2=0
+	let Sumy=0
+	let Sumy2=0
+	for(let k=0;k<n;++k){
+		Sumx+=x[k]
+		Sumx2+=x[k]*x[k]
+		Sumy+=y[k]
+		Sumy2+=y[k]*y[k]
+		Sumxy+=x[k]*y[k]
+	}
+	return (n*Sumxy-Sumx*Sumy)/Math.sqrt((n*Sumx2-Sumx*Sumx)*(n*Sumy2-Sumy*Sumy))
+}
 function M_Sumxy(x,y){
 	var S=0;
 	var n=x.length
