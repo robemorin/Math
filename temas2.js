@@ -1448,7 +1448,155 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
 					}
-				}
+				},
+				{
+					Nombre:"Ley de Cosenos",
+					Nota:"$c^2=a^2+b^2-2ab\\cos(C)$<br> $C=\\cos^{-1}\\left(\\frac{a^2+b^2-c^2}{2ab}\\right)$",
+					fun:function(){
+						function P1(){
+							
+							const R=[],side=[],angle=[]
+							side[0]=Math.round(Math.random()*20+1)
+							side[1]=Math.round(Math.random()*20+1)
+							angle[2]=Math.round(Math.random()*70+10)
+							const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
+							side[2]=eval(dummy)
+
+							angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
+							angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
+							angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
+							op=Math.floor(Math.random()*2.99)
+							
+							
+							const Angle=['A','B','C']
+							
+							
+							/*R[6]="Considere un triángulo con lados a="+side[0]+"b="+side[1]+"c="+side[2].toFixed(2)+
+							". Calcule ángulo "+Angle[op]*/
+							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y $c="+side[2].toFixed(2)+
+							"$. Calcule ángulo $"+Angle[op]+"$.",C[6])
+							
+							
+
+							
+							R[0]=angle[op].toFixed(2)+"°"
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(angle[op]+30*(Math.random()-.5)).toFixed(2)+"°"
+								}while(repetido(R))
+							
+							}
+							for(let i=0;i<6;++i) spanContenido(R[i],C[i])
+							return R
+						}
+						function P2(){
+							
+							const R=[],side=[],angle=[]
+							side[0]=Math.round(Math.random()*20+1)
+							side[1]=Math.round(Math.random()*20+1)
+							angle[2]=Math.round(Math.random()*70+10)
+							const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
+							side[2]=eval(dummy)
+							
+							/*R[6]="Considere un triángulo con lados a="+side[0]+"b="+side[1]+"c="+side[2].toFixed(2)+
+							". Calcule ángulo "+Angle[op]*/
+							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y un ángulo entre ellos de $C="+angle[2]+
+							"°$. Calcule el lado faltante.",C[6])
+							
+							
+
+							
+							R[0]=dummy
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(side[2]+10*(Math.random()-.5)).toFixed(2)
+								}while(repetido(R))
+							
+							}
+							for(let i=0;i<6;++i) spanContenido(R[i],C[i])
+							return R
+						}
+						let C=abrirPregunta()
+						if(Math.random()<0.5) P1()
+						else P2()
+
+
+
+
+					}
+				}/*,
+				{
+					Nombre:"Ley de Senos",
+					Nota:"$\\frac{a}{\\sin(A)}=\\frac{b}{\\sin(B)}=\\frac{c}{\\sin(C)}$",
+					fun:function(){
+						function P1(){
+							
+							const R=[],side=[],angle=[]
+							side[0]=Math.round(Math.random()*20+1)
+							side[1]=Math.round(Math.random()*20+1)
+							angle[2]=Math.round(Math.random()*70+10)
+							const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
+							side[2]=eval(dummy)
+
+							angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
+							angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
+							angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
+							op=Math.floor(Math.random()*2.99)
+							
+							
+							const Angle=['A','B','C']
+							
+							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y $c="+side[2].toFixed(2)+
+							"$. Calcule ángulo $"+Angle[op]+"$.",C[6])
+							
+							
+
+							
+							R[0]=angle[op].toFixed(2)+"°"
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(angle[op]+30*(Math.random()-.5)).toFixed(2)+"°"
+								}while(repetido(R))
+							
+							}
+							for(let i=0;i<6;++i) spanContenido(R[i],C[i])
+							return R
+						}
+						function P2(){
+							
+							const R=[],side=[],angle=[]
+							side[0]=Math.round(Math.random()*20+1)
+							side[1]=Math.round(Math.random()*20+1)
+							angle[2]=Math.round(Math.random()*70+10)
+							const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
+							side[2]=eval(dummy)
+							
+							
+							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y un ángulo entre ellos de $C="+angle[2]+
+							"°$. Calcule el lado faltante.",C[6])
+							
+							
+
+							
+							R[0]=dummy
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(side[2]+10*(Math.random()-.5)).toFixed(2)
+								}while(repetido(R))
+							
+							}
+							for(let i=0;i<6;++i) spanContenido(R[i],C[i])
+							return R
+						}
+						let C=abrirPregunta()
+						if(Math.random()<0.5) P1()
+						else P2()
+
+
+
+
+					}
+				}*/
 			]
 
 		},
