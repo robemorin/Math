@@ -288,6 +288,44 @@ function P4(){
 	Nombre:"Funciones",
 	subtema:[
 		{
+			Nombre:"Relaciones y funciones y sus representaciones",
+			test:[
+				{
+					Nombre:"Tipos de relaciones",
+					Nota:"",
+					fun:function(){
+						function P1(){
+							/* Ver error cuando sale vacio */
+							const tipo=[['RS', 	'relación no funcional sobreyectiva'],
+										['RNS', 'relacion no funcional no sobreyectiva'],
+										['FB',	'funcion biyectiva'],
+										['FSNI','funcion sobreyectiva no inyectiva'],
+										['FNSNI','funcion no sobreyectiva no inyectiva'],
+										['FNSI','funcion inyectiva no sobreyectiva'],]
+							const dummy=Math.floor(Math.random()*tipo.length)
+							let dummy2
+							spanContenido('Seleccione la '+tipo[dummy][1],C[6])
+							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
+							C[0].append(TipoRelacionesDiagAsig(tipo[dummy][0],DI))
+							for(let k=1;k<6;++k){
+								do{
+									dummy2=Math.floor(Math.random()*tipo.length)
+								}while(dummy==dummy2)
+								
+								C[k].append(TipoRelacionesDiagAsig(tipo[dummy2][0],DI))	
+							}
+							/*C[2].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
+							C[3].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
+							C[4].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
+							C[5].append(TipoRelacionesDiagAsig(tipo[4][0],DI))*/
+						}
+						let C=abrirPregunta()
+						P1()
+					}
+				}
+			]
+		},
+		{
 			Nombre:"Polinomios",
 			test:[
 				{
@@ -1524,7 +1562,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 
 
 					}
-				}/*,
+				},
 				{
 					Nombre:"Ley de Senos",
 					Nota:"$\\frac{a}{\\sin(A)}=\\frac{b}{\\sin(B)}=\\frac{c}{\\sin(C)}$",
@@ -1540,22 +1578,28 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 
 							angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
 							angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
-							angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
-							op=Math.floor(Math.random()*2.99)
+							//angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
 							
 							
-							const Angle=['A','B','C']
 							
-							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y $c="+side[2].toFixed(2)+
-							"$. Calcule ángulo $"+Angle[op]+"$.",C[6])
+							const label=[	['a','b','A','B'],
+											['a','c','A','C'],
+											['b','a','B','A'],
+											['b','c','B','C'],
+											['c','a','C','A'],
+											['c','b','C','B']]
+							const op=Math.floor(Math.random()*label.length-.01)
+
+							spanContenido("Considere un triángulo con lados $"+label[op][0]+"="+side[0]+"$, $"+label[op][1]+"="+side[1]+"$ y angulo $"+label[op][2]+"="+angle[0].toFixed(2)+
+							"$. Calcule ángulo $"+label[op][3]+"$.",C[6])
 							
 							
 
 							
-							R[0]=angle[op].toFixed(2)+"°"
+							R[0]=angle[1].toFixed(2)+"°"
 							for(let i=1;i<6;++i){
 								do{
-									R[i]=(angle[op]+30*(Math.random()-.5)).toFixed(2)+"°"
+									R[i]=(angle[1]+30*(Math.random()-.5)).toFixed(2)+"°"
 								}while(repetido(R))
 							
 							}
@@ -1570,25 +1614,35 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 							angle[2]=Math.round(Math.random()*70+10)
 							const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
 							side[2]=eval(dummy)
+
+							angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
+							angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
+							//angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
+							
+							const label=[	['A','B','a','b'],
+											['A','C','a','c'],
+											['B','A','b','a'],
+											['B','C','b','c'],
+											['C','A','c','a'],
+											['C','B','c','b']]
+							const op=Math.floor(Math.random()*label.length-.01)
 							
 							
-							spanContenido("Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y un ángulo entre ellos de $C="+angle[2]+
-							"°$. Calcule el lado faltante.",C[6])
+							spanContenido("Considere un triángulo con ángulos de $"+label[op][0]+" = "+angle[0].toFixed(2)+"°$, $"+label[op][1]+"="+angle[1].toFixed(2)+
+							"°$ y un lado $"+label[op][2]+"="+side[0]+"$. Calcule el lado "+label[op][3]+".",C[6])
 							
 							
 
-							
-							R[0]=dummy
+							R[0]=side[1].toFixed(0)
 							for(let i=1;i<6;++i){
 								do{
-									R[i]=(side[2]+10*(Math.random()-.5)).toFixed(2)
+									R[i]=(side[1]+10*(Math.random()-.5)).toFixed(0)
 								}while(repetido(R))
 							
 							}
 							for(let i=0;i<6;++i) spanContenido(R[i],C[i])
-							return R
 						}
-						let C=abrirPregunta()
+						let C=abrirPregunta()/////Aquí me quedé, mejorar P1+
 						if(Math.random()<0.5) P1()
 						else P2()
 
@@ -1596,7 +1650,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 
 
 					}
-				}*/
+				}
 			]
 
 		},
