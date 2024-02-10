@@ -142,6 +142,13 @@ MathJax.Hub.Config({
   });
   
 </script>
+<script>
+  document.addEventListener('keyup', event => {
+  if (event.ctrlKey && event.keyCode ===77 ) {
+	document.getElementById('oculto').style.visibility="visible"
+  }
+}, false)
+</script>
 <script type="text/javascript"  src="temas2.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -232,11 +239,12 @@ function vertemas(){
           article1=document.createElement("article")
           article1.classList.add("ac-text")
           for(let k2=0;k2<tema[k].subtema[k1].test.length;++k2){
+            paragraph0=document.createElement("p")
             paragraph=document.createElement("a")
             paragraph.textContent=tema[k].subtema[k1].test[k2].Nombre
             paragraph.href=crearLink(k,k1,k2)
-            article1.appendChild(paragraph)
-            article1.appendChild(document.createElement("br"))
+            paragraph0.appendChild(paragraph)
+            article1.appendChild(paragraph0)
           }
           article0.appendChild(article1)
 
@@ -308,23 +316,24 @@ function vertemas(){
     <h1>Temas de opción múltiple</h1>
     <h3>Autor: Roberto Alejandro Morin Romero.</h3>
 
+    <div class="flotante" id="oculto" style="visibility: hidden;">
+      <table>
+        <tr><td><label for="Npreg">Número de preguntas</label></td><td><input id="Npreg" type="number" value="10"></td></tr>
+        <tr><td><label for="Tiempo">Tiempo (min)</label></td><td><input id="Tiempo" type="number" value="60"></td></tr>
+        <tr><td><label for="mostar">Mostar</label></td><td>
+    
+          <select  id="mostrar">
+            <option value="2">Correctas & incorrectas</option>
+            <option value="1">Correctas</option>
+            <option value="0">Nada</option>
+          </select>
+    
+        </td></tr>
+        <tr><td></td><td><span id="link"></span></td></tr>
+      </table>
+    </div>
   </section>
-<div class="flotante">
-  <table>
-    <tr><td><label for="Npreg">Número de preguntas</label></td><td><input id="Npreg" type="number" value="10"></td></tr>
-    <tr><td><label for="Tiempo">Tiempo (min)</label></td><td><input id="Tiempo" type="number" value="60"></td></tr>
-    <tr><td><label for="mostar">Mostar</label></td><td>
 
-      <select  id="mostrar">
-        <option value="2">Correctas & incorrectas</option>
-        <option value="1">Correctas</option>
-        <option value="0">Nada</option>
-      </select>
-
-    </td></tr>
-    <tr><td></td><td><span id="link"></span></td></tr>
-  </table>
-</div>
 
 
 
