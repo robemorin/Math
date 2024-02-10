@@ -106,7 +106,16 @@ h3 {
   padding: 0 1em 0 2em;
 }
 
-
+.flotante{
+  float: right;
+  width: 30%;
+  background-color: #ffffff;
+  overflow: hidden;
+  margin-top: 20px;
+  position: fixed;
+  right: 0;
+  z-index:9999;
+}
 
 </style>
 <!--script type="text/javascript"
@@ -209,14 +218,14 @@ function vertemas(){
           //<input class="ac-input" id="ac-2" name="ac-2" type="checkbox" />
           input1=document.createElement("input")
           input1.classList.add("ac-input")
-          input1.id="ac-"+k+"-"+k1
-          input1.setAttribute("name","ac-"+k+"-"+k1)
+          input1.id="ac-"+k+"0"+k1
+          input1.setAttribute("name","ac-"+k+"0"+k1)
           input1.setAttribute("type","checkbox")
           article0.appendChild(input1)
           //<label class="ac-label" for="ac-2">I love jelly donuts</label>
           label1=document.createElement("label")
           label1.classList.add("ac-label")
-          label1.setAttribute("for","ac-"+k+"-"+k1)
+          label1.setAttribute("for","ac-"+k+"0"+k1)
           label1.textContent=(k+1)+"."+(k1+1)+"- "+tema[k].subtema[k1].Nombre
           article0.appendChild(label1)
           //<article class="ac-sub-text">
@@ -235,6 +244,7 @@ function vertemas(){
       }
       Cont0.appendChild(article0)
     document.getElementById('Contenedor').appendChild(Cont0)
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
   }
     /*
 	for(let k=0;k<tema.length;++k){
@@ -297,66 +307,7 @@ function vertemas(){
 
     <h1>Temas de opción múltiple</h1>
     <h3>Autor: Roberto Alejandro Morin Romero.</h3>
-    
-    <div class="ac">
-      <input class="ac-input" id="ac-10" name="ac-10" type="checkbox" />
-      <label class="ac-label" for="ac-10">Item 1</label>
-      <article class="ac-text">
-        <div class="ac-sub">
-          <input class="ac-input" id="ac-20" name="ac-20" type="checkbox" />
-          <label class="ac-label" for="ac-20">I love jelly donuts</label>
-          <article class="ac-sub-text">
-            <p>But not only is the sea such a foe to man who is an alien to it, but it is also a fiend to its own off-spring; worse than the Persian host who murdered his own guests; sparing not the creatures which itself hath spawned. Like a savage tigress that tossing in the jungle overlays her own cubs, so the sea dashes even the mightiest whales against the rocks, and leaves them there side by side with the split wrecks of ships. No mercy, no power but its own controls it. Panting and snorting like a mad battle steed that has lost its rider, the masterless ocean overruns the globe.</p>
-            <p>Consider the subtleness of the sea; how its most dreaded creatures glide under water, unapparent for the most part, and treacherously hidden beneath the loveliest tints of azure. Consider also the devilish brilliance and beauty of many of its most remorseless tribes, as the dainty embellished shape of many species of sharks. Consider, once more, the universal cannibalism of the sea; all whose creatures prey upon each other, carrying on eternal war since the world began.</p>
-          </article>
-        </div>
-        
-        <div class="ac-sub">
-          <input class="ac-input" id="ac-30" name="ac-30" type="checkbox" />
-          <label class="ac-label" for="ac-30">They are so delicious</label>
-          <article class="ac-sub-text">
-            <p>My younger brother was in London when the Martians fell at Woking. He was a medical student working for an imminent examination, and he heard nothing of the arrival until Saturday morning.  The morning papers on Saturday contained, in addition to lengthy special articles on the planet Mars, on life in the planets, and so forth, a brief and vaguely worded telegram, all the more striking for its brevity.</p>
-  
-            <p>The Martians, alarmed by the approach of a crowd, had killed a number of people with a quick-firing gun, so the story ran.  The telegram concluded with the words: "Formidable as they seem to be, the Martians have not moved from the pit into which they have fallen, and, indeed, seem incapable of doing so.  Probably this is due to the relative strength of the earth's gravitational energy."  On that last text their leader-writer expanded very comfortingly.</p>
-          </article>
-        </div>        
-      </article><!--/ac-text-->
 
-    </div><!--/ac-->
-    
-    
-    
-    <div class="ac">
-      <input class="ac-input" id="ac-40" name="ac-40" type="checkbox" />
-      <label class="ac-label" for="ac-40">Item 2</label>
-      
-      <article class="ac-text">
-        
-        <div class="ac-sub">
-          <input class="ac-input" id="ac-50" name="ac-50" type="checkbox" />
-          <label class="ac-label" for="ac-50">I also love regular donuts</label>
-          <article class="ac-sub-text">
-  <p>But not only is the sea such a foe to man who is an alien to it, but it is also a fiend to its own off-spring; worse than the Persian host who murdered his own guests; sparing not the creatures which itself hath spawned. Like a savage tigress that tossing in the jungle overlays her own cubs, so the sea dashes even the mightiest whales against the rocks, and leaves them there side by side with the split wrecks of ships. No mercy, no power but its own controls it. Panting and snorting like a mad battle steed that has lost its rider, the masterless ocean overruns the globe.</p>
-  
-  <p>Consider the subtleness of the sea; how its most dreaded creatures glide under water, unapparent for the most part, and treacherously hidden beneath the loveliest tints of azure. Consider also the devilish brilliance and beauty of many of its most remorseless tribes, as the dainty embellished shape of many species of sharks. Consider, once more, the universal cannibalism of the sea; all whose creatures prey upon each other, carrying on eternal war since the world began.</p>
-          </article>
-        </div>
-        
-        <div class="ac-sub">
-          <input class="ac-input" id="ac-60" name="ac-60" type="checkbox" />
-          <label class="ac-label" for="ac-60">They are also delicious</label>
-          <article class="ac-sub-text">
-            <p>My younger brother was in London when the Martians fell at Woking. He was a medical student working for an imminent examination, and he heard nothing of the arrival until Saturday morning.  The morning papers on Saturday contained, in addition to lengthy special articles on the planet Mars, on life in the planets, and so forth, a brief and vaguely worded telegram, all the more striking for its brevity.</p>
-  
-  <p>The Martians, alarmed by the approach of a crowd, had killed a number of people with a quick-firing gun, so the story ran.  The telegram concluded with the words: "Formidable as they seem to be, the Martians have not moved from the pit into which they have fallen, and, indeed, seem incapable of doing so.  Probably this is due to the relative strength of the earth's gravitational energy."  On that last text their leader-writer expanded very comfortingly.</p>
-          </article>
-        </div>
-        
-      </article><!--/ac-text-->
-      
-    </div><!--/ac-->
-
-    
   </section>
 <div class="flotante">
   <table>

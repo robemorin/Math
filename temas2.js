@@ -255,33 +255,7 @@ function P4(){
 						}
 				}
 			]
-		},
-		{
-			Nombre:"Progresiones y series geométricas",
-			test:[
-			]
-		},
-		{
-			Nombre:"Aplicaciones de las progresiones y series geométricas al ámbito financiero",
-			test:[
-			]
-		},
-		{
-			Nombre:"Propiedades de las potencias que tienen exponentes enteros",
-			test:[
-			]
-		},
-		{
-			Nombre:"Aproximación: cifras decimales, cifras significativas",
-			test:[
-			]
-		},
-		{
-			Nombre:"Amortización y anualidades utilizando medios tecnológicos",
-			test:[
-			]
-		}
-		
+		}		
 	]
 },
 {
@@ -810,11 +784,6 @@ function P2(x){
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
-			]
-		},
-		{
-			Nombre:"El gráfico de una función",
-			test:[
 			]
 		},
 		{
