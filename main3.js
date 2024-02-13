@@ -410,6 +410,9 @@ function repetido(cadena){
 		if(cadena[N]===cadena[k]){
 			return true;
 		}
+		if(cadena[N]==cadena[k]){
+			return true;
+		}
 	}
 	return false;
 }
@@ -582,3 +585,8 @@ function DesencriptarRespuesta(txt,Clave){//*
 	const q=Multiplica(N,Clave2)
 	return q[0]
 }
+function unsortArray(b) {
+	let a=b
+	a.sort(function(){return 0.5 - Math.random()});
+	return a
+  }
