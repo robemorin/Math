@@ -425,8 +425,9 @@ function LeerGet(){
 	tiempo
 	modo
 	*/
-	const G=window.location.search
-	return Symbols2numbers(G.slice(1, -1))
+	const G=(window.location.search).slice(1)
+	//G=G.slice(1)
+	return Symbols2numbers(G)
 	
 }
 function N(){//*
