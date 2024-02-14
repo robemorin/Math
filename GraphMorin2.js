@@ -599,5 +599,8 @@ function diagramaAsignacion(txtElem,size=[480,300]){
 		txt.textContent=txtElem[1][k]
 		svg.appendChild(txt)		
 	}
-	return svg
+    let center = document.createElement('div')
+    center.style.textAlign = "center";
+    center.appendChild(svg)
+	return center
 }
