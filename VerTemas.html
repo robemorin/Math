@@ -190,9 +190,19 @@ function crearLink(k,kk,kkk){
   const Tiempo=eval(document.getElementById("Tiempo").value)
   const mos=eval(document.getElementById("mostrar").value)
  
- return "OpcionM%C3%BAltiple3.html?"
-        +numbers2Symbols([k,kk,kkk,Npreguntas,Tiempo,mos])
+ return "OpcionM%C3%BAltiple3.html?"+numbers2Symbols([k,kk,kkk,Npreguntas,Tiempo,mos])
   
+}
+function update(){
+  const Npreguntas=eval(document.getElementById("Npreg").value)
+  const Tiempo=eval(document.getElementById("Tiempo").value)
+  const mos=eval(document.getElementById("mostrar").value)
+  let links=document.getElementsByTagName("a"), ahref
+  const n=links.length
+  for(let k=0;k<n;++k){
+    ahref = links[k].href
+    links[k].href = ahref.substr(0, ahref.length - 3) +numbers2Symbols([Npreguntas,Tiempo,mos])
+  }
 }
 function vertemas(){
 	let div=document.getElementById("container")
@@ -254,57 +264,6 @@ function vertemas(){
     document.getElementById('Contenedor').appendChild(Cont0)
     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
   }
-    /*
-	for(let k=0;k<tema.length;++k){
-		
-		
-		let R=document.createElement("input")
-		R.type = 'radio';
-		R.setAttribute("name","toggle");
-		R.classList.add("accordion-toggle")
-		Cont.appendChild(R)
-		
-		let Title=document.createElement("div")
-		Title.classList.add("accordion-header")
-		Title.textContent=tema[k].Nombre
-		Cont.appendChild(Title)
-		
-		let Contenido=document.createElement("div")
-		Contenido.classList.add("accordion-content")
-		//Contenido.textContent="Texto "+k
-			let Cont1=document.createElement("div")
-			Cont1.classList.add("accordion")
-			for(let kk=0;kk<tema[k].subtema.length;++kk){
-				let R1=document.createElement("input")
-				R1.type = 'radio';
-				R1.setAttribute("name","toggle"+k);
-				R1.classList.add("accordion-toggle")
-				Cont1.appendChild(R1)
-				let Title1=document.createElement("div")
-				Title1.classList.add("accordion-header")
-				Title1.textContent=tema[k].subtema[kk].Nombre
-				Cont1.appendChild(Title1)
-		
-				let Contenido1=document.createElement("div")
-				Contenido1.classList.add("accordion-content")
-				//Contenido1.textContent="Texto "+kk
-        //alert("Tema:"+k+" sumbtemas:"+kk+"  ***"+tema[k].subtema[kk].test.length)
-        let Ntest=tema[k].subtema[kk].test.length
-        for(let kkk=0;kkk<Ntest;++kkk){
-          let Contenido2=document.createElement("div")
-          Contenido2.setAttribute("onclick","crearLink("+k+","+kk+","+kkk+")");
-          Contenido2.textContent+=tema[k].subtema[kk].test[kkk].Nombre
-          Contenido1.appendChild(Contenido2)
-        }
-				Cont1.appendChild(Contenido1)
-		
-
-			}
-			Contenido.appendChild(Cont1)
-		Cont.appendChild(Contenido)
-	}
-	div.appendChild(Cont)
-	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);*/
 }
 </script>
 
@@ -322,7 +281,7 @@ function vertemas(){
         <tr><td><label for="Tiempo">Tiempo (min)</label></td><td><input id="Tiempo" type="number" value="60"></td></tr>
         <tr><td><label for="mostar">Mostar</label></td><td>
     
-          <select  id="mostrar">
+          <select  id="mostrar" onchange="update()">
             <option value="2">Correctas & incorrectas</option>
             <option value="1">Correctas</option>
             <option value="0">Nada</option>
