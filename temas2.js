@@ -278,7 +278,7 @@ function P4(){
 										['FNSI','funcion inyectiva no sobreyectiva'],]
 							const dummy=Math.floor(Math.random()*tipo.length)
 							let dummy2
-							spanContenido('Una representación gráfica de una '+tipo[dummy][1],C[6]+" es:")
+							spanContenido('Una representación gráfica de una '+tipo[dummy][1]+" es:",C[6])
 							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
 							C[0].append(TipoRelacionesDiagAsig(tipo[dummy][0],DI))
 							for(let k=1;k<6;++k){
@@ -308,7 +308,6 @@ function P4(){
 							const dummy=Math.floor(Math.random()*tipo.length)
 							
 							spanContenido('Determine que tipo de relación es el siguiente diagrama: <br>',C[6])
-							//tipo[dummy][1]
 							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
 							C[6].append(TipoRelacionesDiagAsig(tipo[dummy][0],DI))
 							spanContenido(tipo[dummy][1],C[0])
