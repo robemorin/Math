@@ -269,7 +269,7 @@ function P4(){
 					Nota:"",
 					fun:function(){
 						function P1(){
-							/* Ver error cuando sale vacio */
+							
 							const tipo=[['RS', 	'relación no funcional sobreyectiva'],
 										['RNS', 'relacion no funcional no sobreyectiva'],
 										['FB',	'funcion biyectiva'],
@@ -278,7 +278,7 @@ function P4(){
 										['FNSI','funcion inyectiva no sobreyectiva'],]
 							const dummy=Math.floor(Math.random()*tipo.length)
 							let dummy2
-							spanContenido('Seleccione la '+tipo[dummy][1],C[6])
+							spanContenido('Una representación gráfica de una '+tipo[dummy][1],C[6]+" es:")
 							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
 							C[0].append(TipoRelacionesDiagAsig(tipo[dummy][0],DI))
 							for(let k=1;k<6;++k){
@@ -288,10 +288,37 @@ function P4(){
 								
 								C[k].append(TipoRelacionesDiagAsig(tipo[dummy2][0],DI))	
 							}
-							/*C[2].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
-							C[3].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
-							C[4].append(TipoRelacionesDiagAsig(tipo[4][0],DI))	
-							C[5].append(TipoRelacionesDiagAsig(tipo[4][0],DI))*/
+						}
+						let C=abrirPregunta()
+						P1()
+					}
+				},
+				{
+					Nombre:"Tipos de relaciones II",
+					Nota:"",
+					fun:function(){
+						function P1(){
+							
+							let tipo=[['RS', 	'Relación no funcional sobreyectiva'],
+										['RNS', 'Relacion no funcional no sobreyectiva'],
+										['FB',	'Funcion biyectiva'],
+										['FSNI','Funcion sobreyectiva no inyectiva'],
+										['FNSNI','Funcion no sobreyectiva no inyectiva'],
+										['FNSI','Funcion inyectiva no sobreyectiva'],]
+							const dummy=Math.floor(Math.random()*tipo.length)
+							
+							spanContenido('Determine que tipo de relación es el siguiente diagrama: <br>',C[6])
+							//tipo[dummy][1]
+							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
+							C[6].append(TipoRelacionesDiagAsig(tipo[dummy][0],DI))
+							spanContenido(tipo[dummy][1],C[0])
+							tipo.splice(dummy,1)
+							tipo=unsortArray(tipo)
+							for(let k=1;k<6;++k){
+								spanContenido(tipo[k-1][1],C[k])
+								
+								//C[k].append(TipoRelacionesDiagAsig(tipo[dummy2][0],DI))	
+							}
 						}
 						let C=abrirPregunta()
 						P1()
