@@ -2645,6 +2645,39 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
 			]
+		},
+		{
+			Nombre:"Distribución normal",
+			test:[
+				{
+					Nombre: "Áreas y rangos",
+					Nota: "Funciones a usar: normalcdf y invNorm",
+					fun:function(){
+						function cdfNormal (x, mean, standardDeviation) {
+							return (1 - math.erf((mean - x ) / (Math.sqrt(2) * standardDeviation))) / 2
+						  }
+						
+						let C=abrirPregunta()
+						const mu=eval((Math.random()*100).toPrecision(3))
+						const sx=eval((Math.random()*5+1).toPrecision(3))
+						let xu, xl
+						do{
+							xu=mu+4*(Math.random()-.5)*sx
+							xl=mu+4*(Math.random()-.5)*sx
+						}while(Math.abs(xu-xl)<.5*sx)
+						
+							
+						if(xl>xu) [xl,xu]=[xu,xl]
+						spanContenido("Calcule el área de la siguiente distribución normal ($X\\sim\\mathcal{N}("+mu.toFixed(1)+", "+sx.toFixed(1)+"^2)$) <br>",C[6])
+						C[6].appendChild(NormalGraph([xl,xu,mu,sx]))
+						const Res=(	 cdfNormal(eval(xu.toPrecision(3)),eval(mu.toFixed(1)),eval(sx.toFixed(2)))
+									-cdfNormal(eval(xl.toPrecision(3)),eval(mu.toFixed(1)),eval(sx.toFixed(2))))
+
+						spanContenido( Res.toPrecision(3),C[0])
+						for(let k=1;k<6;++k) spanContenido((0.4*(Math.random()-0.5)+Res).toPrecision(3),C[k])
+					}
+				}
+			]
 		}
 	]
 

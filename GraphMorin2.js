@@ -1,3 +1,91 @@
+function NormalGraph(Datos=[-1,1.5,1,2],Size=[400,200]){
+	
+	if(Datos[1]<Datos[0])	[Datos[0],Datos[1]] = [Datos[1],Datos[0]];
+    
+	SVG=createSVG(Size)
+    esc=[   [ (Size[0]-20)/6,Size[0]/2],
+            [-(Size[1]-35),Size[1]-30]]
+			
+	let l,txt
+	z_lower=(Datos[0]-Datos[2])/Datos[3]
+	z_upper=(Datos[1]-Datos[2])/Datos[3]
+	let PointTem
+	if(-3<z_lower && z_lower<3 ){
+			txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+			txt.setAttribute("x",esc[0][0]*z_lower+esc[0][1] )
+			txt.setAttribute("y",Size[1]-30 )
+			txt.setAttribute("alignment-baseline","hanging")
+			txt.setAttribute("text-anchor","end")
+			txt.setAttribute("style","font: .7em Verdana, Helvetica, Arial, sans-serif;")
+			txt.setAttribute("stroke","none")
+			txt.setAttribute("fill","blue")
+			txt.textContent=Datos[0].toPrecision(3)
+			SVG.appendChild(txt)
+		if( z_upper<3){
+			txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+			txt.setAttribute("x",esc[0][0]*z_upper+esc[0][1] )
+			txt.setAttribute("y",Size[1]-30 )
+			txt.setAttribute("alignment-baseline","hanging")
+			txt.setAttribute("style","font: .7em Verdana, Helvetica, Arial, sans-serif;")
+			txt.setAttribute("stroke","none")
+			txt.setAttribute("fill","blue")
+			txt.textContent=Datos[1].toPrecision(3)
+			SVG.appendChild(txt)
+			
+		}else{
+			z_upper<3
+		}
+	}else{
+		z_lower=-3
+		if( z_upper<3){
+			
+		}else{
+			z_upper<3
+		}
+	}
+		
+	PointTem=(esc[0][0]*z_lower+esc[0][1])+", "+(Size[1]-30)+" "
+			
+	const dummy=linspace(z_lower,z_upper,100)
+	for(let k=0;k<dummy.length;++k){
+		PointTem+=(esc[0][0]*dummy[k]+esc[0][1])+", "+(esc[1][0]*Math.exp(-dummy[k]*dummy[k])+esc[1][1])+" "
+	}
+	PointTem+=(esc[0][0]*z_upper+esc[0][1])+", "+(Size[1]-30)+" "
+		
+	l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+	l.setAttribute("points",PointTem )
+	l.setAttribute("stroke", "gray")
+	l.setAttribute("fill", "#DB9BE5")
+	l.setAttribute('stroke-width', 2)
+	SVG.appendChild(l)
+	
+	
+	l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+    l.setAttribute("points", 5+","+(Size[1]-30)+" "+(Size[0]-5)+","+(Size[1]-30) )
+    l.setAttribute("stroke", "RGB(100,100,100)")
+    l.setAttribute('stroke-width', 2)
+    SVG.appendChild(l)
+	z_lower=(Datos[0]-Datos[2])/Datos[3]
+	z_upper=(Datos[1]-Datos[2])/Datos[3]
+
+
+	
+	l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+    let Point=""
+    const x=linspace(-3,3,100)
+    
+    for(let k=0;k<x.length;++k){
+        Point+=(esc[0][0]*x[k]+esc[0][1])+", "+(esc[1][0]*Math.exp(-x[k]*x[k])+esc[1][1])+" "
+    } 
+    l.setAttribute("points",Point )
+    l.setAttribute("stroke", "RGB(100,100,200)")
+    l.setAttribute('stroke-width', 2)
+    SVG.appendChild(l)
+	
+	
+    return SVG
+
+}
 function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
     /***************** Ejemplo ******************************
     const Puntos=[	[[0,1,5,6,2,7],
