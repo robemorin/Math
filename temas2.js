@@ -381,6 +381,61 @@ function P4(){
 					}
 				},
 				{
+					Nombre:"Multiplicación de polinomios",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function multiply(a1, a2) {
+							var result = [];
+							a1.forEach(function (a, i) {
+								a2.forEach(function (b, j) {
+									result[i + j] = (result[i + j] || 0) + a * b;
+								});
+							});
+							return result;
+						}
+						function polinomio(v){
+							var n=v.length;
+							var S="";
+							for(var k=0;k<n;++k){
+								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
+								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
+								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
+							}
+							return S
+						}
+						function P1(x){
+							var a=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
+							var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
+								
+							
+							var P="Desarrolle el siguiente producto $$("+polinomio(b)+")("+polinomio(a)+")$$ es:"
+							
+							
+							var R=[];
+							let c = multiply(a,b)
+							R[0]="$"+polinomio(c)+"$"
+							Coef=Math.floor(Math.random()*(c.length-2)+1)
+							alert("k="+Coef)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									
+									c[Coef]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						/*fin*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
 					Nombre:"Fórmula general",
 					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
 					fun:function(){
