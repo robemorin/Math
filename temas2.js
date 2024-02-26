@@ -409,14 +409,13 @@ function P4(){
 							var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
 								
 							
-							var P="Desarrolle el siguiente producto $$("+polinomio(b)+")("+polinomio(a)+")$$ es:"
+							var P="Desarrolle el siguiente producto $("+polinomio(b)+")("+polinomio(a)+")$ es:"
 							
 							
 							var R=[];
 							let c = multiply(a,b)
 							R[0]="$"+polinomio(c)+"$"
 							Coef=Math.floor(Math.random()*(c.length-2)+1)
-							alert("k="+Coef)
 							var dummy=0;
 							for(var i=1;i<6;++i){
 								do{
@@ -2705,7 +2704,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 			Nombre:"Distribución normal",
 			test:[
 				{
-					Nombre: "Áreas y rangos",
+					Nombre: "Distribución normal: Áreas",
 					Nota: "Funciones a usar: normalcdf y invNorm",
 					fun:function(){
 						function cdfNormal (x, mean, standardDeviation) {
