@@ -369,6 +369,6 @@ function normalcdf(a,b,mu,sigma){
 	b=eval(b)
 	mu=eval(mu)
 	sigma=eval(sigma)
-	alert("f(x)= exp(-(x-"+mu+")^2/(2*"+sigma+"^2))/("+sigma+"*sqrt(2*pi))\nintegral(f,"+a+","+b+") = "+RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI)))
+	//alert("f(x)= exp(-(x-"+mu+")^2/(2*"+sigma+"^2))/("+sigma+"*sqrt(2*pi))\nintegral(f,"+a+","+b+") = "+RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI)))
 	return RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI))
 }
