@@ -2705,7 +2705,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 			test:[
 				{
 					Nombre: "Distribución normal: Áreas",
-					Nota: "Funciones a usar: normalcdf y invNorm",
+					Nota: "Esperen un momento mientras corrijo este ejercicio",
 					fun:function(){
 						function cdfNormal (x, mean, standardDeviation) {
 							return (1 - math.erf((mean - x ) / (Math.sqrt(2) * standardDeviation))) / 2
