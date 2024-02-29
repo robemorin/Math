@@ -347,7 +347,7 @@ function chiCuadradaCal(fo,fe=[[0]]) {
 	[48.278,	41.337,	37.916],
 	[49.588,	42.557,	39.088]]
 	  return chit[dof-1][q]
-	}
+	}/*
 function normalcdf(a,b,mu,sigma){
 	function RS38(a,b,mu,sx){
 		function f(x,mu,sx){ return Math.exp(-Math.pow(x-mu,2)/(2*sx*sx) ) }
@@ -371,4 +371,66 @@ function normalcdf(a,b,mu,sigma){
 	sigma=eval(sigma)
 	//alert("f(x)= exp(-(x-"+mu+")^2/(2*"+sigma+"^2))/("+sigma+"*sqrt(2*pi))\nintegral(f,"+a+","+b+") = "+RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI)))
 	return RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI))
+}*/
+function normalcdf(a,b,mu,sigma){
+	function RS38(a,b,mu,sx){
+		function f(x){ return Math.exp(-Math.pow(x,2)/(2) ) }
+		n=3*Math.round((b-a)/0.01)
+		h = (b-a)/n
+		let S=f(a)+f(b)
+		for (let i = 1 ; i < n ; i++)
+		{
+			if (i % 3 == 0)
+				S += 2 * f( a + i*h );
+			else
+				S += 3 * f( a + i*h );
+		}
+		return ( 3 * h / 8 ) * S ;
+	}
+	a=eval(a)
+	b=eval(b)
+	mu=eval(mu)
+	sigma=eval(sigma)
+	a=(a-mu)/sigma
+	b=(b-mu)/sigma
+	return RS38(a,b)/(Math.sqrt(2*Math.PI))
+}
+function invNorm(A,mu,sigma,opcion='LEFT'){
+	function invNorm2(Area){
+		function normalpdf(x){ return Math.exp(-x*x/(2) ) }
+		let A= 0
+		let x = 0
+		let h=0.00005/3
+		for (let i = 1 ; true ; i++)
+		{
+			if (i % 3 == 0){
+				x= i * h
+				let dummy = normalpdf( x )
+				A += dummy
+				if((3*h*A/(8*Math.sqrt(2*Math.PI)))>Area){ return x }
+				/*if(Math.abs(10*x-Math.round(10*x))<0.000001){
+					console.log("x:"+x.toFixed(1)+";  A = "+(3*h*A/(8*Math.sqrt(2*Math.PI))).toFixed(4))
+				}*/
+				A += dummy
+			}else{
+				A += 3 * normalpdf( i*h )		
+			}
+		}
+	}
+	A=eval(A)
+	mu=eval(mu)
+	sigma=eval(sigma)
+	let z
+	switch(opcion){
+		case 'LEFT':
+			z = sigma*invNorm2(  Math.abs(A-0.5) )
+			return A>=0.5 ? mu+z : mu-z
+		case 'RIGHT':
+			A = 1 - A
+			z = sigma*invNorm2(  Math.abs(A-0.5) )
+			return A>=0.5 ? mu+z : mu-z
+		case 'CENTER':
+			z = sigma*invNorm2(  Math.abs(A/2) )
+			return [ mu-z,mu+z]
+	}
 }

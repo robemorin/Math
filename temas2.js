@@ -435,6 +435,72 @@ function P4(){
 					}
 				},
 				{
+					Nombre:"Expansión de binomios al cuadrado y al cubo",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function multiply(a1, a2) {
+							var result = [];
+							a1.forEach(function (a, i) {
+								a2.forEach(function (b, j) {
+									result[i + j] = (result[i + j] || 0) + a * b;
+								});
+							});
+							return result;
+						}
+						function polinomio(v){
+							var n=v.length;
+							var S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
+							for(var k=1;k<n;++k){
+								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
+								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
+								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
+							}
+							return S
+						}
+						function P1(x){
+							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+
+							const P="La expansión de $("+polinomio(a)+")^2$ es:"
+							
+							const R=[];
+							const c = multiply(a,a)
+							R[0]="$"+polinomio(c)+"$"
+							let dummy=c
+							for(let i=1;i<6;++i){
+								do{
+									c[1]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						function P2(x){
+							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+
+							const P="La expansión de $("+polinomio(a)+")^3$ es:"
+							
+							const R=[];
+							const coef=(Math.random()<0.5?1:2)
+							const c = multiply(multiply(a,a),a)
+							R[0]="$"+polinomio(c)+"$"
+							let dummy=c
+							for(let i=1;i<6;++i){
+								do{
+									c[coef]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=(Math.random()<0.5? P1() : P2())
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
 					Nombre:"Fórmula general",
 					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
 					fun:function(){
@@ -2705,11 +2771,9 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 			test:[
 				{
 					Nombre: "Distribución normal: Áreas",
-					Nota: "Funciones a usar: normalcdf y invNorm",
+					Nota: "Función a usar: normalcdf",
 					fun:function(){
-						function cdfNormal (x, mean, standardDeviation) {
-							return (1 - math.erf((mean - x ) / (Math.sqrt(2) * standardDeviation))) / 2
-						  }
+						
 						
 						let C=abrirPregunta()
 						let mu=eval((Math.random()*100).toPrecision(3))
@@ -2723,10 +2787,48 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						if(xl>xu) [xl,xu]=[xu,xl]
 						spanContenido("Calcule el área de la siguiente distribución normal ($X\\sim\\mathcal{N}("+mu.toFixed(1)+", "+sx.toFixed(1)+"^2)$) <br>",C[6])
 						C[6].appendChild(NormalGraph([xl,xu,mu,sx]))
-						const Res=normalcdf(xl.toPrecision(3),xu.toPrecision(3),mu.toPrecision(3),sx.toPrecision(2))
+						const Res=normalcdf(xl.toPrecision(3),xu.toPrecision(3),mu.toFixed(1),sx.toFixed(1))
 
 						spanContenido( Res.toPrecision(3),C[0])
 						for(let k=1;k<6;++k) spanContenido((0.4*(Math.random()-0.5)+Res).toPrecision(3),C[k])
+					}
+				},
+				{
+					Nombre: "Distribución normal: límites (notación)",
+					Nota: "Función a usar: invNorm",
+					fun:function(){
+						let C=abrirPregunta()
+						let mu=(Math.random()*100).toFixed(1)
+						let sx=(Math.random()*5+1).toFixed(1)
+						const label=["LEFT","RIGHT","CENTER"]
+						const nl=Math.floor(Math.random()*3)
+						let A=(Math.random()*.8+.1).toFixed(2)
+
+						const labelP=["$P(X\\le x_u) = "+A+"$","$P(X\\ge x_l) = "+A+"$","$P(x_l\\le X \\le x_u) = "+A+"$"]
+						spanContenido("Calcule "+(nl==0?"$x_u$":(nl==1?"$x_l$":"$x_l$ y $x_u$ (equidistantes con la media)"))
+							+" que satisfagan  "+labelP[nl]+" de una $X\\sim\\mathcal{N}("+mu+", "+sx+"^2)$.",C[6])
+						const Res=invNorm( A,mu,sx,label[nl])
+
+						const R=[];
+							
+						R[0]=(nl==2?Res[0].toPrecision(3)+", "+Res[1].toPrecision(3):Res.toPrecision(3))
+						let dif=Math.max(1.5*((nl==2?Res[0]:Res)-eval(mu))/eval(sx),6)
+						
+						
+						for(let i=1;i<6;++i){
+							do{
+								let dummy=dif*(Math.random()-.5)
+								//console.log("dummy: "+dummy+", dif: "+dif)
+								if(nl==2)
+									R[i]=(eval(mu)-Math.abs(dummy)).toPrecision(3)+","+(eval(mu)+Math.abs(dummy)).toPrecision(3)
+								else
+									R[i]=(eval(mu)+dummy).toPrecision(3)
+								//console.log(R)
+							}while(repetido(R))
+						}
+
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+							
 					}
 				}
 			]
