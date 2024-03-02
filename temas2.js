@@ -2789,8 +2789,13 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						C[6].appendChild(NormalGraph([xl,xu,mu,sx]))
 						const Res=normalcdf(xl.toPrecision(3),xu.toPrecision(3),mu.toFixed(1),sx.toFixed(1))
 
-						spanContenido( Res.toPrecision(3),C[0])
-						for(let k=1;k<6;++k) spanContenido((0.4*(Math.random()-0.5)+Res).toPrecision(3),C[k])
+						R=[Res.toPrecision(3)]
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=(0.4*(Math.random()-0.5)+Res).toPrecision(3)
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
 				},
 				{
