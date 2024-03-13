@@ -2,13 +2,64 @@ const tema = [{
 	Nombre:"Aritmética y álgebra",
 	subtema:[
 		{
+			Nombre:"Algebra básica",
+			test:[
+				{
+					Nombre:"Ecuaciones de primer grado",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+						let cadena="$"
+						let den=0, num=0
+						
+						do{
+							cadena="$"
+							den=0
+							num=0
+							let n1=Math.round(Math.random()*3+1)
+							let n2=Math.round(Math.random()*3+1)
+							
+							for(let k1=0;k1<n1;++k1){
+								a=(Math.ceil(Math.random()*8+1)*(Math.random()<.5?1:-1))
+								cadena+=(k1==0?(a<0?" - ":" "):(a<0?" - ":" + "))+Math.abs(a)+"x"
+								den+=a
+								a=(Math.ceil(Math.random()*6)*(Math.random()<.5?1:-1))
+								cadena+=(a<0?" - ":" + ")+Math.abs(a)
+								num+=a
+							}
+							cadena+=" = "
+							for(let k1=0;k1<n2;++k1){
+								a=(Math.ceil(Math.random()*8+1)*(Math.random()<.5?1:-1))
+								cadena+=(k1==0?(a<0?" - ":" "):(a<0?" - ":" + "))+Math.abs(a)+" x"
+								den-=a
+								a=(Math.ceil(Math.random()*6)*(Math.random()<.5?1:-1))
+								cadena+=(a<0?" - ":" + ")+Math.abs(a)
+								num-=a
+							}
+							
+						}while(den==0)
+						cadena+="$"
+						
+						spanContenido("Resuelva a "+cadena,C[6])
+						const R=[];
+						R[0]=(-num/den).toPrecision(3)
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=(-(num+2.5-Math.random()*5)/(den+2.5-Math.random()*5)).toPrecision(3)
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
+			]
+		},
+		{
 			Nombre:"Notación científica",
 			test:[
 				{
 					Nombre:"Ejercicios de notación científica",
 					Nota:"",
 					fun:function(){
-					//Inicio
 	
 	function P1(){
 	do{
@@ -343,9 +394,14 @@ function P4(){
 							return result;
 						}
 						function polinomio(v){
-							var n=v.length;
-							var S="";
-							for(var k=0;k<n;++k){
+							const n=v.length;
+							let S
+							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
+							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
+							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
+							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
+							
+							for(var k=1;k<n;++k){
 								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
 								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
 								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
@@ -395,9 +451,14 @@ function P4(){
 							return result;
 						}
 						function polinomio(v){
-							var n=v.length;
-							var S="";
-							for(var k=0;k<n;++k){
+							const n=v.length;
+							let S
+							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
+							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
+							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
+							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
+							
+							for(var k=1;k<n;++k){
 								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
 								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
 								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
@@ -449,8 +510,13 @@ function P4(){
 							return result;
 						}
 						function polinomio(v){
-							var n=v.length;
-							var S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
+							const n=v.length;
+							let S
+							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
+							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
+							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
+							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
+							
 							for(var k=1;k<n;++k){
 								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
 								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
@@ -1230,7 +1296,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 	
 	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*0+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*0+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
 	S+='<line x1="'+(mx*0+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*0+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
-	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*yp[0]+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*yp[0]+by)+'" stroke="#D00" style="stroke-width: 2.5" stroke-dasharray="20 9"/>'
+	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*yp[0]+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*yp[0]+by)+'" stroke="#D00" style="stroke-width: 3.5" stroke-dasharray="20 9"/>'
 	x=linspace(-10,10,100)
 	y=Exp2points(x,xp,yp)
 	let P=coor2px(x,y,mx,bx,my,by)
@@ -1257,6 +1323,68 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 					// C[6].innerHTML=P
 					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}
+				},
+				{
+					Nombre:"Funciones exponenciales (Álgebra)",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+						function P1(){
+							const a=Math.round(Math.random()*200+10)*(Math.random()<0.5?1:-1)/10
+							const b=Math.round(Math.random()*15+5)/10
+							const x=Math.round(Math.random()*80+5)/10*(Math.random()<0.5?1:-1)
+							const fx=(a*Math.pow(b,x)).toPrecision(3)
+							spanContenido("Se tiene que $f(x)=a\\cdot "+b+"^x$ la la cual pasa por el punto ("+x.toFixed(1)+","+fx+"), determine el valor de $a$",C[6])
+							let Res=eval(fx)/Math.pow(b,x)
+							const R=[];
+							R[0]=Res.toPrecision(3)
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(Res+2*(Math.random()-0.5)).toPrecision(3)
+								}while(repetido(R))
+							}
+							for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+						}
+						function P2(){
+							const a=Math.round(Math.random()*200+10)*(Math.random()<0.5?1:-1)/10
+							let b
+							do{
+								b=Math.round(Math.random()*150+50)/100
+							}while(b==1)
+							
+							const x=Math.round(Math.random()*80+5)/10*(Math.random()<0.5?1:-1)
+							const fx=(a*Math.pow(b,x)).toPrecision(3)
+							spanContenido("Se tiene que $f(x)="+a.toFixed(1)+"\\cdot b^x$ la la cual pasa por el punto ("+x.toFixed(1)+","+fx+"), determine el valor de $b$",C[6])
+							let Res=Math.pow(eval(fx)/a,1/x)
+							const R=[];
+							R[0]=Res.toPrecision(3)
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(Res+2*(Math.random()-0.5)).toPrecision(3)
+								}while(repetido(R))
+							}
+							for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+						}
+						function P3(){
+							const a=Math.round(Math.random()*200+10)*(Math.random()<0.5?1:-1)/10
+							const k=Math.round(Math.random()*98+1)*(Math.random()<0.5?1:-1)/100
+							const x=Math.round(Math.random()*80+5)/10*(Math.random()<0.5?1:-1)
+
+							const fx=(a*Math.exp(k*x)).toPrecision(3)
+							spanContenido("Se tiene que $f(x)="+a.toFixed(1)+"\\cdot e^{k x}$ la la cual pasa por el punto ("+x.toFixed(1)+","+(fx.indexOf('e')!=-1?NotacionCientifica(eval(fx)):fx)+"), determine el valor de $k$",C[6])
+							let Res=Math.log(eval(fx)/a)/x
+							const R=[];
+							R[0]=Res.toPrecision(3)
+							for(let i=1;i<6;++i){
+								do{
+									R[i]=(Math.round(Math.random()*98+1)*(Math.random()<0.5?1:-1)/100).toPrecision(3)
+								}while(repetido(R))
+							}
+							for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+						}
+						(Math.random()<1/3?P1():( Math.random()<0.5?P2():P3() ))
+						
+					}
 				}
 			]
 		}
@@ -2990,4 +3118,19 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						spanContenido(P,C[6])
 						// C[6].innerHTML=P
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+*/
+
+/*
+function(){
+						let C=abrirPregunta()
+						
+						spanContenido("Pregunta",C[6])
+						const R=[];
+						for(let i=1;i<6;++i){
+							do{
+
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
 */
