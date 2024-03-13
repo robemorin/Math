@@ -399,8 +399,7 @@ function P4(){
 							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
 							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
 							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
-							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
-							
+
 							for(var k=1;k<n;++k){
 								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
 								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
@@ -1384,6 +1383,98 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						}
 						(Math.random()<1/3?P1():( Math.random()<0.5?P2():P3() ))
 						
+					}
+				},
+				{
+					Nombre:"Funciones exponenciales (evaluación y despeje)",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+						const R=[]
+						function P1(){//a*b^x
+							const a=Math.round(Math.random()*200+10)*(Math.random()<0.5?1:-1)/10
+							let b
+							do{
+								b=Math.round(Math.random()*15+5)/10
+							}while(b==1)
+							function Q1(){
+								let x
+								do{
+									x=Math.round(Math.random()*15+5)/10
+								}while(x==0)
+								spanContenido("Sea $f(x) = "+a.toFixed(1)+"\\cdot "+b.toFixed(1)+"^x$, calcule $f("+x.toFixed(1)+")$.",C[6])
+								let Res=a*Math.pow(b,x)
+								R[0]=Res.toPrecision(3)
+								for(let i=1;i<6;++i){
+									do{
+										Res*=(1+.2*(Math.random()-0.5))
+										R[i]=Res.toPrecision(3)
+									}while(repetido(R))
+								}
+							}
+							function Q2(){
+								let x
+								do{
+									x=Math.round(Math.random()*150+50)/100
+								}while(x==0)
+								
+								const fx=(a*Math.pow(b,x)).toPrecision(3)
+								spanContenido("Sea $f(x) = "+a.toFixed(1)+"\\cdot "+b.toFixed(1)+"^x$, calcule $x_a$ tal que $f(x_a) = "+fx+" $.",C[6])
+								let Res=Math.log(eval(fx)/a)/Math.log(b)
+
+								R[0]=Res.toFixed(2)
+
+								for(let i=1;i<6;++i){
+									do{
+										Res=Math.round(Math.random()*150+50)/100
+										R[i]=Res.toFixed(2)
+									}while(repetido(R))
+								}
+							}
+							Math.random()<0.5?Q1():Q2()
+						}
+						function P2(){//a*e^{kx}
+							const a=Math.round(Math.random()*200+10)*(Math.random()<0.5?1:-1)/10
+							let k
+							do{
+								k=(Math.random()?-1:1)*Math.round(Math.random()*200)/100
+							}while(k==0)
+							function Q1(){
+								let x
+								do{
+									x=Math.round(Math.random()*150+50)/100
+								}while(x==0)
+								spanContenido("Sea $f(x) = "+a.toFixed(1)+"\\cdot e^{"+k.toFixed(2)+"x}$, calcule $f("+x.toFixed(2)+")$.",C[6])
+								let Res=a*Math.exp(k*x)
+								R[0]=Res.toPrecision(3)
+								for(let i=1;i<6;++i){
+									do{
+										Res*=(1+.2*(Math.random()-0.5))
+										R[i]=Res.toPrecision(3)
+									}while(repetido(R))
+								}
+							}
+							function Q2(){
+								let x
+								do{
+									x=Math.round(Math.random()*150+50)/100
+								}while(x==0)
+								const fx=(a*Math.exp(k*x)).toPrecision(3)
+								spanContenido("Sea $f(x) = "+a.toFixed(1)+"\\cdot e^{"+k.toFixed(2)+"x}$, calcule $x_a$ tal que $f(x_a) = "+fx+"$.",C[6])
+								let Res=Math.log(eval(fx)/a)/k
+								R[0]=Res.toPrecision(3)
+								for(let i=1;i<6;++i){
+									do{
+										Res*=(1+.2*(Math.random()-0.5))
+										R[i]=Res.toPrecision(3)
+									}while(repetido(R))
+								}
+							}
+							Math.random()<0.5?Q1():Q2()
+						}
+						Math.random()<0.5?P1():P2()
+						
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
 				}
 			]
