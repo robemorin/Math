@@ -136,12 +136,20 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
             ax.appendChild(l)
         }else if(P[k][2].charAt(0)=='t'){
             //<text x="20" y="35" class="small">My</text>
+           /* txt = document.createElementNS('http://www.w3.org/2000/svg','text')
+            txt.setAttribute('x',P[0])
+            txt.setAttribute('y',P[1])
+            txt.setAttribute("fill", "black")
+            txt.setAttribute('style','font: italic 12px sans-serif;')
+            txt.textContent=k*lim[4][1]
+            if(k!=0){ SVG.appendChild(txt)}*/
+
             l = document.createElementNS('http://www.w3.org/2000/svg', 'text')
-            let temp=coo2px([P[k][0],P[k][1]])
+            let temp=coo2px([P[k][0],P[k][1]],dim,lim)
             l.setAttribute("x",temp[0])
-            l.setAttribute("y",temp[1])
-            l.setAttribute("stroke",P[k][2].substring(1))
-            l.setAttribute('stroke-width', "3")
+            l.setAttribute("y",eval(temp[1])+15)
+            l.setAttribute("fill",P[k][2].substring(1))
+            l.setAttribute('style','font: italic 16px sans-serif;')
             l.textContent=P[k][3]
             ax.appendChild(l)
         }
