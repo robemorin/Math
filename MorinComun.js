@@ -3,6 +3,18 @@ function NotacionCientifica(num){
 		[numInSciNot.coefficient, numInSciNot.exponent] =num.toExponential().split('e').map(item => Number(item));
 		return (numInSciNot.coefficient).toFixed(2)+"&times;10<sup>"+numInSciNot.exponent+'</sup>';
 }
+function mcd_new(a, b) {
+	if (b === 0) return a;
+	return mcd_new(b, a % b);
+  }
+  
+  function mcm_new(numeros) {
+	let mcm = numeros[0];
+	for (let i = 1; i < numeros.length; i++) {
+	  mcm = (mcm * numeros[i]) / mcd_new(mcm, numeros[i]);
+	}
+	return mcm;
+  }
 function MCM(x){
 	var N=x.length;
 	for(var k=2;k<=Max(x)/2;++k){
@@ -118,4 +130,10 @@ function spanContenido(S,C){//*
 	let Ct = document.createElement('span');
 	Ct.innerHTML=S
 	C.appendChild(Ct)
+}
+function linspaceMorin(x_min,x_max,n=100){
+	const x=[]
+	const h=(x_max-x_min)/(n-1)
+	for(let k=0;k<n;++k) x.push(x_min+k*h)
+	return x
 }
