@@ -101,6 +101,7 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
         return [m[0]*P[0]+b[0],m[1]*P[1]+b[1]]
     }
     let ax=createAxis(lim,dim)
+
     for(let k=0;k<P.length;++k){
         if(P[k][2].charAt(0)=='o'){
             for(let k1=0;k1<P[k][0].length;++k1){
@@ -133,7 +134,18 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
             l.setAttribute("stroke",P[k][2].substring(1))
             l.setAttribute('stroke-width', "3");
             ax.appendChild(l)
+        }else if(P[k][2].charAt(0)=='t'){
+            //<text x="20" y="35" class="small">My</text>
+            l = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+            let temp=coo2px([P[k][0],P[k][1]])
+            l.setAttribute("x",temp[0])
+            l.setAttribute("y",temp[1])
+            l.setAttribute("stroke",P[k][2].substring(1))
+            l.setAttribute('stroke-width', "3")
+            l.textContent=P[k][3]
+            ax.appendChild(l)
         }
+            
     }
     return ax
 
