@@ -1001,173 +1001,43 @@ function P2(x){
 			Nombre:"Distintos tipos de funciones",
 			test:[
 				{
-					Nombre:"Senos y cosenos",
+					Nombre:"Funciones trigonométricas (frecuencia y periodo)",
 					Nota:"",
 					fun:function(){
 					//Inicio
-					function P1(x){
-						do{
-							var a=Math.round(Math.random()*10-5)
-						}while(a==0)
-						var b=2*Math.PI/Math.round(Math.random()*8+1)
-						var c=Math.round(Math.random()*10-5)
-						var Tipo=Math.random()<0.5?0:1
-						var Funcion=['Cos(','Sin(']
-						var dummy=Math.round(Math.random())
-						
-						var axis=[-10, 10, Math.min(-5,c-Math.abs(a)-1), Math.max(5,c+Math.abs(a)+1), 2, 2, 1, 1]
-						var dim=[500, 800]
-						var x=linspace(-10,10,500)
-						var y=Sinoidal(a,b,c,Tipo,x)
-						
-						
-						//plot(axis,dim,x,y,'#ffa200','#222')
-						
-						
-						
-						var P="Determine la función que aparece a continuación<br><center>"+plot(axis,dim,x,y,'#ffa200','#222')+"</center>"
-						
-						var R=[];
-						
-						R[0]=a+Funcion[Tipo]+(dummy==1?(b).toFixed(2):(180*b/Math.PI).toFixed(1)+"°")+"<i>x</i>) + ("+c+")"
-						for(var i=1;i<6;++i){
-							do{
-								R[i]=a+Funcion[Math.round(Math.random())]+(dummy==1?(b).toFixed(2):(180*b/Math.PI).toFixed(1)+"°")+"<i>x</i>) + ("+Math.round(Math.random()*10-5)+")"
-									
-							}while(repetido(R))
-						
-						}
-						return [P,R]
-					}
-					function P2(x){
-						do{
-							var a=Math.round(Math.random()*10-5)
-						}while(a==0)
-						var b=2*Math.PI/Math.round(Math.random()*8+1)
-						var c=Math.round(Math.random()*10-5)
-						var Tipo=Math.random()<0.5?0:1
-						var Funcion=['Cos(','Sin(']
-						var dummy=Math.round(Math.random())
-						
-						var axis=[-10, 10, Math.min(-5,c-Math.abs(a)-1), Math.max(5,c+Math.abs(a)+1), 2, 2, 1, 1]
-						var dim=[500, 800]
-						var x=linspace(-10,10,500)
-						var y=Sinoidal(a,b,c,Tipo,x)
-						
-						
-						//plot(axis,dim,x,y,'#ffa200','#222')
-						
-						
-						
-						var P="Determine la función que aparece a continuación<br><center>"+plot(axis,dim,x,y,'#ffa200','#222')+"</center>"
-						
-						var R=[];
-						
-						R[0]=a+Funcion[Tipo]+(dummy==1?(b).toFixed(2):(180*b/Math.PI).toFixed(1)+"°")+"<i>x</i>) + ("+c+")"
-						for(var i=1;i<6;++i){
-							do{
-								R[i]=Math.round(Math.random()*10-5)+Funcion[Math.round(Math.random())]+(dummy==1?(b).toFixed(2):(180*b/Math.PI).toFixed(1)+"°")+"<i>x</i>) + ("+c+")"
-									
-							}while(repetido(R))
-						
-						}
-						return [P,R]
-					}
-					function P3(x){
-						do{
-							var a=Math.round(Math.random()*10-5)
-						}while(a==0)
-						var b=2*Math.PI/Math.round(Math.random()*8+1)
-						var c=Math.round(Math.random()*10-5)
-						var Tipo=Math.random()<0.5?0:1
-						var Funcion=['Cos(','Sin(']
-						var dummy=Math.round(Math.random())
-						
-						var axis=[-10, 10, Math.min(-5,c-Math.abs(a)-1), Math.max(5,c+Math.abs(a)+1), 2, 2, 1, 1]
-						var dim=[500, 800]
-						var x=linspace(-10,10,500)
-						var y=Sinoidal(a,b,c,Tipo,x)
-						
-						
-						//plot(axis,dim,x,y,'#ffa200','#222')
-						
-						
-						
-						var P="Determine la función que aparece a continuación<br><center>"+plot(axis,dim,x,y,'#ffa200','#222')+"</center>"
-						
-						var R=[];
-						
-						R[0]=a+Funcion[Tipo]+(b.toFixed(3))+"<i>x</i>) + ("+c+")"
-						for(var i=1;i<6;++i){
-							do{
-								R[i]=a+Funcion[Tipo]+((2*Math.PI/Math.round(Math.random()*8+1)).toFixed(3))+"<i>x</i>) + ("+c+")"
-									
-							}while(repetido(R))
-						
-						}
-						return [P,R]
-					}
-					function P4(x){
-						do{
-							var a=Math.round(Math.random()*10-5)
-						}while(a==0)
-						var b=2*Math.PI/Math.round(Math.random()*8+1)
-						var c=Math.round(Math.random()*10-5)
-						var Tipo=Math.random()<0.5?0:1
-						var Funcion=['Cos(','Sin(']
-						var dummy=Math.round(Math.random())
-						
-						var axis=[-10, 10, Math.min(-5,c-Math.abs(a)-1), Math.max(5,c+Math.abs(a)+1), 2, 2, 1, 1]
-						var dim=[500, 800]
-						var x=linspace(-10,10,500)
-						var y=Sinoidal(a,b,c,Tipo,x)
-						
-						
-						//plot(axis,dim,x,y,'#ffa200','#222')
-						
-						
-						
-						var P="Determine la función que aparece a continuación<br><center>"+plot(axis,dim,x,y,'#ffa200','#222')+"</center>"
-						
-						var R=[];
-						
-						R[0]=a+Funcion[Tipo]+(180*b/Math.PI).toFixed(1)+"°)"+"<i>x</i>) + ("+c+")"
-						for(var i=1;i<6;++i){
-							do{
-								R[i]=a+Funcion[Tipo]+(360/Math.round(Math.random()*8+1)).toFixed(1)+"°)"+"<i>x</i>) + ("+c+")"
-									
-							}while(repetido(R))
-						
-						}
-						return [P,R]
-					}
-					function Sinoidal(a,b,c,Tipo,x){
-						var y=[]
-						if(Tipo==0){
-							for(var k=0;k<x.length;++k) y[k]=a*Math.cos(b*x[k])+c
-						}else{
-							for(var k=0;k<x.length;++k) y[k]=a*Math.sin(b*x[k])+c
-						}
-						return y
-					}
-					function PreguntaTema(){
-						if(Math.random()>0.25){
-							return P1(1)
-						}else if(Math.random()>0.5){
-							return P2(1)
-						}else if(Math.random()>0.75){
-							return P3(1)
-						}else{
-							return P4(1)
-						}
-					}
-					//Final
+					let P = Math.round(Math.random()*8+2)
 					let C=abrirPregunta()
-					let [P,R]=PreguntaTema()
-					spanContenido(P,C[6])
-					// C[6].innerHTML=P
-					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-						}
+					const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
+					const tx = Math.round(Math.random()*P)
+					/*
+					const Puntos=[	[[0,1,5,6,2,7],
+                     [5,4,3,2,1,-5],'oRGB(255,100,155)'],
+                     [[0,1,5,6,2,7],
+                     [5,4,3,2,1,-5],'-RGB(100,155,255)']]
+
+    					ElemP=plot(Puntos,[600,400],[-10,10,-10,10,[2,2],[1,1]])*/
+					const x = linspaceMorin(-10,10,200)
+					const y=[]
+					for(let k=0;k<x.length;++k){
+						y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P):Math.cos(2*Math.PI*(x[k]-tx)/P))
+					}
+					const Puntos=[	[x,
+                     y,'-RGB(255,50,50)']]
+					 
+    				const ax = plot(Puntos,[600,400],[-10,10,-2,2,[2,1],[1,1]])
+						
+					spanContenido(`Determine el valor de ${op[0]?'el periodo':'la frecuencia.'} de la siguiente función. <br/><center>${ax.outerHTML}</center>` ,C[6])
+					const R=[];
+
+					R[0]=op[0] ? `$P = ${P} $`:(op[1] ? `$ f = \\frac{2\\pi}{${P}} $`:`$f = \\frac{360°}{${P}} $`)
+					for(let i=1;i<6;++i){
+						do{
+							P = Math.round(Math.random()*8+2)
+							R[i]=op[0] ? `$P = ${P} $`:(op[1] ? `$ f = \\frac{2\\pi}{${P}} $`:`$f = \\frac{360°}{${P}} $`)
+						}while(repetido(R))
+					}
+					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+				}
 				},
 				{
 					Nombre:"Funciones exponenciales",
