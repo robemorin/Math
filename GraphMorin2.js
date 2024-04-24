@@ -188,8 +188,9 @@ function createAxis(lim=[-1,1,-1,1,[0.5,0.5]],dim=[300,200]){
             dummy=coo2px([k*lim[5][0],lim[3]],dim,lim)
             Line.setAttribute('x2',dummy[0])
             Line.setAttribute('y2',dummy[1])
+            Line.setAttribute("stroke-dasharray","5,5")
             Line.setAttribute("stroke", "RGB(254,114,0)")
-            Line.setAttribute('stroke-width', .5);
+            Line.setAttribute('stroke-width', 1);
             group0.appendChild(Line)
         }
         for(let k=Math.floor(lim[2]/lim[5][1]);k<=Math.ceil(lim[3]/lim[5][1]);++k) {
@@ -201,8 +202,9 @@ function createAxis(lim=[-1,1,-1,1,[0.5,0.5]],dim=[300,200]){
             dummy=coo2px([lim[1],k*lim[5][1]],dim,lim)
             Line.setAttribute('x2',dummy[0])
             Line.setAttribute('y2',dummy[1])
+            Line.setAttribute("stroke-dasharray","5,5")
             Line.setAttribute("stroke", "RGB(254,114,0)")
-            Line.setAttribute('stroke-width', .5);
+            Line.setAttribute('stroke-width', 1);
             group0.appendChild(Line)
         }
     }
