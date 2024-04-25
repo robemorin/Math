@@ -75,14 +75,14 @@ const tema = [{
 	
 	
 	var R=[];
-	R[0]=NotacionCientifica(Math.abs(ve-va)/ve*100)+"*"
+	R[0]=NotacionCientifica(Math.abs(ve-va)/ve*100)+" %"
 	var dummy=0;
 	for(var i=1;i<6;++i){
 		do{
 			a=Math.round(Math.random()*9998+2)
 			ve=Math.sqrt(a)
 			va=eval(Math.sqrt(a).toFixed(cs))
-			R[i]=NotacionCientifica(Math.abs(ve-va)/ve*100)
+			R[i]=NotacionCientifica(Math.abs(ve-va)/ve*100)+" %"
 		}while(repetido(R))
 	}
 	return [P,R]
@@ -111,14 +111,14 @@ const tema = [{
 							let ve=Math.sqrt(a)
 							let va=eval(Math.sqrt(a).toFixed(cs))
 							let R=[];
-							R[0]=NotacionCientifica(Math.abs(ve-va)/ve*100)
+							R[0]=NotacionCientifica(Math.abs(ve-va)/ve*100)+" %"
 							let dummy=0;
 							for(let i=1;i<6;++i){
 								do{
 									let a=Math.round(Math.random()*9998+2)
 									ve=Math.sqrt(a)
 									va=eval(Math.sqrt(a).toFixed(cs))
-									R[i]=NotacionCientifica(Math.abs(ve-va)/ve*100)
+									R[i]=NotacionCientifica(Math.abs(ve-va)/ve*100)+" %"
 								}while(repetido(R))
 							}
 							return [P,R]
@@ -1009,13 +1009,6 @@ function P2(x){
 					let C=abrirPregunta()
 					const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
 					const tx = Math.round(Math.random()*P)
-					/*
-					const Puntos=[	[[0,1,5,6,2,7],
-                     [5,4,3,2,1,-5],'oRGB(255,100,155)'],
-                     [[0,1,5,6,2,7],
-                     [5,4,3,2,1,-5],'-RGB(100,155,255)']]
-
-    					ElemP=plot(Puntos,[600,400],[-10,10,-10,10,[2,2],[1,1]])*/
 					const x = linspaceMorin(-10,10,200)
 					const y=[]
 					for(let k=0;k<x.length;++k){
@@ -1026,7 +1019,7 @@ function P2(x){
 					 
     				const ax = plot(Puntos,[600,400],[-10,10,-2,2,[2,1],[1,1]])
 						
-					spanContenido(`Determine el valor de ${op[0]?'el periodo':'la frecuencia.'} de la siguiente función. <br/><center>${ax.outerHTML}</center>` ,C[6])
+					spanContenido(`Determine el valor de${op[0]?'l periodo':'la frecuencia.'} de la siguiente función. <br/><center>${ax.outerHTML}</center>` ,C[6])
 					const R=[];
 
 					R[0]=op[0] ? `$P = ${P} $`:(op[1] ? `$ f = \\frac{2\\pi}{${P}} $`:`$f = \\frac{360°}{${P}} $`)
@@ -1038,6 +1031,94 @@ function P2(x){
 					}
 					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 				}
+				},
+				{
+					Nombre:"Funciones trigonométricas (Traslaciones)",
+					Nota:"",
+					fun:function(){
+					//Inicio
+					let P = Math.round(Math.random()*8+2)
+					let C=abrirPregunta()
+					const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
+					const tx = Math.round(Math.random()*2*P-P)
+					const ty = Math.round(Math.random()*11-5.5)
+					let Tx=tx, Ty=ty
+					const x = linspaceMorin(-10,10,200)
+					const y=[]
+					for(let k=0;k<x.length;++k){
+						y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P)+ty:Math.cos(2*Math.PI*(x[k]-tx)/P)+ty)
+					}
+					const Puntos=[	[x,
+                     y,'-RGB(255,50,50)']]
+					 
+    				const ax = plot(Puntos,[600,400],[-10,10,(ty<-1?ty-2:-2),(ty>1?ty+2:2),[2,1],[1,1]])
+						
+					spanContenido(`La siguiente función tiene la forma $ f(x) = ${op[2]?`\\sin(\\frac{2\\pi}{${P}} (x-T_x))+Ty`:`\\cos(\\frac{2\\pi}{${P}} (x-T_x))+T_y`} $. Determine la ecuación de la misma.<br/><center>${ax.outerHTML}</center>` ,C[6])
+					const R=[];
+
+					R[0]=op[2]?
+							`$ \\sin(\\frac{2\\pi}{${P}} ${tx == 0 ? 'x':  `(x  ${tx>0? `- ${Math.abs(tx)}` : `+ ${Math.abs(tx)}`})` }) ${ty<0?ty:`+ ${ty}`} $`:
+							`$ \\cos(\\frac{2\\pi}{${P}} ${tx == 0 ? 'x':  `(x  ${tx>0? `- ${Math.abs(tx)}` : `+ ${Math.abs(tx)}`})` }) ${ty<0?ty:`+ ${ty}`} $`
+
+					for(let i=1;i<6;++i){
+						do{
+							if(op[0])
+								Tx = Math.round(Math.random()*18-9)
+							else
+								Ty = Math.round(Math.random()*11-5.5)
+
+							R[i]=op[2]?	`$ \\sin(\\frac{2\\pi}{${P}} ${Tx == 0 ? 'x':  `(x  ${Tx>0? `- ${Math.abs(Tx)}` : `+ ${Math.abs(Tx)}`})` }) ${Ty<0?Ty:`+ ${Ty}`} $`:
+										`$ \\cos(\\frac{2\\pi}{${P}} ${Tx == 0 ? 'x':  `(x  ${Tx>0? `- ${Math.abs(Tx)}` : `+ ${Math.abs(Tx)}`})` }) ${Ty<0?Ty:`+ ${Ty}`} $`
+						}while(repetido(R) || (op[0] && (Tx-tx)%P==0))
+					}
+					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+				}//				R=unsortArray(R)
+				},
+				
+				{
+					Nombre:"Funciones trigonométricas (identificar función)",
+					Nota:"",
+					fun:function(){
+					//Inicio
+					let P = Math.round(Math.random()*8+2)
+					let C=abrirPregunta()
+					const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
+					
+					const A = Math.round(Math.random()*3.5+1)*(Math.random()<0.5?1:-1)
+					const posibleAns = [`$ ${A} \\sin(\\omega x)$`,
+										`$ ${A} \\cos(\\omega x)$`,
+										`$ ${-A} \\sin(\\omega x)$`,
+										`$ ${-A} \\cos(\\omega x)$`,
+										`$ ${A} \\tan(\\omega x)$`,
+										`$ ${-A} \\tan(\\omega x)$`]
+
+					const x = linspaceMorin(-10,10,200)
+					const y=[]
+					for(let k=0;k<x.length;++k){
+						y.push(op[2]? A*Math.sin(2*Math.PI*x[k]/P):A*Math.cos(2*Math.PI*x[k]/P))
+					}
+					const Puntos=[	[x,
+                     y,'-RGB(255,50,50)']]
+					 
+    				const ax = plot(Puntos,[600,400],[-10,10,-5,5,[2,1],[1,1]])
+						
+					spanContenido(`Determine la ecuación de función que aparece a continuación.<br/><center>${ax.outerHTML}</center>` ,C[6])
+					let R=[];
+					let Raux=[]
+
+					R[0]=posibleAns[op[2]?0:1]
+					Raux[0]=posibleAns[op[2]?1:0]
+
+					for(let i=1;i<5;++i){
+						Raux[i]=posibleAns[1+i]
+					}
+					Raux=unsortArray(Raux)
+					for(let i=0;i<5;++i){
+						R[i+1]=Raux[i]
+					}
+					
+					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+				}//				R=unsortArray(R)
 				},
 				{
 					Nombre:"Funciones exponenciales",
@@ -3049,6 +3130,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}while(repetido(R))
 					
 					}
+					
 					return [P,R]
 						}
 						let C=abrirPregunta()
