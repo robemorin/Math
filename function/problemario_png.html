@@ -1,0 +1,332 @@
+<html>
+<head>
+
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="./src/general.css">
+
+<style>
+.tab-content {
+  display: none;
+}
+
+.tab:target .tab-content, .tab:last-of-type .tab-content {
+  display: block;
+}
+.tab:target ~ .tab:last-of-type .tab-content {
+  display: none;
+}
+:root {
+  --tabs-border-color: #ABCDEF;
+  --tabs-border-size: 3px;
+  --tabs-text-color: #111;
+  --selected-problem: red;
+  --boton-text-color: #FFF;
+  --tabs-dark-color: #A540A5;
+  --tabs-lite-color: #F7AFF7;
+  --subtema: #D099D0;
+  --tabs-width: 20%;
+  --tabs-height:120px;
+}
+.noSeeProblem{
+  display: none;
+}
+.printer_svg{
+  background-color: var(--tabs-dark-color);
+}
+.highlight_printer {
+  stroke-width: 1;
+  fill: var(--tabs-lite-color);
+}
+svg:hover .highlight_printer {
+  stroke-width: 1;
+  fill: var(--tabs-border-color);
+}
+
+button:has(svg){
+  background-color: var(--tabs-dark-color);
+  border: none;
+}
+.select_prob{
+  visibility: collapse;
+}
+.info{
+  border: solid 1px var(--tabs-dark-color);
+  display: inline-flex;
+  font-size:medium;
+  width: min(max-content,400px);
+
+  /*max-width: 300px;*/
+  background-color: var(--tabs-dark-color);
+  color: var(--boton-text-color);
+  overflow: auto;
+  margin: 2px;
+  padding: 5px
+}
+
+.button-item{
+  border: solid 1px var(--tabs-dark-color);
+  display: inline-flex;
+  font-size:medium;
+  width: min(max-content,400px);
+  /*max-width: 300px;*/
+  background-color: var(--tabs-lite-color);
+  overflow: auto;
+  margin: 2px;
+  padding: 5px
+}
+td:has([type=checkbox]:checked){
+  background-color:var(--selected-problem);
+}
+.button-item:has([type=checkbox]:checked){
+  background-color: var(--subtema);
+}
+
+.button-item > input{
+  visibility: collapse;
+}
+/* aspecto básico */
+body{
+  /* Set "my-sec-counter" to 0 */
+  counter-reset: number_problem number_solution;
+  background-color: val(--tabs-lite-color);
+}
+body,td {
+  font-family:"Times New Roman", Times;
+  line-height: 1.5;
+  font-size:16pt;
+}
+h2, p {
+  margin: 0;
+} 
+a {
+  color: inherit;
+  text-decoration: none;
+} 
+.tabs * {
+  box-sizing: border-box;
+}
+.tab-container {
+  position: relative;
+  padding-top: var(--tabs-height); /* en esta zona colocaremos las pestañas */
+} 
+#tab1>a { --tabs-position: 0; }
+#tab2>a { --tabs-position: 1; }
+#tab3>a { --tabs-position: 2; }
+#tab4>a { --tabs-position: 3; }
+#tab5>a { --tabs-position: 4; }
+#tab6>a { --tabs-position: 5; }
+#tab7>a { --tabs-position: 6; }
+#tab8>a { --tabs-position: 7; }
+#tab9>a { --tabs-position: 8; }
+.tab>a {
+  text-align: center;
+  position: absolute;
+  width: calc(var(--tabs-width));
+  height: calc(var(--tabs-height) + var(--tabs-border-size)); 
+  top: 0;
+  left: calc(var(--tabs-width) * var(--tabs-position)); /* posición de cada pestaña */
+}
+.tabs { 
+  padding: 10px;
+  color: var(--tabs-text-color);
+}
+.tab-content {
+  background-color: var(--tabs-lite-color); 
+  padding: 20px;
+  border: var(--tabs-border-size) solid var(--tabs-border-color);
+  border-radius: 0 0 10px 10px;
+  position: relative;
+  z-index: 100;
+}
+.tab>a {
+  background-color: var(--tabs-dark-color); 
+  padding: 10px;
+  border: var(--tabs-border-size) solid var(--tabs-border-color);
+  border-radius: 10px 10px 0 0;
+  border-bottom: 0;
+}
+.tab:target>a, .tab:last-of-type>a {
+  background-color: var(--tabs-lite-color); 
+  z-index: 200;
+}
+.tab:target ~ .tab:last-of-type>a {
+  background-color: var(--tabs-dark-color); 
+  z-index: 0; 
+}
+td .input[type=checkbox]:checked {
+  border:solid 5px red;
+}
+.pregunta0 {
+  counter-reset: list;
+}
+.pregunta0 > li {
+  list-style: none;
+}
+.pregunta0 > li > .punto{
+  float: right;
+}
+.pregunta0 > li > .punto:before{
+  content:"["
+}
+.pregunta0 > li > .punto:after{
+  content:"]"
+}
+.pregunta0 > li:before {
+  content: "(" counter(list, lower-alpha) ") ";
+  counter-increment: list;
+}
+.tabla_respuestas{ 
+    border-spacing: 0;
+    border-collapse: collapse;
+    width:100%;
+}
+.tabla_respuestas > tbody > tr:nth-of-type(1) > td:nth-of-type(1){
+  border-top: solid 3px black;
+  border-left: solid 3px black;
+  vertical-align: top;
+}
+.tabla_respuestas > tbody > tr:nth-of-type(1) > td:nth-of-type(2){
+  border-top: solid 3px black;
+  border-right: solid 3px black;
+}
+.tabla_respuestas > tbody > tr:nth-of-type(1) > td:nth-of-type(1)::after{
+  content:"Operaciones";
+  font-style:italic;
+  font-size:.8em;
+}
+.tabla_respuestas > tbody > tr:nth-of-type(2) > td:nth-of-type(1){
+  border-bottom: solid 3px black;
+  border-left: solid 3px black;
+}
+.tabla_respuestas > tbody > tr:nth-of-type(2) > td:nth-of-type(2){
+  border-top: solid 3px black;
+  border-left: solid 3px black;
+  width: 1%;
+  height: 1%;
+  white-space: nowrap;
+}
+.contenedor-boton{
+  width:200px;
+  height:60px;
+  border:solid 2px red;
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 999;
+}
+.contenedor-boton > button{
+  width:100%;
+  height:100%;
+  background: #CC00CC;
+  font-size:0.8em;
+  color: var(--boton-text-color);
+  border:solid 2px red;
+}
+/*counter-reset: number_problem;
+  counter-reset: number_solution;*/
+.numerar:before{
+  counter-increment: number_problem;
+  content:  counter(number_problem) ".- ";
+}
+
+.numerar2 > h4:before{
+  counter-increment: number_solution;
+  content:  counter(number_solution) ".- ";
+}
+@media screen{
+  .tabla_respuestas{ 
+    display: none;
+}
+div.page{
+	border-left:solid 4px white;
+  position: relative;
+	}
+  .just_screen{
+        border:var(--tabs-border-size) solid var(--tabs-border-color);
+        background-color: var(--tabs-dark-color);
+        color:#FFF;
+      }
+
+}
+@media print{
+  .just_screen{
+    display: none;
+      }
+}
+
+</style>
+
+<script src="./lib.js"></script>
+<script>
+  const myJSON = [{
+                    tema: 1,
+                    subtema: 1,
+                    prob1: 'template',
+                    prob2:'',
+                    sol:'',
+                    autor:'morin',
+                    Dx:0,
+                    Dy:0,
+                    x0:0,
+                    y0:0
+                  }];
+</script>
+</head>
+<body onload="inicia()">
+
+<center><h1>Prueba 1</h1></center>
+
+
+<div class="tabs">
+  <div class="tab-container">
+	<div id="tab5" class="tab"> 
+      <a href="#tab5">Análisis</a>
+      <div id="C5" class="tab-content">
+        
+      </div>
+    </div>
+	<div id="tab4" class="tab"> 
+      <a href="#tab4">Estadística & probabilidad</a>
+      <div id="C4" class="tab-content">
+      </div>
+    </div>
+    <div id="tab3" class="tab"> 
+      <a href="#tab3">Geometría & Trigonometría</a>
+      <div id="C3" class="tab-content">
+      </div>
+    </div>
+    <div id="tab2" class="tab">
+      <a href="#tab2">Funciones</a>
+      <div id="C2" class="tab-content">
+      </div>
+    </div> 
+    <div id="tab1" class="tab">
+      <a href="#tab1">Aritmética & Álgebra</a>
+      <div id="C1" class="tab-content">
+      </div> 
+    </div> 
+  </div>
+</div>
+<div class="contenedor-boton">
+  <button onclick="LetsPlay()">Generar Examen<br><span id="label_info">0 seleccionados</span></button>
+  
+</div>
+</body>
+</html>
