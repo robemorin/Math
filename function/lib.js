@@ -3,7 +3,7 @@ let DBP
 function inicia(){
 	startButtons()
 
-	fetch('http://localhost:3000/ejercicios/indice_drive.JSON').then(function (response) {
+	fetch('https://math-ca5.pages.dev/function/indice_drive.JSON').then(function (response) {
 	
 	  return response.text()
 	}).then(function (data) {
