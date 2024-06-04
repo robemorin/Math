@@ -1,0 +1,67 @@
+.form-control-dark {
+  border-color: var(--bs-gray);
+}
+.form-control-dark:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+}
+.form-control-light:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 .25rem rgba(255, 160, 58, 0.25);
+}
+
+.text-small {
+  font-size: 85%;
+}
+
+.dropdown-toggle:not(:focus) {
+  outline: 0;
+}
+.tabla_admin{
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #42327c5c;
+  color:#ddd;
+}
+.tabla_admin td, .tabla_admin th {
+  border: 1px solid #dddddd6f;
+  padding: 8px;
+}
+.tabla_admin tr:first-child{background-color: #545454a9;}
+.tabla_admin tr:nth-child(odd){background-color: #c500007e;}
+.tabla_admin tr:nth-child(even){background-color: #ff7e7e65;}
+
+.tabla_admin tr:nth-child(odd):hover{background-color: #2d2d5c67;}
+.tabla_admin tr:nth-child(even):hover{background-color: #6963c860;}
+/*.tabla_admin tr:hover {background-color: #16091a;}*/
+
+.tabla_admin th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #53c299;
+  color: white;
+}
+details {
+  /*border: 1px solid #aaa;*/
+  border-radius: 4px;
+  padding: 0.5em 0.5em 0;
+}
+
+summary {
+  font-weight: bold;
+  margin: -0.5em -0.5em 0;
+  padding: 0.5em;
+}
+
+details[open] {
+  padding: 0.5em;
+}
+
+details[open] summary {
+  border-bottom: 1px solid #aaa;
+  margin-bottom: 0.5em;
+}
+.revQuest{
+  border:#753640 solid 2px;
+}

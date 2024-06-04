@@ -1,0 +1,299 @@
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Temas</title>
+
+
+<style type="text/css">
+@charset "utf-8";
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+h1 {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+h3 {
+  margin-top: 0;
+  font-weight: 300;
+}
+
+.container {
+  max-width: 40em;
+  margin: 10px auto;
+}
+
+
+.ac-label {
+  font-weight: 700;
+  position: relative;
+  padding: .5em 1em;
+  margin-bottom: .5em;
+  display: block;
+  cursor: pointer;
+  background-color: whiteSmoke;
+  transition: background-color .15s ease-in-out;
+}
+
+.ac-input:checked + label, .ac-label:hover {
+  background-color: #999;
+}
+
+.ac-label:after, .ac-input:checked + .ac-label:after {
+  content: "+";
+  position: absolute;
+  display: block;
+  right: 0;
+  top: 0;
+  width: 2em;
+  height: 100%;
+  line-height: 2.25em;
+  text-align: center;
+  background-color: #e5e5e5;
+  transition: background-color .15s ease-in-out;
+}
+
+.ac-label:hover:after, .ac-input:checked + .ac-label:after {
+  background-color: #b5b5b5;
+}
+
+.ac-input:checked + .ac-label:after {
+  content: "-";
+}
+
+.ac-input {
+  display: none;
+}
+
+
+.ac-text, .ac-sub-text {
+  opacity: 0;
+  height: 0;
+  margin-bottom: .5em;
+  transition: opacity .5s ease-in-out;
+  overflow: hidden;
+}
+
+.ac-input:checked ~ .ac-text, .ac-sub .ac-input:checked ~ .ac-sub-text { 
+  opacity: 1;
+  height: auto;
+}
+
+
+.ac-sub .ac-label {
+  background: none;
+  font-weight: 600;
+  padding: .5em 2em;
+  margin-bottom: 0;
+}
+
+.ac-sub .ac-label:checked {
+  background: none;
+  border-bottom: 1px solid whitesmoke;
+}
+
+.ac-sub .ac-label:after, .ac-sub .ac-input:checked + .ac-label:after {
+  left: 0;
+  background: none;
+}
+
+.ac-sub .ac-input:checked + label, .ac-sub .ac-label:hover {
+  background: none;
+}
+
+.ac-sub-text {
+  padding: 0 1em 0 2em;
+}
+
+.flotante{
+  float: right;
+  width: 30%;
+  background-color: #ffffff;
+  overflow: hidden;
+  margin-top: 20px;
+  position: fixed;
+  right: 0;
+  z-index:9999;
+}
+
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+
+
+<script type="text/javascript"  >
+
+</script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script>
+  document.addEventListener('keyup', event => {
+  if (event.ctrlKey && event.keyCode ===77 ) {
+	document.getElementById('oculto').style.visibility="visible"
+  }
+}, false)
+</script>
+<script type="text/javascript"  src="temas2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script>
+  		function numbers2Symbols(N){
+				let S="";
+				for(let i=0;i<N.length;++i){
+					S=S+N2S(N[i]);
+				}	
+			return S;
+			}
+      function N2S(L){		
+				if(L<26){ 
+				return String.fromCharCode("a".charCodeAt(0)+L); 
+				}else if(L<52){
+				return String.fromCharCode("A".charCodeAt(0)+L-26);
+				}else if(L<62){
+				return String.fromCharCode("0".charCodeAt(0)+L-52);
+				}else{
+					switch(L){
+						case 62: 
+							return "_";
+						case 63: 
+							return "-";
+						case 64: 
+							return "+";
+						case 65: 
+							return "*";
+						default: 
+							return "?";
+					}
+				}
+			}
+function crearLink(k,kk,kkk){
+  const Npreguntas=eval(document.getElementById("Npreg").value)
+  const Tiempo=eval(document.getElementById("Tiempo").value)
+  const mos=eval(document.getElementById("mostrar").value)
+ 
+ return "OpcionM%C3%BAltiple3.html?"+numbers2Symbols([k,kk,kkk,Npreguntas,Tiempo,mos])
+  
+}
+function update(){
+  const Npreguntas=eval(document.getElementById("Npreg").value)
+  const Tiempo=eval(document.getElementById("Tiempo").value)
+  const mos=eval(document.getElementById("mostrar").value)
+  let links=document.getElementsByTagName("a"), ahref
+  const n=links.length
+  for(let k=0;k<n;++k){
+    ahref = links[k].href
+    links[k].href = ahref.substr(0, ahref.length - 3) +numbers2Symbols([Npreguntas,Tiempo,mos])
+  }
+}
+function vertemas(){
+	let div=document.getElementById("container")
+
+	let Cont0,input0
+  for(let k=0;k<tema.length;++k){
+    Cont0=document.createElement("div")
+		Cont0.classList.add("ac")
+    //<input class="ac-input" id="ac-1" name="ac-1" type="checkbox" />
+      input0=document.createElement("input")
+      input0.classList.add("ac-input")
+      input0.id="ac-"+k
+      input0.setAttribute("name","ac-"+k)
+      input0.setAttribute("type","checkbox")
+      Cont0.appendChild(input0)
+      //<label class="ac-label" for="ac-1">Item 1</label>
+      label0=document.createElement("label")
+      label0.classList.add("ac-label")
+      label0.setAttribute("for","ac-"+k)
+      label0.textContent=(k+1)+".- "+tema[k].Nombre
+      Cont0.appendChild(label0)
+      //<article class="ac-text">
+      article0=document.createElement("article")
+      article0.classList.add("ac-text")
+      for(let k1=0;k1<tema[k].subtema.length;++k1){
+        //<div class="ac-sub">
+          div1=document.createElement("div")
+          div.classList.add("ac-sub")
+          article0.appendChild(div1)
+          //<input class="ac-input" id="ac-2" name="ac-2" type="checkbox" />
+          input1=document.createElement("input")
+          input1.classList.add("ac-input")
+          input1.id="ac-"+k+"0"+k1
+          input1.setAttribute("name","ac-"+k+"0"+k1)
+          input1.setAttribute("type","checkbox")
+          article0.appendChild(input1)
+          //<label class="ac-label" for="ac-2">I love jelly donuts</label>
+          label1=document.createElement("label")
+          label1.classList.add("ac-label")
+          label1.setAttribute("for","ac-"+k+"0"+k1)
+          label1.textContent=(k+1)+"."+(k1+1)+"- "+tema[k].subtema[k1].Nombre
+          article0.appendChild(label1)
+          //<article class="ac-sub-text">
+          article1=document.createElement("article")
+          article1.classList.add("ac-text")
+          for(let k2=0;k2<tema[k].subtema[k1].test.length;++k2){
+            paragraph0=document.createElement("p")
+            paragraph=document.createElement("a")
+            paragraph.textContent=tema[k].subtema[k1].test[k2].Nombre
+            paragraph.href=crearLink(k,k1,k2)
+            paragraph0.appendChild(paragraph)
+            article1.appendChild(paragraph0)
+          }
+          article0.appendChild(article1)
+
+          
+      }
+      Cont0.appendChild(article0)
+    document.getElementById('Contenedor').appendChild(Cont0)
+    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+  }
+}
+</script>
+
+</head>
+
+<body id="container" onload="vertemas()" data-gr-c-s-loaded="true">
+  <section class="container" id="Contenedor">
+
+    <h1>Temas de opción múltiple</h1>
+    <h3>Autor: Roberto Alejandro Morin Romero.</h3>
+
+    <div class="flotante" id="oculto" style="visibility: hidden;">
+      <table>
+        <tr><td><label for="Npreg">Número de preguntas</label></td><td><input id="Npreg" type="number" value="10"></td></tr>
+        <tr><td><label for="Tiempo">Tiempo (min)</label></td><td><input id="Tiempo" type="number" value="60"></td></tr>
+        <tr><td><label for="mostar">Mostar</label></td><td>
+    
+          <select  id="mostrar" onchange="update()">
+            <option value="2">Correctas & incorrectas</option>
+            <option value="1">Correctas</option>
+            <option value="0">Nada</option>
+          </select>
+    
+        </td></tr>
+        <tr><td></td><td><span id="link"></span></td></tr>
+      </table>
+    </div>
+  </section>
+
+
+
+
+ </body></html>

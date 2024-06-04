@@ -1,0 +1,134 @@
+<html ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Tarea: Pendiente</title>
+
+
+<style type="text/css">
+
+tr{
+	text-align: center;
+}
+body{
+font-size:1.5em;
+}
+li{
+padding-bottom: 2ex;
+}
+table:has(.correcta){
+	border:solid 2px green;
+}
+table:has(.incorrecta){
+	border:solid 2px red;
+}
+#reloj {
+  border: red 2px solid;
+  position:fixed;
+  right:10%;
+}
+input:checked:after {
+        width: 15px;
+        height: 15px;
+        border-radius: 15px;
+        background-color: #ff0000;
+        content: '';
+        display: inline-block;
+        border: 2px solid black;
+}
+@media print{
+  .noprint{
+    display: none !important;
+  }
+}
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script type="text/javascript"  src="./src/lib/main3.js"></script>
+<script type="text/javascript"  src="./src/lib/MorinStat.js"></script>
+<script type="text/javascript"  src="./src/lib/MorinComun.js"></script>
+<script type="text/javascript"  src="./src/lib/temas2.js"></script>
+<script type="text/javascript"  src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+
+<!--script type="text/javascript"  src="https://math-ca5.pages.dev/GraphOP.js"></script-->
+<script type="text/javascript"  src="./src/lib/GraphOP.js"></script>
+<script type="text/javascript"  src="./src/lib/GraphMorin2.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<script>
+
+</script>
+
+</head>
+
+<body id="container" onload="N()" data-gr-c-s-loaded="true">
+<!--Sintaxis:
+
+		N(Número de preguntas, numero de tema, minutos disponibles, mostrar resultado) -->
+<div id="reloj" key="aaa" class="noprint" style="background-color:#FFF" ></div>
+
+<div id="MathJax_Message" style="display: none;"></div>
+<div class="noprint">
+
+
+</div>
+	<span align="right"><img src="./src/icon2.png" loading="lazy"><br>raiz2pi.cc</span><center><div id="NamePlace"></div>
+	<br><h2>Matemáticas<br><span id="NameTitle">Asegurate tener activado Javascript para una correcta visualización</span></h2><br></center>
+	<div>Imprime este examen en PDF desde el navegador.</div>
+	 <fieldset>
+  <legend>Nota</legend>
+  <span id="Nota"></span>
+ </fieldset>
+	<div id="clave" style="font-size:50%;border:dotted 1px black;visibility:hidden">Clave:<br></div>
+	<div><center>        <canvas id="qr-code" height="1" width="1"></canvas>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>
+		<script>
+			/* JS comes here */
+			var qr;
+			(function() {
+                    qr = new QRious({
+                    element: document.getElementById('qr-code'),
+                    size: 1,
+                    value: 'Se supone que no debes ver esto.'
+                });
+            })();
+            
+            function generateQRCode(cadena) {
+                var qrtext = "https://math-ca5.pages.dev/Revisar?v="+cadena
+                qr.set({
+                    foreground: 'black',
+                    size: 200,
+                    value: qrtext
+					
+                });
+            }
+		</script><br></center></div>
+		<div id="calificacion"></div>
+		<div>Nombre: <input type="text" maxlength="30" id="nombreAl" size="40" value="" onchange="document.getElementById('lienzo').style.visibility = 'visible'"></input></div>
+	
+	<div ondragstart="return false" onselectstart="return false" id="lienzo" style="visibility:collapse"></div>
+	<button onclick="ajja([0,0,1])" style="width:100%; height:150px;background-color:#FF5722;color:#FFF"><h2>Terminar</h2></button>
+<script>
+  alert('Escribe tu nombre en el lugar indicado y presiona enter.')
+</script> 
+</body>
+ </html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-bs-theme="auto">
+  <head>
+    <style>
+      svg{
+       /* border:solid red 2px;*/
+      }
+    </style>
+    <script>
+      window.addEventListener("load", (event) => { fern();    console.log("page is fully loaded");      });
+      function fern(){
+        let w=screen.height*0.7
+        console.log("w: "+w)
+        let svg = document.getElementById('svg')
+        svg.setAttribute("width", w);
+        svg.setAttribute("height", w);
+        let q=1
+        if(q==0) loopFern(0,0)
+        else if(q==1) PascalTriangle([1])
+      }
+function PascalTriangle(L){
+  let svg = document.getElementById('svg')
+  const w=screen.width
+  svg.setAttribute("width", w);
+    
+    const Sl= w*0.01
+    const n = L.length
+
+    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttribute("x", w/2);
+    txt.setAttribute("y", Sl*n);
+    txt.setAttribute("alignment-baseline","hanging")
+		txt.setAttribute("text-anchor","middle")
+		txt.setAttribute("style","font: .7em Verdana, Helvetica, Arial, sans-serif;")
+		txt.setAttribute("stroke","none")
+		txt.setAttribute("fill","blue")
+    txt.textContent=L
+
+
+    L.push(0)
+    L.unshift(0)
+    console.log("n:"+n)
+    const Ln=[]
+    for(let k=0;k<n+1;++k){
+      Ln.push(L[k]+L[k+1])
+    }
+    console.log(Ln)
+    
+    
+    //cir1.setAttribute("r", "0.5");
+    //cir1.setAttribute("fill", "green");
+
+    // attach it to the container
+    svg.appendChild(txt);
+    if(n==100) return;
+
+    setTimeout(function()
+    {
+      PascalTriangle(Ln);
+
+    }, 1000);
+
+}
+function loopFern(x,y)
+{
+  let svg = document.getElementById('svg')
+  let P=[0,Math.random()]
+  const r=Math.random()
+  if(r<0.01){
+    x=0
+    y=0.16*y
+  }else if(r<0.86){
+    x = 0.85 * x + 0.04 * y
+    y = -0.04 * x + 0.85 * y + 1.6
+  }else if(r<0.93){
+    x = 0.2 * x - 0.26 * y
+    y = 0.23 * x + 0.22 * y + 1.6
+  }else{
+    x = -0.15 * x + 0.28 * y
+    y = 0.26 * x + 0.24 * y + 0.44
+  }
+    let w=screen.height*0.7
+    const cir1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    cir1.setAttribute("cx", x*w*0.1+w/2);
+    cir1.setAttribute("cy", w-y*w*0.1);
+    cir1.setAttribute("r", "0.5");
+    cir1.setAttribute("fill", "green");
+
+    // attach it to the container
+    svg.appendChild(cir1);
+
+    setTimeout(function()
+    {
+      loopFern(x,y);
+
+    }, 0);
+}
+
+
+    </script>
+  
+  </head>
+  <body onload="">
+    <center>
+    <h1>Error 404</h1>
+    <svg id="svg"></svg>
+  </center>
+  </body>
+</html>

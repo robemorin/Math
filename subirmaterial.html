@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="es" data-bs-theme="auto">
+  <head><script src="./src/assets/js/color-modes.js"></script>
+    
+    <link rel="shortcut icon" href="./src/icon.png">
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Roberto Alejandro Morin Romero">
+    <title>raíz2pi</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/">
+    <style>
+      
+    </style>
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="./src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="./src/features.css" rel="stylesheet">
+<link href="./src/docentes.css" rel="stylesheet">
+<script>
+  /*
+  let courses_data
+      fetch('./indice.JSON').then(function (response) {
+	
+        return response.text()
+      }).then(function (data) {
+        
+        
+        courses_data = JSON.parse( data)
+        console.log("courses_data"+courses_data)
+        
+
+
+      }).catch(console.error)*/
+
+
+    function update(){
+				let link1 = document.getElementById("link1").value
+				link1 =  extractlogo(link1)
+        console.log(`img 1: ${link1}`)
+				document.getElementById("img1").src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`
+				//document.getElementById("img1").src=`https://drive.google.com/uc?export=view&id=${link1}`
+        const prev = document.getElementsByName("img_preview")
+				prev[0].src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`				
+			}
+
+    function update2(){
+				let link1 = document.getElementById("link2").value
+				link1 =  extractlogo(link1)
+				document.getElementById("img2").src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`
+				const prev = document.getElementsByName("img_preview")
+				prev[1].src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`
+        const page = document.getElementsByClassName("page")
+				page[1].style.visibility = "visible"
+				page[1].style.display="block"
+        
+				
+			}
+            
+    function update3(){
+				let link1 = document.getElementById("link3").value
+				link1 =  extractlogo(link1)
+				document.getElementById("img3").src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`
+				const prev = document.getElementsByName("img_preview")
+				prev[2].src=`https://drive.google.com/thumbnail?id=${link1}&sz=w${Math.round(0.6*screen.width)}`
+				
+			}
+
+
+function extractlogo(s){
+    function extractlogo2(s){
+      let id_logo = s
+      let n_logo = id_logo.indexOf('/d/')
+      if(n_logo<1){
+        return -1
+      }
+      id_logo = id_logo.substr(n_logo+3)
+      n_logo = id_logo.indexOf('/')
+      if(n_logo<1){
+        return -1
+      }
+      id_logo = id_logo.substr(0,n_logo)
+      return id_logo
+    }
+  let id_logo = s
+  let n_logo = id_logo.indexOf('id=')
+  if(n_logo<1){
+    return extractlogo2(s)
+  }
+  id_logo.substr(3+n_logo)
+  n_logo = id_logo.indexOf('&')
+  if(n_logo<1){
+    return -1
+  }
+  id_logo.substr(0,n_logo)
+
+  console.log(id_logo)
+  return id_logo
+}
+
+function start_sm(){
+    let width = 0.6*screen.width;
+    document.getElementById('img1').setAttribute('width',width)
+    document.getElementById('img1').setAttribute('height',1.271734*width)
+    document.getElementById('img2').setAttribute('width',width)
+    document.getElementById('img2').setAttribute('height',1.271734*width)
+    document.getElementById('img3').setAttribute('width',width)
+    document.getElementById('img3').setAttribute('height',1.271734*width)
+    document.getElementById("preview").setAttribute('width',0.1*width)
+    document.getElementById("preview").setAttribute('height',0.1*width)
+    document.getElementById("save").setAttribute('width',0.1*width)
+    document.getElementById("save").setAttribute('height',0.1*width)
+    if(localStorage.lang == 'EN'){
+      document.getElementById('Lang').selectedIndex = 1;
+    }
+      language()
+      update_programs()
+}
+function update_course(level=0,P){
+  let cursos = JSON.parse(courses_data)
+  
+  let lang =  localStorage.lang == null ?'ES':localStorage.lang
+  let course = lang+document.getElementById(`P${P}`).value
+  let nivel = course.substring(4,6)
+  console.log(nivel)
+  if(course.indexOf('-1')>0){
+    document.getElementById(`s${P}`).innerHTML = ''
+    document.getElementById(`ss${P}`).innerHTML = ''
+    return
+  }
+
+  actualCourse = cursos[course]
+  if(level==0){
+    let temas=``
+    for(let k=0;k<actualCourse.tema.length;++k){
+      temas += `<option value="${k}">${actualCourse.tema[k].nombre}</option>`
+    }
+    document.getElementById(`s${P}`).innerHTML = temas
+    let pruebas=`<option value="1">Prueba 1</option><option value="2">Prueba 2</option>${nivel=='NM'?'':'<option value="3">Prueba 3</option>'}`
+    document.getElementById(`test${P}`).innerHTML = pruebas
+
+  }else if(level==1){
+    let tema = document.getElementById(`s${P}`).value
+
+    let subtemas=``
+    for(let k=0;k<actualCourse.tema[tema].subtema.length;++k){
+      subtemas += `<option value="${k}">${actualCourse.tema[tema].subtema[k].nombre}</option>`
+    }
+    document.getElementById(`ss${P}`).innerHTML = subtemas
+  }
+}
+function update_programs(){
+  if(localStorage.lang=='EN'){
+    S=`<option value="-1"> </option><option value="AENM">Analysis and approaches SL</option>
+       <option value="AENS">Analysis and approaches HL</option>
+       <option value="AINM">Applications and interpretation SL</option>
+       <option value="AINS">Applications and interpretation HL</option>`
+    
+  }else{
+    S=`<option value="-1"> </option>
+       <option value="AENM">Análisis y Enfoques NM</option>
+       <option value="AENS">Análisis y Enfoques NS</option>
+       <option value="AINM">Aplicaciones e Interpretación NM</option>
+       <option value="AINS">Aplicaciones e Interpretación NS</option>`
+  }
+  document.getElementById('P1').innerHTML=S
+  document.getElementById('P2').innerHTML=S
+  update_course(0,1)
+  
+}
+function save_problem(){
+  let lang =  localStorage.lang == null ?'ES':localStorage.lang
+  const Curso1=document.getElementById('P1').value
+  const test1=document.getElementById('test1').value
+  if(Curso1 == '-1'){
+    alert('Curso no seleccionado')
+    return
+  }
+  const Tema1=document.getElementById('s1').value
+  if(Tema1 == '-1'){
+    alert('Tema no seleccionado')
+    return
+  }
+  const Subtema1=document.getElementById('ss1').value
+  if(Subtema1 == '-1' || Subtema1 == ''){
+    alert('Subtema no seleccionado')
+    return
+  }
+  let P2='null'
+  const Curso2=document.getElementById('P2').value
+  if(Curso2 == '-1'){
+  }else{
+    const Tema2=document.getElementById('s2').value
+    if(Tema2 == '-1'){
+      alert('Tema no seleccionado')
+      return
+    }else{
+      const Subtema2=document.getElementById('ss2').value
+      if(Subtema2 == '-1' || Subtema2 == ''){
+        alert('Subtema no seleccionado')
+        return
+      }else{
+        const test2=document.getElementById('test2').value
+        P2=lang+Curso2+"."+Tema2+"."+Subtema2+"."+test2
+      }
+    }
+  }
+  
+  
+  const P1=lang+Curso1+"."+Tema1+"."+Subtema1+"."+test1
+  let S =  "Link1="+extractlogo(document.getElementById('link1').value)
+          +"&Link2="+extractlogo(document.getElementById('link2').value)
+          +"&Link3="+extractlogo(document.getElementById('link3').value)
+          +"&T1="+document.getElementById('number').style.getPropertyValue('top')
+          +"&L1="+document.getElementById('number').style.getPropertyValue('left')
+          +"&A1="+document.getElementById('ventana').style.getPropertyValue('top')
+          +"&H1="+document.getElementById('ventana').style.getPropertyValue('height')
+          +"&T2="+document.getElementById('number3').style.getPropertyValue('top')
+          +"&L2="+document.getElementById('number3').style.getPropertyValue('left')
+          +"&Autor="+localStorage.nombre
+          +"&AutorId="+localStorage.Id
+          +"&Puntos="+document.getElementById("puntosTotales").value
+          +"&Date="+Date.now()
+          +"&P1="+P1
+          +"&P2="+P2
+  //const site=`https://d1-tutorial.robertomorin2.workers.dev/porevaluar?${S}`
+  const site=`http://127.0.0.1:8787/save_question?${S}`
+  fetch(site).then((response) => {
+            if (response.ok) {
+            return response.json();
+            }
+        alert("Error no se guardó la información")
+            throw new Error('Something went wrong');
+        })
+        .then((responseJson) => {
+        alert('Problema guardado')
+        })
+        .catch((error) => {
+          alert('Algo salió mal')
+        });
+  console.log(S)
+}
+function update_number_problem1(event){
+				let div = document.getElementById('contenedor'); 
+				var rect = div.getBoundingClientRect(); 
+				var x = (100*(event.clientX - rect.left)/div.offsetWidth).toPrecision(4); 
+				var y = (100*(event.clientY - rect.top)/div.offsetHeight).toPrecision(4); 
+				
+				if(document.getElementById('E0').checked){
+					let number_page_div = document.getElementById("number")
+					number_page_div.style.left=x+"%"
+					number_page_div.style.top=y+"%"
+          number_page_div = document.getElementById("n1_preview")
+					number_page_div.style.left=x+"%"
+					number_page_div.style.top=y+"%"
+					document.getElementById("E1").checked=true
+				}else if(document.getElementById('E1').checked){
+					const ventana_div = document.getElementById("ventana")
+					ventana_div.style.top=y+"%"
+					document.getElementById("E2").checked=true
+				}else if(document.getElementById('E2').checked){
+					const ventana_div = document.getElementById("ventana")
+					let y0 = ventana_div.style.top
+					y0 = y0.substring(0, y0.length - 1);
+					ventana_div.style.height=(y-y0).toPrecision(3)+"%"
+                    
+					document.getElementById("E3").checked=true
+				}
+			}
+    function update_number_problem2(event){
+        let div = document.getElementById('contenedor2'); 
+        var rect = div.getBoundingClientRect(); 
+        var x = (100*(event.clientX - rect.left)/div.offsetWidth).toPrecision(4); 
+        var y = (100*(event.clientY - rect.top)/div.offsetHeight).toPrecision(4); 
+        
+        if(document.getElementById('E3').checked){
+            let number_page_div = document.getElementById("number3")
+            number_page_div.style.left=x+"%"
+            number_page_div.style.top=y+"%"
+            number_page_div = document.getElementById("n2_preview")
+					  number_page_div.style.left=x+"%"
+					  number_page_div.style.top=y+"%"
+            document.getElementById("E4").checked=true
+        }else if(document.getElementById('E4').checked){
+            const ventana_div = document.getElementById("ventana3")
+            ventana_div.style.top=y+"%"
+            document.getElementById("E5").checked=true
+        }else if(document.getElementById('E5').checked){
+            const ventana_div = document.getElementById("ventana3")
+            let y0 = ventana_div.style.top
+            y0 = y0.substring(0, y0.length - 1);
+            ventana_div.style.height=(y-y0).toPrecision(3)+"%"
+        }
+    }
+
+
+
+</script>
+<script type="text/javascript" src="./src/nav.js"></script>
+<script type="text/javascript" src="./indice.JSON"></script>
+
+    <style>
+      #img1, #img2, #img3{
+        border:#000 solid 3px;
+      }
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        width: 100%;
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .btn-bd-primary {
+        --bd-violet-bg: #712cf9;
+        --bd-violet-rgb: 112.520718, 44.062154, 249.437846;
+
+        --bs-btn-font-weight: 600;
+        --bs-btn-color: var(--bs-white);
+        --bs-btn-bg: var(--bd-violet-bg);
+        --bs-btn-border-color: var(--bd-violet-bg);
+        --bs-btn-hover-color: var(--bs-white);
+        --bs-btn-hover-bg: #6528e0;
+        --bs-btn-hover-border-color: #6528e0;
+        --bs-btn-focus-shadow-rgb: var(--bd-violet-rgb);
+        --bs-btn-active-color: var(--bs-btn-hover-color);
+        --bs-btn-active-bg: #5a23c8;
+        --bs-btn-active-border-color: #5a23c8;
+      }
+
+      .bd-mode-toggle {
+        z-index: 1500;
+      }
+
+      .bd-mode-toggle .dropdown-menu .active .bi {
+        display: block !important;
+      }
+    </style>
+    
+    <!-- Custom styles for this template -->
+    <link href="./src/headers.css" rel="stylesheet">
+  </head>
+  <body onload="start_sm()" class="ScreenAndPrint">
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none nopreview" >
+
+      <symbol id="mouse" viewBox="0 0 26 26">
+        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 3)"><path d="M22 10.2069L3 3L10.2069 22L13.4828 13.4828L22 10.2069Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
+    </symbol>
+      <symbol id="notas" viewBox="0 0 20 20">
+        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 3)"><path d="m12.5 12.5v-10c0-1.1045695-.8954305-2-2-2h-8c-1.1045695 0-2 .8954305-2 2v10c0 1.1045695.8954305 2 2 2h8c1.1045695 0 2-.8954305 2-2z"/><path d="m5.5 4.5h5"/><path d="m2.5 4.5h1"/><path d="m5.5 7.5h5"/><path d="m2.5 7.5h1"/><path d="m5.5 10.5h5"/><path d="m2.5 10.5h1"/></g>
+      </symbol>
+      <symbol id="circle-half" viewBox="0 0 16 16">
+        <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
+      </symbol>
+      <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+        <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        <path d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z"/>
+      </symbol>
+      <symbol id="sun-fill" viewBox="0 0 16 16">
+        <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+      </symbol>
+      <symbol id="aleatorio" viewBox="0 0 24 24">
+          <path fill-rule="evenodd" d="M3 4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H3Zm4.293 5.707a1 1 0 0 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L9.586 12 7.293 9.707ZM13 14a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Z" clip-rule="evenodd"/>
+      </symbol>
+      
+      
+    </svg>
+
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle nopreview">
+      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
+              id="bd-theme"
+              type="button"
+              aria-expanded="false"
+              data-bs-toggle="dropdown"
+              aria-label="Toggle theme (auto)">
+        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
+        <span class="visually-hidden" id="bd-theme-text">xx</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
+            <span class="ES">Claro</span><span class="EN">Light</span>
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
+            <span class="ES">Oscuro</span><span class="EN">Dark</span>
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
+            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
+            Auto
+            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+
+    
+<main >
+  <h1 class="visually-hidden nopreview">Cabecera</h1>
+
+  <div class="container nopreview">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <!--svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg-->
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="80"><defs><clipPath id="EMIAtZCUJTta"><path fill="none" stroke="none" d=" M 0 0 L 970 0 L 970 577 L 0 577 L 0 0 Z"/></clipPath></defs><g transform="scale(1,1)" clip-path="url(#EMIAtZCUJTta)"><g><ellipse fill="rgb(255,255,25)"  style="fill:rgba(255, 255, 255, .9);stroke: orange;stroke-width:3" cx="60" cy="40" rx="55" ry="35" fill-opacity="1"/><g transform="scale(35,35)"><g transform="translate(0.5428571428571428,0.5571418571428571)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.455 0.795 L 0.926 -0.036000000000000004 Q 0.9410000000000001 -0.061 0.9580000000000001 -0.061 Q 0.969 -0.061 0.9785 -0.0525 Q 0.988 -0.044 0.988 -0.03 Q 0.988 -0.023 0.979 -0.006 L 0.457 0.915 Q 0.448 0.931 0.442 0.9355 Q 0.436 0.9400000000000001 0.42 0.9400000000000001 Q 0.40700000000000003 0.9400000000000001 0.4035 0.937 Q 0.4 0.934 0.393 0.922 L 0.176 0.509 L 0.115 0.549 Q 0.10200000000000001 0.558 0.096 0.558 Q 0.09 0.558 0.084 0.5535 Q 0.078 0.549 0.078 0.541 Q 0.078 0.531 0.097 0.519 L 0.209 0.444 Q 0.241 0.422 0.249 0.422 Q 0.259 0.422 0.269 0.44 L 0.455 0.795 Z"/></g><rect fill="rgb(0,0,0)" stroke="none" x="1.500857142857143" y="0.5171428571428571" width="1.3495555555555556" height="0.06"/><g transform="translate(1.500857142857143,1.444642357142857)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.517 -0.222 L 0.486 0 L 0.057 0 L 0.057 -0.018000000000000002 Q 0.057 -0.034 0.059000000000000004 -0.0385 Q 0.061 -0.043000000000000003 0.07 -0.052000000000000005 L 0.271 -0.257 Q 0.379 -0.367 0.379 -0.465 Q 0.379 -0.525 0.34400000000000003 -0.5665 Q 0.309 -0.608 0.247 -0.608 Q 0.186 -0.608 0.14400000000000002 -0.5730000000000001 Q 0.155 -0.5700000000000001 0.166 -0.5645 Q 0.177 -0.559 0.189 -0.542 Q 0.201 -0.525 0.201 -0.501 Q 0.201 -0.466 0.1785 -0.4475 Q 0.156 -0.429 0.129 -0.429 Q 0.10400000000000001 -0.429 0.0805 -0.4465 Q 0.057 -0.464 0.057 -0.503 Q 0.057 -0.5700000000000001 0.11850000000000001 -0.6125 Q 0.18 -0.655 0.272 -0.655 Q 0.379 -0.655 0.448 -0.603 Q 0.517 -0.551 0.517 -0.466 Q 0.517 -0.431 0.507 -0.404 Q 0.497 -0.377 0.46900000000000003 -0.34750000000000003 Q 0.441 -0.318 0.417 -0.299 Q 0.393 -0.28 0.339 -0.24 Q 0.292 -0.20600000000000002 0.195 -0.125 L 0.342 -0.125 Q 0.433 -0.125 0.444 -0.131 Q 0.457 -0.138 0.47000000000000003 -0.222 L 0.517 -0.222 Z"/></g><g transform="translate(2.075857142857143,1.444642357142857)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.312 -0.34800000000000003 L 0.23600000000000002 -0.049 Q 0.23 -0.024 0.215 -0.009000000000000001 Q 0.195 0.008 0.17200000000000001 0.008 Q 0.152 0.008 0.138 -0.0045000000000000005 Q 0.124 -0.017 0.124 -0.037 Q 0.124 -0.05 0.14300000000000002 -0.08600000000000001 Q 0.231 -0.251 0.262 -0.34800000000000003 L 0.202 -0.34800000000000003 Q 0.117 -0.34800000000000003 0.079 -0.301 Q 0.07200000000000001 -0.293 0.0685 -0.291 Q 0.065 -0.289 0.054 -0.289 Q 0.031 -0.289 0.031 -0.303 Q 0.031 -0.311 0.0555 -0.342 Q 0.08 -0.373 0.105 -0.396 Q 0.158 -0.444 0.222 -0.444 L 0.615 -0.444 Q 0.668 -0.444 0.668 -0.405 Q 0.668 -0.383 0.648 -0.363 Q 0.633 -0.34800000000000003 0.598 -0.34800000000000003 L 0.47400000000000003 -0.34800000000000003 Q 0.468 -0.308 0.468 -0.274 Q 0.468 -0.17 0.514 -0.089 Q 0.526 -0.069 0.526 -0.056 Q 0.526 -0.032 0.504 -0.0115 Q 0.482 0.009000000000000001 0.457 0.009000000000000001 Q 0.424 0.009000000000000001 0.40750000000000003 -0.034 Q 0.391 -0.077 0.391 -0.135 Q 0.391 -0.20800000000000002 0.424 -0.34800000000000003 L 0.312 -0.34800000000000003 Z"/></g></g></g></g></svg>
+        <!--span class="fs-4">Bienvenidos</span-->
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="./close.html" class="nav-link"><span class="ES">Cerrar</span><span class="EN">Close</span></a></li>
+        <li class="nav-item"><a class="nav-link" href="docente.html"><span class="ES">Regresar</span><span class="EN">Back</span></a> </li>
+        <li>
+          <select class="form-select" id="Lang" onchange="language();update_programs();">
+            <option value="ES">ES</option>
+            <option value="EN">EN</option>
+          </select>
+          </li><li>
+          <image id="imglang" class="EN langOFF" src="./src/EN.jpg" width="30px"></image>
+          <image id="imglang" class="ES" src="./src/ES.svg" width="30px"></image>
+
+        </li>
+      </ul>
+    </header>
+  </div>
+
+
+
+
+  <div nopreview class="b-example-divider nopreview"></div>
+
+  <div class="px-4 py-5 my-5 text-center nopreview">
+    <h1 class="display-5 fw-bold text-body-emphasis"><span class="ES">Subir material</span><span class="EN">Upload questions</span></h1>
+    <div class="col-lg-6 mx-auto"><br>
+        <div>
+            <table>
+                <tr><td><span class="ES"> Si tienes dudas de cómo subir el material por favor haz click en el icono de YouTube.</span><span class="EN">If you have doubts about how to upload the questions please click on the YouTube icon.</span></td><td>
+                  
+            <a href="http://www.youtube.com" target="_blank"><img src="./src/YT.svg" width="50%"> </a></td></tr>
+            <tr><td>
+              
+              <span class="ES">Descarga la platilla</span><span class="EN">Download template</span>
+              
+            </td><td><a href="./src/template.docx"><img src="./src/microsoft-word.svg" width="80%"> </a></td></tr>
+        </table>
+
+
+    </div>
+  </div>
+  <center>
+  <table class="subirP">
+
+    <tr><td colspan="2"><center>
+      <span class="ES">Datos del ejercicio</span><span class="EN">Question data</span>
+      
+      
+        <table>
+            <tr>
+                <td>
+                    <div class="form-floating mb-3" >
+                      <span class="ES">Programa al que pertenece</span><span class="EN">Course</span>
+                      
+                        
+                        <select class="form-select" onclick="update_course(0,1)" id="P1" style="height: 100%;">
+                        
+                        </select>
+                    </div></td>
+        <td>
+            <div class="form-floating mb-3" >
+                subtema
+                <select class="form-select" onclick="update_course(1,1)" id="s1" style="height: 100%;">
+                </select>
+              </div></td>
+        <td><div class="form-floating mb-3" >
+                tópico
+                <select class="form-select" id="ss1" style="height: 100%;">
+                </select>
+              </div></td><td><div class="form-floating mb-3" >
+                Prueba
+                <select class="form-select" id="test1" style="height: 100%;">
+                </select>
+              </div></td>
+
+        </tr><tr><td>
+            <div class="form-floating mb-3" >
+                <span class="ES">¿Puede aplicarse en otro programa?</span><span class="EN">Can it be applied in another couse?</span>
+                <select class="form-select"  onclick="update_course(0,2)" id="P2" style="height: 100%;">
+                </select>
+              </div></td>
+            <td><div class="form-floating mb-3" >
+              <span class="ES">Tema</span><span class="EN">Topic</span>
+                    <select class="form-select" onclick="update_course(1,2)" id="s2" style="height: 100%;">
+                    </select>
+                  </div></td>
+            <td><div class="form-floating mb-3" >
+              <span class="ES">Subtema</span><span class="EN">Subtopic</span>
+                    <select class="form-select" id="ss2" style="height: 100%;">
+                    </select>
+                  </div></td><td><div class="form-floating mb-3" >
+                    Prueba
+                    <select class="form-select" id="test2" style="height: 100%;">
+                    </select>
+                  </div></td>
+
+            </tr>
+
+            <tr>
+              <td>
+              <div class="form-floating mb-3">
+                <input type="number" id="puntosTotales" placeholder="username" class="form-control" value="6" />
+                  <label class="form-label" for="puntosTotales"><span class="ES">Puntos totales</span><span class="EN">Total marks</span></label>
+
+        </div>
+              </td></tr>
+        </table>
+      </center>
+    </td></tr>
+    <tr><td >
+        <div id="contenedor" onmousedown="update_number_problem1(event)">
+        <img id="img1" style="background-image: url('/src/CL.png')">
+        <div id="number" style="top:7.200%;left:2.676%;transform: translate(-100%,-50%);">00</div>
+		<div id="ventana" style="top:7.0%;left:0%;width:100%;height: 20%;"> </div>
+        </div></td><td>
+        
+            <h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
+        <input text="text" id="link1" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <br/><button onclick="update()"><span class="EN">Update</span><span class="ES">Actualizar</span></button>
+        <br/>
+
+        <label for="E0">
+          <table><tr><td>
+        <input type="radio" id="E0" name="option" checked/> </td><td><span class="EN">Numeration</span><span class="ES">Numeración</span></td></tr></table>
+        </label>
+        <br/>
+        <h3><span class="EN">Question preview</span><span class="ES">Previsualización</span></h3>
+        <br/>
+        <label for="E1">
+          
+          <table><tr><td>
+            <input type="radio" id="E1" name="option"/> </td><td><span class="EN">Top</span><span class="ES">Alto</span></td></tr></table>
+        </label><br/>
+        <label for="E2">
+          <table><tr><td>
+            <input type="radio" id="E2" name="option"/> </td><td><span class="EN">Bottom</span><span class="ES">Fondo</span></td></tr></table>
+        </label>
+
+    </td></tr>
+
+
+    <tr><td><img id="img2" style="background-image: url('/src/CL.png')"></td><td><h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
+        <input text="text" id="link2" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <br/><button onclick="update2()"><span class="EN">Update</span><span class="ES">Actualizar</span></button></td></tr>
+
+
+    <tr><td >
+        <div id="contenedor2" onmousedown="update_number_problem2(event)">
+        <img id="img3" style="background-image: url('/src/CL.png')">
+        <div id="number3" style="top:7.200%;left:2.676%;">00</div>
+		<div id="ventana3" style="top:7.0%;left:0%;width:100%;height: 20%;"> </div>
+        </div></td><td>
+        
+            <h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
+        <input text="text" id="link3" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <br/>
+        
+        <button onclick="update3()"><span class="EN">Update</span><span class="ES">Actualizar</span></button>
+        <br/>
+
+        <label for="d0">
+          <table><tr><td>
+        <input type="radio" id="E3" name="option"/></td><td> <span class="EN">Numeration</span><span class="ES">Numeración</span></td></tr></table>
+        </label>
+        <br/>
+        <h3><span class="EN">Solution</span><span class="ES">Solución</span></h3>
+        <br/>
+        <label for="d1">
+          <table><tr><td>
+            <input type="radio" id="E4" name="option"/></td><td> <span class="EN">Top</span><span class="ES">Alto</span></td></tr></table>
+        </label><br/>
+        <label for="d2">
+          <table><tr><td>
+            <input type="radio" id="E5" name="option"/> </td><td> <span class="EN">Bottom</span><span class="ES">Fondo</span></td></tr></table>
+        </label><br>
+        <center>
+        <button style="background-color: transparent;"><img id="preview" src="./src/see.svg" width="20%" onclick="window.print()"></button>
+        <button style="background-color: transparent;"><img id="save" src="./src/save.svg" width="20%" onclick="save_problem()"></button>
+      </center>
+    </td></tr>
+</table></center>
+
+
+<script src="./src/assets/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<div class="b-example-divider"></div>
+
+
+      </div>
+    </div>
+</div>
+
+<div class="preview">
+  <div class="page" style="position: relative;">
+    <img width="95%" name="img_preview" width="100%">
+    <div id="n1_preview" style="background-color:#000; position: absolute;font-size:x-large;top:7.200%;left:2.676%;transform: translate(-100%, -50%);">00</div>								
+    <div id="esc_preview" style="background-color:#000; font-size:medium;position: absolute;  top:0%;  left:50%;transform: translate(-50%, 0%);" ><center> 00<br>
+      <i><span class="ES">Nombre de la escuela</span><span class="EN">School name</span></i> </center></div>								
+    <div id="prof_preview" style="background-color:#000; font-size:medium;position: absolute;  bottom:0%;  left:50%;transform: translate(-50%, 0%);" ><center> Docente: Roberto Alejandro Morin Romero</center></div>								
+  </div>
+
+  <div class="page" style="position: relative;visibility: collapse;display: none;">
+    <img width="100%" name="img_preview" width="100%">
+    <div id="esc_preview" style="background-color:#000; font-size:medium;position: absolute;  top:0%;  left:50%;transform: translate(-50%, 0%);" ><center> 00<br>
+      <i><span class="ES">Nombre de la escuela</span><span class="EN">School name</span></i> </center></div>	
+  </div>
+  <div class="page" style="position: relative;">
+    <img width="100%" name="img_preview" width="100%">
+    <div id="n2_preview" style="background-color:#000; position: absolute;font-size:x-large;top:7.200%;left:2.676%;transform: translate(-100%, -50%);">00</div>
+    							
+      <div id="prof_preview" style="background-color:#000; font-size:medium;position: absolute;  bottom:0%;  left:50%;transform: translate(-50%, 0%);" ><center> Docente: Roberto Alejandro Morin Romero</center></div>								
+  </div>
+
+
+</div>
+
+
+    </body>
+</html>
