@@ -5,7 +5,7 @@ const points_AutorConRespuesta = 30
 function autenticar(){
     const usuario=document.getElementById('usuario').value.trim()
     const contrasenna=document.getElementById('contrasenna').value.trim()
-const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna.hashCode()`
     //const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna}`
 
     if(!document.getElementById("remember-me").checked){
