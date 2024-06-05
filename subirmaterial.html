@@ -23,20 +23,10 @@
 <link href="./src/features.css" rel="stylesheet">
 <link href="./src/docentes.css" rel="stylesheet">
 <script>
-  /*
-  let courses_data
-      fetch('./indice.JSON').then(function (response) {
-	
-        return response.text()
-      }).then(function (data) {
-        
-        
-        courses_data = JSON.parse( data)
-        console.log("courses_data"+courses_data)
-        
+let courses_data
 
 
-      }).catch(console.error)*/
+
 
 
     function update(){
@@ -122,39 +112,66 @@ function start_sm(){
       update_programs()
 }
 function update_course(level=0,P){
-  let cursos = JSON.parse(courses_data)
-  
-  let lang =  localStorage.lang == null ?'ES':localStorage.lang
-  let course = lang+document.getElementById(`P${P}`).value
-  let nivel = course.substring(4,6)
+  const course_name = document.getElementById(`P${P}`).value
+  const course = courses_data[course_name]
+  console.log('asdfghjkjhgfdssdfghj')
+  console.log(course)
+
+  let nivel = course_name.substring(4,6)
   console.log(nivel)
-  if(course.indexOf('-1')>0){
+  if(course_name.indexOf('-1')>0){
     document.getElementById(`s${P}`).innerHTML = ''
     document.getElementById(`ss${P}`).innerHTML = ''
     return
   }
 
-  actualCourse = cursos[course]
   if(level==0){
     let temas=``
-    for(let k=0;k<actualCourse.tema.length;++k){
-      temas += `<option value="${k}">${actualCourse.tema[k].nombre}</option>`
+    for(let k=0;k<course.tema.length;++k){
+      temas += `<option value="${k}">${course.tema[k].nombre}</option>`
     }
     document.getElementById(`s${P}`).innerHTML = temas
-    let pruebas=`<option value="1">Prueba 1</option><option value="2">Prueba 2</option>${nivel=='NM'?'':'<option value="3">Prueba 3</option>'}`
+    let pruebas=`<option value="1"> 1</option><option value="2"> 2</option>${nivel=='NM' || nivel=='SL'?'':'<option value="3"> 3</option>'}`
     document.getElementById(`test${P}`).innerHTML = pruebas
-
+    update_course(1,P)
   }else if(level==1){
     let tema = document.getElementById(`s${P}`).value
-
     let subtemas=``
-    for(let k=0;k<actualCourse.tema[tema].subtema.length;++k){
-      subtemas += `<option value="${k}">${actualCourse.tema[tema].subtema[k].nombre}</option>`
+    for(let k=0;k<course.tema[tema].subtema.length;++k){
+      subtemas += `<option value="${k}">${course.tema[tema].subtema[k].nombre}</option>`
     }
     document.getElementById(`ss${P}`).innerHTML = subtemas
   }
 }
 function update_programs(){
+  function continuar_update(){
+    let S=``
+    for(var key in courses_data){
+      S+=`<option value="${key}">${courses_data[key].nombre}</option>`
+    }
+    document.getElementById('P1').innerHTML=S
+    document.getElementById('P2').innerHTML=`<option value="-1"></option>`+S
+    update_course(0,1)
+  }
+  fetch('./indice.JSON').then((response) => {
+		if (response.ok) {
+		  return response.json();
+		}
+		console.log("Error, al cargar cursos")
+		throw new Error('Something went wrong');
+	  })
+	  .then((responseJson) => {
+		console.log('todo bien')
+		courses_data=responseJson
+    continuar_update()
+	  })
+	  .catch((error) => {
+		console.log(error)
+		console.log("Error, al cargar curosos.")
+	  });
+/*
+  console.log('marco')
+  console.log(courses_data)
   if(localStorage.lang=='EN'){
     S=`<option value="-1"> </option><option value="AENM">Analysis and approaches SL</option>
        <option value="AENS">Analysis and approaches HL</option>
@@ -170,7 +187,7 @@ function update_programs(){
   }
   document.getElementById('P1').innerHTML=S
   document.getElementById('P2').innerHTML=S
-  update_course(0,1)
+  update_course(0,1)*/
   
 }
 function save_problem(){
@@ -206,13 +223,13 @@ function save_problem(){
         return
       }else{
         const test2=document.getElementById('test2').value
-        P2=lang+Curso2+"."+Tema2+"."+Subtema2+"."+test2
+        P2=Curso2+"."+Tema2+"."+Subtema2+"."+test2
       }
     }
   }
   
   
-  const P1=lang+Curso1+"."+Tema1+"."+Subtema1+"."+test1
+  const P1=Curso1+"."+Tema1+"."+Subtema1+"."+test1
   let S =  "Link1="+extractlogo(document.getElementById('link1').value)
           +"&Link2="+extractlogo(document.getElementById('link2').value)
           +"&Link3="+extractlogo(document.getElementById('link3').value)
@@ -302,7 +319,7 @@ function update_number_problem1(event){
 
 </script>
 <script type="text/javascript" src="./src/nav.js"></script>
-<script type="text/javascript" src="./indice.JSON"></script>
+<!--script type="text/javascript" src="./indice.JSON"></script-->
 
     <style>
       #img1, #img2, #img3{

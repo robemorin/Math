@@ -19,11 +19,11 @@
 
 <link href="./src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<script type="text/javascript" src="./indice.JSON"></script>
+
 <link href="./src/features.css" rel="stylesheet">
 <link href="./src/docentes.css" rel="stylesheet">
 <script>
-  
+  let courses_data
 
 function start_docente(){
   if(localStorage.nombre=='null'){
@@ -36,10 +36,28 @@ function start_docente(){
   }
   logo()
   language()
+  //Leer los cursos
+  fetch('./indice.JSON').then((response) => {
+		if (response.ok) {
+		  return response.json();
+		}
+		console.log("Error, inténtelo más tarde")
+		throw new Error('Something went wrong');
+	  })
+	  .then((responseJson) => {
+		console.log('todo bien')
+		courses_data=responseJson		
+	  })
+	  .catch((error) => {
+		console.log(error)
+		console.log("Error, inténtelo más tarde")
+	  });
 
 }
+
 function logo(){
   document.getElementById("logo_a").src=`https://drive.google.com/thumbnail?id=${localStorage.logo}&sz=w600`
+  
 }
 
 
@@ -269,7 +287,7 @@ function logo_update() {
 
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="./close.html" class="nav-link"><span class="ES">Cerrar</span><span class="EN">Close</span></a></li>
-        <li class="nav-item"><a class="nav-link"><span class="ES">Puntos: </span><span class="EN">Points: </span>zzzz</a></li>
+        <li class="nav-item"><a class="nav-link"><span class="ES">Puntos: </span><span class="EN">Points: </span><span id="puntos_doc"></span></a></li>
         <li class="nav-item"><a class="nav-link" id="link_revision" style="display: none;Cursor : pointer;" onclick="nav_docente('revision')"><span class="ES">Revisar</span><span class="EN">Review</span></a></li>
         <li>
           <select class="form-select" id="Lang" onchange="language();/* update_programs();*/">
@@ -372,7 +390,7 @@ function logo_update() {
               
                 <a href="subirmaterial.html"><span class="ES">Subir material</span><span class="EN">Upload questions</span></a><br/>
                 <a onclick="nav_docente('mismateriales')"><span class="ES">Ver mi material</span><span class="EN">See my questions</span></a><br>
-                <a href="QB.html"><span class="ES">Abrir</span><span class="EN">Open</span></a><br/>
+                <a href="QB.html" target="_blank"><span class="ES">Abrir</span><span class="EN">Open</span></a><br/>
             </section> 
             <!--fin Menu--->
           </td></tr>

@@ -1,5 +1,5 @@
-const courses_data = `{
-    "ESAINM": {
+{
+    "ESAINM":{
         "nombre":"Matemáticas: Aplicaciones e Interpretación NM",
         "tema": [
             {
@@ -479,4 +479,4 @@ const courses_data = `{
                 ]
             }]
     }
-}`
+}

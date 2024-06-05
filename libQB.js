@@ -1,13 +1,11 @@
-
-
+let courses
 function inicia(){
     //console.log('inicia')
     language()
 	startButtons()
     generar_temas()
-    load_problems()
-    
-	
+	load_problems()
+
 }
 function language(){
     //console.log('lang start')
@@ -25,9 +23,28 @@ function language(){
       } 
       localStorage.lang=lan
 }
+function startQB(){
+	fetch('./indice.JSON').then((response) => {
+		if (response.ok) {
+		  return response.json();
+		}
+		console.log("Error, inténtelo más tarde")
+		throw new Error('Something went wrong');
+	  })
+	  .then((responseJson) => {
+		console.log('todo bien')
+		courses=responseJson
+		inicia()
+		
+	  })
+	  .catch((error) => {
+		console.log(error)
+		console.log("Error, inténtelo más tarde")
+	  });
+  }
 function startButtons(){
-    const courses=JSON.parse(courses_data)
-    //console.log(courses.length)
+	console.log('marco')
+    console.log(courses)
     let options_course = ''
     for(var k in courses){
         //console.log(k+": "+courses[k].nombre)
@@ -72,8 +89,8 @@ function course_selected(){
 function generar_temas(){
         const name_course = document.getElementById('course_sel').value
         const number_test = document.getElementById('test_sel').value
-        const cursos=JSON.parse(courses_data)
-        //console.log("Nombre del curso: "+name_course)
+        const cursos=courses
+        console.log("Nombre del curso: "+name_course)
         const curso = cursos[name_course]
         //console.log(curso.tema)
         
@@ -95,12 +112,14 @@ function load_prob_input(){
     const jsonstring = document.getElementById("problemas_json").value
     return JSON.parse(jsonstring)
 }
-function load_prob(DBP){
+function load_prob(json_prob){
     // Solo se invoca una vez
-	const cursos = JSON.parse(courses_data)
+	//console.log("asdfgfdsdfgngfds")
+	console.log(json_prob)
 	function info(json){
 		//console.log('Extrayendo información')
 		const info1 = json.P1
+		const cursos = courses
 		let n = info1.indexOf('.')
 		const curso = info1.substring(0,n)
 		let resto = info1.substring(n+1)
@@ -128,15 +147,9 @@ function load_prob(DBP){
 			const numero_subtema2 = resto.substring(0,n)
 			div2 = `<div class="info">${numero_tema2-0+1}.${numero_subtema2-0+1} ${cursos[curso2].tema[numero_tema2].subtema[numero_subtema2].nombre}</div>`
 		}
-		//<div class="info">
-		//console.log(div1+div2)
-
-		
-		
-
 		return div1+div2
 	}
-	const n = DBP.length
+	const n = json_prob.length
     //console.log(`Cantidad de problemas: ${n}`)
     
 	const contenedor = [], png_img =[]
@@ -150,28 +163,28 @@ function load_prob(DBP){
 
 		contenedor.push(document.getElementById(`T_${k}`))
 	}
-	for(let k=0;k<n;++k){
-			try{
-				let top = DBP[k].t1, alto = DBP[k].b1
-				top= top.substring(0,top.length-1)*h_png/100
-				alto= alto.substring(0,alto.length-1)*h_png/100
 
-				let fecha = new Date(eval(DBP[k].Fecha))
-				const ubicacion = 'https://drive.google.com/thumbnail?id='+DBP[k].L1+'&sz=w'+w_png
+	for(let k=0;k<n;++k){
+			png_img[k] = new Image()
+			png_img[k].src = `https://drive.google.com/thumbnail?id=${json_prob[k].L1}&sz=w${w_png}`
+			png_img[k].onload = function(){
+				let top = json_prob[k].t1, alto = json_prob[k].b1
+				top= Math.round(top.substring(0,top.length-1)*h_png/100)
+				alto= Math.round(alto.substring(0,alto.length-1)*h_png/100)
+
+				let fecha = new Date(eval(json_prob[k].Fecha))
+				const ubicacion = 'https://drive.google.com/thumbnail?id='+json_prob[k].L1+'&sz=w'+w_png
 				//console.log(`Ubicación: ${ubicacion}`)
-				let rowProb=`<tr  class=" ${DBP[k].P1} ${DBP[k].P2=='null'?'':DBP[k].P2}" name="tr_problema"><td>
-						<input class="select_prob" type="checkbox" k="${k}" w="${w_png}px" h="200px" onchange="update()" puntos="${DBP[k].puntos}" id="S${k}" />
+				let rowProb=`<tr  class=" noSeeProblem ${json_prob[k].P1} ${json_prob[k].P2=='null'?'':json_prob[k].P2}" name="tr_problema"><td>
+						<input class="select_prob" type="checkbox" k="${k}" w="${w_png}px" h="200px" onchange="update()" puntos="${json_prob[k].puntos}" id="S${k}" />
 						</td><td>
 						<label for="S${k}">
-						<img  style="height:${alto}px; width:${w_png};background: url('${ubicacion}');background-repeat: no-repeat;background-position:0px -${top}px;" /></br>
-						<div class="info">ID: ${DBP[k].Id}</div><div class="info">Autor: ${DBP[k].A}</div><div class="info">Año: ${fecha.getFullYear()}</div><div class="info">Puntos: ${DBP[k].puntos}</div> ${info(DBP[k])}</label>
+						<img loading="lazy" style="height:${alto}px; width:${w_png}px;background: url('${ubicacion}');background-repeat: no-repeat;background-position:0px -${top}px;" /></br>
+						<div class="info">ID: ${json_prob[k].Id}</div><div class="info">Autor: ${json_prob[k].A}</div><div class="info">Año: ${fecha.getFullYear()}</div><div class="info">Puntos: ${json_prob[k].puntos}</div> ${info(json_prob[k])}</label>
 					</td><td></td></tr>`
 					//console.log('TEma'+DBP[k].P1.substring(7,8))
-				contenedor[DBP[k].P1.substring(7,8)].innerHTML += rowProb
-			}catch(error){
-				console.error(error)
+				contenedor[json_prob[k].P1.substring(7,8)].innerHTML += rowProb
 			}
-		
 	}
 }
 function off_all_problema(){
