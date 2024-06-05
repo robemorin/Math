@@ -5,7 +5,7 @@ const points_AutorConRespuesta = 30
 function autenticar(){
     const usuario=document.getElementById('usuario').value.trim()
     const contrasenna=document.getElementById('contrasenna').value.trim()
-const site=`http://127.0.0.1:8787/load_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
     //const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna}`
 
     if(!document.getElementById("remember-me").checked){
@@ -67,7 +67,7 @@ function Datos_update(P){
  
 
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/d_update?${getdata.slice(0, getdata.length - 1)}`
-  const site=`http://127.0.0.1:8787/d_update?${getdata.slice(0, getdata.length - 1)}`
+  const site=`https://d1-tutorial.robertomorin2.workers.dev/d_update?${getdata.slice(0, getdata.length - 1)}`
   console.log(site)
     fetch(site).then((response) => {
         if (response.ok) {
@@ -137,7 +137,7 @@ function reviewQuestions(){
 
   }
 
-  const site=`http://127.0.0.1:8787/porevaluar`
+  const site=`https://d1-tutorial.robertomorin2.workers.dev/porevaluar`
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/porevaluar`
 
   fetch(site).then((response) => {
@@ -178,7 +178,7 @@ function revisionShowQuestion(json){
 }
 function readMyQuestions(){
   let data 
-  const site=`http://127.0.0.1:8787/load_myquestions?id=${localStorage.Id}`
+  const site=`https://d1-tutorial.robertomorin2.workers.dev/load_myquestions?id=${localStorage.Id}`
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/load_myquestions?user=${usuario}&pass=${contrasenna}`
 
   fetch(site).then((response) => {
@@ -204,20 +204,37 @@ function readMyQuestions(){
     document.getElementById('warning_myprob').textContent = "Error, inténtelo más tarde"
   });
 }
+function load_all_courses(){
+  fetch("./indice.JSON")
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error
+                            (`HTTP error! Status: ${res.status}`);
+                    }
+                    return res.json();
+                })
+                .then((data) => 
+                      console.log(data))
+                .catch((error) => 
+                       console.error("Unable to fetch data:", error));
+}
 function dialog_revision(json){
   function tableInfo(json){
     function getInfoCourse(qwertry){
       let c={}
       c.raw=qwertry
-      let curso = JSON.parse(courses_data)
+      //let curso = JSON.parse(load_all_courses())
+      let curso = courses_data
       
       const numbers=[]
       let n = c.raw.indexOf('.')
       c.programa = c.raw.substring(0,n)
       curso = curso[c.programa]
-      
+      console.log('Curso')
+      console.log(curso)
+      if(curso == undefined) return true
       c.nombre = curso.nombre
-
+      console.log('Polo')
       let residual = c.raw.substring(n+1)
       n = residual.indexOf('.')
       numbers[0]=residual.substring(0,n)
@@ -230,13 +247,14 @@ function dialog_revision(json){
     }
     const data1 = getInfoCourse(json.P1)
     const data2 = json.P2=='null'?'null':getInfoCourse(json.P2)
-
+    if(data1===true || data2===true) return true
     return `<div style="border:#988 solid 3px"><center>${data1.nombre}<br>&#11049;${data1.tema}<br>&#11049;&#11049;${data1.subtema}</center></div>
             ${data2=='null'?'':`<div style="border:#988 solid 3px"><center>${data2.nombre}<br>&#11049;${data2.tema}<br>&#11049;&#11049;${data2.subtema}</center></div>`}`
 
   }
   function dialog(json){
     let s = tableInfo(json)
+    if(s===true) return ''
     s += `<br><center><div style="border:#988 solid 3px"><span class="ES">Modificar solo si es incorrecto<br>Puntos: </span><span class="EN">Modify if it's wrong<br>Marks:</span><input type="number" id="totalpoints${json.Id}" value="${json.puntos}" style="width:60px"> <br>${json.L3==-1?'<span class="ES">No incluye solución</span><span class="EN">Not includes solution</span>':''}</div><br><label for="MSM${json.Id}"><span class="ES">Observaciones:</span><span class="EN">Comments:</span></label><br><br>
     <textarea class="msm_rev" id="MSM${json.Id}" rows="5" width="100%"></textarea><br><label for="Veredicto${json.Id}"><span class="ES">Veredicto:</span><span class="EN">Veredict:</span></label>
     <select id="Veredicto${json.Id}">
@@ -255,7 +273,7 @@ function dialog_revision(json){
   return dialog(json)
 }
 function addPoints(id,points){
-  const link=`http://127.0.0.1:8787/add_points?puntos=${points}&id=${id}`
+  const link=`https://d1-tutorial.robertomorin2.workers.dev/add_points?puntos=${points}&id=${id}`
   fetch(link).then((response) => {
     if (response.ok) {
       return response.json();
@@ -281,7 +299,7 @@ function save_revision(id){
   const puntos = document.getElementById(`totalpoints${id}`).value
   const MSM = document.getElementById(`MSM${id}`).value
   const json = JSON.parse(document.getElementById(`json${id}`).value)
-  let link=`http://127.0.0.1:8787/revnofavorable?S=${ver}&MSM=${MSM}&puntos=${puntos}&idA=${localStorage.Id}&R=${localStorage.user}&id=${id}${ver=='A'?`&json=${document.getElementById(`json${id}`).value}`:''}`
+  let link=`https://d1-tutorial.robertomorin2.workers.dev/revnofavorable?S=${ver}&MSM=${MSM}&puntos=${puntos}&idA=${localStorage.Id}&R=${localStorage.user}&id=${id}${ver=='A'?`&json=${document.getElementById(`json${id}`).value}`:''}`
   console.log(link)
   addPoints(localStorage.Id,15)
   if(ver == 'A'){ 
@@ -314,7 +332,7 @@ function info_myquestion(json){
     function getInfoCourse(qwertry){
       let c={}
       c.raw=qwertry
-      let curso = JSON.parse(courses_data)
+      let curso = courses_data
       
       const numbers=[]
       let n = c.raw.indexOf('.')
@@ -380,7 +398,7 @@ function privilegios(id,n,op){
   }
 
 
-  const site=`http://127.0.0.1:8787/privilegios?id=${id}&nivel=${newLevel}`
+  const site=`https://d1-tutorial.robertomorin2.workers.dev/privilegios?id=${id}&nivel=${newLevel}`
     //const site=`https://d1-tutorial.robertomorin2.workers.dev/privilegios?id=${localStorage.Id}&nivel=${newLevel}`
     fetch(site).then((response) => {
       if (response.ok) {
