@@ -54,7 +54,7 @@ function startButtons(){
     course_selected()
 }
 function load_problems(){
-    const site=`http://127.0.0.1:8787/questionBank`
+    const site=`https://d1-tutorial.robertomorin2.workers.dev/questionBank`
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/porevaluar`
 
   fetch(site).then((response) => {
