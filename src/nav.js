@@ -5,8 +5,8 @@ const points_AutorConRespuesta = 30
 function autenticar(){
     const usuario=document.getElementById('usuario').value.trim()
     const contrasenna=document.getElementById('contrasenna').value.trim()
-const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna.hashCode()`
-    //const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna}`
+//const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+    const site=`https://d1-tutorial.robertomorin2.workers.dev/load_user?user=${usuario}&pass=${contrasenna.hashCode()}`
 
     if(!document.getElementById("remember-me").checked){
         localStorage.removeItem("remember_me")
@@ -299,6 +299,7 @@ function save_revision(id){
   const puntos = document.getElementById(`totalpoints${id}`).value
   const MSM = document.getElementById(`MSM${id}`).value
   const json = JSON.parse(document.getElementById(`json${id}`).value)
+  //let link=`https://d1-tutorial.robertomorin2.workers.dev/revnofavorable?S=${ver}&MSM=${MSM}&puntos=${puntos}&idA=${localStorage.Id}&R=${localStorage.user}&id=${id}${ver=='A'?`&json=${document.getElementById(`json${id}`).value}`:''}`
   let link=`https://d1-tutorial.robertomorin2.workers.dev/revnofavorable?S=${ver}&MSM=${MSM}&puntos=${puntos}&idA=${localStorage.Id}&R=${localStorage.user}&id=${id}${ver=='A'?`&json=${document.getElementById(`json${id}`).value}`:''}`
   console.log(link)
   addPoints(localStorage.Id,15)
