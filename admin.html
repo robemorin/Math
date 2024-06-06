@@ -237,7 +237,7 @@
         const usuario=document.getElementById('usuario').value.trim()
         const contrasenna = Math.random().toString(36).substring(2,12)
         //const site1=`https://d1-tutorial.robertomorin2.workers.dev/check_user?user=${usuario}&pass=${contrasenna}`
-        const site1=`https://d1-tutorial.robertomorin2.workers.dev?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+        const site1=`https://d1-tutorial.robertomorin2.workers.dev/check_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
         fetch(site1).then((response) => {
         if (response.ok) {
           return response.json();
