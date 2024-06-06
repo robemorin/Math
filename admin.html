@@ -22,7 +22,7 @@
 </script>
 <script>
   function all_prof(){
-    const site=`http://127.0.0.1:8787/profes?id=${localStorage.Id}`
+    const site=`https://d1-tutorial.robertomorin2.workers.dev/profes?id=${localStorage.Id}`
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/profes`
     
     fetch(site).then((response) => {
@@ -237,7 +237,7 @@
         const usuario=document.getElementById('usuario').value.trim()
         const contrasenna = Math.random().toString(36).substring(2,12)
         //const site1=`https://d1-tutorial.robertomorin2.workers.dev/check_user?user=${usuario}&pass=${contrasenna}`
-        const site1=`http://127.0.0.1:8787/check_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+        const site1=`https://d1-tutorial.robertomorin2.workers.dev?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
         fetch(site1).then((response) => {
         if (response.ok) {
           return response.json();
@@ -251,7 +251,7 @@
           console.log('user libre'+responseJson)
           const txt = `Usuario: ${usuario} <br/> Password: ${contrasenna}`
         //const site=`https://d1-tutorial.robertomorin2.workers.dev/save_user?user=${usuario}&pass=${contrasenna}`
-        const site=`http://127.0.0.1:8787/save_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+        const site=`https://d1-tutorial.robertomorin2.workers.dev/save_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
           fetch(site).then((response) => {
             if (response.ok) {
             return response.json();
