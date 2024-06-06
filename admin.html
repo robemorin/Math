@@ -251,7 +251,7 @@
           console.log('user libre'+responseJson)
           const txt = `Usuario: ${usuario} <br/> Password: ${contrasenna}`
         //const site=`https://d1-tutorial.robertomorin2.workers.dev/save_user?user=${usuario}&pass=${contrasenna}`
-        const site=`https://d1-tutorial.robertomorin2.workers.dev/save_user?user=${usuario}&pass=${contrasenna/*.hashCode()*/}`
+        const site=`https://d1-tutorial.robertomorin2.workers.dev/save_user?user=${usuario}&pass=${contrasenna.hashCode()}`
           fetch(site).then((response) => {
             if (response.ok) {
             return response.json();
