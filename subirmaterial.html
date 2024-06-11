@@ -246,7 +246,7 @@ function save_problem(){
           +"&P1="+P1
           +"&P2="+P2
   //const site=`https://d1-tutorial.robertomorin2.workers.dev/porevaluar?${S}`
-  const site=`http://127.0.0.1:8787/save_question?${S}`
+  const site=`https://d1-tutorial.robertomorin2.workers.dev/save_question?${S}`
   fetch(site).then((response) => {
             if (response.ok) {
             return response.json();
@@ -595,7 +595,7 @@ function update_number_problem1(event){
         </div></td><td>
         
             <h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
-        <input text="text" id="link1" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <input text="text" id="link1" value=""/>
         <br/><button onclick="update()"><span class="EN">Update</span><span class="ES">Actualizar</span></button>
         <br/>
 
@@ -620,7 +620,7 @@ function update_number_problem1(event){
 
 
     <tr><td><img id="img2" style="background-image: url('/src/CL.png')"></td><td><h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
-        <input text="text" id="link2" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <input text="text" id="link2" value=""/>
         <br/><button onclick="update2()"><span class="EN">Update</span><span class="ES">Actualizar</span></button></td></tr>
 
 
@@ -632,7 +632,7 @@ function update_number_problem1(event){
         </div></td><td>
         
             <h4><span class="EN">Link file</span><span class="ES">Link del archivo</span></h4>
-        <input text="text" id="link3" value="https://drive.google.com/file/d/1S0vVFEwBneFfUPgaAeUenlD1gwoUV5XC/view?usp=drive_link"/>
+        <input text="text" id="link3" value=""/>
         <br/>
         
         <button onclick="update3()"><span class="EN">Update</span><span class="ES">Actualizar</span></button>
