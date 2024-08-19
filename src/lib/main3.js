@@ -9,11 +9,12 @@ function Desencriptar(Txt){
 				//Extraer Clave
 				let Claver=N_cripr.slice(0,9)
 				N_cripr=N_cripr.slice(9,N_cripr.length)
-				aClaver=inversaA(Claver)
+				let aClaver=inversaA(Claver)
 				let Nr=[]
 				for (let k=0;k<(N_cripr.length/3);++k){
 					Nr[k]=[N_cripr[3*k],N_cripr[3*k+1],N_cripr[3*k+2]]
 				}
+				
 				let numbersr=Multiplica(Nr,aClaver)
 				
 				let Original = (numbersr) => {
@@ -32,10 +33,7 @@ function Desencriptar(Txt){
 				}
 				const K=Original(numbersr)
 				const NameNum=K.slice(11, K.length)
-				// alert(NameNum)
-				
-				// alert("Recuperado "+K.length+": Fecha: "+K[2]+"/"+K[1]+"/20"+K[0]+"/\n Inicio: "+K[3]+":"+K[4]+"\n Cal: "+K[6]+"/"+K[5]+
-			// "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10]+"\n Nombre:"+numbers2Symbols(NameNum).replaceAll('?', ' '))
+			
 			}
 function verificar(T){
 				var a = T[0][2];
@@ -102,7 +100,7 @@ function verificar(T){
 				// alert(Clave+":\n"+Symbols2numbers(numbers2Symbols(Clave)))
 				const Scrip=numbers2Symbols(Clave)+numbers2Symbols(N_crip)
 				
-				document.getElementById("clave").innerHTML="<a target='_blank' href='https://math-ca5.pages.dev/Revisar?v="+Scrip+"'>https://math-ca5.pages.dev/Revisar?v="+Scrip+"</a>"
+				document.getElementById("clave").innerHTML=`<a target='_blank' href='${stringLocation()}/Revisar.html?v=${Scrip}'>${stringLocation()}/Revisar.html?v=${Scrip}</a>`
 				document.getElementById("clave").style.visibility="visible";
 				
 				
@@ -303,7 +301,14 @@ function RevisaPregunta(NPreg,op,C) { //*
             }
 			return punto;
 }
+function stringLocation(){
+	let S = window.location.href
+	let n=S.lastIndexOf('opcionMultiple')
+	S = S.substring(0,n-1)
+	return S
+}
 function LetsPlay(){//*
+	
 	let Clave=eval("["+document.getElementsByTagName('body')[0].getAttribute("key")+"]")
 	const C=[	[Clave[0],Clave[1],Clave[2]],
 				[Clave[3],Clave[4],Clave[5]],
@@ -341,6 +346,8 @@ function LetsPlay(){//*
 	// alert("Original "+K.length+": Fecha: "+K[2]+"/"+K[1]+"/20"+K[0]+"/\n Inicio: "+K[3]+":"+K[4]+"\n Cal: "+K[6]+"/"+K[5]+
 			// "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10])
 	K=EncriptarInfo(K)
+
+	K = stringLocation()+K
 	
 	generateQRCode(K)
 	window.scrollTo(0, 300)
@@ -430,7 +437,7 @@ function LeerGet(){
 	return Symbols2numbers(G)
 	
 }
-function N(){//*
+function N(nameplace="<h1>Preparatoria</h1><span>Docente:Roberto A. Morin Romero</span>"){//*
 	const code=LeerGet()
 	const Clave=hacerLlave()
 	const d = new Date();
@@ -440,7 +447,7 @@ function N(){//*
 	
 	const Ntest=(code[0]+1)+"."+(code[1]+1)+"."+(code[2]+1)
 	
-	document.getElementById("NamePlace").innerHTML="<h1>Preparatoria</h1><span>Docente:Roberto A. Morin Romero</span>"
+	document.getElementById("NamePlace").innerHTML=nameplace
 	document.getElementById("NameTitle").innerHTML="Tarea "+Ntest+": "+title
 	document.getElementById('Pestanna').innerHTML="Tarea "+Ntest+": "+title
 	document.getElementById('Nota').innerHTML=nota
@@ -548,22 +555,7 @@ function cerrarPregunta(){//*
 	document.getElementsByName('ContenedorPregunta')[0].setAttribute("name","PLlena")
 	document.getElementsByName('Pregunta')[0].setAttribute("name","")
 	for(let k=0;k<6;++k)	document.getElementsByName('Respuesta')[0].setAttribute("name","")
-}/*
-function texto(S,C){//*
-	let Ct = document.createElement('span');
-	Ct.textContent=S
-	C.appendChild(Ct)
 }
-function divContenido(S,C){//*
-	let Ct = document.createElement('div');
-	Ct.innerHTML=S
-	C.appendChild(Ct)
-}
-function spanContenido(S,C){//*
-	let Ct = document.createElement('span');
-	Ct.innerHTML=S
-	C.appendChild(Ct)
-}*/
 function ocularResp(n){//*
 	const numeros=[n]
 	let Clave=eval("["+document.getElementsByTagName('body')[0].getAttribute("key")+"]")
@@ -590,4 +582,42 @@ function unsortArray(b) {
 	let a=b
 	a.sort(function(){return 0.5 - Math.random()});
 	return a
+}
+function Npublic(nameplace="<h1>Preparatoria</h1><span>Docente:Roberto A. Morin Romero</span>"){//*
+	
+	const code=LeerGet()
+	const Clave=hacerLlave()
+	const d = new Date();
+	const Npreguntas=code[3];
+	const nota=tema[code[0]].subtema[code[1]].test[code[2]].Nota
+	const title=tema[code[0]].subtema[code[1]].test[code[2]].Nombre
+	
+	const Ntest=(code[0]+1)+"."+(code[1]+1)+"."+(code[2]+1)
+	
+	document.getElementById("NamePlace").innerHTML=nameplace
+	document.getElementById("NameTitle").innerHTML="Tarea "+Ntest+": "+title
+	document.getElementById('Pestanna').innerHTML="Tarea "+Ntest+": "+title
+	document.getElementById('Nota').innerHTML=nota
+	let Data=[d.getFullYear().toString().substr(-2),d.getMonth()+1,d.getDate(), d.getHours(), d.getMinutes(),
+	Npreguntas, 0,code[0],code[1],code[2],code[5]];
+	/* También se debe modificar
+	Datos
+		0:año
+		1:mes
+		2:dia 
+		3:hora
+		4:Minutos
+		5:Número de preguntas
+		6:Aciertos
+		7-9:numero de tema
+		10:Mostrar/ocultar respuestas
+		11:hora de terminación
+		12:Minutos de terminacion
+		13+:Nombre
+	*/
+	cargar(true,code)	
+	document.getElementById("reloj").setAttribute("Txt",Clave);
+	document.getElementById("reloj").setAttribute("Txt2",Data);
+	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+	ajja([0, code[4], 0])
 }
