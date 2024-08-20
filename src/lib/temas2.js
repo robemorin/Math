@@ -1,4 +1,554 @@
 const tema = [{
+	Nombre:"Conocimientos previos",
+	subtema:[
+		{
+			Nombre:"Aritmética",
+			test:[
+				{
+					Nombre:"Suma de fracciones",
+					Nota:"El alumno debe ser capaz de realizarlos sin calculadora",
+					fun:function(){
+						let C=abrirPregunta()
+						let a=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let b=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let c=simplify_frac([a[0]*b[1]+a[1]*b[0],a[1]*b[1]])
+						
+						spanContenido(`Halle el valor de $ \\frac{${a[0]}}{${a[1]}}+\\frac{${b[0]}}{${b[1]}} $`,C[6])
+						const R=[];
+						R[0]=c[1]==1?`$${c[0]}$`:`$\\frac{${c[0]}}{${c[1]}}$`
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=i
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Resta de fracciones",
+					Nota:"El alumno debe ser capaz de realizarlos sin calculadora",
+					fun:function(){
+						let C=abrirPregunta()
+						let a=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let b=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let c=simplify_frac([a[0]*b[1]-a[1]*b[0],a[1]*b[1]])
+						
+						spanContenido(`Halle el valor de $ \\frac{${a[0]}}{${a[1]}}-\\frac{${b[0]}}{${b[1]}} $`,C[6])
+						const R=[];
+						R[0]=c[1]==1?`$${c[0]}$`:`$\\frac{${c[0]}}{${c[1]}}$`
+						for(let i=1;i<6;++i){
+							do{
+								a[0]=Math.round(0.51+Math.random()*10)
+								b[0]=Math.round(0.51+Math.random()*10)
+								let c=simplify_frac([a[0]*b[1]-a[1]*b[0],a[1]*b[1]])
+								R[i]=c[1]==1?`$${c[0]}$`:`$\\frac{${c[0]}}{${c[1]}}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Multiplicación de fracciones",
+					Nota:"El alumno debe ser capaz de realizarlos sin calculadora",
+					fun:function(){
+						let C=abrirPregunta()
+						let a=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let b=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let c=simplify_frac([a[0]*b[0],a[1]*b[1]])
+						
+						spanContenido(`Halle el valor de $ \\frac{${a[0]}}{${a[1]}}\\times\\frac{${b[0]}}{${b[1]}} $`,C[6])
+						const R=[];
+						R[0]=c[1]==1?`$${c[0]}$`:`$\\frac{${c[0]}}{${c[1]}}$`
+						for(let i=1;i<6;++i){
+							do{
+								a[0]=Math.round(0.51+Math.random()*10)
+								b[0]=Math.round(0.51+Math.random()*10)
+								c=simplify_frac([a[0]*b[0],a[1]*b[1]])
+								R[i]=c[1]==1?`$${c[0]}$`:`$\\frac{${c[0]}}{${c[1]}}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Fracciones con más de dos operaciones",
+					Nota:"El alumno debe ser capaz de realizarlos sin calculadora",
+					fun:function(){
+						let C=abrirPregunta()
+						function P1(){
+							let d=[c[1]*(a[0]*b[1]+a[1]*b[0]),a[1]*b[1]*c[0]]
+							spanContenido(`Halle el valor de $ \\frac{ \\frac{${a[0]}}{${a[1]}} + \\frac{${b[0]}}{${b[1]}}} {\\frac{${c[0]}}{${c[1]}}} $`,C[6])
+							d=simplify_frac(d)
+							R[0]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+
+							for(let i=1;i<6;++i){
+								do{
+									a[0]=Math.round(0.51+Math.random()*10)
+									b[0]=Math.round(0.51+Math.random()*10)
+									c[0]=Math.round(0.51+Math.random()*10)
+
+									d=[c[1]*(a[0]*b[1]+a[1]*b[0]),a[1]*b[1]*c[0]]
+									d=simplify_frac(d)
+									R[i]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+								}while(repetido(R))
+							}
+						}
+						function P2(){
+							let d=[c[0]*(a[0]*b[1]+a[1]*b[0]),a[1]*b[1]*c[1]]
+							spanContenido(`Halle el valor de $  \\left(\\frac{${a[0]}}{${a[1]}} + \\frac{${b[0]}}{${b[1]}} \\right) \\times \\frac{${c[0]}}{${c[1]}} $`,C[6])
+							d=simplify_frac(d)
+							R[0]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+
+							for(let i=1;i<6;++i){
+								do{
+									a[0]=Math.round(0.51+Math.random()*10)
+									b[0]=Math.round(0.51+Math.random()*10)
+									c[0]=Math.round(0.51+Math.random()*10)
+
+									d=[c[0]*(a[0]*b[1]+a[1]*b[0]),a[1]*b[1]*c[1]]
+									d=simplify_frac(d)
+									R[i]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+								}while(repetido(R))
+							}
+						}
+						function P3(){
+							let d=[a[0]*b[1]*c[1],a[1]*(b[0]*c[1]+c[0]*b[1])]
+							spanContenido(`Halle el valor de $  \\frac{\\frac{${a[0]}}{${a[1]}}} { \\frac{${b[0]}}{${b[1]}} + \\frac{${c[0]}}{${c[1]}}} $`,C[6])
+							d=simplify_frac(d)
+							R[0]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+
+							for(let i=1;i<6;++i){
+								do{
+									a[0]=Math.round(0.51+Math.random()*10)
+									b[0]=Math.round(0.51+Math.random()*10)
+									c[0]=Math.round(0.51+Math.random()*10)
+
+									d=[c[0]*(a[0]*b[1]+a[1]*b[0]),a[1]*b[1]*c[1]]
+									d=simplify_frac(d)
+									R[i]=d[1]==1?`$${d[0]}$`:`$\\frac{${d[0]}}{${d[1]}}$`
+								}while(repetido(R))
+							}
+						}
+						let a=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let b=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						let c=[Math.round(0.51+Math.random()*10),Math.round(0.51+Math.random()*10)]
+						const R=[];
+						const op=Math.random()
+						if(op<1/3) P1()
+						else if(op<2/3) P2()
+						else P3()
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
+			]
+		},
+		{
+			Nombre:"Álgebra",
+			test:[
+				{
+					Nombre:"Ecuaciones de primer grado",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+						let cadena="$"
+						let den=0, num=0
+						
+						do{
+							cadena="$"
+							den=0
+							num=0
+							let n1=Math.round(Math.random()*3+1)
+							let n2=Math.round(Math.random()*3+1)
+							
+							for(let k1=0;k1<n1;++k1){
+								a=(Math.ceil(Math.random()*8+1)*(Math.random()<.5?1:-1))
+								cadena+=(k1==0?(a<0?" - ":" "):(a<0?" - ":" + "))+Math.abs(a)+"x"
+								den+=a
+								a=(Math.ceil(Math.random()*6)*(Math.random()<.5?1:-1))
+								cadena+=(a<0?" - ":" + ")+Math.abs(a)
+								num+=a
+							}
+							cadena+=" = "
+							for(let k1=0;k1<n2;++k1){
+								a=(Math.ceil(Math.random()*8+1)*(Math.random()<.5?1:-1))
+								cadena+=(k1==0?(a<0?" - ":" "):(a<0?" - ":" + "))+Math.abs(a)+" x"
+								den-=a
+								a=(Math.ceil(Math.random()*6)*(Math.random()<.5?1:-1))
+								cadena+=(a<0?" - ":" + ")+Math.abs(a)
+								num-=a
+							}
+							
+						}while(den==0)
+						cadena+="$"
+						
+						spanContenido("Resuelva a "+cadena,C[6])
+						const R=[];
+						R[0]=(-num/den).toPrecision(3)
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=(-(num+2.5-Math.random()*5)/(den+2.5-Math.random()*5)).toPrecision(3)
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"División de polinomios",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function P1(x){
+							let a=[	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9),
+									(Math.random()<0.5?1:-1)*Math.round(Math.random()*9)]
+							let b=[	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9),
+									Math.round(Math.random()*19-9),
+									(Math.random()<0.5?1:-1)*Math.round(Math.random()*9)]
+								
+							
+							var P="El valor de la división de $$\\frac{"+polinomio(multiply(a,b))+"}{"+polinomio(a)+"}$$ es:"
+							
+							
+							var R=[];
+							R[0]="$"+polinomio(b)+"$"
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+								
+									b=[	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9),Math.round(Math.random()*19-9),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9)]
+									R[i]="$"+polinomio(b)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						/*fin*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
+					Nombre:"Multiplicación de polinomios",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function P1(x){
+							let a=[	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9),
+								(Math.random()<0.5?1:-1)*Math.round(Math.random()*9)]
+						let b=[	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9),
+								Math.round(Math.random()*19-9),
+								(Math.random()<0.5?1:-1)*Math.round(Math.random()*9)]
+								
+							
+							var P="Desarrolle el siguiente producto $("+polinomio(b)+")("+polinomio(a)+")$ es:"
+							
+							
+							var R=[];
+							let c = multiply(a,b)
+							R[0]="$"+polinomio(c)+"$"
+							Coef=Math.floor(Math.random()*(c.length-2)+1)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									
+									c[Coef]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						/*fin*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
+					Nombre:"Expansión de binomios al cuadrado y al cubo",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function P1(x){
+							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+
+							const P="La expansión de $("+polinomio(a)+")^2$ es:"
+							
+							const R=[];
+							const c = multiply(a,a)
+							R[0]="$"+polinomio(c)+"$"
+							let dummy=c
+							for(let i=1;i<6;++i){
+								do{
+									c[1]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						function P2(x){
+							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+
+							const P="La expansión de $("+polinomio(a)+")^3$ es:"
+							
+							const R=[];
+							const coef=(Math.random()<0.5?1:2)
+							const c = multiply(multiply(a,a),a)
+							R[0]="$"+polinomio(c)+"$"
+							let dummy=c
+							for(let i=1;i<6;++i){
+								do{
+									c[coef]+=Math.round(6*Math.random())
+									R[i]="$"+polinomio(c)+"$"
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=(Math.random()<0.5? P1() : P2())
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+				{
+					Nombre:"Fórmula general",
+					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
+					fun:function(){
+						function P1(x){
+							do{
+							var a=Math.round(Math.random()*20-11)
+							var b=Math.round(Math.random()*20-11)
+							var c=Math.round(Math.random()*20-11)
+							}while((b*b-4*a*c)<=0 || a==0)
+							var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+							if(x[0]>x[1]){
+								var dummy=x[0]
+								x[0]=x[1]
+								x[1]=dummy;
+							}	
+								
+							
+							var P="La solución de $"+polinomio([a,b,c])+"$ = 0 es"
+							
+							
+							var R=[];
+							R[0]="<i>x</i> = "+x[0].toPrecision(3)+", "+x[1].toPrecision(3)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+								
+								do{
+									var a=Math.round(Math.random()*20-11)
+									var b=Math.round(Math.random()*20-11)
+									var c=Math.round(Math.random()*20-11)
+								}while((b*b-4*a*c)<=0 || a==0)
+								var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+								if(x[0]>x[1]){
+									var dummy=x[0]
+									x[0]=x[1]
+									x[1]=dummy;
+								}
+								
+									R[i]="<i>x</i> = "+x[0].toPrecision(3)+", "+x[1].toPrecision(3)
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
+					Nombre:"Factorización de ecuaciones cuadráticas",
+					Nota:"*",
+					fun:function(){
+						function P1(x){
+							
+							let a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+							let b=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+							
+								
+							const dummy=polinomio([a[0]*b[0],a[1]*b[0]+a[0]*b[1],a[1]*b[1]])
+
+							let P=`Factorice la siguiente expresión $${polinomio([a[0]*b[0],a[1]*b[0]+a[0]*b[1],a[1]*b[1]])}$`
+							
+							
+							const R=[];
+							R[0]=`$(${polinomio(a)})(${polinomio(b)})$`
+							
+							for(let i=1;i<6;++i){
+								do{
+									do{
+										a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+										b=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+									}while(dummy==polinomio([a[0]*b[0],a[1]*b[0]+a[0]*b[1],a[1]*b[1]]))
+									
+									R[i]=`$(${polinomio(a)})(${polinomio(b)})$`
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Completar trinomio cuadrado perfecto",
+					Nota:"",
+					fun:function(){
+						/*Inicio*/
+						function P1(x){
+							let a=(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)
+							let alpha= (Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)
+							let beta = (Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)
+								
+							
+							var P=`Exprese a $${polinomio([a,2*alpha*a,a*alpha**2+beta])}$ en la forma $a (x-\\alpha)^2+\\beta$:`
+							
+							
+							var R=[];
+							
+							R[0]=`$${a}(${polinomio([1,alpha])})^2${(beta<0?'-':'+')+Math.abs(beta)}$`
+							for(var i=1;i<6;++i){
+								do{
+									let alpha= (Math.random()<0.5?1:-1)*Math.round(Math.random()*9)
+									R[i]=`$${a}(${polinomio([1,alpha])})^2${(beta<0?'-':'+')+Math.abs(beta)}$`
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						/*fin*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+					}
+				},
+			]
+		},
+		{
+			Nombre:"Geometría",
+			test:[
+				{
+					Nombre:"Progresiones  aritméticas",
+					Nota:"$u_n=u_1+(n-1)d$",
+					fun:function(){
+						function PreguntaTema(){
+		const a=Math.random()
+		if(a<1/4){
+			return P1()
+		}else if(a<2/4){
+			return P2()
+		}else if(a<3/4){
+			return P3()
+		}else{
+			return P4()
+		}
+	}
+
+function P1(){
+	const u1=Math.round(Math.random()*100-50)
+	const d=Math.round(Math.random()*50+1)*(Math.random()<0.5?1:-1)
+	const n=Math.round(Math.random()*100+20)
+	
+	const P="Obtenga el término $u_{"+n+"}$ de la secuencia "+u1+", "+(u1+d)+", "+(u1+2*d)+", "+(u1+3*d)+" ... "
+		
+		
+	let R=[];
+	
+	R[0]=u1+(n-1)*d
+	for(let k=1;k<6;++k){
+		do{
+			 R[k]=u1+(n+Math.round(Math.random()*10-5))*d
+		}while(repetido(R))
+	}
+	return [P,R]
+}
+function P2(){
+	const u1=Math.round(Math.random()*100-50)
+	const d=Math.round(Math.random()*50+1)*(Math.random()<0.5?1:-1)
+	const n1=Math.round(Math.random()*100+20)
+	let n2
+	do{
+		n2=Math.round(Math.random()*100+20)
+	}while(n1==n2)
+	
+	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto la diferencia en común es: "
+		
+		
+	let R=[];
+	
+	R[0]=d
+	for(let k=1;k<6;++k){
+	do{
+		R[k]=Math.round(Math.random()*100-50)
+	}while(repetido(R))
+	}
+	return [P,R]
+}
+function P3(){
+	const u1=Math.round(Math.random()*100-50)
+	const d=Math.round(Math.random()*50+1)*(Math.random()<0.5?1:-1)
+	const n1=Math.round(Math.random()*100+20)
+	let n2, n3
+	do{
+		n2=Math.round(Math.random()*100+20)
+		n3=Math.round(Math.random()*100+20)
+	}while(n1==n2 || n1==n3  || n3==n2 )
+	
+	const P="Una serie aritmetica tiene a $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y $u_{"+n2+"} = "+(u1+(n2-1)*d)+"$, por lo tanto $u_{"+n3+"}$ es: "
+		
+		
+	let R=[];
+	
+	R[0]=u1+(n3-1)*d
+	for(let k=1;k<6;++k){
+	do{
+		 R[k]=u1+(n3+Math.round(Math.random()*10-5))*d
+	}while(repetido(R))
+	}
+	return [P,R]
+}
+function P4(){
+	const u1=Math.round(Math.random()*100-50)
+	const d=Math.round(Math.random()*50+1)*(Math.random()<0.5?1:-1)
+	const n1=Math.round(Math.random()*100+20)
+	let n2, n3
+	do{
+		n2=Math.round(Math.random()*100+20)
+		n3=Math.round(Math.random()*100+20)
+	}while(n1==n2 || n1==n3  || n3==n2 )
+	
+	const P="Calcule el valor de $u_{"+n2+"}$ de una serie aritmetica tal que $u_{"+n1+"} = "+(u1+(n1-1)*d)+"$ y  su tasa en común de $d = "+d+"$: "
+		
+		
+	let R=[];
+	
+	R[0]=u1+(n2-1)*d
+	for(let k=1;k<6;++k){
+	do{
+		 R[k]=u1+(n2+Math.round(Math.random()*10-5))*d
+	}while(repetido(R))
+	}
+	return [P,R]
+}
+	/*No realizado*/
+	let C=abrirPregunta()
+	let [P,R]=PreguntaTema()
+	spanContenido(P,C[6])
+	for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						}
+				}
+			]
+		},{
+			Nombre:"Financieras",
+			test:[]
+		}
+	]
+},{
 	Nombre:"Aritmética y álgebra",
 	subtema:[
 		{
@@ -379,242 +929,7 @@ function P4(){
 		{
 			Nombre:"Polinomios",
 			test:[
-				{
-					Nombre:"División de polinomios",
-					Nota:"",
-					fun:function(){
-						/*Inicio*/
-						function multiply(a1, a2) {
-							var result = [];
-							a1.forEach(function (a, i) {
-								a2.forEach(function (b, j) {
-									result[i + j] = (result[i + j] || 0) + a * b;
-								});
-							});
-							return result;
-						}
-						function polinomio(v){
-							const n=v.length;
-							let S
-							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
-							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
-							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
-
-							for(var k=1;k<n;++k){
-								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
-								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
-								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
-							}
-							return S
-						}
-						function P1(x){
-							var a=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
-							var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
-								
-							
-							var P="El valor de la división de $$\\frac{"+polinomio(multiply(a,b))+"}{"+polinomio(a)+"}$$ es:"
-							
-							
-							var R=[];
-							R[0]="$"+polinomio(b)+"$"
-							var dummy=0;
-							for(var i=1;i<6;++i){
-								do{
-								
-									var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
-									R[i]="$"+polinomio(b)+"$"
-								}while(repetido(R))
-							}
-							return [P,R]
-						}
-						/*fin*/
-						let C=abrirPregunta()
-						let [P,R]=P1()
-						spanContenido(P,C[6])
-						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-						
-					}
-				},
-				{
-					Nombre:"Multiplicación de polinomios",
-					Nota:"",
-					fun:function(){
-						/*Inicio*/
-						function multiply(a1, a2) {
-							var result = [];
-							a1.forEach(function (a, i) {
-								a2.forEach(function (b, j) {
-									result[i + j] = (result[i + j] || 0) + a * b;
-								});
-							});
-							return result;
-						}
-						function polinomio(v){
-							const n=v.length;
-							let S
-							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
-							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
-							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
-							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
-							
-							for(var k=1;k<n;++k){
-								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
-								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
-								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
-							}
-							return S
-						}
-						function P1(x){
-							var a=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
-							var b=[Math.round(Math.random()*19-9),Math.round(Math.random()*19-9),Math.round(Math.random()*19-9)]
-								
-							
-							var P="Desarrolle el siguiente producto $("+polinomio(b)+")("+polinomio(a)+")$ es:"
-							
-							
-							var R=[];
-							let c = multiply(a,b)
-							R[0]="$"+polinomio(c)+"$"
-							Coef=Math.floor(Math.random()*(c.length-2)+1)
-							var dummy=0;
-							for(var i=1;i<6;++i){
-								do{
-									
-									c[Coef]+=Math.round(6*Math.random())
-									R[i]="$"+polinomio(c)+"$"
-								}while(repetido(R))
-							}
-							return [P,R]
-						}
-						/*fin*/
-						let C=abrirPregunta()
-						let [P,R]=P1()
-						spanContenido(P,C[6])
-						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-						
-					}
-				},
-				{
-					Nombre:"Expansión de binomios al cuadrado y al cubo",
-					Nota:"",
-					fun:function(){
-						/*Inicio*/
-						function multiply(a1, a2) {
-							var result = [];
-							a1.forEach(function (a, i) {
-								a2.forEach(function (b, j) {
-									result[i + j] = (result[i + j] || 0) + a * b;
-								});
-							});
-							return result;
-						}
-						function polinomio(v){
-							const n=v.length;
-							let S
-							if(n==1){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])
-							}else if(n==2){ S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x"
-							}else S=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x^{"+(n-1)+"}"
-							//=(v[0]<0?"-":"")+" "+Math.abs(v[0])+" x";
-							
-							for(var k=1;k<n;++k){
-								if(k==n-1){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])
-								}else if(k==n-2){ S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x"
-								}else S+=(v[k]<0?"-":"+")+" "+Math.abs(v[k])+" x^"+(n-k-1)
-							}
-							return S
-						}
-						function P1(x){
-							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
-
-							const P="La expansión de $("+polinomio(a)+")^2$ es:"
-							
-							const R=[];
-							const c = multiply(a,a)
-							R[0]="$"+polinomio(c)+"$"
-							let dummy=c
-							for(let i=1;i<6;++i){
-								do{
-									c[1]+=Math.round(6*Math.random())
-									R[i]="$"+polinomio(c)+"$"
-								}while(repetido(R))
-							}
-							return [P,R]
-						}
-						function P2(x){
-							const a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
-
-							const P="La expansión de $("+polinomio(a)+")^3$ es:"
-							
-							const R=[];
-							const coef=(Math.random()<0.5?1:2)
-							const c = multiply(multiply(a,a),a)
-							R[0]="$"+polinomio(c)+"$"
-							let dummy=c
-							for(let i=1;i<6;++i){
-								do{
-									c[coef]+=Math.round(6*Math.random())
-									R[i]="$"+polinomio(c)+"$"
-								}while(repetido(R))
-							}
-							return [P,R]
-						}
-						let C=abrirPregunta()
-						let [P,R]=(Math.random()<0.5? P1() : P2())
-						spanContenido(P,C[6])
-						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-						
-					}
-				},
-				{
-					Nombre:"Fórmula general",
-					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
-					fun:function(){
-						function P1(x){
-							do{
-							var a=Math.round(Math.random()*20-11)
-							var b=Math.round(Math.random()*20-11)
-							var c=Math.round(Math.random()*20-11)
-							}while((b*b-4*a*c)<=0 || a==0)
-							var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
-							if(x[0]>x[1]){
-								var dummy=x[0]
-								x[0]=x[1]
-								x[1]=dummy;
-							}	
-								
-							
-							var P="La solución de "+a+"<i>x</i><sup>2</sup> "+(b<0?"-":"+")+" "+Math.abs(b)+"<i>x</i> "+(c<0?"-":"+")+" "+Math.abs(c)+" = 0 es"
-							
-							
-							var R=[];
-							R[0]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
-							var dummy=0;
-							for(var i=1;i<6;++i){
-								do{
-								
-								do{
-									var a=Math.round(Math.random()*20-11)
-									var b=Math.round(Math.random()*20-11)
-									var c=Math.round(Math.random()*20-11)
-								}while((b*b-4*a*c)<=0 || a==0)
-								var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
-								if(x[0]>x[1]){
-									var dummy=x[0]
-									x[0]=x[1]
-									x[1]=dummy;
-								}
-								
-									R[i]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
-								}while(repetido(R))
-							}
-							return [P,R]
-						}
-						let C=abrirPregunta()
-						let [P,R]=P1()
-						spanContenido(P,C[6])
-						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-					}
-				}
+				
 			]
 		},
 		{
@@ -2995,7 +3310,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 								let dummy=dif*(Math.random()-.5)
 								//console.log("dummy: "+dummy+", dif: "+dif)
 								if(nl==2)
-									R[i]=(eval(mu)-Math.abs(dummy)).toPrecision(3)+","+(eval(mu)+Math.abs(dummy)).toPrecision(3)
+									R[i]=(eval(mu)-Math.abs(dummy)).toPrecision(3)+", "+(eval(mu)+Math.abs(dummy)).toPrecision(3)
 								else
 									R[i]=(eval(mu)+dummy).toPrecision(3)
 								//console.log(R)

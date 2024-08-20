@@ -7,7 +7,40 @@ function mcd_new(a, b) {
 	if (b === 0) return a;
 	return mcd_new(b, a % b);
   }
-  
+function polinomio(v){
+	
+	while(v[0]==0){
+		if(v.length==1) return '0'
+		v.shift();
+	}
+	const n=v.length;
+	let S
+	if(n==1){ S=`${v[0]<0?"-":""} ${Math.abs(v[0])}`
+	}else if(n==2){ S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+"x"
+	}else S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+"x^{"+(n-1)+"}"
+	
+	
+	for(var k=1;k<n;++k){
+		if(v[k]!=0){
+
+		if(k==n-1){ S+=(v[k]<0?"-":"+")+Math.abs(v[k])
+		}else if(k==n-2){ S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x"
+		}else S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x^"+(n-k-1)
+
+		}
+	}
+	return S
+}
+function multiply(a1, a2) {
+	//para polinomios
+	var result = [];
+	a1.forEach(function (a, i) {
+		a2.forEach(function (b, j) {
+			result[i + j] = (result[i + j] || 0) + a * b;
+		});
+	});
+	return result;
+}
   function mcm_new(numeros) {
 	let mcm = numeros[0];
 	for (let i = 1; i < numeros.length; i++) {
@@ -42,6 +75,12 @@ function MCMHelp(x,a){
 		if((x[k]%a)!=0) return false;
 	}
 	return true;
+}
+function simplify_frac(a){
+	/* [5,3] <- simplify_frac([10,6]) solo dos valores*/
+	let mcd = mcd_new(a[0],a[1])
+	mcd *= mcd*a[1]<0?-1:1
+	return [a[0]/mcd,a[1]/mcd]
 }
 /* Estas ya no deben aparecer */
 function Exp2fun(xp,yp){
@@ -137,7 +176,20 @@ function linspaceMorin(x_min,x_max,n=100){
 	for(let k=0;k<n;++k) x.push(x_min+k*h)
 	return x
 }
-Number.prototype.noExponents() = function() {
+function fraccion(a,b){
+	if(b==0){
+		return `${a<0?'-':''}\\infty`
+	}else if(a == 0){
+		return 0
+	}
+	let den = simplify_frac([a,b])
+	if( Math.abs(den[1]) == 1 ){
+		return den[0]*den[1]
+	}
+	const sig = den[1]<0?-1:1
+	return `\\frac{${sig*den[0]}}{${sig*den[1]}}`
+}
+/*Number.prototype.noExponents() = function() {
 	var data = String(this).split(/[eE]/);
 	if (data.length == 1) return data[0];
   
@@ -154,4 +206,4 @@ Number.prototype.noExponents() = function() {
 	mag -= str.length;
 	while (mag--) z += '0';
 	return str + z;
-  }
+  }*/
