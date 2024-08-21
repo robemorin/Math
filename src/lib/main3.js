@@ -100,7 +100,11 @@ function verificar(T){
 				// alert(Clave+":\n"+Symbols2numbers(numbers2Symbols(Clave)))
 				const Scrip=numbers2Symbols(Clave)+numbers2Symbols(N_crip)
 				
-				document.getElementById("clave").innerHTML=`<a target='_blank' href='${stringLocation()}/Revisar.html?v=${Scrip}'>${stringLocation()}/Revisar.html?v=${Scrip}</a>`
+				const K=`${stringLocation()}/Revisar.html?v=${Scrip}'>${stringLocation()}/Revisar.html?v=${Scrip}`
+				
+				generateQRCode(K)
+				console.log(`link: K`)
+				document.getElementById("clave").innerHTML=`<a target='_blank' href='${K}'</a>`
 				document.getElementById("clave").style.visibility="visible";
 				
 				
@@ -347,9 +351,9 @@ function LetsPlay(){//*
 			// "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10])
 	K=EncriptarInfo(K)
 
-	K = `${stringLocation()}\\Revisar?v=${K}`
+	//K = `${stringLocation()}\\Revisar?v=${K}`
 	
-	generateQRCode(K)
+	//generateQRCode(K)
 	window.scrollTo(0, 300)
 }
 function Pregunta(n,Text,Res,hey){
