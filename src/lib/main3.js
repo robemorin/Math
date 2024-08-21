@@ -104,7 +104,7 @@ function verificar(T){
 				
 				generateQRCode(K)
 				console.log(`link: ${K}`)
-				document.getElementById("clave").innerHTML=`<a target='_blank' href='${K}'</a>`
+				document.getElementById("clave").innerHTML=`<a target='_blank' href=' ${K}'>${K}</a>`
 				document.getElementById("clave").style.visibility="visible";
 				
 				
