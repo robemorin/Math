@@ -100,7 +100,7 @@ function verificar(T){
 				// alert(Clave+":\n"+Symbols2numbers(numbers2Symbols(Clave)))
 				const Scrip=numbers2Symbols(Clave)+numbers2Symbols(N_crip)
 				
-				const K=`${stringLocation()}/Revisar.html?v=${Scrip}'>${stringLocation()}/Revisar.html?v=${Scrip}`
+				const K=`${stringLocation()}/Revisar.html?v=${Scrip}`
 				
 				generateQRCode(K)
 				console.log(`link: ${K}`)
