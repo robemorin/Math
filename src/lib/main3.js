@@ -347,7 +347,7 @@ function LetsPlay(){//*
 			// "\n numero de tema "+K[7]+"\nMostrar "+K[8]+"\n Termina "+K[9]+":"+K[10])
 	K=EncriptarInfo(K)
 
-	K = stringLocation()+K
+	K = `${stringLocation()}\\Revisar?v=${K}`
 	
 	generateQRCode(K)
 	window.scrollTo(0, 300)
