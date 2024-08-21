@@ -103,7 +103,7 @@ function verificar(T){
 				const K=`${stringLocation()}/Revisar.html?v=${Scrip}'>${stringLocation()}/Revisar.html?v=${Scrip}`
 				
 				generateQRCode(K)
-				console.log(`link: K`)
+				console.log(`link: ${K}`)
 				document.getElementById("clave").innerHTML=`<a target='_blank' href='${K}'</a>`
 				document.getElementById("clave").style.visibility="visible";
 				
