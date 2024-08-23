@@ -1,3 +1,4 @@
+const nombre_proy="Fundamentos de Matemáticas"
 const tema = [{
 	Nombre:"Álgebra y Aritmética",
 	subtema:[

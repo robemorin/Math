@@ -157,18 +157,12 @@ function load_multiple(op){
     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
   }
 }
-document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key === 'm') {
-        document.getElementById('op_multiple_dialog').style.visibility = 'visible'
-    }
-});
-
 </script>
 
 </head>
 
 <body onload="load_multiple('es')" data-gr-c-s-loaded="true">
-  <div class="op_multiple_dialog" id="op_multiple_dialog" style="visibility: collapse;">
+  <div class="op_multiple_dialog">
     <table>
       <tr><td><div data-mdb-input-init class="form-outline">
                 <input type="number" id="npreg" value="10" class="form-control"/>
