@@ -1,25 +1,21 @@
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
-  <head><script src="./src/assets/js/color-modes.js"></script>
-
+<html lang="es" data-bs-theme="auto">
+  <script src="https://github.com/twbs/bootstrap/blob/main/site/static/docs/5.3/assets/js/color-modes.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Roberto Alejandro Morin Romero">
-    <title>raíz(2·pi)</title>
+    <meta name="author" content="Roberto Morin">
     
-    <link rel="shortcut icon" href="./src/icon2.png">
+    <title>Raiz2pi</title>
 
-    <!--link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/headers/"-->
-    <!--link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"-->
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/blog/">
 
-<link href="./src/assets/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="./src/features.css" rel="stylesheet">
-<link href="./src/schemecolor.css" rel="stylesheet">
-<script type="text/javascript" src="./src/nav.js">
-  
- 
-</script>
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <style>
       .bd-placeholder-img {
@@ -98,19 +94,30 @@
       .bd-mode-toggle .dropdown-menu .active .bi {
         display: block !important;
       }
+      a{
+        text-decoration: none;
+        color: #222;
+      }
     </style>
+    <script>
+      document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'm') {
+        event.preventDefault(); // Previene cualquier comportamiento predeterminado
+        console.log('¡Se detectó la combinación Control + M!');
+        // Aquí puedes agregar el código que desees ejecutar
+    }
+});
+    </script>
     
     <!-- Custom styles for this template -->
-    <!--link href="./src/headers.css" rel="stylesheet"-->
+    <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/5.3/examples/blog/blog.css" rel="stylesheet">
   </head>
-  <body onload="start()">
+  <body>
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-
-      <symbol id="mouse" viewBox="0 0 26 26">
-        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 3)"><path d="M22 10.2069L3 3L10.2069 22L13.4828 13.4828L22 10.2069Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> </g>
-    </symbol>
-      <symbol id="notas" viewBox="0 0 20 20">
-        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 3)"><path d="m12.5 12.5v-10c0-1.1045695-.8954305-2-2-2h-8c-1.1045695 0-2 .8954305-2 2v10c0 1.1045695.8954305 2 2 2h8c1.1045695 0 2-.8954305 2-2z"/><path d="m5.5 4.5h5"/><path d="m2.5 4.5h1"/><path d="m5.5 7.5h5"/><path d="m2.5 7.5h1"/><path d="m5.5 10.5h5"/><path d="m2.5 10.5h1"/></g>
+      <symbol id="check2" viewBox="0 0 16 16">
+        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
       </symbol>
       <symbol id="circle-half" viewBox="0 0 16 16">
         <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z"/>
@@ -122,174 +129,148 @@
       <symbol id="sun-fill" viewBox="0 0 16 16">
         <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
       </symbol>
-      <symbol id="aleatorio" viewBox="0 0 24 24">
-          <path fill-rule="evenodd" d="M3 4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H3Zm4.293 5.707a1 1 0 0 1 1.414-1.414l3 3a1 1 0 0 1 0 1.414l-3 3a1 1 0 0 1-1.414-1.414L9.586 12 7.293 9.707ZM13 14a1 1 0 1 0 0 2h3a1 1 0 1 0 0-2h-3Z" clip-rule="evenodd"/>
-      </symbol>
-      
-      
     </svg>
 
-    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle ">
-      <button class="btn btn-bd-primary py-2 dropdown-toggle d-flex align-items-center"
-              id="bd-theme"
-              type="button"
-              aria-expanded="false"
-              data-bs-toggle="dropdown"
-              aria-label="Toggle theme (auto)">
-        <svg class="bi my-1 theme-icon-active" width="1em" height="1em"><use href="#circle-half"></use></svg>
-        <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#sun-fill"></use></svg>
-            Light
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#moon-stars-fill"></use></svg>
-            Dark
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-        <li>
-          <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="auto" aria-pressed="true">
-            <svg class="bi me-2 opacity-50" width="1em" height="1em"><use href="#circle-half"></use></svg>
-            Auto
-            <svg class="bi ms-auto d-none" width="1em" height="1em"><use href="#check2"></use></svg>
-          </button>
-        </li>
-      </ul>
-    </div>
+    
 
     
 <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-  <symbol id="bootstrap" viewBox="0 0 118 94">
-    <title>raíz2pi</title>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M24.509 0c-6.733 0-11.715 5.893-11.492 12.284.214 6.14-.064 14.092-2.066 20.577C8.943 39.365 5.547 43.485 0 44.014v5.972c5.547.529 8.943 4.649 10.951 11.153 2.002 6.485 2.28 14.437 2.066 20.577C12.794 88.106 17.776 94 24.51 94H93.5c6.733 0 11.714-5.893 11.491-12.284-.214-6.14.064-14.092 2.066-20.577 2.009-6.504 5.396-10.624 10.943-11.153v-5.972c-5.547-.529-8.934-4.649-10.943-11.153-2.002-6.484-2.28-14.437-2.066-20.577C105.214 5.894 100.233 0 93.5 0H24.508zM80 57.863C80 66.663 73.436 72 62.543 72H44a2 2 0 01-2-2V24a2 2 0 012-2h18.437c9.083 0 15.044 4.92 15.044 12.474 0 5.302-4.01 10.049-9.119 10.88v.277C75.317 46.394 80 51.21 80 57.863zM60.521 28.34H49.948v14.934h8.905c6.884 0 10.68-2.772 10.68-7.727 0-4.643-3.264-7.207-9.012-7.207zM49.948 49.2v16.458H60.91c7.167 0 10.964-2.876 10.964-8.281 0-5.406-3.903-8.178-11.425-8.178H49.948z"></path>
+  <symbol id="aperture" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/>
   </symbol>
-  </svg>
-<main >
-  <h1 class="visually-hidden">Nav top</h1>
+  <symbol id="cart" viewBox="0 0 16 16">
+    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </symbol>
+  <symbol id="chevron-right" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+  </symbol>
+</svg>
 
-  <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-        <!--svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg-->
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="120" height="80"><defs><clipPath id="EMIAtZCUJTta"><path fill="none" stroke="none" d=" M 0 0 L 970 0 L 970 577 L 0 577 L 0 0 Z"/></clipPath></defs><g transform="scale(1,1)" clip-path="url(#EMIAtZCUJTta)"><g><ellipse fill="rgb(255,255,25)"  style="fill:rgba(255, 255, 255, .9);stroke: orange;stroke-width:3" cx="60" cy="40" rx="55" ry="35" fill-opacity="1"/><g transform="scale(35,35)"><g transform="translate(0.5428571428571428,0.5571418571428571)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.455 0.795 L 0.926 -0.036000000000000004 Q 0.9410000000000001 -0.061 0.9580000000000001 -0.061 Q 0.969 -0.061 0.9785 -0.0525 Q 0.988 -0.044 0.988 -0.03 Q 0.988 -0.023 0.979 -0.006 L 0.457 0.915 Q 0.448 0.931 0.442 0.9355 Q 0.436 0.9400000000000001 0.42 0.9400000000000001 Q 0.40700000000000003 0.9400000000000001 0.4035 0.937 Q 0.4 0.934 0.393 0.922 L 0.176 0.509 L 0.115 0.549 Q 0.10200000000000001 0.558 0.096 0.558 Q 0.09 0.558 0.084 0.5535 Q 0.078 0.549 0.078 0.541 Q 0.078 0.531 0.097 0.519 L 0.209 0.444 Q 0.241 0.422 0.249 0.422 Q 0.259 0.422 0.269 0.44 L 0.455 0.795 Z"/></g><rect fill="rgb(0,0,0)" stroke="none" x="1.500857142857143" y="0.5171428571428571" width="1.3495555555555556" height="0.06"/><g transform="translate(1.500857142857143,1.444642357142857)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.517 -0.222 L 0.486 0 L 0.057 0 L 0.057 -0.018000000000000002 Q 0.057 -0.034 0.059000000000000004 -0.0385 Q 0.061 -0.043000000000000003 0.07 -0.052000000000000005 L 0.271 -0.257 Q 0.379 -0.367 0.379 -0.465 Q 0.379 -0.525 0.34400000000000003 -0.5665 Q 0.309 -0.608 0.247 -0.608 Q 0.186 -0.608 0.14400000000000002 -0.5730000000000001 Q 0.155 -0.5700000000000001 0.166 -0.5645 Q 0.177 -0.559 0.189 -0.542 Q 0.201 -0.525 0.201 -0.501 Q 0.201 -0.466 0.1785 -0.4475 Q 0.156 -0.429 0.129 -0.429 Q 0.10400000000000001 -0.429 0.0805 -0.4465 Q 0.057 -0.464 0.057 -0.503 Q 0.057 -0.5700000000000001 0.11850000000000001 -0.6125 Q 0.18 -0.655 0.272 -0.655 Q 0.379 -0.655 0.448 -0.603 Q 0.517 -0.551 0.517 -0.466 Q 0.517 -0.431 0.507 -0.404 Q 0.497 -0.377 0.46900000000000003 -0.34750000000000003 Q 0.441 -0.318 0.417 -0.299 Q 0.393 -0.28 0.339 -0.24 Q 0.292 -0.20600000000000002 0.195 -0.125 L 0.342 -0.125 Q 0.433 -0.125 0.444 -0.131 Q 0.457 -0.138 0.47000000000000003 -0.222 L 0.517 -0.222 Z"/></g><g transform="translate(2.075857142857143,1.444642357142857)"><path fill="rgb(0,0,0)" stroke="none" paint-order="stroke fill markers" d=" M 0.312 -0.34800000000000003 L 0.23600000000000002 -0.049 Q 0.23 -0.024 0.215 -0.009000000000000001 Q 0.195 0.008 0.17200000000000001 0.008 Q 0.152 0.008 0.138 -0.0045000000000000005 Q 0.124 -0.017 0.124 -0.037 Q 0.124 -0.05 0.14300000000000002 -0.08600000000000001 Q 0.231 -0.251 0.262 -0.34800000000000003 L 0.202 -0.34800000000000003 Q 0.117 -0.34800000000000003 0.079 -0.301 Q 0.07200000000000001 -0.293 0.0685 -0.291 Q 0.065 -0.289 0.054 -0.289 Q 0.031 -0.289 0.031 -0.303 Q 0.031 -0.311 0.0555 -0.342 Q 0.08 -0.373 0.105 -0.396 Q 0.158 -0.444 0.222 -0.444 L 0.615 -0.444 Q 0.668 -0.444 0.668 -0.405 Q 0.668 -0.383 0.648 -0.363 Q 0.633 -0.34800000000000003 0.598 -0.34800000000000003 L 0.47400000000000003 -0.34800000000000003 Q 0.468 -0.308 0.468 -0.274 Q 0.468 -0.17 0.514 -0.089 Q 0.526 -0.069 0.526 -0.056 Q 0.526 -0.032 0.504 -0.0115 Q 0.482 0.009000000000000001 0.457 0.009000000000000001 Q 0.424 0.009000000000000001 0.40750000000000003 -0.034 Q 0.391 -0.077 0.391 -0.135 Q 0.391 -0.20800000000000002 0.424 -0.34800000000000003 L 0.312 -0.34800000000000003 Z"/></g></g></g></g></svg>
-        <!--span class="fs-4">Bienvenidos</span-->
-      </a>
-
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="./verTemas.html" class="nav-link">Alumnos</a></li>
-      </ul>
-    </header>
-  </div>
-
-
-
-<div class="container col-xl-10 col-xxl-8 px-4 py-5"  id="docente_id">
-  <div class="row align-items-center g-lg-5 py-5">
-    <div class="col-lg-7 text-center text-lg-start">
-      <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Docentes</h1>
-      <div class="row row-cols-1 row-cols-sm-2  g-2 py-5">
-
-      <div class="col d-flex align-items-start">
-      
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="2em" height="2em"><use xlink:href="#mouse"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Ejercicios en línea</h3>
-          <p>Publica ejercicios en linea los cuales están acorde con los programas de estudios actuales.</p>
-          <br><a href="./ExOpcionMultiple">Ver</a>
-        </div>
+<div class="container">
+  <header class="border-bottom lh-1 py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+      <div class="col-4 pt-1">
+        <a class="link-secondary" href="#"><img src="./src/icon2.png"></a>
       </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#notas"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Ejercicios para clase</h3>
-          <p>Crea cuestionarios para uso en clase, de manera individual con respuestas y acorde con los programas de estudio.</p>
-        </div>
+      <div class="col-4 text-center">
+        <a class="blog-header-logo text-body-emphasis text-decoration-none" href="#">Bienvenidos</a>
       </div>
-      <div class="col d-flex align-items-start">
-        <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#aleatorio"/></svg>
-        <div>
-          <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Genera exámenes</h3>
-          <p>Crea exámenes con solo un click.</p>
-        </div>
-      </div></div>
-
-    </div>
-    <div class="col-md-10 mx-auto col-lg-5">
-      <div class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
-        <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="usuario" placeholder="username">
-          <label for="floatingInput">Usuario</label>
-        </div>
-        <div class="form-floating mb-3">
-          <input type="password" class="form-control" id="contrasenna" placeholder="Password">
-          <label for="floatingPassword">Password</label>
-        </div>
-        <div class="checkbox mb-3">
-          <label>
-            <input type="checkbox" id="remember-me"> No cerrar sesión
-          </label>
-        </div>
-        <button class="w-100 btn btn-lg btn-primary" type="submit" id="signup" onclick="autenticar()">Sign up</button>
-        <hr class="my-4">
-        <h3 class="text-body-secondary" id="warning"></h3><br>
-        <small class="text-body-secondary">Al hacer click en  Sign up, acepta que todo los materiales compartidos aquí serán de dominio público.</small>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        
       </div>
     </div>
-  </div>
-
-  <div style="text-align: justify-all;line-height: 2em;">
-     Este proyecto tiene como objetivo ser un banco de preguntas de matemáticas tipo IBO mediante la colaboración de profesores. Aunque cada escuela en el mundo es libre de adquirir materiales que ayuden a los estudiantes a mejorar su progreso durante el programa del diploma, esta libertad puede verse limitada por los recursos económicos disponibles.<br><br>
-
-      Como profesor del Programa del Diploma, encuentro desafiante impartir estos cursos sin acceso a un banco de problemas suficientemente amplio. Por ello, dedico parte de mi labor docente a crear nuevos problemas, lo cual requiere un tiempo considerable. Estoy seguro de que esta situación es compartida por muchos otros docentes y puede aprovecharse dicha situación mediante el intercambio de materiales creado por nosotros ofreciendo distintos puntos de vistas ajenos a cada uno de nosotros de manera que nos complementemos.<br><br>
-      
-      Además, la crisis sanitaria  (al menos en México) ha dejado un rezago educativo significativo. Es por ello que este proyecto también incluye ejercicios repetitivos que permiten a los alumnos practicar herramientas matemáticas, ahorrando tiempo en el uso de estas técnicas (por ahora solo en español).<br><br>
-      
-      La finalidad de este proyecto es proporcionar a los docentes que imparten cursos de matemáticas del Diploma herramientas educativas compartidas, que requieran poco tiempo y permitan enfocarse en el proceso del aprendizaje de los estudiantes, así mismo reducir la brecha al acceso a recursos educativos. Este proyecto no tiene fines lucrativos por lo tanto no se requiere pagos recurrentes.<br><br>
-      <p align="right">Roberto A. Morin Romero</p>
-      <!--div class="col d-flex align-items-start">
-      
-      <svg class="bi text-body-secondary flex-shrink-0 me-3" width="2em" height="2em"><use xlink:href="#mouse"/></svg>
-      <div>
-        <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Ejercicios en línea</h3>
-        <p>Publica ejercicios en linea los cuales están acorde con los programas de estudios actuales.</p>
-        <br><a href="./ExOpcionMultiple">Ver</a>
-      </div>
-    </div>
-    <div class="col d-flex align-items-start">
-      <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#notas"/></svg>
-      <div>
-        <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Ejercicios para clase</h3>
-        <p>Crea cuestionarios para uso en clase, de manera individual con respuestas y acorde con los programas de estudio.</p>
-      </div>
-    </div>
-    <div class="col d-flex align-items-start">
-      <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em"><use xlink:href="#aleatorio"/></svg>
-      <div>
-        <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Genera exámenes</h3>
-        <p>Crea exámenes con solo un click.</p>
-      </div>
-    </div-->
-  </div>
+  </header>
 
 </div>
-  <div class="b-example-divider"></div>
-<script src="./src/assets/dist/js/bootstrap.bundle.min.js"></script>
 
-<div class="b-example-divider"></div>
-
-
-      </div>
+<main class="container">
+  <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+    <div class="col-lg-6 px-0">
+      <h1 class="display-4 fst-italic">Cursos actuales</h1>
+      <p class="lead my-3"><!--Vacio puede ir texto--></p>
+      
     </div>
-  </div-->
-</div>
+  </div>
 
+  <div class="row mb-2">
+    <div class="col-md-6">
+      
+      <a href="./FundamentosdeMatematicas/index.html">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">Mecatrónica</strong>
+          <h3 class="mb-0">Fundamentos de matemáticas </h3>
+          <div class="mb-1 text-body-secondary">Ago - Dic 2024</div>
+
+          
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <svg width="200" height="250" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fondo blanco -->
+            <rect width="200" height="250" fill="white" />
+
+            <!-- Engranaje -->
+            <circle cx="100" cy="125" r="40" fill="none" stroke="#000000" stroke-width="4" />
+            <path d="M100,85 L110,75 L120,85 L110,95 Z" fill="#000000" />
+            <path d="M100,165 L110,175 L120,165 L110,155 Z" fill="#000000" />
+            <path d="M60,125 L50,115 L40,125 L50,135 Z" fill="#000000" />
+            <path d="M140,125 L150,115 L160,125 L150,135 Z" fill="#000000" />
+
+            <!-- Líneas de circuitos -->
+            <line x1="100" y1="65" x2="100" y2="50" stroke="#000000" stroke-width="2" />
+            <line x1="100" y1="50" x2="75" y2="25" stroke="#000000" stroke-width="2" />
+            <circle cx="75" cy="25" r="5" fill="none" stroke="#000000" stroke-width="2" />
+            
+            <line x1="100" y1="185" x2="100" y2="200" stroke="#000000" stroke-width="2" />
+            <line x1="100" y1="200" x2="125" y2="225" stroke="#000000" stroke-width="2" />
+            <circle cx="125" cy="225" r="5" fill="none" stroke="#000000" stroke-width="2" />
+            
+            <line x1="50" y1="125" x2="35" y2="125" stroke="#000000" stroke-width="2" />
+            <line x1="35" y1="125" x2="25" y2="100" stroke="#000000" stroke-width="2" />
+            <circle cx="25" cy="100" r="5" fill="none" stroke="#000000" stroke-width="2" />
+
+            <line x1="150" y1="125" x2="165" y2="125" stroke="#000000" stroke-width="2" />
+            <line x1="165" y1="125" x2="175" y2="150" stroke="#000000" stroke-width="2" />
+            <circle cx="175" cy="150" r="5" fill="none" stroke="#000000" stroke-width="2" />
+          </svg>
+
+        </div>
+      </div></a>
+    </div>
+
+    <div class="col-md-6">
+      <a href="./MatematicasIB/index.html">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">Bachillerato</strong>
+          <h3 class="mb-0">Matematicas NM: Aplicaciones e Intepretaciones</h3>
+          <div class="mb-1 text-body-secondary">Ago - Dic 2024</div>
+
+          
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <svg width="200" height="250" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fondo blanco -->
+            <rect width="200" height="250" fill="white"/>
+          
+            <!-- Gráfico de barras -->
+            <rect x="20" y="180" width="20" height="50" fill="#4CAF50"/>
+            <rect x="50" y="150" width="20" height="80" fill="#2196F3"/>
+            <rect x="80" y="120" width="20" height="110" fill="#FF9800"/>
+            <rect x="110" y="90" width="20" height="140" fill="#9C27B0"/>
+          
+            <!-- Regla -->
+            <rect x="140" y="170" width="5" height="70" fill="#FF5722"/>
+            <line x1="140" y1="175" x2="145" y2="175" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="185" x2="145" y2="185" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="195" x2="145" y2="195" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="205" x2="145" y2="205" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="215" x2="145" y2="215" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="225" x2="145" y2="225" stroke="white" stroke-width="1"/>
+            <line x1="140" y1="235" x2="145" y2="235" stroke="white" stroke-width="1"/>
+          
+            <!-- Compás -->
+            <line x1="160" y1="170" x2="170" y2="110" stroke="#E91E63" stroke-width="3"/>
+            <line x1="160" y1="170" x2="150" y2="110" stroke="#E91E63" stroke-width="3"/>
+            <circle cx="160" cy="170" r="3" fill="#E91E63"/>
+            <line x1="150" y1="110" x2="170" y2="110" stroke="#E91E63" stroke-width="3"/>
+          
+            <!-- Base del compás -->
+            <line x1="150" y1="110" x2="170" y2="110" stroke="#000" stroke-width="2"/>
+          </svg>
+          
+
+        </div>
+      </div></a>
+    </div>
+  </div>
+
+  <div class="row g-5">
+    <div class="col-md-8">
+      <h3 class="pb-4 mb-4 fst-italic border-bottom">
+        <a ><img width="50px" src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"/></a>Proyecto
+      </h3>
 
     </body>
 </html>
