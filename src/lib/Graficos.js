@@ -46,7 +46,7 @@ function NormalGraph(Datos=[-1,1.5,1,2],Size=[400,200]){
 		
 	PointTem=(esc[0][0]*z_lower+esc[0][1])+", "+(Size[1]-30)+" "
 			
-	const dummy=linspaceMorin(z_lower,z_upper,100)
+	const dummy=linspace(z_lower,z_upper,100)
 	for(let k=0;k<dummy.length;++k){
 		PointTem+=(esc[0][0]*dummy[k]+esc[0][1])+", "+(esc[1][0]*Math.exp(-dummy[k]*dummy[k])+esc[1][1])+" "
 	}
@@ -72,7 +72,7 @@ function NormalGraph(Datos=[-1,1.5,1,2],Size=[400,200]){
 	
 	l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
     let Point=""
-    const x=linspaceMorin(-3,3,100)
+    const x=linspace(-3,3,100)
     
     for(let k=0;k<x.length;++k){
         Point+=(esc[0][0]*x[k]+esc[0][1])+", "+(esc[1][0]*Math.exp(-x[k]*x[k])+esc[1][1])+" "

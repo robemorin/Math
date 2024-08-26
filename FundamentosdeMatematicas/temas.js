@@ -942,7 +942,7 @@ const tema = [{
 				let C=abrirPregunta()
 				const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
 				const tx = Math.round(Math.random()*P)
-				const x = linspaceMorin(-10,10,200)
+				const x = linspace(-10,10,200)
 				const y=[]
 				for(let k=0;k<x.length;++k){
 					y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P):Math.cos(2*Math.PI*(x[k]-tx)/P))
@@ -976,7 +976,7 @@ const tema = [{
 				const tx = Math.round(Math.random()*2*P-P)
 				const ty = Math.round(Math.random()*11-5.5)
 				let Tx=tx, Ty=ty
-				const x = linspaceMorin(-10,10,200)
+				const x = linspace(-10,10,200)
 				const y=[]
 				for(let k=0;k<x.length;++k){
 					y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P)+ty:Math.cos(2*Math.PI*(x[k]-tx)/P)+ty)
@@ -1023,7 +1023,7 @@ const tema = [{
 									`$ ${A} \\tan(\\omega x)$`,
 									`$ ${-A} \\tan(\\omega x)$`]
 
-				const x = linspaceMorin(-10,10,200)
+				const x = linspace(-10,10,200)
 				const y=[]
 				for(let k=0;k<x.length;++k){
 					y.push(op[2]? A*Math.sin(2*Math.PI*x[k]/P):A*Math.cos(2*Math.PI*x[k]/P))
@@ -1442,7 +1442,7 @@ function P2(x){
 					Nota:"",
 					fun:function(){
 						function parabola(a,h,k){
-							const x = linspaceMorin(-10,10)
+							const x = linspace(-10,10)
 							const y = []
 							for(let i =0; i<x.length; ++i){
 								y[i] = a*(x[i]-h)**2+k
@@ -1469,7 +1469,7 @@ function P2(x){
 					Nota:"",
 					fun:function(){
 						function parabola(a,x1,x2){
-							const x = linspaceMorin(-10,10)
+							const x = linspace(-10,10)
 							const y = []
 							for(let i =0; i<x.length; ++i){
 								y[i] = a*(x[i]-x1)*(x[i]-x2)
@@ -1506,7 +1506,7 @@ function P2(x){
 					Nota:"",
 					fun:function(){
 						function parabola(a,b,c){
-							const x = linspaceMorin(-10,10)
+							const x = linspace(-10,10)
 							const y = []
 							for(let i =0; i<x.length; ++i){
 								y[i] = a*x[i]**2+b*x[i]+c

@@ -973,140 +973,52 @@ function P4(){
 					Nota:"\\(y = mx + c\\)<br>\\(m=\\frac{y_2-y_1}{x_2-x_1}\\)",
 					fun:function(){
 					//Inicio
+					function PLine(m,b){
+						const x=linspace(-6,6)
+						const y=[]
+						for(let k=0; k<x.length;++k) y[k] = m[0]*x[k]/m[1]+b
+						return [x,y,'-RGB(255,100,155)']
+					}
+					function tempEcLine(m,b){
+						return `$y=${fraccion(m[0],m[1])}x${(b==0?'':
+							((b<0?b:'+'+b))
+						)}$ `
+					}
 					/*Inicio de preguntas*/
-function PreguntaTema(){
-	if(Math.random()>0.5){
-		return P1(1)
-	}else{
-		return P2(1)
-	}
-}
-function P1(x){
-	var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-	do{
-		var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+					let C=abrirPregunta()
+					let m=[(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*5),Math.ceil(Math.random()*5)]
+					m=simplify_frac(m)
+					let b=(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*5)
 
-	}while(m[0]==0)
-	m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-	var b=Math.ceil(Math.random()*10-5)	
-	var mx=20
-	var bx=110
-	
-	var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
-		P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
-		for(var i=-10;i<6;++i){
-			P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-			P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-		}
-		P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-		P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-		
-			P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
-			P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
-		
-		P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
-		
-		P+='</svg></center>'
-		
-	var R=[];
-	
-	if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
-	else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-		do{
-			var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-		}while(m[0]==0)
-		
-		m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-		var b=Math.ceil(Math.random()*10-5)	
-		
-		if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-		else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-			
-		while(repetido(R)){
-			var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-			do{
-				var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-			}while(m[0]==0)
-			m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-			if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-			else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-		}
-	}
-	return [P,R]
-}
-function P2(x){
-	var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-	do{
-		var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
+					const Puntos = [PLine(m,b)]
+					/*const Puntos=[	[[0,1,5,6,2,7],
+                     [5,4,3,2,1,-5],'oRGB(255,100,155)'],
+                     [[0,1,5,6,2,7],
+                     [5,4,3,2,1,-5],'-RGB(100,155,255)']]*/
+    				ElemP=plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]])
 
-	}while(m[0]==0)
-	m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-	
-	var b=Math.ceil(Math.random()*10-5)	
-	var mx=20
-	var bx=110
-	
-	var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
-		P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
-		for(var i=-10;i<6;++i){
-			P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-			P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-		}
-		P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-		P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-		
-			P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
-			P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
-		
-		P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
-		
-		P+='</svg></center>'
-		
-	var R=[];
-	
-	if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
-	else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-		do{
-			var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-		}while(m[0]==0)
-		
-		m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-		
-		if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-		else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-			
-		while(repetido(R)){
-		var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-			do{
-				var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-			}while(m[0]==0)
-		
-			m=MCM(m)
-	if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-			if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-			else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-		}
-	}
-	return [P,R]
-}
-	/*Fin de la sección de preguntas*/
-	let C=abrirPregunta()
-	let [P,R]=PreguntaTema()
-	spanContenido(P,C[6])
-	// C[6].innerHTML=P
-	for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					const P=`Determine la ecuación de la siguiente gráfica <br> <center>${ElemP.outerHTML}</center>`
+
+					spanContenido(P,C[6])
+					const dummy=Math.round(Math.random())
+					const R=[tempEcLine(m,b)]
+					for(let i=1;i<6;++i){
+						do{
+							if(dummy==1){
+								m=[(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*5),Math.ceil(Math.random()*5)]
+								m=simplify_frac(m)
+							}else{
+								b=(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*5)
+							}
+							R[i]=tempEcLine(m,b)
+						}while(repetido(R))
+					
+					}
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					//Final
+
+
+
 						}
 				},
 				{
@@ -1324,7 +1236,7 @@ function P2(x){
 					let C=abrirPregunta()
 					const op = [Math.random()<0.5,Math.random()<0.5,Math.random()<0.5]
 					const tx = Math.round(Math.random()*P)
-					const x = linspaceMorin(-10,10,200)
+					const x = linspace(-10,10,200)
 					const y=[]
 					for(let k=0;k<x.length;++k){
 						y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P):Math.cos(2*Math.PI*(x[k]-tx)/P))
@@ -1358,7 +1270,7 @@ function P2(x){
 					const tx = Math.round(Math.random()*2*P-P)
 					const ty = Math.round(Math.random()*11-5.5)
 					let Tx=tx, Ty=ty
-					const x = linspaceMorin(-10,10,200)
+					const x = linspace(-10,10,200)
 					const y=[]
 					for(let k=0;k<x.length;++k){
 						y.push(op[2]?Math.sin(2*Math.PI*(x[k]-tx)/P)+ty:Math.cos(2*Math.PI*(x[k]-tx)/P)+ty)
@@ -1407,7 +1319,7 @@ function P2(x){
 										`$ ${A} \\tan(\\omega x)$`,
 										`$ ${-A} \\tan(\\omega x)$`]
 
-					const x = linspaceMorin(-10,10,200)
+					const x = linspace(-10,10,200)
 					const y=[]
 					for(let k=0;k<x.length;++k){
 						y.push(op[2]? A*Math.sin(2*Math.PI*x[k]/P):A*Math.cos(2*Math.PI*x[k]/P))
@@ -1456,8 +1368,7 @@ function P1(x){
 		}
 	}while(x[1]==0 || y[1]==y[2])
 	
-	var Lienzo=plotExpPo(axis,dim,x,y,'#ffa200','#222')
-	
+
 	
 	
 	var P="Determine la función exponencial que aparece a continuación<br><center>"+Lienzo+"</center>"
