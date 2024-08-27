@@ -1720,6 +1720,88 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						// C[6].innerHTML=P
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:"Distancia entre puntos I",
+					Nota:"$d_{A,B}=\\sqrt{(x_b-x_a)^2+(y_b-y_a)^2}$",
+					fun:function(){
+						/*inicio*/
+						function repDist(A,B,dummy){
+							const d2=(A[0]-B[0])**2+(A[1]-B[1])**2
+							if(dummy==0){
+								return `$${Math.sqrt(d2).toPrecision(3)}$`
+							}else{
+								if( Math.sqrt(d2) == Math.round(Math.sqrt(d2)) ){
+									return `$${Math.round(Math.sqrt(d2))}$`
+								}else{
+									return `$\\sqrt{${d2}}$`
+								}
+							}
+						}
+						let A=[Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)],B
+						do{
+							B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+						}while(A[0] == B[0] && A[1] == B[1])
+						const dummy=Math.round(Math.random())
+
+						let C=abrirPregunta()
+						const P = `Calcule la distancia entre $A:(${A[0]}, ${A[1]})$ y $B:(${B[0]}, ${B[1]})$.`
+						const R=[]
+						R[0]=repDist(A,B,dummy)
+
+						for(let i=1;i<6;++i){
+							do{
+								B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+								R[i]=repDist(A,B,dummy)
+							}while(repetido(R))
+						}
+
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Distancia entre puntos II",
+					Nota:"$d_{A,B}=\\sqrt{(x_b-x_a)^2+(y_b-y_a)^2}$",
+					fun:function(){
+						/*inicio*/
+						function repDist(A,B,dummy){
+							const d2=(A[0]-B[0])**2+(A[1]-B[1])**2
+							if(dummy==0){
+								return `$${Math.sqrt(d2).toPrecision(3)}$`
+							}else{
+								if( Math.sqrt(d2) == Math.round(Math.sqrt(d2)) ){
+									return `$${Math.round(Math.sqrt(d2))}$`
+								}else{
+									return `$\\sqrt{${d2}}$`
+								}
+							}
+						}
+						let A=[Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)],B
+						do{
+							B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+						}while(A[0] == B[0] && A[1] == B[1])
+						const dummy=Math.round(Math.random())
+
+						let C=abrirPregunta()
+						const Puntos = [	[[A[0],B[0]],
+											 [A[1],B[1]],
+											 'oRGB(100,20,5)']]
+						const P = `Calcule la distancia entre los siguientes puntos.
+						<br><center>${plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]]).outerHTML}</center>`
+						const R=[]
+						R[0]=repDist(A,B,dummy)
+
+						for(let i=1;i<6;++i){
+							do{
+								B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+								R[i]=repDist(A,B,dummy)
+							}while(repetido(R))
+						}
+
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				},
 				{
 					Nombre:"Figuras regulares",
@@ -1749,6 +1831,63 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						let [P,R]=P1()
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])	
+					}
+				},{
+					Nombre:"Punto medio I",
+					Nota:"$P_{AB}=\\left( \\frac{x_a+x_b}{2},\\frac{y_a+y_b}{2} \\right)$",
+					fun:function(){
+						let A=[Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)],B
+						do{
+							B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+						}while(A[0] == B[0] && A[1] == B[1])
+						const dummy=Math.round(Math.random())
+
+						let C=abrirPregunta()
+						const Puntos = [	[[A[0],B[0]],
+											 [A[1],B[1]],
+											 'oRGB(100,20,5)']]
+						const P = `Determine la coordenada $${dummy==1?"x":"y"}$ del punto medio de $A:(${A[0]}, ${A[1]})$ y $B:(${B[0]}, ${B[1]})$.`
+						const R=[]
+						R[0]=dummy==1?`$x = ${fraccion(A[0]+B[0],2)}$`:`$y = ${fraccion(A[1]+B[1],2)}$`
+
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=dummy==1?`$x = ${fraccion(A[0]+B[0]+Math.round(Math.random()*20-10),2)}$`:`$y = ${fraccion(A[1]+B[1]+Math.round(Math.random()*20-10),2)}$`
+							}while(repetido(R))
+						}
+
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Punto medio II",
+					Nota:"$P_{AB}=\\left( \\frac{x_a+x_b}{2},\\frac{y_a+y_b}{2} \\right)$",
+					fun:function(){
+						let A=[Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)],B
+						do{
+							B = [Math.round(Math.random()*10-5),Math.round(Math.random()*10-5)]
+						}while(A[0] == B[0] && A[1] == B[1])
+						const dummy=Math.round(Math.random())
+						
+						let C=abrirPregunta()
+						const Puntos = [	[[A[0],B[0]],
+											 [A[1],B[1]],
+											 'oRGB(100,20,5)']]
+						const P = `Determine la coordenada $${dummy==1?"x":"y"}$ del punto medio de los siguientes puntos.
+						<br><center>${plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]]).outerHTML}</center>`
+						const R=[]
+						R[0]=dummy==1?`$x = ${fraccion(A[0]+B[0],2)}$`:`$y = ${fraccion(A[1]+B[1],2)}$`
+
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=dummy==1?`$x = ${fraccion(A[0]+B[0]+Math.round(Math.random()*20-10),2)}$`:`$y = ${fraccion(A[1]+B[1]+Math.round(Math.random()*20-10),2)}$`
+							}while(repetido(R))
+						}
+
+						spanContenido(P,C[6])
+						// C[6].innerHTML=P
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
 			]
