@@ -1022,205 +1022,116 @@ function P4(){
 						}
 				},
 				{
-					Nombre:"Línea recta, pendientes",
-					Nota:"\\(m=\\frac{y_2-y_1}{x_2-x_1}\\)",
+					Nombre:" Línea recta a partir de dos puntos",
+					Nota:"",
 					fun:function(){
-						function P1(x){
-							do{
-										var a=[Math.round(10*(Math.random()-.5)),Math.round(10*(Math.random()-.5))]
-										var b=[Math.round(10*(Math.random()-.5)),Math.round(10*(Math.random()-.5))]
-									}while(a[0]==b[0] || a[1]==b[1])
-									var m=(a[1]-b[1])/(a[0]-b[0])
-							
-							
-							var P='Calcule la pendiente del segmento que une los puntos A:('+a+') y B:('+b+').'
-								
-							var R=[];
-							
-							R[0]=m.toFixed(2)
-							for(var i=1;i<6;++i){
-								do{
-									R[i]=(m+(Math.random()-0.5)*2).toFixed(2)
-								}while(repetido(R))
-							
+						//Inicio
+						function tempEcLine(m,b){
+							let cadena = `$y =`
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+'x') 
 							}
-							return [P,R]
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
 						}
-							/*Fin de la sección de preguntas*/
-							let C=abrirPregunta()
-							let [P,R]=P1()
-							spanContenido(P,C[6])
-							// C[6].innerHTML=P
-							for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							console.log(`A:${A}, B:${B}`)
+						}while( (A[0] == B[0]) || (A[1] == B[1]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+						let b=[m[1]*A[1]-m[0]*A[0],m[1]]
+						b=simplify_frac(b)
+	
+						
+						const P=`Determine la ecuación de la línea recta que pasa por los puntos $A:(${A[0]}, ${A[1]})$ y $B:(${B[0]}, ${B[1]})$`
+	
+						spanContenido(P,C[6])
+						
+						const R=[tempEcLine(m,b)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									b[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,b)
+							}while(repetido(R))
+						
 						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
 				},
 				{
 					Nombre:" Línea recta.- forma pendiente-ordenada al origen (Gráfica) II",
 					Nota:"",
 					fun:function(){
-						/*inicio*/
-						function MCMHelp(x,a){
-							for(var k=0;k<x.length;++k){
-								if((x[k]%a)!=0) return false;
-							}
-							return true;
+						//Inicio
+						function PLine(m,b){
+							const x=linspace(-6,6)
+							const y=[]
+							for(let k=0; k<x.length;++k) y[k] = m*x[k]+b
+							return [x,y,'-RGB(255,100,155)']
 						}
-						function Max(x){
-						
-							var m=Math.min.apply(Math, x);
-							var M=Math.max.apply(Math, x)
-							
-							if(M>(-m)){
-								return M
-							}else{
-								return -m
+						function tempEcLine(m,b){
+							let cadena = `$y =`
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+'x') 
 							}
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
 						}
-						function MCM(x){
-							var N=x.length;
-							for(var k=2;k<=Max(x)/2;++k){
-								if(MCMHelp(x,k)){
-									for(var i=0;i<x.length;++i){
-										x[i]=x[i]/k;
-									}
-									--k;
-								}
-							}
-							return x
-						}
-						function P1(x){
-							var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-							do{
-								var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-						
-							}while(m[0]==0)
-							m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-							var b=Math.ceil(Math.random()*10-5)	
-							var mx=20
-							var bx=110
-							
-							var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
-								P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
-								for(var i=-10;i<6;++i){
-									P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-									P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-								}
-								P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-								P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-								
-									P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
-									P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
-								
-								P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
-								
-								P+='</svg></center>'
-								
-							var R=[];
-							
-							if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
-							else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-							var dummy=0;
-							for(var i=1;i<6;++i){
-								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-								do{
-									var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-								}while(m[0]==0)
-								
-								m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-								var b=Math.ceil(Math.random()*10-5)	
-								
-								if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-								else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-									
-								while(repetido(R)){
-									var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-									do{
-										var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-									}while(m[0]==0)
-									m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-									if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-									else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-								}
-							}
-							return [P,R]
-						}
-						function P2(x){
-							var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-							do{
-								var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-						
-							}while(m[0]==0)
-							m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-							
-							var b=Math.ceil(Math.random()*10-5)	
-							var mx=20
-							var bx=110
-							
-							var P="Obtenga la ecuación de la línea recta que aparece a continuación:"
-								P+='<center><svg width="'+(mx*21)+'px" height="'+(mx*11)+'">'
-								for(var i=-10;i<6;++i){
-									P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-									P+='<line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
-								}
-								P+='<line x1="'+(bx)+'" y1="0" x2="'+(bx)+'" y2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-								P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line>'
-								
-									P+='<text y="'+(-mx*5+bx)+'" x="'+bx+'" text-anchor="end"  style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5 </text>'
-									P+='<text x="'+(mx*5+bx)+'" y="'+bx+'" text-anchor="middle" alignment-baseline="text-before-edge" style="stroke:red;stroke-width:1;font: italic 13px sans-serif;">5</text>'
-								
-								P+='<line x1="'+(-mx*5+bx)+'" y1="'+(-mx*(-m[0]/m[1]*5+b)+bx)+'" x2="'+(mx*5+bx)+'" y2="'+(-mx*(m[0]/m[1]*5+b)+bx)+'" style="stroke:blue;stroke-width:2"> </line>'
-								
-								P+='</svg></center>'
-								
-							var R=[];
-							
-							if(m[1]==1)	R[0]="y = "+m[0]+"x + ("+(b)+")"
-							else 		R[0]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-							var dummy=0;
-							for(var i=1;i<6;++i){
-								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-								do{
-									var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-								}while(m[0]==0)
-								
-								m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-								
-								if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-								else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-									
-								while(repetido(R)){
-								var m=[Math.ceil(Math.random()*10-5),Math.round(Math.random()*4.49+0.5)]
-									do{
-										var m=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*4.49+0.5)]
-									}while(m[0]==0)
-								
-									m=MCM(m)
-							if(Math.abs(m[0])==m[1]){m[0]/=m[1];m[1]=1}
-									if(m[1]==1)	R[i]="y = "+m[0]+"x + ("+(b)+")"
-									else 		R[i]="y = "+m[0]+"x/"+m[1]+" + ("+(b)+")"
-								}
-							}
-							return [P,R]
-						}
-						/*fin*/
-						function PreguntaTema(){
-							if(Math.random()>0.5){
-								return P1(1)
-							}else {
-								return P2(1)
-							}
-						}
-						//Final
+						/*Inicio de preguntas*/
 						let C=abrirPregunta()
-						let [P,R]=PreguntaTema()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							console.log(`A:${A}, B:${B}`)
+						}while( (A[0] == B[0]) || (A[1] == B[1]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+						let b=[m[1]*A[1]-m[0]*A[0],m[1]]
+						b=simplify_frac(b)
+	
+						const Puntos = [PLine(m[0]/m[1],b[0]/b[1])]
+						ElemP=plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]])
+	
+						const P=`Determine la ecuación de la siguiente gráfica <br> <center>${ElemP.outerHTML}</center>`
+	
 						spanContenido(P,C[6])
+						
+						const R=[tempEcLine(m,b)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									b[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,b)
+							}while(repetido(R))
+						
+						}
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
-					}
+						//Final
+	
+	
+	
+							}
 				}
 			]
 		},
