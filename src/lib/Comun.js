@@ -133,6 +133,13 @@ function fraccion(a,b){
 	const sig = den[1]<0?-1:1
 	return `\\frac{${sig*den[0]}}{${sig*den[1]}}`
 }
+function evaluar(expresion,X){
+	const y = []
+	X.forEach((x) => {
+		y.push(eval(expresion));
+	  });
+	  return y
+}
 /*Number.prototype.noExponents() = function() {
 	var data = String(this).split(/[eE]/);
 	if (data.length == 1) return data[0];
