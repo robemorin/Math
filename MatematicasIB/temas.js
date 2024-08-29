@@ -1097,7 +1097,7 @@ function P4(){
 						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B
 						do{
 							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
-							console.log(`A:${A}, B:${B}`)
+		
 						}while( (A[0] == B[0]) || (A[1] == B[1]) )
 						const dummy=Math.round(Math.random())
 						
@@ -1123,6 +1123,93 @@ function P4(){
 									b[0] += Math.round(Math.random()*4-2)
 								}
 								R[i]= tempEcLine(m,b)
+							}while(repetido(R))
+						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
+				},
+				{
+					Nombre:" Línea recta.- Forma General (Gráfica) II",
+					Nota:"$Ax+By+C=0$",
+					fun:function(){
+						//Inicio
+						function PLine(A,B){
+							
+							let V = [ A[0]-B[0], A[1]-B[1] ]
+							V = simplify_frac(V)
+							//console.log( `V:${V}`)
+							let u1 = (5.99-A[1])/V[1]
+							let a=[A[0]+u1*V[0],A[1]+u1*V[1]]
+							if(a[0]>5.99){
+								u1 = (5.99-A[0])/V[0]
+							}else if(a[0]<-5.99){
+								u1 = (-5.99-A[0])/V[0]
+							}
+
+							let u2 = (-5.99-A[1])/V[1]
+							a=[A[0]+u2*V[0],A[1]+u2*V[1]]
+							if(a[0]>5.99){
+								u2 = (5.99-A[0])/V[0]
+								//console.log(`Se pasó + ${a}`)
+								a=[A[0]+u2*V[0],A[1]+u2*V[1]]
+								//console.log(`Se pasó + ${a}`)
+							}else if(a[0]<-5.99){
+								u2 = (-5.99-A[0])/V[0]
+								//console.log(`Se pasó - ${a}`)
+								a=[A[0]+u2*V[0],A[1]+u2*V[1]]
+								//console.log(`Se pasó - ${a}`)
+							}
+
+							return [[[A[0]+u2*V[0],A[0],A[0]+u1*V[0]],[A[1]+u2*V[1],A[1],A[1]+u1*V[1]],'-RGB(122,58,186)']]
+						}
+						function tempEcLine(A,D){
+							if(D[0]<0){
+								D=[-D[0],-D[1]]
+							}
+							let cadena = `$ ${D[0]==0?'':(D[0]==1?'':D[0])+'x'}`
+							cadena += `${D[1]==0?'':(Math.abs(D[1])==1?
+														(D[1]<0?'-y':'+y'):
+														(D[1]<0?D[1]+'y':`+${D[1]}y`))
+							}`
+							const c = -(D[0]*A[0]+D[1]*A[1])
+							cadena += `${(c==0?'':(c<0?'-':'+')+Math.abs(c))}`
+							cadena += `=0$`
+							
+							return cadena
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+						}while( (A[0] == B[0]) && (A[1] == B[1]) )
+						
+						const dummy=Math.round(Math.random())
+						
+						let Delta=[ B[1]-A[1],A[0]-B[0] ]
+						Delta=simplify_frac(Delta)
+
+						const c = -(Delta[0]*A[0]+Delta[1]*A[1])
+	
+						const Puntos = PLine(A,B)
+						ElemP=plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]])
+	
+						const P=`Determine la ecuación de la siguiente gráfica <br> <center>${ElemP.outerHTML}</center>`
+	
+						spanContenido(P,C[6])
+						
+						const R=[tempEcLine(A,Delta)]
+						for(let i=1;i<6;++i){
+							do{
+								do{
+								Delta[dummy]+=Math.round(Math.random()*6-3)
+								}while(Delta[dummy]==0)
+								R[i]= tempEcLine(A,Delta)
 							}while(repetido(R))
 						
 						}
