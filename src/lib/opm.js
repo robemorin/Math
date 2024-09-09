@@ -261,3 +261,13 @@ function abrirPregunta(){
 	return C
 	
 }
+function repetido(cadena){
+	var N=cadena.length-1;
+	
+	for(var k=0;k<N;++k){
+		if(cadena[N]===cadena[k]){
+			return true;
+		}
+	}
+	return false;
+}

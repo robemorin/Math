@@ -426,7 +426,39 @@ const tema = [{
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						
 					}
-				},
+				},{
+					Nombre:"Sistema de ecuaciones",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+
+						const a=[	[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)],
+									[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]]
+						let D = a[0][0]*a[1][1]-a[0][1]*a[1][0]
+						if(D == 0){
+							a[0][0]++
+							D = a[0][0]*a[1][1]-a[0][1]*a[1][0]
+						}
+						let num
+						const q=Math.round(Math.random())
+						const b=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),	(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
+						if(q==0){
+							num = b[0]*a[1][1]-b[1]*a[0][1]
+						}else{
+							num = b[1]*a[0][0]-b[0]*a[1][0]
+						}
+
+						spanContenido(`Determine el valor de $${q==0?'x':'y'}$ <br><center> $\\begin{array}{rcl} ${a[0][0]}x ${(a[0][1]>0?'+':'-')+Math.abs(a[0][1])}y & = & ${b[0]} \\\\ ${a[1][0]}x ${(a[1][1]>0?'+':'-')+Math.abs(a[1][1])}y & = & ${b[1]} \\end{array} $</center>`,C[6])
+						const R=[];
+						R[0]=`$${fraccion(num,D)}$`
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=`$${fraccion(num+Math.round(Math.random()*12-5),D)}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
 			]
 		},
 		{
@@ -1199,7 +1231,7 @@ function P4(){
 						const Puntos = PLine(A,B)
 						ElemP=plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]])
 	
-						const P=`Determine la ecuación de la siguiente gráfica <br> <center>${ElemP.outerHTML}</center>`
+						const P=`Determine la ecuación de la siguiente gráfica en la forma general<br> <center>${ElemP.outerHTML}</center>`
 	
 						spanContenido(P,C[6])
 						
@@ -1887,6 +1919,121 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						// C[6].innerHTML=P
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:" Líneas paralelas I",
+					Nota:"",
+					fun:function(){
+						//Inicio
+						function PLine(m,b){
+							const x=linspace(-6,6)
+							const y=[]
+							for(let k=0; k<x.length;++k) y[k] = m*x[k]+b
+							return [x,y,'-RGB(255,100,155)']
+						}
+						function tempEcLine(m,b){
+							let cadena = `$y =`
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+'x') 
+							}
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B, c
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							c = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+		
+						}while( (A[0] == B[0]) || (A[1] == B[1]) || (A[0] == c[0]) || (c[0] == B[0]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+						let b=[m[1]*c[1]-m[0]*c[0],m[1]]
+						b=simplify_frac(b)
+	
+						
+	
+						const P=`Sea $A:(${A[0]},${A[1]})$ y $B:(${B[0]},${B[1]})$. Determine la ecuación paralela al segmento $\\overline{AB}$ que pase por $C:(${c[0]},${c[1]})$.`
+	
+						spanContenido(P,C[6])
+						
+						const R=[tempEcLine(m,b)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									b[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,b)
+							}while(repetido(R))
+						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
+				},{
+					Nombre:" Líneas perpendiculares I",
+					Nota:"",
+					fun:function(){
+						//Inicio
+						function tempEcLine(m,c){
+							function mp(m){
+								return [m[0]<0?m[1]:-m[1],m[0]<0?-m[0]:m[0]]
+							}
+							let cadena = `$y =`
+							m=mp(m)
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+' x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+' x') 
+							}
+							const b=[m[1]*c[1]-m[0]*c[0],m[1]]
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B, c
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							c = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+		
+						}while( (A[0] == B[0]) || (A[1] == B[1]) || (A[0] == c[0]) || (c[0] == B[0]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+	
+						
+	
+						const P=`Sea $A:(${A[0]},${A[1]})$ y $B:(${B[0]},${B[1]})$. Determine la ecuación perpendicular al segmento $\\overline{AB}$ que pase por $C:(${c[0]},${c[1]})$.`
+	
+						spanContenido(P,C[6])
+						
+						const R=[tempEcLine(m,c)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									c[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,c)
+							}while(repetido(R))
+						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
 				}
 			]
 		},
