@@ -1071,7 +1071,7 @@ function P4(){
 						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B
 						do{
 							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
-							console.log(`A:${A}, B:${B}`)
+							
 						}while( (A[0] == B[0]) || (A[1] == B[1]) )
 						const dummy=Math.round(Math.random())
 						
@@ -1244,6 +1244,65 @@ function P4(){
 								R[i]= tempEcLine(A,Delta)
 							}while(repetido(R))
 						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
+				},
+				{
+					Nombre:" Línea recta.- Equivalencia forma general",
+					Nota:"$Ax+By+C=0$",
+					fun:function(){
+						//Inicio
+						function EcGeneral(L){
+							const A=L[0]
+							const B=L[1]
+							const C=L[2]
+							console.log(`A:${A}`)
+							console.log(`B:${B}`)
+							console.log(`C:${C}`)
+
+							let S = `$${(A[0]<0?'-':'')+
+								(A[1]==1?(Math.abs(A[0])==1?'':Math.abs(A[0])):
+								fraccion(Math.abs(A[0]),A[1]))}x`
+								S += `${(B[0]<0?'-':'+')+
+									(B[1]==1?(Math.abs(B[0])==1?'':Math.abs(B[0])):
+									fraccion(Math.abs(B[0]),B[1]))}y`
+								S += `${(C[0]<0?'-':'+')+
+									(C[1]==1?Math.abs(C[0]):fraccion(Math.abs(C[0]),C[1]))} = 0$`
+							return S
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let L=[	Math.ceil(Math.random()*10),
+								Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1),
+								Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1)]
+						let MCD = Math.abs(mcd_new(L[0],mcd_new(L[1],L[2])))
+
+						L = [[L[0]/MCD,1],[L[1]/MCD,1],[L[2]/MCD,1]]
+						
+						let f = [Math.ceil(Math.random()*9+1)*(Math.random()<0.5?1:-1),
+										Math.ceil(Math.random()*10)]
+						
+						let L2=[[L[0][0]*f[0],L[0][1]*f[1]],[L[1][0]*f[0],L[1][1]*f[1]],[L[2][0]*f[0],L[2][1]*f[1]]]
+	
+						const P=`Determine la forma general mínima de la siguiente expresión ${EcGeneral(L2)}  `
+	
+						spanContenido(P,C[6])
+						
+						const R=[EcGeneral(L)]
+						for(let i=1;i<6;++i){
+							do{
+								L=[	Math.ceil(Math.random()*10),
+									Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1),
+									Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1)]
+								MCD = Math.abs(mcd_new(L[0],mcd_new(L[1],L[2])))
+								L = [[L[0]/MCD,1],[L[1]/MCD,1],[L[2]/MCD,1]]
+								R[i]= EcGeneral(L)
+							}while(repetido(R))
 						}
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						//Final
@@ -2025,6 +2084,128 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 									c[0] += Math.round(Math.random()*4-2)
 								}
 								R[i]= tempEcLine(m,c)
+							}while(repetido(R))
+						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
+				},{
+					Nombre:" Líneas paralelas II",
+					Nota:"",
+					fun:function(){
+						//Inicio
+						function PLine(m,b){
+							const x=linspace(-6,6)
+							const y=[]
+							for(let k=0; k<x.length;++k) y[k] = m*x[k]+b
+							return [x,y,'-RGB(255,100,155)']
+						}
+						function tempEcLine(m,b){
+							let cadena = `$y =`
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+'x') 
+							}
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B, c
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							c = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+		
+						}while( (A[0] == B[0]) || (A[1] == B[1]) || (A[0] == c[0]) || (c[0] == B[0]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+						let b=[m[1]*A[1]-m[0]*A[0],m[1]]
+						b=simplify_frac(b)
+
+						ElemP=plot([PLine(m[0]/m[1],b[0]/b[1]),[[c[0]],[c[1]],'oRGB(255,100,155)']],[400,400],[-6,6,-6,6,[1,1],[1,1]])
+
+						const P=`Determine la ecuación a línea paralela a la recta que se muestra y pase por el punto mostrados.<br><center>${ElemP.outerHTML}</center>`
+	
+						spanContenido(P,C[6])
+						b=[m[1]*c[1]-m[0]*c[0],m[1]]
+						b=simplify_frac(b)
+						const R=[tempEcLine(m,b)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									b[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,b)
+							}while(repetido(R))
+						
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						//Final
+	
+	
+	
+							}
+				},{
+					Nombre:" Líneas perpendiculares II",
+					Nota:"",
+					fun:function(){
+						//Inicio
+						function PLine(m,b){
+							//console.log(`m=${m}; b=${b}`)
+							const x=linspace(-6,6)
+							const y=[]
+							for(let k=0; k<x.length;++k) y[k] = m*x[k]+b
+							return [x,y,'-RGB(255,100,155)']
+						}
+						function tempEcLine(m,b){
+							let cadena = `$y =`
+							if(m[0]!=0){
+								cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+fraccion(Math.abs(m[0]),m[1])+'x') 
+							}
+							cadena += (b[0]==0?'':(b[0]<0?"-":"+")+fraccion(Math.abs(b[0]),b[1]))+"$"
+							return cadena
+						}
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)], B, c
+						do{
+							B = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+							c = [Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
+		
+						}while( (A[0] == B[0]) || (A[1] == B[1]) || (A[0] == c[0]) || (c[0] == B[0]) )
+						const dummy=Math.round(Math.random())
+						
+						let m=[ B[1]-A[1], B[0]-A[0] ]
+						m=simplify_frac(m)
+
+						let b=[m[1]*A[1]-m[0]*A[0],m[1]]
+						b=simplify_frac(b)
+
+						ElemP=plot([PLine(m[0]/m[1],b[0]/b[1]),[[c[0]],[c[1]],'oRGB(255,100,155)']],[400,400],[-6,6,-6,6,[1,1],[1,1]])
+
+						const P=`Determine la ecuación a línea perpendicular a la recta que se muestra y pase por el punto mostrados.<br><center>${ElemP.outerHTML}</center>`
+						spanContenido(P,C[6])
+
+						m=m[0]<0?[m[1],-m[0]]:[-m[1],m[0]]
+						b=[m[1]*c[1]-m[0]*c[0],m[1]]
+						b=simplify_frac(b)
+						const R=[tempEcLine(m,b)]
+						for(let i=1;i<6;++i){
+							do{
+								if(dummy==1){
+									m[0] += Math.round(Math.random()*4-2)
+								}else{
+									b[0] += Math.round(Math.random()*4-2)
+								}
+								R[i]= tempEcLine(m,b)
 							}while(repetido(R))
 						
 						}
