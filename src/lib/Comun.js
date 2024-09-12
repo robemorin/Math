@@ -120,18 +120,26 @@ function linspace(x_min,x_max,n=100){
 	for(let k=0;k<n;++k) x.push(x_min+k*h)
 	return x
 }
-function fraccion(a,b){
-	if(b==0){
-		return `${a<0?'-':''}\\infty`
-	}else if(a == 0){
-		return 0
-	}
-	let den = simplify_frac([a,b])
-	if( Math.abs(den[1]) == 1 ){
-		return den[0]*den[1]
-	}
-	const sig = den[1]<0?-1:1
-	return `\\frac{${sig*den[0]}}{${sig*den[1]}}`
+function fraccion(a,b,op=false){
+	
+		if(b==0){
+			return `${a<0?'-':''}\\infty`
+		}else if(a == 0){
+			return 0
+		}
+		let den = simplify_frac([a,b])
+		if( Math.abs(den[1]) == 1 ){
+			return den[0]*den[1]
+		}
+		
+		if(!op){
+			const sig = den[1]<0?-1:1
+			return `\\frac{${sig*den[0]}}{${sig*den[1]}}`
+		}else{
+			const sig = den[0]*den[1]<0?'-':''
+			return `${sig}\\frac{${Math.abs(den[0])}}{${Math.abs(den[1])}}`
+		}
+		
 }
 function evaluar(expresion,X){
 	const y = []

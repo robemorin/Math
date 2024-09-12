@@ -961,7 +961,123 @@ function P4(){
 		{
 			Nombre:"Polinomios",
 			test:[
-				
+				{
+					Nombre:"Parábola > Eje de simetría",
+					Nota:"$x_s = -\\frac{b}{2a}$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							let CC
+							do{
+								CC=[Math.ceil(5*Math.random())*(Math.random()<0.5?1:-1),
+										Math.round(20*(Math.random()-.5)),Math.round(20*(Math.random()-.5))]
+							}while(CC[1]==0 & CC[2]==0)
+
+							const P=`Calcule el eje de simetría de $y = ${polinomio(CC)}$`
+							
+							let xs=[-CC[1],2*CC[0]]
+							xs = simplify_frac(xs)
+
+							const R=[`$x_s = ${fraccion(xs[0],xs[1],true)} $`]
+							
+							for(let i=1;i<6;++i){
+								do{
+									CC=[Math.ceil(5*Math.random())*(Math.random()<0.5?1:-1),
+										Math.round(20*(Math.random()-.5)),Math.round(20*(Math.random()-.5))]
+										xs=[-CC[1],2*CC[0]]
+										xs = simplify_frac(xs)
+									R[i]=`$x_s = ${fraccion(xs[0],xs[1],true)} $`
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						/*final*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Parábola > Vértice",
+					Nota:"$x_s = -\\frac{b}{2a}$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							let CC
+							do{
+								CC=[Math.ceil(5*Math.random())*(Math.random()<0.5?1:-1),
+										Math.round(20*(Math.random()-.5)),Math.round(20*(Math.random()-.5))]
+							}while(CC[1]==0 & CC[2]==0)
+
+							const P=`Calcule la coordenada del vértice de $y = ${polinomio(CC)}$`
+							
+							let xs=[-CC[1],2*CC[0]]
+							xs = simplify_frac(xs)
+							dummy = [CC[0]*xs[0]**2+CC[1]*xs[0]*xs[1]+CC[2]*xs[1]**2,xs[1]**2]
+							ys = simplify_frac(dummy)
+
+							const R=[`$(${fraccion(xs[0],xs[1],true)}, ${fraccion(ys[0],ys[1],true)}) $`]
+							
+							for(let i=1;i<6;++i){
+								do{
+									dummy[0] += Math.round(Math.random()*4-2)
+									ys = simplify_frac(dummy)
+									R[i]=`$(${fraccion(xs[0],xs[1],true)}, ${fraccion(ys[0],ys[1],true)}) $`
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						/*final*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Parábola: Calcular los coeficientes a partir de puntos dados I",
+					Nota:"$ y = ax^2+bx+c$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							let A
+							do{
+								A=[[0,Math.ceil(Math.random()*50)*(Math.random()<0.5?1:-1)],
+								   [Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1),0],
+								   [Math.ceil(Math.random()*10)*(Math.random()<0.5?1:-1),0]]
+							}while(A[1][0]==A[2][0] )
+							const coef=['a','b','c']
+							const CC=[	[-A[0][1]*A[2][0]+A[0][1]*A[1][0],			(A[1][0]**2)*A[2][0]-(A[2][0]**2)*A[1][0]],
+										[-(A[1][0]**2)*A[0][1]+(A[2][0]**2)*A[0][1],(A[1][0]**2)*A[2][0]-(A[2][0]**2)*A[1][0]],
+										[A[0][1],1]]
+							console.log(`len: ${CC[0]} * ${CC[1]} * ${CC[2]} `)
+							
+							const op=Math.floor(Math.random()*2.5)
+							const P=`Una parábola de la forma $y=ax^2+bx+c$, pasa por los puntos $(${A[0][0]}, ${A[0][1]})$, $(${A[1][0]}, ${A[1][1]})$ y $(${A[2][0]}, ${A[2][1]})$. Determine el valor del coeficiente $${coef[op]}$`
+							
+							let ans = CC[op]
+							
+							dummy = simplify_frac(ans)
+							const R=[`$${coef[op]} = ${fraccion(dummy[0],dummy[1],true)}$`]
+							
+							for(let i=1;i<6;++i){
+								do{
+									ans[0] += Math.round(Math.random()*6-3)
+									dummy = simplify_frac(ans)
+									R[i]=`$${coef[op]} = ${fraccion(dummy[0],dummy[1],true)}$`
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						/*final*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
 			]
 		},
 		{
@@ -1261,9 +1377,6 @@ function P4(){
 							const A=L[0]
 							const B=L[1]
 							const C=L[2]
-							console.log(`A:${A}`)
-							console.log(`B:${B}`)
-							console.log(`C:${C}`)
 
 							let S = `$${(A[0]<0?'-':'')+
 								(A[1]==1?(Math.abs(A[0])==1?'':Math.abs(A[0])):
