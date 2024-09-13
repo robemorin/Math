@@ -1077,7 +1077,56 @@ function P4(){
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
-				},
+				},{
+					Nombre:"Fórmula general",
+					Nota:"$x_{1,2}=\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}$",
+					fun:function(){
+						function P1(x){
+							do{
+							var a=Math.round(Math.random()*20-11)
+							var b=Math.round(Math.random()*20-11)
+							var c=Math.round(Math.random()*20-11)
+							}while((b*b-4*a*c)<=0 || a==0)
+							var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+							if(x[0]>x[1]){
+								var dummy=x[0]
+								x[0]=x[1]
+								x[1]=dummy;
+							}	
+								
+							
+							var P=`La solución de $${polinomio([a,b,c])} = 0$ es`
+							
+							
+							var R=[];
+							R[0]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+								
+								do{
+									var a=Math.round(Math.random()*20-11)
+									var b=Math.round(Math.random()*20-11)
+									var c=Math.round(Math.random()*20-11)
+								}while((b*b-4*a*c)<=0 || a==0)
+								var x=[(-b-Math.sqrt(b*b-4*a*c))/(2*a),(-b+Math.sqrt(b*b-4*a*c))/(2*a)]
+								if(x[0]>x[1]){
+									var dummy=x[0]
+									x[0]=x[1]
+									x[1]=dummy;
+								}
+								
+									R[i]="<i>x</i> = "+x[0].toFixed(3)+", "+x[1].toFixed(3)
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				}
 			]
 		},
 		{
