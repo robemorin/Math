@@ -646,7 +646,7 @@ const tema = [{
 					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 				}
 			},{
-				Nombre:"Fracciones parciales: caso 2",
+				Nombre:"Fracciones parciales: caso 1 B",
 				Nota:"",
 				fun:function(){
 					function construye_a(){
@@ -682,7 +682,7 @@ const tema = [{
 					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 				}
 			},{
-				Nombre:"Fracciones parciales: caso 3",
+				Nombre:"Fracciones parciales: caso 2",
 				Nota:"",
 				fun:function(){
 					function construye_a(){
@@ -704,6 +704,36 @@ const tema = [{
 							a[index] = (Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)
 							console.log(index)
 							R[i]=`$\\frac{${polinomio([a[0]])}}{${polinomio([1,a[1]])}}+\\frac{${polinomio([a[2]])}}{(${polinomio([1,a[1]])})^2}+\\frac{${polinomio([a[3]])}}{${polinomio([1,a[4]])}}$`
+						}while(repetido(R))
+					}
+					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+				}
+			},{
+				Nombre:"Fracciones parciales: caso 3",
+				Nota:"",
+				fun:function(){
+					const b = [	Math.round(Math.random()*20-10),
+								Math.round(Math.random()*8+1),
+								Math.round(Math.random()*20-10)]
+					let a=[]
+					do{
+						a=[	Math.round(Math.random()*20-10),
+								Math.round(Math.random()*20-10),
+								Math.round(Math.random()*8+1)*(Math.random()<0.5?1:-1)]
+					}while(a[0]==0 && a[1]==0)
+					let C=abrirPregunta()
+					const num = [a[0]+a[2],2*a[2]*b[0]+a[0]*b[2]+a[1],a[1]*b[2]+a[2]*(b[0]**2+b[1])]
+					spanContenido(`Separe la siguiente expresión $\\frac{${polinomio(num)}}{(${polinomio([1,2*b[0],b[0]**2+b[1]])})(${polinomio([1,b[2]])})}$`,C[6])
+					const R=[];
+					R[0]=`$ \\frac{${polinomio([a[0],a[1]])}}{(${polinomio([1,b[0]])})^2+${b[1]}}+\\frac{${polinomio([a[2]])}}{(${polinomio([1,b[2]])})}$`
+					index=Math.floor(Math.random()*2.4)
+					
+					
+					for(let i=1;i<6;++i){
+						do{
+							a[index] = Math.round(Math.random()*8+1)*(Math.random()<0.5?1:-1)
+							//console.log(index)
+							R[i]=`$ \\frac{${polinomio([a[0],a[1]])}}{(${polinomio([1,b[0]])})^2+${b[1]}}+\\frac{${polinomio([a[2]])}}{(${polinomio([1,b[2]])})}$`
 						}while(repetido(R))
 					}
 					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])

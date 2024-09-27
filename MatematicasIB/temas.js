@@ -1126,7 +1126,64 @@ function P4(){
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
-				}
+				},{
+					Nombre:"Parábola: Forma vértice",
+					Nota:"$ y = a(x-h)^2+k$",
+					fun:function(){
+						/*inicio*/
+						function P1(x){
+							//
+							function parabolaVertice(dummy){
+								const h = dummy[0]
+								const k = dummy[1]
+								const p = [dummy[2], dummy[3]]
+								let a = [p[1]-k,(p[0]-h)**2]
+								//a=simplify_frac(a)
+								console.log(a)
+								return `$y = ${fraccion(a[0],a[1],true)}(${polinomio([1,-h])})^2 ${(k>=0?'+'+k:k)} $`
+							}
+							let h = Math.round(Math.random()*8-4)
+							let k = Math.round(Math.random()*8-4)
+							let p
+							do{
+								p = [Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+h),
+									Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+k)]
+							} while(p[1]>5 || p[1]<-5)
+							
+							const xp = linspace(-6,6,500)
+							const yp = evaluar(`${(p[1]-k)/((p[0]-h)**2)}*(x-(${h}))**2+(${k})`,xp)
+							Puntos=[[xp,yp,'-RGB(200,50,50)']]
+							ElemP=plot(Puntos,[400,400],[-6,6,-6,6,[1,1],[1,1]])
+							
+							const P=`Determine la ecuación de la parábola que aparece a continuación en la forma de vértice.<center>${ElemP.outerHTML}</center>`
+							op=Math.floor(Math.random()*4)
+							dummy = [h,k,p[0],p[1]]
+							const R=[parabolaVertice(dummy)]
+							
+							for(let i=1;i<6;++i){
+								do{
+									h = Math.round(Math.random()*8-4)
+									k = Math.round(Math.random()*8-4)
+									do{
+										p = [Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+h),
+											Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+k)]
+									} while(p[1]>5 || p[1]<-5)
+									
+
+									dummy[op] += Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1))
+									R[i]=parabolaVertice(dummy)
+								}while(repetido(R))
+							
+							}
+							return [P,R]
+						}
+						/*final*/
+						let C=abrirPregunta()
+						let [P,R]=P1()
+						spanContenido(P,C[6])
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
 			]
 		},
 		{
