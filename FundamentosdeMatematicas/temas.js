@@ -619,7 +619,36 @@ const tema = [{
 					spanContenido(P,C[6])
 					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 				}
-			}]
+			},{
+				Nombre:"Conversión de números complejos en forma cartesina a exponencial",
+				Nota:"",
+				fun:function(){
+					
+					let C=abrirPregunta()
+					let dummy
+					do{
+						dummy= [Math.round(Math.random()*19-9.5),Math.round(Math.random()*19-9.5)]
+					}while(dummy[0]==0 && dummy[1]==0)
+
+					const a = new Complejo(dummy[0],dummy[1])
+					let magAng=[Math.sqrt(dummy[0]**2+dummy[1]**2),Math.atan2(dummy[1],dummy[0])]
+
+					spanContenido(`Convierta $${a.toString()}$ a forma exponencial`,C[6])
+					const temp = Math.random()<0.5	
+					const op = Math.random()<0.5?0:1	
+					
+						const R=[`$${magAng[0].toPrecision(3)}e^{${temp?(magAng[1]).toPrecision(3):(magAng[1]*180/Math.PI).toPrecision(3)+"°"}j}$`]
+						
+						for(let i=1;i<6;++i){
+							do{
+								magAng[op] += (magAng[op]+2)*(Math.random()-0.5)
+								R[i]=`$${magAng[0].toPrecision(3)}e^{${temp?(magAng[1]).toPrecision(3):(magAng[1]*180/Math.PI).toPrecision(3)+"°"}j}$`
+							}while(repetido(R))
+						}
+
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+				}
+			},]
 		},
 		{
 			Nombre:"Fracciones parciales",

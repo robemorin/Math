@@ -1162,14 +1162,6 @@ function P4(){
 							
 							for(let i=1;i<6;++i){
 								do{
-									h = Math.round(Math.random()*8-4)
-									k = Math.round(Math.random()*8-4)
-									do{
-										p = [Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+h),
-											Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1)+k)]
-									} while(p[1]>5 || p[1]<-5)
-									
-
 									dummy[op] += Math.round((Math.random()*3+1)*(Math.random()<0.5?1:-1))
 									R[i]=parabolaVertice(dummy)
 								}while(repetido(R))
