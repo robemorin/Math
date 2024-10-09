@@ -5,6 +5,54 @@ const tema = [{
 			Nombre:"Aritmética",
 			test:[
 				{
+					Nombre: "Notación científica",
+					Nota:"$a\\times 10^{k}$",
+					fun: function(){
+						function P1(x){
+							let k=Math.round(Math.random()*20-5)
+							const cs=eval((Math.round(Math.random()*9+1)+Math.random()).toFixed(2))
+							
+							var P=`Convierta ${parseFloat((Math.pow(10,k)*cs).toPrecision(3))} a notación científica`
+							
+							var R=[];
+							R[0]=NotacionCientifica(Math.pow(10,k)*cs)
+							for(var i=1;i<6;++i){
+								do{
+									k=Math.round(Math.random()*20-5)
+									R[i]=NotacionCientifica(Math.pow(10,k)*cs)
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						function P2(x){
+							var k=Math.round(Math.random()*20-5)
+							var cs=eval((Math.round(Math.random()*9+1)+Math.random()).toFixed(2))
+							
+							var P=`Convierta ${NotacionCientifica(Math.pow(10,k)*cs)} a expresión regular.`
+							
+							
+							
+							
+							var R=[];
+							R[0]=parseFloat((Math.pow(10,k)*cs).toPrecision(3))
+							var dummy=0;
+							for(var i=1;i<6;++i){
+								do{
+									k=Math.round(Math.random()*20-5)
+									R[i]=parseFloat((Math.pow(10,k)*cs).toPrecision(3))
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						let C=abrirPregunta()
+						let [P,R] = Math.random()<0.5?P1():P2()
+						
+						spanContenido(P,C[6])
+						
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},
+				{
 					Nombre:"Suma de fracciones",
 					Nota:"El alumno debe ser capaz de realizarlos sin calculadora",
 					fun:function(){
@@ -1969,7 +2017,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 					Nota:"$A_c=\\frac{\\pi r^2 \\alpha°}{360°}$<br/><br/> $A_c=\\frac{r^2 \\alpha}{2}$",
 					fun:function(){
 						/*inicio*/
-						function calculateSectorPath(angle, radius,r) {
+						function calculateSectorPath(angle, radius,r=70) {
 							// Convertir el ángulo a radianes
 							const angleRad = (angle * Math.PI) / 180;
 						
