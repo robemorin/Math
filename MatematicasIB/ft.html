@@ -1,0 +1,195 @@
+<html ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title id="Pestanna">Fichas de trabajo</title>
+
+
+<style type="text/css">
+:root {
+  --destacar: red;
+}
+.ans{
+  display: inline-block;
+   div{
+    width: fit-content;
+    display: inline-block;
+    margin-right: 20px; /* Distancia entre elementos */
+  }
+}
+.marcarBorde, .marcarBorde td{
+  border: solid var(--destacar) 1px;
+}
+.info{
+  width: 100%;
+}
+.header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #000;
+            padding: 10px 0;
+        }
+        .header .info {
+            display: flex;
+            flex-direction: column;
+        }
+        .header .info div {
+            margin: 5px 0;
+        }
+        .header .logo img {
+            max-width: 100px;
+            height: auto;
+        }
+.addbutton::before {
+	content: "+";
+	color:chocolate;
+	font-weight: normal;
+}
+main, main>span{
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+details[open]>summary {
+  font-weight: bold;
+  color:blue;
+}
+details{
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#TablaInicio{
+  border:solid 2px white;
+}
+#menu, td{
+  white-space:nowrap;
+  width: fit-content;
+}
+
+
+.Respuesta{
+		border: dashed 1px gray;
+		overflow: hidden !important;
+  }
+.Solution{
+	margin-top:10px; 
+    padding-left:30px; 
+    display:inline-block;
+	overflow: hidden !important;
+}
+div.problema2{
+  line-height: 2 ;
+}
+.FT_ol_a{
+  counter-reset: item;
+}
+.FT_ol_a li{
+  list-style: none;
+  counter-increment: item;
+    div:last-child{
+      display: inline-block;
+      float: right;
+    }
+    div:last-child::before{
+      content: "[";  
+    }
+    div:last-child::after{
+      content: "]";  
+    }
+}
+
+.FT_ol_a li::before {
+  content: "(" counter(item, lower-alpha) ") ";
+  margin-right: 5px;
+  
+}
+.mark{
+  display: inline-block;
+  float: right;
+}
+.mark::before{
+  content: "[";  
+}
+.mark::after{
+  content: "]";  
+}
+
+.cuadroRespuesta{
+  border: solid 1px black;
+  td:nth-child(2){
+  width: 80%;
+  height:1.5em;
+  background: linear-gradient(to right, black 50%, transparent 0%) bottom repeat-x;
+  background-size: 20px 1px, 1px 5px;
+  }
+}
+.tablaEspaciada tr td{
+    padding: 10px;
+    padding-top: 8px;    
+    padding-bottom: 8px;
+}
+
+@media print{
+  .cuadroRespuesta{
+                print-color-adjust:exact;
+                -webkit-print-color-adjust:exact;
+            }
+  .noprint{
+    display: none !important;
+  }
+  div.page{
+        page-break-after: always;
+  }
+
+  div.problem2, .problem2{
+      page-break-inside: avoid;
+		  display: block !important;
+  }
+}
+</style>
+<!--script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS_CHTML-full"-->
+  <script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script type="text/javascript"  src="../src/lib/complejos.js"></script>
+<script type="text/javascript"  src="../src/lib/Comun.js"></script>
+<script type="text/javascript"  src="../src/lib/Graficos.js"></script>
+<script type="text/javascript"  src="../src/lib/ft.js"></script>
+<script type="text/javascript"  src="../src/lib/Stat.js"></script>
+<script type="text/javascript"  src="Ftrabajo.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+</head>
+
+<body onload="start(),generar(3,0,1)">
+<div id="start" class="noprint">
+	<center><h1>Fichas de trabajo</h1>
+<table width="100%" id="TablaInicio">
+	<tr><td align="right"><label for="NCopias">Número de copias</label></td><td align="left"><input type="number" id="NCopias" min="1" max="60" step="1" value="2"></td></tr>
+  <tr><td align="right"><div align="left" id="menu">Cargando ...</div></td></tr>
+</table>
+
+</center></div>
+
+<div id="Fichas"></div>
+<div id="Respuestas"></div>
+</body></html>

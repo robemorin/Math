@@ -620,7 +620,7 @@ const tema = [{
 					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 				}
 			},{
-				Nombre:"Conversión de números complejos en forma cartesina a exponencial",
+				Nombre:"Conversión de números complejos en forma cartesiana a exponencial",
 				Nota:"",
 				fun:function(){
 					

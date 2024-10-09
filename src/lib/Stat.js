@@ -55,15 +55,15 @@ function Milimetrado(Dim,Cuadricula ){
 	Dim=[Dim*Cuadricula[0]/Cuadricula[1],	Dim]
 	
 	
-	var salida="<br><center><svg style='border:solid red 2px;' width='"+(Dim[1]+10)+"px' height='"+(Dim[0]+10)+"px'><g transform='translate(5 5) scale("+(Dim[1]/Cuadricula[1])+")'>"
+	var salida="<center><svg width='"+(Dim[1]+10)+"px' height='"+(Dim[0]+10)+"px'><g transform='translate(5 5) scale("+(Dim[1]/Cuadricula[1])+")'>"
 	//salida+='<path      id="heart"      d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" />'
 	if(Cuadricula.length>2){	
-		for(var k=0;k<=Cuadricula[0];k+=Cuadricula[2])	salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="blue"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
-		for(var k=0;k<=Cuadricula[1];k+=Cuadricula[2])  salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="blue"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
+		for(var k=0;k<=Cuadricula[0];k+=Cuadricula[2])	salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(254,114,0)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
+		for(var k=0;k<=Cuadricula[1];k+=Cuadricula[2])  salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(254,114,0)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
 	}
 	
-	for(var k=0;k<=Cuadricula[0];++k) salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="black"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
-	for(var k=0;k<=Cuadricula[1];++k) salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="black"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
+	for(var k=0;k<=Cuadricula[0];++k) salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(254,114,0)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
+	for(var k=0;k<=Cuadricula[1];++k) salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(254,114,0)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
 	
 	
 	salida+='</g></svg></center>'
@@ -434,3 +434,55 @@ function invNorm(A,mu,sigma,opcion='LEFT'){
 			return [ mu-z,mu+z]
 	}
 }
+function tcrit(alpha,dof,tails){
+	let col
+	if(tails==2) alpha/=2;
+		col=1
+	if(alpha==0.1){
+		col=2
+	}else if(alpha==0.05){
+		col=3
+	}else if(alpha==0.025){
+		col=4
+	}else if(alpha==0.01){
+		col=5
+	}else if(alpha==0.005){
+		col=6
+	}
+	if(dof>30) dof=30
+	if(dof<1) dof=1
+	if(tails!=1 && tails!=2) tails=1
+	
+	t=[
+	[1, 1.0000, 3.0777, 6.3137, 12.7062, 31.8210, 63.6559],
+	[2, 0.8165, 1.8856, 2.9200, 4.3027, 6.9645, 9.9250],
+	[3, 0.7649, 1.6377, 2.3534, 3.1824, 4.5407, 5.8408],
+	[4, 0.7407, 1.5332, 2.1318, 2.7765, 3.7469, 4.6041],
+	[5, 0.7267, 1.4759, 2.0150, 2.5706, 3.3649, 4.0321],
+	[6, 0.7176, 1.4398, 1.9432, 2.4469, 3.1427, 3.7074],
+	[7, 0.7111, 1.4149, 1.8946, 2.3646, 2.9979, 3.4995],
+	[8, 0.7064, 1.3968, 1.8595, 2.3060, 2.8965, 3.3554],
+	[9, 0.7027, 1.3830, 1.8331, 2.2622, 2.8214, 3.2498],
+	[10, 0.6998, 1.3722, 1.8125, 2.2281, 2.7638, 3.1693],
+	[11, 0.6974, 1.3634, 1.7959, 2.2010, 2.7181, 3.1058],
+	[12, 0.6955, 1.3562, 1.7823, 2.1788, 2.6810, 3.0545],
+	[13, 0.6938, 1.3502, 1.7709, 2.1604, 2.6503, 3.0123],
+	[14, 0.6924, 1.3450, 1.7613, 2.1448, 2.6245, 2.9768],
+	[15, 0.6912, 1.3406, 1.7531, 2.1315, 2.6025, 2.9467],
+	[16, 0.6901, 1.3368, 1.7459, 2.1199, 2.5835, 2.9208],
+	[17, 0.6892, 1.3334, 1.7396, 2.1098, 2.5669, 2.8982],
+	[18, 0.6884, 1.3304, 1.7341, 2.1009, 2.5524, 2.8784],
+	[19, 0.6876, 1.3277, 1.7291, 2.0930, 2.5395, 2.8609],
+	[20, 0.6870, 1.3253, 1.7247, 2.0860, 2.5280, 2.8453],
+	[21, 0.6864, 1.3232, 1.7207, 2.0796, 2.5176, 2.8314],
+	[22, 0.6858, 1.3212, 1.7171, 2.0739, 2.5083, 2.8188],
+	[23, 0.6853, 1.3195, 1.7139, 2.0687, 2.4999, 2.8073],
+	[24, 0.6848, 1.3178, 1.7109, 2.0639, 2.4922, 2.7970],
+	[25, 0.6844, 1.3163, 1.7081, 2.0595, 2.4851, 2.7874],
+	[26, 0.6840, 1.3150, 1.7056, 2.0555, 2.4786, 2.7787],
+	[27, 0.6837, 1.3137, 1.7033, 2.0518, 2.4727, 2.7707],
+	[28, 0.6834, 1.3125, 1.7011, 2.0484, 2.4671, 2.7633],
+	[29, 0.6830, 1.3114, 1.6991, 2.0452, 2.4620, 2.7564],
+	[30, 0.6828, 1.3104, 1.6973, 2.0423, 2.4573, 2.7500]]
+	return t[dof-1][col]
+	}

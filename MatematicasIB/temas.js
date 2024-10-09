@@ -1969,12 +1969,37 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 					Nota:"$A_c=\\frac{\\pi r^2 \\alpha°}{360°}$<br/><br/> $A_c=\\frac{r^2 \\alpha}{2}$",
 					fun:function(){
 						/*inicio*/
+						function calculateSectorPath(angle, radius,r) {
+							// Convertir el ángulo a radianes
+							const angleRad = (angle * Math.PI) / 180;
+						
+							// Coordenadas del punto final del arco en el sistema de coordenadas cartesianas
+							const x = radius + radius * Math.sin(angleRad);
+							const y = radius - radius * Math.cos(angleRad);
+						
+							// Determinar si el arco es mayor de 180 grados (grande = 1 o pequeño = 0)
+							const largeArcFlag = angle <= 180 ? 0 : 1;
+						
+							// Crear el valor del parámetro d para el path
+							const d = [
+								`M ${radius},${radius}`,           // Moverse al centro del círculo
+								`L ${radius},0`,                   // Línea desde el centro hacia el borde superior (ángulo 0°)
+								`A ${radius},${radius} 0 ${largeArcFlag},1 ${x},${y}`,  // Dibujar el arco
+								`Z`                                // Cerrar el camino (vuelve al centro)
+							].join(" ");
+						
+							return d;
+						}
 						function P1(x){
 							var r=Math.round(Math.random()*20+2)
 							var a=Math.round(Math.random()*350+5)
 							
 							
 							var P="Determine el área del sector circular que tiene como radio "+r+" y ángulo $\\theta="+a+"°$"
+							P+=`<br><center><svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+							<path d="${calculateSectorPath(a,50)}" fill="none" stroke="black" stroke-width="2" />
+							<path d="${calculateSectorPath(a,10)}" fill="none" stroke="black" stroke-width="2" />
+							</svg></center>`
 							
 							var R=[];
 							
@@ -1987,35 +2012,9 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 							}
 							return [P,R]
 							}
-							function P2(x){
-							var r=Math.round(Math.random()*20+2)
-							var a=(Math.random()*5+0.5).toFixed(2)
-							
-							
-							var P="Determine el área del sector circular que tiene como radio "+r+" y ángulo $\\theta="+a+"$ rad"
-							
-							var R=[];
-							
-							R[0]=(a*r*r/2).toFixed(2)
-							for(var i=1;i<6;++i){
-							do{
-							R[i]=(a*r*r/2+(Math.random()-0.5)*10).toFixed(2)
-							}while(repetido(R))
-							
-							}
-							return [P,R]
-							}							
-						/*Final*/
-						function PreguntaTema(){
-							if(Math.random()>0.5){
-								return P1(1)
-							}else {
-								return P2(1)
-							}
-						}
 						//Final
 						let C=abrirPregunta()
-						let [P,R]=PreguntaTema()
+						let [P,R]=P1()
 						spanContenido(P,C[6])
 						// C[6].innerHTML=P
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
@@ -3909,6 +3908,193 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
 			]
+		},{
+			Nombre:"T-Student",
+			test:[
+				{
+					Nombre: "Introducción",
+					Nota: "",
+					fun:function(){
+							function P1(x){
+								var n=Math.ceil(Math.random()*28+1)
+								var r=Math.ceil(Math.random()*(n-2))
+								var alpha=[0.1, 0.05, 0.025, 0.01, 0.05]
+								var an=2;
+								while(an==2)	an=Math.round(Math.random()*3.49)
+								var dof=(Math.random()<0.5)?1:2
+								var P="Selecciona la <i>t<sub>crit</sub></i> para <i>&alpha;</i>="+(alpha[an])+" con "+n+
+										" grados de libertad de "+((dof==1)?"una cola.":"dos colas.")
+								
+								
+								var R=[];
+								R[0]=tcrit(alpha[an],n,dof)
+								var dummy=0;
+								for(var i=1;i<6;++i){
+									do{
+										do{
+											an=Math.round(Math.random()*3.49)
+											var n1=Math.round(4*Math.random()-2+n)
+											var tail2=Math.round(Math.random()+1)
+										}while(an==2)	
+										R[i]=tcrit(alpha[an],n1,tail2)
+										
+									}while(repetido(R))
+								}
+								return [P,R]
+							}
+							function P2(x){
+							var n=Math.round(Math.random()*10+10);
+								var x=[]
+								var y=[]
+								var M=[0,0];
+								
+								var p="Calcule el valor de <i>t<sub>calc</sub></i> al realizar la prueba <i>t</i> usando los siguientes"
+								p+=" datos<br/> <center><table width='30%'>"
+								
+								p+="<tr><td><i>n</i></td><td><i>x</i><sub>1</sub></td><td><i>x</i><sub>2</sub></td></tr>";
+								for(var i=0;i<n;++i){
+									x[i]=Math.round(Math.random()*20+65);
+									y[i]=Math.round(Math.random()*20+64);
+									p+="<tr><td>"+(i+1)+"</td><td>"+x[i]+"</td><td>"+y[i]+"</td></tr>";
+									M[0]+=x[i]
+									M[1]+=y[i]
+								}
+								p+="</table></center>"
+								M[0]/=n
+								M[1]/=n
+								
+								
+								var s=[0,0]
+								for(var i=0;i<n;++i){
+									
+									s[0]+=(x[i]-M[0])*(x[i]-M[0]);
+									s[1]+=(y[i]-M[1])*(y[i]-M[1]);
+								}
+								s[0]/=(n-1);
+								s[1]/=(n-1);
+								var t=(M[0]-M[1])/Math.sqrt((s[0]+s[1])/n)
+							
+								var P=p
+								
+								var R=[];
+								R[0]=t.toFixed(5);
+								for(var i=1;i<6;++i){
+									do{
+										R[i]=(0.5-Math.random()*2+t).toFixed(5)
+									}while(repetido(R))
+								}
+								return [P,R]
+							}
+							function P3(x){
+							var n=Math.round(Math.random()*10+10);
+							var n2=Math.round(Math.random()*(n-5)+5);
+								var x=[]
+								var y=[]
+								var M=[0,0];
+								
+								var p="Calcule el valor de <i>t<sub>calc</sub></i> al realizar la prueba <i>t</i> usando los siguientes"
+								p+=" datos<br/> <center><table width='30%'>"
+								
+								p+="<tr><td><i>n</i></td><td><i>x</i><sub>1</sub></td><td><i>x</i><sub>2</sub></td></tr>";
+								for(var i=0;i<n;++i){
+									x[i]=Math.round(Math.random()*20+65);
+									
+									
+									M[0]+=x[i]
+									if(i<n2){
+										y[i]=Math.round(Math.random()*20+64);
+										M[1]+=y[i]
+									}
+									
+									p+="<tr><td>"+(i+1)+"</td><td>"+x[i]+"</td><td>"+(i<n2?y[i]:"")+"</td></tr>";
+								}
+								p+="</table></center>"
+								M[0]/=n
+								M[1]/=n2
+								
+								
+								var s=[0,0]
+								for(var i=0;i<n;++i){
+									
+									s[0]+=(x[i]-M[0])*(x[i]-M[0]);
+									if(i<n2)	s[1]+=(y[i]-M[1])*(y[i]-M[1]);
+								}
+								s[0]/=(n-1);
+								s[1]/=(n2-1);
+								var t=(M[0]-M[1])/Math.sqrt(s[0]/n+s[1]/n2)
+							
+								var P=p
+								var R=[];
+								R[0]=t.toFixed(5);
+								for(var i=1;i<6;++i){
+									do{
+										R[i]=(0.5-Math.random()*2+t).toFixed(5)
+									}while(repetido(R))
+								}
+								return [P,R]
+							}
+							function P4(x){
+							var n=Math.round(Math.random()*10+10);
+							var n2=Math.round(Math.random()*(n-5)+5);
+								var x=[]
+								var y=[]
+								var M=[0,0];
+								
+								var p="Calcule los grados de libertad al realizar la prueba <i>t</i> usando los siguientes"
+								p+=" datos<br/> <center><table width='30%'>"
+								
+								p+="<tr><td><i>n</i></td><td><i>x</i><sub>1</sub></td><td><i>x</i><sub>2</sub></td></tr>";
+								for(var i=0;i<n;++i){
+									x[i]=Math.round(Math.random()*20+65);
+									
+									
+									M[0]+=x[i]
+									if(i<n2){
+										y[i]=Math.round(Math.random()*20+64);
+										M[1]+=y[i]
+									}
+									
+									p+="<tr><td>"+(i+1)+"</td><td>"+x[i]+"</td><td>"+(i<n2?y[i]:"")+"</td></tr>";
+								}
+								p+="</table></center>"
+								M[0]/=n
+								M[1]/=n2
+								
+								
+								var s=[0,0]
+								for(var i=0;i<n;++i){
+									
+									s[0]+=(x[i]-M[0])*(x[i]-M[0]);
+									if(i<n2)	s[1]+=(y[i]-M[1])*(y[i]-M[1]);
+								}
+								s[0]/=(n-1);
+								s[1]/=(n2-1);
+								var t=(M[0]-M[1])/Math.sqrt(s[0]/n+s[1]/n2)
+							
+								var P=p
+								var R=[];
+								R[0]=n+n2-2;
+								for(var i=1;i<6;++i){
+									do{
+										R[i]=Math.round(n+n2-2+(1-Math.random())*10)
+									}while(repetido(R))
+								}
+								return [P,R]
+							}
+							
+							let C=abrirPregunta()
+							let [P,R] =eval(`P${Math.ceil(Math.random()*4)}()`)
+
+
+							spanContenido(P,C[6])
+							for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+						}
+				}
+				/*
+				
+
+				*/
+			]
 		}
 	]
 
@@ -3986,6 +4172,144 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 							}
 							return [P,R]
 						}
+
+					let C=abrirPregunta()
+					let [P,R]=P1()
+					spanContenido(P,C[6])
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
+					Nombre:"Comportamiento de la derivada",
+					Nota:"",
+					fun:function(){
+						function P1(x){
+							function poly(y0,yp0,ya,ypa,mx,bx,h){
+								let a=5;
+								let omega=[(ya-yp0*a-y0)/(a*a), (ypa-yp0)/a]
+							
+								
+								var alfa=[(omega[1]-2*omega[0])/a, 3*omega[0]-omega[1],yp0, y0]
+								var n=100;
+								var x=[]
+								var y=[]
+								var sr=''
+								for(var k=0;k<n;++k){//Horner evaluation
+									x[k]=a*k/n;
+									y[k]=alfa[0];
+									for(var j=1;j<4;++j) y[k]=y[k]*x[k]+alfa[j];
+									sr+=(mx*(x[k]-h)+bx)+', '+(-mx*2*y[k]+bx)+' '
+								}
+								return [sr,6*alfa[0]*a+2*alfa[1]]
+							}
+							function polyII(y0,yp0,ya,ypa,mx,bx,ypp0){
+								var a=5;
+							
+								var alfa=[(ya-(ypp0*a*a/2+yp0*a+y0))/(a*a*a), ypp0/2,yp0, y0]
+								var n=100;
+								var x=[]
+								var y=[]
+								var sr=''
+								for(var k=0;k<n;++k){//Horner evaluation
+									x[k]=a*k/n;
+									y[k]=alfa[0];
+									for(var j=1;j<4;++j) y[k]=y[k]*x[k]+alfa[j];
+									sr+=(mx*x[k]+bx)+', '+(-mx*2*y[k]+bx)+' '
+								}
+								return sr
+							}
+							function polyII2(y0,yp0,ya,ypa,mx,bx,ypp0){
+								var a=5;
+							
+								var alfa=[3*(ya-(ypp0*a*a/2+yp0*a+y0))/(a*a*a), ypp0,yp0]
+								var n=100;
+								var x=[]
+								var y=[]
+								var sr=''
+								for(var k=0;k<n;++k){//Horner evaluation
+									x[k]=a*k/n;
+									y[k]=alfa[0];
+									for(var j=1;j<3;++j) y[k]=y[k]*x[k]+alfa[j];
+									sr+=(mx*x[k]+bx)+', '+(-mx*2*y[k]+bx)+' '
+								}
+								return sr
+							}
+							function poly2(y0,yp0,ya,ypa,mx,bx,h){
+								var a=5;
+								var omega=[(ya-yp0*a-y0)/(a*a), (ypa-yp0)/a]
+							
+								
+								var alfa=[3*((omega[1]-2*omega[0])/a), 2*(3*omega[0]-omega[1]),yp0]
+								var n=100;
+								var x=[]
+								var y=[]
+								var sr=''
+								for(var k=0;k<n;++k){//Horner evaluation
+									x[k]=a*k/n;
+									y[k]=alfa[0];
+									for(var j=1;j<3;++j) y[k]=y[k]*x[k]+alfa[j];
+									sr+=(mx*(x[k]-h)+bx)+', '+(-mx*2*y[k]+bx)+' '
+								}
+								return sr
+							}
+							var mx=20
+							var bx=110
+							var y0=2*(0.5-Math.random())
+							var yp0=2*(0.5-Math.random())
+							var ya=2*(0.5-Math.random())
+							var ypa=2*(0.5-Math.random())
+							var yb=2*(0.5-Math.random())
+							var ypb=2*(0.5-Math.random())
+							dummy =poly(y0,yp0,ya,ypa,mx,bx,5)
+							q=dummy[1]
+							sr=dummy[0]
+							sr+=polyII(ya,ypa,yb,ypb,mx,bx,q)
+							sr2 =poly2(y0,yp0,ya,ypa,mx,bx,5)
+							sr2+=polyII2(ya,ypa,yb,ypb,mx,bx,q)
+							
+							
+						
+						
+							
+							var P="Determine un bosquejo de la derivada de la siguiente función"
+								P+='<center><svg width="'+(mx*11)+'px" height="'+(mx*11)+'">'
+								//for(var i=-5;i<6;++i)	P+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line><line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+								P+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line><polyline points="'+sr+'" style="fill:none;stroke:blue;stroke-width:3" /></svg></center>'
+								
+							var R=[];
+							
+							R[0]='<center><svg style="border: solid gray 1px" width="'+(mx*11)+'px" height="'+(mx*11)+'">'
+							//for(var i=-5;i<6;++i) R[0]+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line><line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+							R[0]+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line><polyline points="'+sr+'" style="fill:none;stroke:blue;stroke-width:3" /><polyline points="'+sr2+'" style="fill:none;stroke:red;stroke-width:3" /></svg></center>'
+							
+							for(var ii=1;ii<6;++ii){
+								
+								do{
+									
+										var y0=2*(0.5-Math.random())
+							var yp0=2*(0.5-Math.random())
+							var ya=2*(0.5-Math.random())
+							var ypa=2*(0.5-Math.random())
+							var yb=2*(0.5-Math.random())
+							var ypb=2*(0.5-Math.random())
+							dummy =poly(y0,yp0,ya,ypa,mx,bx,5)
+							q=dummy[1]
+							sr2 =poly2(y0,yp0,ya,ypa,mx,bx,5)
+							sr2+=polyII2(ya,ypa,yb,ypb,mx,bx,q)
+								
+								
+								
+								
+								//
+								R[ii]='<center><svg style="border: solid gray 1px" width="'+(mx*11)+'px" height="'+(mx*11)+'">'
+							//for(var i=-5;i<6;++i) R[ii]+='<line x1="'+(mx*i+bx)+'" y1="0" x2="'+(mx*i+bx)+'" y2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line><line y1="'+(mx*i+bx)+'" x1="0" y2="'+(mx*i+bx)+'" x2="'+(mx*11)+'" style="stroke:gray;stroke-width:2"> </line>'
+							R[ii]+='<line y1="'+(bx)+'" x1="0" y2="'+(bx)+'" x2="'+(mx*11)+'" style="stroke:black;stroke-width:2"> </line><polyline points="'+sr+'" style="fill:none;stroke:blue;stroke-width:3" /><polyline points="'+sr2+'" style="fill:none;stroke:red;stroke-width:3" /></svg></center>'
+									
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						
 
 					let C=abrirPregunta()
 					let [P,R]=P1()
