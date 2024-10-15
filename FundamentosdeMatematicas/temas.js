@@ -1102,18 +1102,15 @@ const tema = [{
 				fun:function(){
 					function P1(){
 						
-						const R=[],side=[],angle=[]
+						let R=[],side=[],angle=[]
 						side[0]=Math.round(Math.random()*20+1)
-						side[1]=Math.round(Math.random()*20+1)
-						angle[2]=Math.round(Math.random()*70+10)
-						const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
-						side[2]=eval(dummy)
-
-						angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
-						angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
-						//angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
 						
-						
+						do{
+							side[1]=Math.round(Math.random()*20+1)
+							angle[0]=Math.round(Math.random()*70+10)
+							angle[1] = side[1]*Math.sin(angle[0]*Math.PI/180)/side[0]
+						}while(angle[1]>.95 || angle[1]<-0.95)
+							angle[1]=180*Math.asin(angle[1])/Math.PI
 						
 						const label=[	['a','b','A','B'],
 										['a','c','A','C'],
@@ -1122,17 +1119,16 @@ const tema = [{
 										['c','a','C','A'],
 										['c','b','C','B']]
 						const op=Math.floor(Math.random()*label.length-.01)
-
-						spanContenido("Considere un triángulo con lados $"+label[op][0]+"="+side[0]+"$, $"+label[op][1]+"="+side[1]+"$ y angulo $"+label[op][2]+"="+angle[0].toFixed(2)+
+						spanContenido("Considere un triángulo con lados $"+label[op][0]+"="+side[0]+"$, $"+label[op][1]+"="+side[1]+"$ y angulo $"+label[op][2]+"="+angle[0]+
 						"$. Calcule ángulo $"+label[op][3]+"$.",C[6])
-						
+						console.log(angle)
 						
 
 						
-						R[0]=angle[1].toFixed(2)+"°"
+						R[0]=angle[1].toPrecision(3)+"°"
 						for(let i=1;i<6;++i){
 							do{
-								R[i]=(angle[1]+30*(Math.random()-.5)).toFixed(2)+"°"
+								R[i]=(angle[1]+30*(Math.random()-.5)).toPrecision(3)+"°"
 							}while(repetido(R))
 						
 						}
@@ -1142,15 +1138,14 @@ const tema = [{
 					function P2(){
 						
 						const R=[],side=[],angle=[]
-						side[0]=Math.round(Math.random()*20+1)
-						side[1]=Math.round(Math.random()*20+1)
-						angle[2]=Math.round(Math.random()*70+10)
-						const dummy=(Math.sqrt(side[0]*side[0]+side[1]*side[1]-2*side[0]*side[1]*Math.cos(angle[2]*Math.PI/180))).toFixed(2)
-						side[2]=eval(dummy)
-
-						angle[0]=(Math.acos((side[1]*side[1]+side[2]*side[2]-side[0]*side[0])/(2*side[1]*side[2]))*180/Math.PI)
-						angle[1]=(Math.acos((side[0]*side[0]+side[2]*side[2]-side[1]*side[1])/(2*side[0]*side[2]))*180/Math.PI)
-						//angle[2]=(Math.acos((side[0]*side[0]+side[1]*side[1]-side[2]*side[2])/(2*side[0]*side[1]))*180/Math.PI)
+						side[0]  = Math.round(Math.random()*20+1)
+						angle[0] = Math.round(Math.random()*70+10)
+						angle[1] = Math.round(Math.random()*70+10)
+						side[1]  = side[0]*Math.sin(angle[1]*Math.PI/180)/Math.sin(angle[0]*Math.PI/180)
+							
+							
+						
+						
 						
 						const label=[	['A','B','a','b'],
 										['A','C','a','c'],
@@ -1161,15 +1156,15 @@ const tema = [{
 						const op=Math.floor(Math.random()*label.length-.01)
 						
 						
-						spanContenido("Considere un triángulo con ángulos de $"+label[op][0]+" = "+angle[0].toFixed(2)+"°$, $"+label[op][1]+"="+angle[1].toFixed(2)+
+						spanContenido("Considere un triángulo con ángulos de $"+label[op][0]+" = "+angle[0]+"°$, $"+label[op][1]+"="+angle[1]+
 						"°$ y un lado $"+label[op][2]+"="+side[0]+"$. Calcule el lado "+label[op][3]+".",C[6])
 						
 						
 
-						R[0]=side[1].toFixed(0)
+						R[0]=side[1].toPrecision(3)
 						for(let i=1;i<6;++i){
 							do{
-								R[i]=(side[1]+10*(Math.random()-.5)).toFixed(0)
+								R[i]=(side[1]+10*(Math.random()-.5)).toPrecision(3)
 							}while(repetido(R))
 						
 						}
@@ -1178,10 +1173,6 @@ const tema = [{
 					let C=abrirPregunta()/////Aquí me quedé, mejorar P1+
 					if(Math.random()<0.5) P1()
 					else P2()
-
-
-
-
 				}
 			}]
 		},

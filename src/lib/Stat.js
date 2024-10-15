@@ -58,12 +58,12 @@ function Milimetrado(Dim,Cuadricula ){
 	var salida="<center><svg width='"+(Dim[1]+10)+"px' height='"+(Dim[0]+10)+"px'><g transform='translate(5 5) scale("+(Dim[1]/Cuadricula[1])+")'>"
 	//salida+='<path      id="heart"      d="M 10,30 A 20,20 0,0,1 50,30 A 20,20 0,0,1 90,30 Q 90,60 50,90 Q 10,60 10,30 z" />'
 	if(Cuadricula.length>2){	
-		for(var k=0;k<=Cuadricula[0];k+=Cuadricula[2])	salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(254,114,0)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
-		for(var k=0;k<=Cuadricula[1];k+=Cuadricula[2])  salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(254,114,0)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
+		for(var k=0;k<=Cuadricula[0];k+=Cuadricula[2])	salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(256,200,100)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
+		for(var k=0;k<=Cuadricula[1];k+=Cuadricula[2])  salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(256,200,100)"  stroke-width="'+(0.5*Cuadricula[1]/Dim[1])+'"/>'
 	}
 	
-	for(var k=0;k<=Cuadricula[0];++k) salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(254,114,0)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
-	for(var k=0;k<=Cuadricula[1];++k) salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(254,114,0)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
+	for(var k=0;k<=Cuadricula[0];++k) salida+='<line x1="0" y1="'+k+'" x2="'+Cuadricula[1]+'" y2="'+k+'" stroke="RGB(256,200,100)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
+	for(var k=0;k<=Cuadricula[1];++k) salida+='<line x1="'+k+'" y1="0" x2="'+k+'" y2="'+Cuadricula[0]+'" stroke="RGB(256,200,100)"  stroke-width="'+(2*Cuadricula[1]/Dim[1])+'"/>'
 	
 	
 	salida+='</g></svg></center>'
@@ -207,7 +207,7 @@ function M_2_var_stat(x,y){
 	S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr>"
 	return S
 }
-function M_LinReg(x,y){
+function M_LinReg(x,y,op=null){
 	/*Emula la función LinReg dela calculadora*/
 	/*var x=[-21,-17,-15,-14,-13]
 	var y=[0,1,2,4,5]*/
@@ -223,6 +223,9 @@ function M_LinReg(x,y){
 	}
 	var m=(Sumxy-n*xm*ym)/(Sx)
 	var b=ym-m*xm
+	if(op=='ec'){
+		return `y = ${polinomio([eval(m.toPrecision(3)),eval(b.toPrecision(3))])}`
+	}
 	return [m,b]
 }
 function M_FacPearson(x,y){
@@ -279,6 +282,27 @@ function M_AS2N(x){
 function chiCuadradaCal(fo,fe=[[0]]) {
 	const filas = fo.length;
 	const columnas = fo[0].length;
+	if(fe=='default'){
+		const totalRows=[], totalCols=[]
+		const dataEsperada=[]
+		let nRows = fo.length
+		let nCols = fo[0].length
+		let total = 0
+		for(let row=0;row<nRows;++row){
+			totalRows.push(0)
+			for(let col=0;col<nCols;++col)	 totalRows[row] += fo[row][col]
+		}
+		for(let col=0;col<nCols;++col){
+			totalCols.push(0)
+			for(let row=0;row<nRows;++row)	 totalCols[col] += fo[row][col]
+			total += totalCols[col]
+		}
+		for(let row=0;row<nRows;++row){
+			dataEsperada[row]=[]
+			for(let col=0;col<nCols;++col)	 dataEsperada[row][col] = totalRows[row]*totalCols[col]/total
+		}
+		return chiCuadradaCal(fo,dataEsperada)
+	}
 	
 	if(fe[0].length==1){
 	  if(filas>1){
@@ -313,6 +337,27 @@ function chiCuadradaCal(fo,fe=[[0]]) {
 	  }
 	}
 	return x2;
+  }
+  function chi_matriz_esperada(fo){
+	const totalRows=[], totalCols=[]
+		const dataEsperada=[]
+		let nRows = fo.length
+		let nCols = fo[0].length
+		let total = 0
+		for(let row=0;row<nRows;++row){
+			totalRows.push(0)
+			for(let col=0;col<nCols;++col)	 totalRows[row] += fo[row][col]
+		}
+		for(let col=0;col<nCols;++col){
+			totalCols.push(0)
+			for(let row=0;row<nRows;++row)	 totalCols[col] += fo[row][col]
+			total += totalCols[col]
+		}
+		for(let row=0;row<nRows;++row){
+			dataEsperada[row]=[]
+			for(let col=0;col<nCols;++col)	 dataEsperada[row][col] = totalRows[row]*totalCols[col]/total
+		}
+		return [dataEsperada,totalCols,totalRows,total]
   }
   function chitablas(dof,alpha) {
 	// 0.01, 0.05, 0.01

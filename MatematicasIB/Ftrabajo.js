@@ -171,17 +171,41 @@ const Ficha = [{
                         }
                         return `${S}${T}</tr></table></center>`
                     }
+                    function media(x,y){
+                        let xs=0, ys=0
+                        n=x.length
+                        for(let k=0;k<n;++k){
+                            xs +=x[k]
+                            ys +=y[k]
+                        }
+                        return [(xs/n).toPrecision(3),(ys/n).toPrecision(3)]
+                    }
+                    
+                    let x,y
                     [x,y]=datos()
-
-                    let Pregunta=`1.- Considere los siguientes datos:
+                    let Solucion = `<div class="ans"><div>(1b) $M:(${media(x,y)})$</div> <div>(1c)$ ${M_LinReg(x,y,'ec')}$</div>`
+                    let Pregunta=`<div class="Problema2">1.- Considere los siguientes datos:
                     <br>${tablaDatos(x,y)}
-                    <ol>
-                    <li>Use el siguiente espacio para graficar los datos<div>[3]</div></li><br>${Milimetrado(600,[10, 20,.2] )}
+                    <ol class="FT_ol_a">
+                    <li>Use el siguiente espacio para graficar los datos<div>2</div></li><br>${Milimetrado(600,[10, 20,.2] )}
+                    <li>Escriba y grafique $M:(\\overline{x},\\overline{y})$<div>1</div></li>
+                    <li>Escriba y grafique la línea de mejor ajuste<div>2</div></li>
+                    </ol><div><div class="page"></div>
+                    `
+                    let x1,y1
+                    [x1,y1]=datos()
+                    Solucion += `<div>(1b) $M:(${media(x1,y1)})$</div> <div>(1c) $${M_LinReg(x1,y1,'ec')}$</div></div>`
+                    Pregunta+=`<div class="Problema2">2.- Considere los siguientes datos:
+                    <br>${tablaDatos(x1,y1)}
+                    <ol class="FT_ol_a">
+                    <li>Use el siguiente espacio para graficar los datos<div>2</div></li><br>${Milimetrado(600,[10, 20,.2] )}
+                    <li>Escriba y grafique $M:(\\overline{x},\\overline{y})$<div>1</div></li>
+                    <li>Escriba y grafique la línea de mejor ajuste<div>2</div></li>
+                    </ol><div>
+                    `
                     
 
-                    </ol>
-                    `
-                    let Solucion = `:)`
+                    
 //VAmos a aqui ----------------------------------------------
 
                     return [Pregunta,Solucion]
@@ -189,6 +213,99 @@ const Ficha = [{
             }
             ]
             
+        },{
+            Nombre: "Chi cuadrada",
+            topico:[{
+                Nombre:"Chi cuadrada",
+                func:function(){
+                    let color=['Verde','Rojo','Azul','Negro','Blanco']
+                    const size=[Math.floor(Math.random()*3.9+2),Math.floor(Math.random()*4.9+2)]
+                    let Pregunta =`
+        <h3>Fórmula</h3>
+        <p>La estadística de chi-cuadrada se calcula usando la siguiente fórmula:</p>
+        <p>
+            \\[
+            \\chi^2_{Calc} = \\sum \\frac{(f_o - f_e)^2}{f_e}
+            \\]
+        </p>
+        <p>donde \\( f_o \\) son los valores observados y \\( f_e \\) son los valores esperados.</p>
+    <div class="problema2">
+        1. Se desea saber si existe una diferencia significativa entre los gustos de colores de entre salones. Para ello se aplica la prueba \\( \\chi^2 \\) con un nivel de significancia de 5%. Los valores observados se muestran a continuación
+        
+        <center><table border="1" cellpadding="8" cellspacing="0">`
+            Pregunta +=`</tr><th>\\</th>`
+            for(let k1=0;k1<size[0];++k1){
+                Pregunta +=` <th>${color[k1]}</th>`
+            }
+            Pregunta +=`<th>Total</th></tr>`
+            let O=[]
+            for (let k=0;k<size[1];++k){
+                O[k]=[]
+                Pregunta +=` <tr><td>Salón ${k+1}</td>`
+                for(let k1=0;k1<size[0];++k1){
+                    O[k].push(Math.ceil(Math.random()*10))
+                    Pregunta +=`<td>${O[k][k1]}</td>`
+                }
+                Pregunta +=`<td></td></tr>`
+            }
+            const [E,totalCols,totalRows,total]=chi_matriz_esperada(O)
+            console.log("O")
+            console.log(O)
+            console.log("E")
+            console.log(E)
+
+            Pregunta +=`</tr><th>Total</th>`
+            for(let k1=0;k1<size[0];++k1){
+                Pregunta +=` <th></th>`
+            }
+            const Pos=[Math.floor(Math.random()*size[1]),Math.floor(Math.random()*size[0])]
+            console.log("P:"+Pos)
+
+            Pregunta +=`<th></th></tr>`
+            Pregunta +=`</table></center>
+
+        <ol class="FT_ol_a">
+            <li>Escriba las hipótesis nula y alternativa <div>1</div></li>${CR(2)}
+            <li>Escriba los grados de libertad usando la fórmula  $GL = (\\text{Total de fila} \\times \\text{Total de columna})/\\text{Total general}$             <div>1<div></li> ${CR(1)}
+            <li>Complete la tabla escribiendo los totales. <div>1</div></li>
+            <li>Calcule el valor esperado del salón ${Pos[0]+1} al elegir el color "${color[Pos[1]]}". <div>1</div></li>${CR(1)}<div class="page"></div>
+            <li>Complete la tabla de datos esperados a continuación. <div>1</div></li>`
+
+            Pregunta +=`<center><table border="1" cellpadding="8" cellspacing="0"></tr><th>\\</th>`
+            for(let k1=0;k1<size[0];++k1){
+                Pregunta +=` <th>${color[k1]}</th>`
+            }
+            Pregunta +=`<th>Total</th></tr>`
+            for (let k=0;k<size[1];++k){
+                Pregunta +=` <tr><td>Salón ${k+1}</td>`
+                for(let k1=0;k1<size[0];++k1){
+                    Pregunta +=`<td></td>`
+                }
+                Pregunta +=`<td></td></tr>`
+            }
+            Pregunta +=`</tr><th>Total</th>`
+            for(let k1=0;k1<size[0];++k1){
+                Pregunta +=` <th></th>`
+            }
+            Pregunta +=`<th></th></tr>`
+            Pregunta +=`</table></center>`
+
+
+            Pregunta += `<li>Calcule el valor de \\( \\chi_{\\text{Calc}}^2 \\).<div>2</div></li>${CR(3)}
+            <li>Escriba, usando una tabla de $\\chi^2$, el valor de $\\chi^2_{\\text{Crít}}$<div>2</div></li>${CR(1)}
+            <li>Usando sus respuestas anteriores, realice una conclusión, justifique su respuesta.<div>2</div></li>${CR(3)}
+        </ol><div>`
+        let chical =chiCuadradaCal(O,E)
+        let chitabla =chitablas((size[0]-1)*(size[1]-1),0.05)
+                 let Solucion = `<div class="ans"><div>(b) GL = ${(size[0]-1)*(size[1]-1)}</div>
+                                    <div>Total Col:${totalCols}, total col:${totalRows},total:${total}</div>    
+                                    <div>(d) ${E[Pos[0]][Pos[1]].toPrecision(3)}</div><div>(f) $\\chi^2_{\\text{Calc}} \\approx${chical.toPrecision(3)}$</div>
+                                    <div>(g) $\\chi^2_{\\text{crít}}=${chitabla}$</div>
+                                    <div>(h)Acepta ${chitabla>chical?"$H_0$":"$H_1$"}</div></div>`       
+                    return [Pregunta,Solucion]
+                }
+
+            }]
         }
     ]
 
