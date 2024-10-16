@@ -1170,7 +1170,7 @@ const tema = [{
 						}
 						for(let i=0;i<6;++i) spanContenido(R[i],C[i])
 					}
-					let C=abrirPregunta()/////Aquí me quedé, mejorar P1+
+					let C=abrirPregunta()
 					if(Math.random()<0.5) P1()
 					else P2()
 				}

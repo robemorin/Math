@@ -714,3 +714,33 @@ function diagramaAsignacion(txtElem,size=[480,300]){
     center.appendChild(svg)
 	return center
 }
+function diagramaVenn2(legend,ancho = 500 ){
+    /*
+    Sintaxis:
+        diagramaVenn2([['A','B'],['0','1','2','3']])
+        diagramaVenn2([['A','B'],[]])
+        diagramaVenn2([[],['0','1','2','3']])
+        diagramaVenn2([[],[]])
+    */
+    const alto = ancho/1.618
+    let S = `<svg "http://www.w3.org/2000/svg" height="${alto}" width="${ancho}">
+    <rect  width="${ancho-2}" height="${alto-2}" x="1" y="1" fill="none" stroke="black" stroke-width="2" />
+    <circle cx="${0.33*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+    <circle cx="${0.67*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+    <text  x="3" y="3" alignment-baseline="hanging">U</text>`
+    
+    if(legend[0].length>0){
+        S += `<text text-anchor="end" x="${0.33*ancho-0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][0]}</text>`
+        S += `<text text-anchor="start" x="${0.67*ancho+0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][1]}</text>`
+    }
+    if(legend[1].length>0){
+        S += `<text text-anchor="end" x="${ancho-4}" y="${alto-4}" >${legend[1][0]}</text>`
+        S += `<text text-anchor="end" x="${0.33*ancho}" y="${alto/2}" >${legend[1][1]}</text>`
+        S += `<text text-anchor="start" x="${0.67*ancho}" y="${alto/2}" >${legend[1][3]}</text>`
+        S += `<text text-anchor="middle" x="${ancho/2}" y="${alto/2}" >${legend[1][2]}</text>`
+        //S += `<circle cx="${ancho-4}" cy="${alto-4}" r="3">`
+    }
+
+    S += `</svg>`
+    return S
+}

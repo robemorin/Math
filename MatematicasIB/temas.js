@@ -2997,6 +2997,46 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 	Nombre:"Estadística y probabilidad",
 	subtema:[
 		{
+			Nombre: "Probabilidad",
+			test:[
+				{
+					Nombre: "Probabilidad simple con diagramas de Venn",
+					Nota:"",
+					fun:function(){
+						let C=abrirPregunta()
+						
+						const ndatos=[Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20)]
+						let total = 0
+						for(let k=0;k<ndatos.length;++k) total += ndatos[k]
+
+						const suma =[	["A",ndatos[1]+ndatos[2]],
+										["B",ndatos[2]+ndatos[3]],
+										["A\\cap B",ndatos[2]],
+										["A\\cup B",ndatos[1]+ndatos[2]+ndatos[3]],
+										["A^c",ndatos[0]+ndatos[3]],
+										["B^c",ndatos[0]+ndatos[1]],
+										["(A\\cap B)^c",ndatos[0]+ndatos[1]+ndatos[3]],
+										["(A\\cup B)^c",ndatos[0]]]
+						let op = Math.floor(Math.random()*suma.length)
+						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],ndatos])}</center>`,C[6])
+
+						let temp = simplify_frac([suma[op][1],total])
+						
+						const R=[`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`]
+						for(let i=1;i<6;++i){
+							do{
+								temp = Math.random()<0.5?simplify_frac([suma[op][1]+Math.round(Math.random()*20-5),total]):simplify_frac([suma[Math.floor(Math.random()*suma.length)][1],total])
+								temp[0] = Math.abs(temp[0])
+
+								R[i]=`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
+			]
+		},
+		{
 			Nombre:"Representación de la información",
 			test:[
 				{
