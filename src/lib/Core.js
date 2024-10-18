@@ -512,8 +512,10 @@ function ContenidoTema(code){//*
 							Cinput.id="R"+k+"S"+kr;
 						Ctd.appendChild(Cinput)
 					Ctr.appendChild(Ctd)
+					
 						Ctd=document.createElement('td')
 						Ctd.setAttribute('name','Respuesta')
+						Ctd.setAttribute("for","R"+k+"S"+kr);
 						Ctd.id="L"+k+"S"+kr;
 					Ctr.appendChild(Ctd)
 				Ct.appendChild(Ctr)

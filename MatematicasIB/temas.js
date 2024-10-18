@@ -3005,7 +3005,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 					fun:function(){
 						let C=abrirPregunta()
 						
-						const ndatos=[Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20)]
+						const ndatos=[Math.ceil(0.123+0*Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20)]
 						let total = 0
 						for(let k=0;k<ndatos.length;++k) total += ndatos[k]
 
@@ -3018,7 +3018,9 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 										["(A\\cap B)^c",ndatos[0]+ndatos[1]+ndatos[3]],
 										["(A\\cup B)^c",ndatos[0]]]
 						let op = Math.floor(Math.random()*suma.length)
-						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],ndatos])}</center>`,C[6])
+						
+						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],ndatos],250)}</center>`,C[6])
+						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$\\frac{x_3}{2}$$']],Math.random()*450+150)}</center>`,C[6])
 
 						let temp = simplify_frac([suma[op][1],total])
 						
@@ -3026,6 +3028,97 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						for(let i=1;i<6;++i){
 							do{
 								temp = Math.random()<0.5?simplify_frac([suma[op][1]+Math.round(Math.random()*20-5),total]):simplify_frac([suma[Math.floor(Math.random()*suma.length)][1],total])
+								temp[0] = Math.abs(temp[0])
+
+								R[i]=`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre: "Probabilidad simple con diagramas de Venn II",
+					Nota:"$P(A|B) = \\frac{P(A\\cap B)}{P(B)}$",
+					fun:function(){
+						function num2prob(num){
+							let total = 0
+							let prob=[]
+							for(let k=0;k<ndatos.length;++k) total += num[k]
+							for(let k=0;k<ndatos.length;++k){
+								let p = simplify_frac([num[k],total])
+								prob.push(`$$\\frac{${p[0]}}{${p[1]}}$$`)
+							} 
+							return prob
+						}
+						let C=abrirPregunta()
+						
+						const ndatos=[Math.ceil(0.123+0*Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20)]
+						let total = 0
+						for(let k=0;k<ndatos.length;++k) total += ndatos[k]
+
+						const suma =[	["A",ndatos[1]+ndatos[2]],
+										["B",ndatos[2]+ndatos[3]],
+										["A\\cap B",ndatos[2]],
+										["A\\cup B",ndatos[1]+ndatos[2]+ndatos[3]],
+										["A^c",ndatos[0]+ndatos[3]],
+										["B^c",ndatos[0]+ndatos[1]],
+										["(A\\cap B)^c",ndatos[0]+ndatos[1]+ndatos[3]],
+										["(A\\cup B)^c",ndatos[0]]]
+						let op = Math.floor(Math.random()*suma.length)
+						
+						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],num2prob(ndatos)],250)}</center>`,C[6])
+						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$\\frac{x_3}{2}$$']],Math.random()*450+150)}</center>`,C[6])
+
+						let temp = simplify_frac([suma[op][1],total])
+						
+						const R=[`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`]
+						for(let i=1;i<6;++i){
+							do{
+								temp = Math.random()<0.5?simplify_frac([suma[op][1]+Math.round(Math.random()*20-5),total]):simplify_frac([suma[Math.floor(Math.random()*suma.length)][1],total])
+								temp[0] = Math.abs(temp[0])
+
+								R[i]=`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre: "Probabilidad condicional con diagramas de Venn",
+					Nota:"$P(A|B) = \\frac{P(A\\cap B)}{P(B)}$",
+					fun:function(){
+						function num2prob(num){
+							let total = 0
+							let prob=[]
+							for(let k=0;k<ndatos.length;++k) total += num[k]
+							for(let k=0;k<ndatos.length;++k){
+								let p = simplify_frac([num[k],total])
+								prob.push(`$$\\frac{${p[0]}}{${p[1]}}$$`)
+							} 
+							return prob
+						}
+						let C=abrirPregunta()
+						
+						const ndatos=[Math.ceil(0.123+0*Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20),Math.ceil(Math.random()*20)]
+						let total = 0
+						for(let k=0;k<ndatos.length;++k) total += ndatos[k]
+
+						const suma =[	["A|B",		simplify_frac([ndatos[2],ndatos[2]+ndatos[3]])],
+										["A|B^c",	simplify_frac([ndatos[1],ndatos[1]+ndatos[0]])],
+										["A^c|B",	simplify_frac([ndatos[3],ndatos[2]+ndatos[3]])],
+										["A^c|B^c",	simplify_frac([ndatos[0],ndatos[1]+ndatos[0]])],
+										["B|A",		simplify_frac([ndatos[2],ndatos[1]+ndatos[2]])],
+										["B|A^c",	simplify_frac([ndatos[3],ndatos[0]+ndatos[3]])],
+										["B^c|A",	simplify_frac([ndatos[2],ndatos[1]+ndatos[2]])],
+										["B^c|A^c",	simplify_frac([ndatos[0],ndatos[0]+ndatos[3]])]
+										]
+						let op = Math.floor(Math.random()*suma.length)
+						
+						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],num2prob(ndatos)],250)}</center>`,C[6])
+						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$\\frac{x_3}{2}$$']],Math.random()*450+150)}</center>`,C[6])
+
+						const R=[`$P(${suma[op][0]}) = \\frac{${suma[op][1][0]}}{${suma[op][1][1]}}$`]
+						for(let i=1;i<6;++i){
+							do{
+								temp = Math.random()<0.5?simplify_frac([suma[op][1][0]+Math.round(Math.random()*20-5),suma[op][1][1]]):simplify_frac([suma[Math.floor(Math.random()*suma.length)][1][0],suma[op][1][1]])
 								temp[0] = Math.abs(temp[0])
 
 								R[i]=`$P(${suma[op][0]}) = \\frac{${temp[0]}}{${temp[1]}}$`

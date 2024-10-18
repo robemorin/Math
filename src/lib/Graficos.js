@@ -714,30 +714,44 @@ function diagramaAsignacion(txtElem,size=[480,300]){
     center.appendChild(svg)
 	return center
 }
-function diagramaVenn2(legend,ancho = 500 ){
+function diagramaVenn2(legend,ancho = 300 ){
     /*
     Sintaxis:
         diagramaVenn2([['A','B'],['0','1','2','3']])
         diagramaVenn2([['A','B'],[]])
         diagramaVenn2([[],['0','1','2','3']])
         diagramaVenn2([[],[]])
+        diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$x_3$$']])
     */
     const alto = ancho/1.618
     let S = `<svg "http://www.w3.org/2000/svg" height="${alto}" width="${ancho}">
     <rect  width="${ancho-2}" height="${alto-2}" x="1" y="1" fill="none" stroke="black" stroke-width="2" />
-    <circle cx="${0.33*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
-    <circle cx="${0.67*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
-    <text  x="3" y="3" alignment-baseline="hanging">U</text>`
+    <circle cx="${0.35*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+    <circle cx="${0.65*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+    <text font-size="${ancho*0.09}" x="3" y="3" alignment-baseline="hanging">U</text>`
     
     if(legend[0].length>0){
-        S += `<text text-anchor="end" x="${0.33*ancho-0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][0]}</text>`
-        S += `<text text-anchor="start" x="${0.67*ancho+0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][1]}</text>`
+        S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${0.35*ancho-0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][0]}</text>`
+        S += `<text font-size="${ancho*0.09}" text-anchor="start" x="${0.65*ancho+0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${legend[0][1]}</text>`
     }
     if(legend[1].length>0){
-        S += `<text text-anchor="end" x="${ancho-4}" y="${alto-4}" >${legend[1][0]}</text>`
-        S += `<text text-anchor="end" x="${0.33*ancho}" y="${alto/2}" >${legend[1][1]}</text>`
-        S += `<text text-anchor="start" x="${0.67*ancho}" y="${alto/2}" >${legend[1][3]}</text>`
-        S += `<text text-anchor="middle" x="${ancho/2}" y="${alto/2}" >${legend[1][2]}</text>`
+        //Hacer la fuente más pequeña si es fraccion
+
+        if(!(typeof legend[1][0] === 'string' && legend[1][0].includes("$$"))) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${ancho-4}" y="${alto-4}">${legend[1][0]}</text>`
+        else S +=`<foreignObject x="${ancho*.85}" y="${alto-ancho*.2-4}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][0].includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${legend[1][0]}</div></foreignObject>`
+        
+        if(!(typeof legend[1][1] === 'string' && legend[1][1].includes("$$"))) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${0.35*ancho}" y="${alto/2}" >${legend[1][1]}</text>`
+        else S +=`<foreignObject x="${0.35*ancho-0.5*alto/(1.2*1.41)}" y="${0.35*alto}" width="${ancho*.15}" height="${ancho*.20}">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][1].includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${legend[1][1]}</div></foreignObject>`
+        
+        if(!(typeof legend[1][2] === 'string' && legend[1][2].includes("$$"))) S += `<text font-size="${ancho*0.09}" text-anchor="middle" x="${ancho/2}" y="${alto/2}" >${legend[1][2]}</text>`
+        else S +=`<foreignObject x="${0.41*ancho}" y="${0.35*alto}" width="${ancho*.18}" height="${ancho*.20}">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][2].includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${legend[1][2]}</div></foreignObject>`
+
+        
+        if(!(typeof legend[1][3] === 'string' && legend[1][3].includes("$$"))) S += `<text font-size="${ancho*0.09}" text-anchor="start" x="${0.65*ancho}" y="${alto/2}" >${legend[1][3]}</text>`
+        else S +=`<foreignObject x="${0.65*ancho}" y="${0.35*alto}" width="${ancho*.15}" height="${ancho*.20}">
+            <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][3].includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${legend[1][3]}</div></foreignObject>`
         //S += `<circle cx="${ancho-4}" cy="${alto-4}" r="3">`
     }
 
