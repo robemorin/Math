@@ -758,3 +758,58 @@ function diagramaVenn2(legend,ancho = 300 ){
     S += `</svg>`
     return S
 }
+function diagramaArbol(legend,a = 300 ){
+    /*
+    diagramaArbol([['A','B'],[0.33,0.123,0.123,0.369,0.852,0.789]],300)
+    diagramaArbol([['A','B'],['$$x$$','$$x$$','$$x$$','$$x$$','$$x$$','$$\frac{x}{y}$$']],300)
+    Solo expresiones cortas
+    */
+    
+    let S = `<svg "http://www.w3.org/2000/svg" height="${a}" width="${a}">
+    <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+            refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+    </marker>
+  </defs>
+  <line        x1="0" y1="${a/2}"   x2="${0.3*a}" y2="${0.3*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />
+  <line        x1="0" y1="${a/2}"   x2="${0.3*a}" y2="${0.7*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />
+  <line x1="${0.5*a}" y1="${0.3*a}" x2="${0.8*a}" y2="${0.15*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />
+  <line x1="${0.5*a}" y1="${0.3*a}" x2="${0.8*a}" y2="${0.45*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />
+  <line x1="${0.5*a}" y1="${0.7*a}" x2="${0.8*a}" y2="${0.55*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />
+  <line x1="${0.5*a}" y1="${0.7*a}" x2="${0.8*a}" y2="${0.85*a}" stroke="black" stroke-width="1" marker-end="url(#arrowhead)" />`
+
+  if(legend[0].length>0){
+    S += `  <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.4*a}" y="${0.3*a}" >${legend[0][0]}</text>
+            <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.4*a}" y="${0.7*a}" >${legend[0][0]}<tspan dy ="-5">c</tspan></text>
+            <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.9*a}" y="${0.15*a}" >${legend[0][1]}</text>
+            <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.9*a}" y="${0.45*a}" >${legend[0][1]}<tspan dy ="-5">c</tspan></text>
+            <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.9*a}" y="${0.55*a}" >${legend[0][1]}</text>
+            <text font-size="${0.09*a}" text-anchor="middle" alignment-baseline="middle"  x="${0.9*a}" y="${0.85*a}" >${legend[0][1]}<tspan dy ="-5">c</tspan></text>`
+}
+if(legend[1].length>0){
+ 
+    if(!(typeof legend[1][0] === 'string' && legend[1][0].includes("$$"))) S += `<text alignment-baseline="baseline" font-size="${a*0.065}" text-anchor="end" x="${.15*a}" y="${.4*a}">${legend[1][0]}</text>`
+    else S +=`<foreignObject x="${.05*a}" y="${.2*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][0].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][0]}</div></foreignObject>`
+    
+    if(!(typeof legend[1][1] === 'string' && legend[1][1].includes("$$"))) S += `<text alignment-baseline="hanging" font-size="${a*0.065}" text-anchor="end" x="${.15*a}" y="${.6*a}">${legend[1][1]}</text>`
+    else S +=`<foreignObject x="${.045*a}" y="${.55*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][1].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][1]}</div></foreignObject>`
+
+    if(!(typeof legend[1][2] === 'string' && legend[1][2].includes("$$"))) S += `<text alignment-baseline="baseline" font-size="${a*0.065}" text-anchor="end" x="${.65*a}" y="${.225*a}">${legend[1][2]}</text>`
+    else S +=`<foreignObject x="${.5*a}" y="${.04*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][2].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][2]}</div></foreignObject>`
+
+    if(!(typeof legend[1][3] === 'string' && legend[1][3].includes("$$"))) S += `<text alignment-baseline="hanging" font-size="${a*0.065}" text-anchor="end" x="${.65*a}" y="${.375*a}">${legend[1][3]}</text>`
+    else S +=`<foreignObject x="${.48*a}" y="${.29*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][3].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][3]}</div></foreignObject>`
+
+    if(!(typeof legend[1][4] === 'string' && legend[1][4].includes("$$"))) S += `<text alignment-baseline="baseline" font-size="${a*0.065}" text-anchor="end" x="${.65*a}" y="${.625*a}">${legend[1][4]}</text>`
+    else S +=`<foreignObject x="${.48*a}" y="${.49*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][4].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][4]}</div></foreignObject>`
+
+    if(!(typeof legend[1][5] === 'string' && legend[1][5].includes("$$"))) S += `<text alignment-baseline="hanging" font-size="${a*0.065}" text-anchor="end" x="${.65*a}" y="${.775*a}">${legend[1][5]}</text>`
+    else S +=`<foreignObject x="${.48*a}" y="${.7*a}" width="${a*.15}" height="${a*.20}" style="border:solid green 2px">    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${legend[1][5].includes('\\frac')?a*0.045:a*0.09};text-align: rigth;width: fit-content;border: solid red 2px">${legend[1][5]}</div></foreignObject>`
+}
+    
+    
+
+    S += `</svg>`
+    return S
+}

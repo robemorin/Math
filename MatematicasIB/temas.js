@@ -3126,6 +3126,58 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						}
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre: "Diagrama de árbol y probabilidad condicionada",
+					Nota:" $P(A|B) = \\frac{P(B|A) P(A)}{P(B)}$",
+					fun:function(){
+						class DA {
+							constructor(A, BA,BAc) {
+							  this.A = A
+							  this.BA = BA
+							  this.BAc =BAc
+							  this.Ac = 1-A
+							  this.BcA = 1-BA
+							  this.BcAc = 1-BAc
+							  this.B = this.A*this.BA + this.Ac*this.BAc
+							  this.Bc = 1-this.B
+							}
+							opcion(op){
+								switch(op){
+									case 1:
+										return ['B',(this.BA*this.A+this.BAc*this.Ac).toPrecision(3)]
+									case 2:
+										return ['B^c',(this.BcA*this.A+this.BcAc*this.Ac).toPrecision(3)]
+									case 3:
+										return ['A|B',(this.BA*this.A/this.B).toPrecision(3)]
+									case 4:
+										return ['A|B^c',(this.BcA*this.A/this.Bc).toPrecision(3)]
+									case 5:
+										return ['A^c|B',(this.BAc*this.Ac/this.B).toPrecision(3)]
+									default:
+										return ['A^c|B^c',(this.BcAc*this.Ac/this.Bc).toPrecision(3)]
+								}
+							}
+							diagArbol() {
+							  return [this.A.toFixed(3),this.Ac.toFixed(3),this.BA.toPrecision(3),this.BcA.toPrecision(3),this.BAc.toPrecision(3),this.BcAc.toPrecision(3)]
+							}
+						}
+						let C=abrirPregunta()
+						let op = Math.ceil(Math.random()*6)
+						const q = new DA(Math.round(Math.random()*1000)/1000,Math.round(Math.random()*1000)/1000,Math.round(Math.random()*1000)/1000)
+						let ans=q.opcion(op)
+						spanContenido(`Considerando el siguiente diagrama, determine $P(${ans[0]})$ <br><center>${diagramaArbol([['A','B'],q.diagArbol()],300)}</center>`,C[6])
+						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$\\frac{x_3}{2}$$']],Math.random()*450+150)}</center>`,C[6])
+
+						const R=[`$P(${ans[0]}) = ${ans[1]}$`]
+						for(let i=1;i<6;++i){
+							do{
+								
+								let fakeans=q.opcion(op)
+								R[i]=`$P(${ans[0]}) = ${Math.random()<0.5?(Math.random()).toPrecision(3):fakeans[1]}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
 				}
 			]
 		},
