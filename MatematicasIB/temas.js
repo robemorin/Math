@@ -3107,13 +3107,13 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 										["A^c|B^c",	simplify_frac([ndatos[0],ndatos[1]+ndatos[0]])],
 										["B|A",		simplify_frac([ndatos[2],ndatos[1]+ndatos[2]])],
 										["B|A^c",	simplify_frac([ndatos[3],ndatos[0]+ndatos[3]])],
-										["B^c|A",	simplify_frac([ndatos[2],ndatos[1]+ndatos[2]])],
+										["B^c|A",	simplify_frac([ndatos[1],ndatos[1]+ndatos[0]])],
 										["B^c|A^c",	simplify_frac([ndatos[0],ndatos[0]+ndatos[3]])]
 										]
 						let op = Math.floor(Math.random()*suma.length)
 						
 						spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],num2prob(ndatos)],250)}</center>`,C[6])
-						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['$$x_0$$','$$x_1$$','$$x_2$$','$$\\frac{x_3}{2}$$']],Math.random()*450+150)}</center>`,C[6])
+						//spanContenido(`Considerando el siguiente diagrama, determine $P(${suma[op][0]})$ <br><center>${diagramaVenn2([['A','B'],['0','1','2','3']],Math.random()*450+150)}</center>`,C[6])
 
 						const R=[`$P(${suma[op][0]}) = \\frac{${suma[op][1][0]}}{${suma[op][1][1]}}$`]
 						for(let i=1;i<6;++i){
