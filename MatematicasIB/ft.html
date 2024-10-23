@@ -87,6 +87,18 @@ div.problema2{
 .FT_ol_a li{
   list-style: none;
   counter-increment: item;
+  ol{
+    counter-reset: item;
+    li {
+      list-style: none;
+      counter-increment: item;
+    }
+    li::before {
+      content: "(" counter(item, lower-roman) ") ";
+      margin-right: 5px;
+    }
+
+  }
     div:last-child{
       display: inline-block;
       float: right;
@@ -180,8 +192,8 @@ MathJax.Hub.Config({
 
 </head>
 
-<body onload="start(),generar(4,1,0)">
-<div id="start" class="noprint">
+<body onload="start(),generar(4,2,0)">
+<div id="start" class="noprint" >
 	<center><h1>Fichas de trabajo</h1>
 <table width="100%" id="TablaInicio">
 	<tr><td align="right"><label for="NCopias">Número de copias</label></td><td align="left"><input type="number" id="NCopias" min="1" max="60" step="1" value="2"></td></tr>

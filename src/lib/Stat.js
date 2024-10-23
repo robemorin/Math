@@ -531,3 +531,85 @@ function tcrit(alpha,dof,tails){
 	[30, 0.6828, 1.3104, 1.6973, 2.0423, 2.4573, 2.7500]]
 	return t[dof-1][col]
 	}
+function tablaDatos(P,label=[]){
+	/*
+	Esta función muestra los datos en una tabla
+	sintaxis:
+		tablaDatos([[1,2,3],[8,5,6,8]],['$x$','$y$'])
+	*/
+	if(label.length==0){
+		for(let k=0;k<P.length;++k){
+			label.push(`$x_{${k+1}}$`)
+		} 
+	}
+	let ncol = 0
+	for(let k=0;k<P.length;++k){
+		ncol = (ncol<P[k].length)?P[k].length:ncol
+	}
+	let S = `<table CELLSPACING="10">`
+	for(let k=0;k<P.length;++k){
+		S += `<tr><td style="border-right:solid black 2px;">${label[k]}</td>`
+		for(let k1=0;k1<P[k].length;++k1){
+			S += `<td >${P[k][k1]}</td>`
+		}
+		S += `</tr>`
+	}
+	S += `</table>`
+	return S
+}
+function tcalc_1(P,op=false){
+	/*
+	t-calculada 
+	t=(x1-x2)/raiz(s1^2/n1+s2^2/n2)
+	*/
+	function media(x){
+		let S=0
+		for(let k=0;k<x.length;++k) S += x[k]
+		return S/x.length
+	}
+	function varianza(x){
+		/*con corrección de Pearson */
+		let S = 0
+		const xm = media(x)
+		for(let k=0;k<x.length;++k) S += (x[k]-xm)**2
+		return S/(x.length-1)
+	}
+	const x1=media(P[0])
+	const x2=media(P[1])
+	const n1=P[0].length
+	const n2=P[1].length
+	const s21=varianza(P[0])
+	const s22=varianza(P[1])
+	if(op) return [(x1-x2)/Math.sqrt(s21/n1+s22/n2),x1,x2,n1,n2,s21,s22]
+	return (x1-x2)/Math.sqrt(s21/n1+s22/n2)
+}
+function tcalc(P,op=false){
+	/*
+	t-calculada simple
+	t=(x1-x2)/raiz(E*A)
+	E=((n1-1)S21+(n2-1)*s22)/(n1+n2-2)
+	A=(1/n1+1/n2)
+	*/
+	function media(x){
+		let S=0
+		for(let k=0;k<x.length;++k) S += x[k]
+		return S/x.length
+	}
+	function varianza(x){
+		/*con corrección de Pearson */
+		let S = 0
+		const xm = media(x)
+		for(let k=0;k<x.length;++k) S += (x[k]-xm)**2
+		return S/(x.length-1)
+	}
+	const x1=media(P[0])
+	const x2=media(P[1])
+	const n1=P[0].length
+	const n2=P[1].length
+	const s21=varianza(P[0])
+	const s22=varianza(P[1])
+	const E=((n1-1)*s21+(n2-1)*s22)/(n1+n2-2)
+	const A=1/n1+1/n2
+	if(op) return [(x1-x2)/Math.sqrt(E*A),x1,x2,n1,n2,s21,s22,E,A]
+	return (x1-x2)/Math.sqrt(E*A)
+}

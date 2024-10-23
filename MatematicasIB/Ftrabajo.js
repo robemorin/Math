@@ -306,6 +306,111 @@ const Ficha = [{
                 }
 
             }]
+        },{
+            Nombre: "t-Student",
+            topico:[{
+                Nombre:"prueba t student",
+                func:function(){
+                    
+
+                    /*let datos=[ [21,21,26,25,28,24],
+                                [24,25,25,26,32,29]]*/
+                    let datos=[[],[]]
+                    let n = [Math.round(Math.random()*10+5),Math.round(Math.random()*10+5)]
+                    if(n[0] == n[1]){
+                        ++n[1]
+                    }
+                    let dummy = [Math.random()*20, Math.random()*2]
+                    
+                    for (let k=0;k<n[0];++k) datos[0].push( Math.round(dummy[0]+1/((1-Math.random())*dummy[1])) )
+                    for (let k=0;k<n[1];++k) datos[1].push( Math.round(dummy[0]+1/((1-Math.random())*dummy[1])) )
+
+
+                    let Pregunta =`
+        <h3>Fórmula</h3>
+        <p>La estadística de t-student para muestras pequeñas con misma cantidad de muestras y con misma desviación estándar similar, se calcula usando la siguiente fórmula:</p>
+        <p>
+            \\[
+            t_{calc} = \\frac{\\overline{x_1}-\\overline{x_2}}{\\sqrt{\\frac{S_1^2}{n_1}+\\frac{S_2^2}{n_2}}}
+            \\]
+        </p>
+        
+    
+        <div class="problema2">
+
+        1. Se desea aplicar la prueba de t-student para saber si existe uns diferencia significativa entre dos muestras con un nivel de significancia de 5%.
+        las muestra son las siguientes<br> <center>${tablaDatos(datos,['muestra 1','muestra 2'])}</center>
+        
+        
+        <ol class="FT_ol_a">
+            <li>Escriba las hipótesis nula y alternativa <div>1</div></li>
+            <li>Escriba los grados de libertad. <div>1</div></li> 
+            <li>Escriba las desviaciones estándar. <div>1</div></li>
+            <li>Escriba el valor crítico de la prueba. <div>1</div></li>
+            <li>Calcule el valor $t_{calc}$. <div>1</div></li>
+            <li>Realice una conclusión basado en sus respuestas anteriores. <div>1</div></li>
+            <ol><div class="page"></div>
+            `
+            let resp =tcalc_1(datos,true)
+            let Solucion=`  (1b) gl = ${datos[0].length+datos[1].length-2}
+                            (1c) S_1=${Math.sqrt(resp[3]).toPrecision(4)}, S_2=${Math.sqrt(resp[4]).toPrecision(4)}
+                            (1e) $t_{calc} = ${resp[0].toPrecision(4)}$
+                            `
+
+            datos=[[],[]]
+            n = [Math.round(Math.random()*10+5),Math.round(Math.random()*10+5)]
+            if(n[0] == n[1]){
+                ++n[1]
+            }
+            dummy = [Math.random()*20, Math.random()*2]
+                    
+            for (let k=0;k<n[0];++k) datos[0].push( Math.round(dummy[0]+1/((1-Math.random())*dummy[1])) )
+            for (let k=0;k<n[1];++k) datos[1].push( Math.round(dummy[0]+1/((1-Math.random())*dummy[1])) )
+
+
+            resp =tcalc(datos,true)
+            Solucion +=`  (2b) gl = ${datos[0].length+datos[1].length-2}
+                            (2c) S_1=${Math.sqrt(resp[3]).toPrecision(4)}, S_2=${Math.sqrt(resp[4]).toPrecision(4)}
+                            (2e) $t_{calc} = ${resp[0].toPrecision(4)}$
+                            `
+            //Solucion +=`(2e) ${tcalc(datos)}`
+
+            Pregunta +=`
+        <h3>Fórmula</h3>
+        <p>La estadística de t-student para muestras con distinta desviación estándar, se calcula usando la siguiente fórmula:</p>
+        <p>
+            \\[
+            t_{calc} = \\frac{\\overline{x_1}-\\overline{x_2}}{\\sqrt{\\left(\\frac{(n_1+1)S_1^2+(n_2+1)S_2^2}{n_1+n_2-2}\\right)\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)}}
+            \\]
+        </p>
+        
+    
+        <div class="problema2">
+
+        1. Se desea aplicar la prueba de t-student para saber si existe uns diferencia significativa entre dos muestras con un nivel de significancia de 5%.
+        las muestra son las siguientes<br> <center>${tablaDatos(datos,['muestra 1','muestra 2'])}</center>
+        
+        
+        <ol class="FT_ol_a">
+            <li>Escriba las hipótesis nula y alternativa <div>1</div></li>
+            <li>Escriba los grados de libertad. <div>1</div></li>
+            <li>Escriba las desviaciones estándar. <div>1</div></li>
+            <li>Escriba las desviaciones estándar. 
+                    <ol>
+                    <li>Calcule el valor de $\\left(\\frac{(n_1+1)S_1^2+(n_2+1)S_2^2}{n_1+n_2-2}\\right)$</li>
+                    <li>Calcule el valor de $\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)$</li>
+                    <li>Calcule el valor de $t_{calc}$<div>1</div></li>
+                    </ol>
+            </li>
+            <li>Escriba el valor crítico de la prueba. <div>1</div></li>
+            <li>Calcule el valor $t_{calc}$. <div>1</div></li>
+            <li>Realice una conclusión basado en sus respuestas anteriores. <div>1</div></li>
+            <ol>
+            `
+                    return [Pregunta,Solucion]
+                }
+
+            }]
         }
     ]
 
