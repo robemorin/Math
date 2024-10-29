@@ -86,7 +86,7 @@ function NormalGraph(Datos=[-1,1.5,1,2],Size=[400,200]){
     return SVG
 
 }
-function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
+function plot(P,dim=[300,200],lim=[-10,10,-10,10],label=[]){
     /***************** Ejemplo ******************************
     const Puntos=[	[[0,1,5,6,2,7],
                      [5,4,3,2,1,-5],'oRGB(255,100,155)'],
@@ -114,6 +114,25 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
                 o.setAttribute("stroke",P[k][2].substring(1))
                 o.setAttribute('stroke-width', "3");
                 ax.appendChild(o)
+            }
+        }if(P[k][2].charAt(0)=='x'){
+            for(let k1=0;k1<P[k][0].length;++k1){
+                console.log(`k1:${k1}`)
+                Point=coo2px([P[k][0][k1],P[k][1][k1]],dim,lim)
+                l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
+            
+                    l.setAttribute("points",`${Point[0]-3},${Point[1]-3} ${Point[0]+3},${Point[1]+3} ${Point[0]},${Point[1]} ${Point[0]-3},${Point[1]+3} ${Point[0]+3},${Point[1]-3}`)
+                    l.setAttribute("stroke",P[k][2].substring(1))
+                    l.setAttribute('stroke-width', "3");
+                    ax.appendChild(l)
+                    /*
+                o = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+                o.setAttribute("cx",Point[0] )
+                o.setAttribute("cy",Point[1] )
+                o.setAttribute("r","5")
+                o.setAttribute("stroke",P[k][2].substring(1))
+                o.setAttribute('stroke-width', "3");
+                ax.appendChild(o)*/
             }
         }else if(P[k][2].charAt(0)=='-'){
             l = document.createElementNS('http://www.w3.org/2000/svg', 'polyline')
@@ -143,7 +162,7 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
             txt.setAttribute('style','font: italic 12px sans-serif;')
             txt.textContent=k*lim[4][1]
             if(k!=0){ SVG.appendChild(txt)}*/
-
+            console.log("??:"+P[k][2])
             l = document.createElementNS('http://www.w3.org/2000/svg', 'text')
             let temp=coo2px([P[k][0],P[k][1]],dim,lim)
             l.setAttribute("x",temp[0])
@@ -158,6 +177,7 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10]){
     return ax
 
 }
+
 function createSVG(dim=[300,200]){
     //ElemSVG=CreateSVG()
     let SVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

@@ -392,31 +392,7 @@ function chiCuadradaCal(fo,fe=[[0]]) {
 	[48.278,	41.337,	37.916],
 	[49.588,	42.557,	39.088]]
 	  return chit[dof-1][q]
-	}/*
-function normalcdf(a,b,mu,sigma){
-	function RS38(a,b,mu,sx){
-		function f(x,mu,sx){ return Math.exp(-Math.pow(x-mu,2)/(2*sx*sx) ) }
-		n=3*Math.round((b-a)/0.01)
-		h = (b-a)/n
-		let S=f(a,mu,sx)+f(b,mu,sx)
-		for (let i = 1 ; i < n ; i++)
-		{
-			if (i % 3 == 0)
-				S += 2 * f(a + i * h, mu, sx);
-			else
-				S += 3 * f(a + i * h, mu, sx);
-		}
-		return ( 3 * h / 8 ) * S ;
 	}
-	
-
-	a=eval(a)
-	b=eval(b)
-	mu=eval(mu)
-	sigma=eval(sigma)
-	//alert("f(x)= exp(-(x-"+mu+")^2/(2*"+sigma+"^2))/("+sigma+"*sqrt(2*pi))\nintegral(f,"+a+","+b+") = "+RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI)))
-	return RS38(a,b,mu,sigma)/(sigma*Math.sqrt(2*Math.PI))
-}*/
 function normalcdf(a,b,mu,sigma){
 	function RS38(a,b,mu,sx){
 		function f(x){ return Math.exp(-Math.pow(x,2)/(2) ) }
