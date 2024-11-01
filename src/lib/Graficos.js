@@ -162,7 +162,6 @@ function plot(P,dim=[300,200],lim=[-10,10,-10,10],label=[]){
             txt.setAttribute('style','font: italic 12px sans-serif;')
             txt.textContent=k*lim[4][1]
             if(k!=0){ SVG.appendChild(txt)}*/
-            console.log("??:"+P[k][2])
             l = document.createElementNS('http://www.w3.org/2000/svg', 'text')
             let temp=coo2px([P[k][0],P[k][1]],dim,lim)
             l.setAttribute("x",temp[0])
@@ -831,5 +830,41 @@ if(legend[1].length>0){
     
 
     S += `</svg>`
+    return S
+}
+function plotCuartiles(Q,lim,dim,xlabel){
+    /*
+    plotCuartiles([min,q1,med,q3,max],[xmin,xmax,Dx,dx,decimales],[400,280],'eje x')
+    plotCuartiles(data,[xmin,xmax,Dx],[280,400],'eje x')
+    */
+   const xmin=lim[0], xmax=lim[1], Dx=lim[2], minSpace=dim[1]*.05
+   const ancho=dim[1]-2*minSpace, alto = 0.8*dim[0]-minSpace, xtick=[Math.ceil(xmin/Dx)*Dx]
+   // Vamos a calcular cuanto vale en pixeles
+    /*
+   ( xmin, minSpace), (xmax,ancho+minSpace)
+    */
+   const L=[ancho/(xmax-xmin)]
+   L.push( minSpace-L[0]*xmin )
+   const Dpx = L[0]*Dx
+   
+   while(xtick[xtick.length-1]<=xmax){
+        xtick.push(xtick[xtick.length-1]+Dx)    
+   }
+   console.log(xtick)
+   let Slabelx = "", temporalx=0
+   for(let k=1;(alto+minSpace-Dpx*k)>=minSpace;++k){
+    Slabelx += `<line x1="${minSpace}" y1="${alto+minSpace-Dpx*k}" x2="${ancho+minSpace}" y2="${alto+minSpace-Dpx*k}" stroke="gray" stroke-width="2.5" />`
+    temporalx=alto+minSpace-Dpx*k
+   }
+   for(let k=0;k<xtick.length-1;++k){
+    Slabelx += `<line x1="${L[0]*xtick[k]+L[1]}" y1="${alto+minSpace}" x2="${L[0]*xtick[k]+L[1]}" y2="${temporalx}" stroke="gray" stroke-width="2.5" />
+                <line x1="${L[0]*xtick[k]+L[1]}" y1="${alto+0.5*minSpace}" x2="${L[0]*xtick[k]+L[1]}" y2="${alto+1.5*minSpace}" stroke="black" stroke-width="3" />
+                <text font-size="${0.075*alto}" text-anchor="middle" alignment-baseline="hanging"  x="${L[0]*xtick[k]+L[1]}" y="${alto+1.5*minSpace+3}" >${xtick[k]}</text>`
+   }
+   
+   let S=`<svg width="${dim[1]}" height="${dim[0]}" style="border:solid red 2px">${Slabelx}
+              <line x1="${minSpace}" y1="${alto+minSpace}" x2="${ancho+minSpace}" y2="${alto+minSpace}" stroke="black" stroke-width="3" />
+              <text font-size="${0.09*alto}" text-anchor="middle" alignment-baseline="text-top"  x="${0.5*dim[1]}" y="${dim[0]-0.2*minSpace}" >${xlabel}</text>
+            </svg>`
     return S
 }

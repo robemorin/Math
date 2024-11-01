@@ -3227,8 +3227,30 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 		},
 		{
 			Nombre:"Distribución Binomial",
-			test:[
-				{
+			test:[{
+				Nombre: "Combinaciones",
+				Nota:"Use su calculadora",
+				fun:function(){
+
+					let n = Math.ceil(Math.random()*3+14)
+					let r = Math.ceil(Math.random()*n)
+					
+					let C=abrirPregunta()
+					
+					spanContenido(`Determine el valor de $C^{${n}}_{${r}}$`,C[6])
+					
+
+					const R=[`$${comb(n,r)}$`]
+					for(let i=1;i<6;++i){
+						do{
+							n = Math.ceil(Math.random()*3+14)
+							r = Math.ceil(Math.random()*n)
+							R[i]=`$${comb(n,r)}$`
+						}while(repetido(R))
+					}
+					for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+				}
+			},{
 					Nombre:"Distribución Binomial I",
 					Nota:"",
 					fun:function(){

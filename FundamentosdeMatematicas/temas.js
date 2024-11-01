@@ -1683,6 +1683,34 @@ function P2(x){
 			Nombre:"Parábola",
 			test:[
 				{
+					Nombre:"Factorización",
+					Nota:"",
+					fun:function(){
+						let c= [Math.ceil(Math.random()*9),
+								Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),
+								Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),
+								Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)]
+						MCM(c)
+						if(c[0]<c[2]) [c[0],c[2]] = [c[2],c[0]]
+						let C=abrirPregunta()
+    					
+						spanContenido(`Factorice la siguiente expresión $${polinomio(multiply([c[0],c[1]], [c[2],c[3]]))}$.`,C[6])
+						const R = [];
+						R[0] = `$(${polinomio([c[0],c[1]])})(${polinomio([c[2],c[3]])})$`
+						for(let i=1;i<6;++i){
+							do{		
+								c= [Math.ceil(Math.random()*9),
+									Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),
+									Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),
+									Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)]
+							MCM(c)
+							if(c[0]<c[2]) [c[0],c[2]] = [c[2],c[0]]
+								R[i] = `$(${polinomio([c[0],c[1]])})(${polinomio([c[2],c[3]])})$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
 					Nombre:"Representación de la parábola en la forma $y = a(x-h)^2+k$",
 					Nota:"",
 					fun:function(){
