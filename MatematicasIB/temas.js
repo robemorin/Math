@@ -3446,120 +3446,24 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					Nombre:"Distribución Binomial II",
 					Nota:"",
 					fun:function(){
+						let n = Math.round( Math.random()*17+3 )
+						let r = Math.round( Math.random()*n )
+						let p = Math.round( Math.random()*950+50)/1000
 
-function P1(x){
-	var n=Math.ceil(Math.random()*3+8)
-	var p=eval((Math.random()).toFixed(2))
-	var x=Math.round(Math.random()*n)
-	
-	var P="Sea $X\\sim B("+n+","+p.toFixed(2)+")$ calcule $P(X = "+x+")$ "
-	
-	
-	var R=[];
-	R[0]=M_binomialpdf(n,p,x).toPrecision(3)
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		do{
-			var n=Math.ceil(Math.random()*3+8)
-			var p=eval((Math.random()).toFixed(2))
-			var x=Math.round(Math.random()*n)
-			R[i]=M_binomialpdf(n,p,x).toPrecision(3)
-			
-		}while(repetido(R))
-	}
-	return [P,R]
-}
-function P2(x){
-	
-	do{
-		var n=Math.ceil(Math.random()*3+8)
-		var p=eval((Math.random()).toFixed(2))
-		var xm=Math.floor(Math.random()*n)
-		var xM=Math.ceil(Math.random()*n)
-	}while((xm+1)>=xM || xm<1 )
-	
-	
-	var P="Sea $X\\sim B("+n+","+p.toFixed(2)+")$ calcule $P("+(Math.random()<0.5?(xm)+"\\le":(xm-1)+"<")+" X "+(Math.random()<0.5?"\\le"+(xM):"<"+(xM+1))+")$ "
-	
-	
-	var R=[];
-	R[0]=M_binomialcdf_R(n,p,xm,xM).toPrecision(3)
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		do{
-			do{
-				var n=Math.ceil(Math.random()*3+8)
-				var p=eval((Math.random()).toFixed(2))
-				var xm=Math.floor(Math.random()*n)
-				var xM=Math.ceil(Math.random()*n)
-			}while((xm+1)>=xM || xm<1 )
-			R[i]=M_binomialcdf_R(n,p,xm,xM).toPrecision(3)
-			
-		}while(repetido(R))
-	}
-	return [P,R]
-}
-function P4(x){
-	var n=Math.ceil(Math.random()*3+8)
-	var p=eval((Math.random()).toFixed(2))
-	var x=Math.ceil(Math.random()*n)
-	
-	var P="Sea $X\\sim B("+n+","+p.toFixed(2)+")$ calcule $P(X "+(Math.random()<0.5?"\\ge"+(x+1):">"+(x))+")$ "
-	
-	
-	var R=[];
-	R[0]=(1-M_binomialcdf(n,p,x)).toPrecision(3)
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		do{
-			var n=Math.ceil(Math.random()*3+8)
-			var p=eval((Math.random()).toFixed(2))
-			var x=Math.round(Math.random()*n)
-			R[i]=(1-M_binomialcdf(n,p,x)).toPrecision(3)
-			
-		}while(repetido(R))
-	}
-	return [P,R]
-}
-function P3(x){
-	var n=Math.ceil(Math.random()*3+8)
-	var p=eval((Math.random()).toFixed(2))
-	var x=Math.floor(Math.random()*n)
-	
-	var P="Sea $X\\sim B("+n+","+p.toFixed(2)+")$ calcule $P(X "+(Math.random()<0.5?"\\le"+x:"<"+(x+1))+")$ "
-	
-	
-	var R=[];
-	R[0]=M_binomialcdf(n,p,x).toPrecision(3)
-	var dummy=0;
-	for(var i=1;i<6;++i){
-		do{
-			var n=Math.ceil(Math.random()*3+8)
-			var p=eval((Math.random()).toFixed(2))
-			var x=Math.round(Math.random()*n)
-			R[i]=M_binomialcdf(n,p,x).toPrecision(3)
-			
-		}while(repetido(R))
-	}
-	return [P,R]
-}
-function PreguntaTema(){
-	if(Math.random()>0.25){
-		return P1(1)
-	}else if(Math.random()>0.5){
-		return P2(1)
-	}else if(Math.random()>0.75){
-		return P3(1)
-	}else{
-		return P4(1)
-	}
-}
-//Final
-let C=abrirPregunta()
-let [P,R]=PreguntaTema()
-spanContenido(P,C[6])
-// C[6].innerHTML=P
-for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						
+						let C=abrirPregunta()
+						
+						spanContenido(`Considere $X\\sim B(${n},${p.toPrecision(3)})$, calcule $P(X = ${r})$.`,C[6])
+						const R=[`$${M_binomialpdf(n,p,r).toPrecision(3)}$`]
+					for(let i=1;i<6;++i){
+						do{
+							p = Math.round( Math.random()*950+50)/1000
+							r = Math.round( Math.random()*n )
+							R[i]=`$${M_binomialpdf(n,p,r).toPrecision(3)}$`
+						}while(repetido(R))
+					}
+
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				}
 				

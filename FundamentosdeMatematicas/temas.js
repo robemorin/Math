@@ -1711,6 +1711,43 @@ function P2(x){
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
 				},{
+					Nombre:"Parábola a partir de tres puntos I",
+					Nota:"",
+					fun:function(){
+						let P= [[Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),0],
+								[Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)]]
+							if(P[0][0]==P[0][1]){
+								P[0][0]++
+							}
+							if(P[1][0]==P[1][1] && P[1][0]==P[1][2]){
+								P[1][0]++
+							}
+
+						
+						let a = [(P[1][0]-P[1][2])*P[0][1]-(P[1][1]-P[1][2])*P[0][0], P[0][0]**2*P[0][1]-P[0][1]**2*P[0][0]]
+						let b = [(P[1][1]-P[1][2])*P[0][0]**2-(P[1][0]-P[1][2])*P[0][1]**2, P[0][0]**2*P[0][1]-P[0][1]**2*P[0][0]]
+						const op =Math.random()<0.5?['a',a]:['b',b]
+						
+						let C=abrirPregunta()
+						spanContenido(`La parabola $y= ax^2+bx+c$ para por lo puntos que me muestran a continuación, por lo tanto el valor de $${op[0]}$ es: <b>
+							${plot([[linspace(-10,10),evaluar(`${a[0]/a[1]}*x**2+(${b[0]/b[1]})*x+(${P[1][2]})`,linspace(-10,10)),'-orange'],[P[0],P[1],'oblack']],[600,400],[-10,10,-10,10,[2,2],[1,1]]).outerHTML}
+							.`,C[6])
+							let frac = op[1]
+							frac = simplify_frac(frac)
+						const R = [`$${op[0]} = ${fraccion(frac[0],frac[1],true)}$`];
+						
+						for(let i=1;i<6;++i){
+							do{
+								frac = op[1]
+								frac[0] += Math.round(Math.random()*16-8)
+									
+								frac=simplify_frac(frac)
+								R[i] = `$${op[0]} = ${fraccion(frac[0],frac[1],true)}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
 					Nombre:"Representación de la parábola en la forma $y = a(x-h)^2+k$",
 					Nota:"",
 					fun:function(){

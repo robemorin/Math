@@ -8,7 +8,7 @@ function mcd_new(a, b) {
 	return mcd_new(b, a % b);
   }
 function polinomio(v){
-	
+	//Se debe modificar para que imprima con fracciones en caso de ser
 	while(v[0]==0){
 		if(v.length==1) return '0'
 		v.shift();
@@ -148,21 +148,12 @@ function evaluar(expresion,X){
 	  });
 	  return y
 }
-/*Number.prototype.noExponents() = function() {
-	var data = String(this).split(/[eE]/);
-	if (data.length == 1) return data[0];
+function convertirANotacionCientificaFormal(numeroEnNotacionCientifica) {
+	// Dividir el número en la parte decimal y el exponente
+	const partes = numeroEnNotacionCientifica.split('E');
+	const decimal = parseFloat(partes[0]);
+	const exponente = parseInt(partes[1]);
   
-	var z = '',
-	  sign = this < 0 ? '-' : '',
-	  str = data[0].replace('.', ''),
-	  mag = Number(data[1]) + 1;
-  
-	if (mag < 0) {
-	  z = sign + '0.';
-	  while (mag++) z += '0';
-	  return z + str.replace(/^\-/, '');
-	}
-	mag -= str.length;
-	while (mag--) z += '0';
-	return str + z;
-  }*/
+	// Formatear la salida
+	return `${decimal} x 10^${exponente}`;
+  }
