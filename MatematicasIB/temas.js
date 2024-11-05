@@ -3465,6 +3465,50 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:"Distribución Binomial Acumulada",
+					Nota:"",
+					/*
+					M_binomialcdf_R(n,p,xL,xU)
+
+					*/
+					fun:function(){
+						let n = Math.round( Math.random()*17+6 )
+						let li = Math.round( Math.random()*n )
+						let lu = Math.round( Math.random()*n )
+						let p = Math.round( Math.random()*950+50)/1000
+						let legenda=`Error!`
+						if(li>lu){
+							[li,lu]=[lu,li]
+						}
+
+						if(li==lu){
+							legenda = `X=${li}`
+						}else if(li==0){
+							legenda = `X&gt;${lu}`
+						}else if(li==n){
+							legenda = `X&lt;${li}`
+						}else{
+							legenda = `${Math.random()<0.5?`${li}\\leq `:`${li-1}&lt;`} X 
+							${Math.random()<0.5?`\\leq ${lu} `:`&lt; ${lu+1}`}`
+						}
+						let C=abrirPregunta()
+						
+						spanContenido(`Considere $X\\sim B(${n},${p.toPrecision(3)})$, calcule $P(${legenda} )$.`,C[6])
+						const R=[`$${M_binomialcdf_R(n,p,li,lu).toPrecision(3)}$`]
+					for(let i=1;i<6;++i){
+						do{
+							li = Math.round( Math.random()*n )
+							lu = Math.round( Math.random()*n )
+							if(li>lu){
+								[li,lu]=[lu,li]
+							}
+							R[i]=`$${M_binomialcdf_R(n,p,li,lu).toPrecision(3)}$`
+						}while(repetido(R))
+					}
+
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 				
 			]

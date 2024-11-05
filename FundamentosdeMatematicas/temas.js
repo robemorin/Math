@@ -1775,7 +1775,7 @@ function P2(x){
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
 				},{
-					Nombre:"Representación de la parábola en la forma $y = a(x-x_1)(x-x_2)$",
+					Nombre:"Representación de la parábola en la forma $y = a(x-x_1)(x-x_2)$ Parte I",
 					Nota:"",
 					fun:function(){
 						function parabola(a,x1,x2){
@@ -1784,7 +1784,7 @@ function P2(x){
 							for(let i =0; i<x.length; ++i){
 								y[i] = a*(x[i]-x1)*(x[i]-x2)
 							}
-							return [x,y,'-RGB(100,155,255)']
+							return [x,y,'-red']
 						}
 						let x1 = Math.round(Math.random()*18-9), x2=Math.round(Math.random()*18-9)
 						if(x1>x2){
