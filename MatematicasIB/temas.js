@@ -3509,6 +3509,45 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:"Esperanza matemática (General)",
+					Nota:"$E(X)=\\sum_\\limits{i\\in I} P(X=x_i)\\cdot W_i$",
+					/*
+					M_binomialcdf_R(n,p,xL,xU)
+
+					*/
+					fun:function(){
+						function crearTablas(){
+							let W = [Math.round(Math.random()*300)]
+							let P = [Math.round(Math.random()*10-5)] 
+							let d =Math.round(Math.random()*3+1)
+							while(sum(W)<1000){
+								W.push(Math.round(Math.random()*300))
+								P.push(P.length-1+d)
+								if(sum(W)>1000){
+									d=sum(W)-1000
+									W[W.length-1] += -d
+								}
+							}
+							for(let k=0;k<W.length;++k) W[k] /= 1000
+							return[W,P]
+						}
+						let C=abrirPregunta()
+						let T=crearTablas()
+
+						
+						spanContenido(`Calcule $E(X)$ de la siguiente tabla<br><center>${tablaDatos(T,['$P(X=x)$','$x$'])}</center>.`,C[6])
+						//vamos a calcular la esperanza matemática como una función
+						const R=[`$${E(T).toPrecision(3)}$`]
+					for(let i=1;i<6;++i){
+						do{
+							T=crearTablas()
+							R[i]=`$${E(T).toPrecision(3)}$`
+						}while(repetido(R))
+					}
+
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 				
 			]

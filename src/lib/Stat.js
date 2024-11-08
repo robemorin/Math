@@ -589,3 +589,15 @@ function tcalc(P,op=false){
 	if(op) return [(x1-x2)/Math.sqrt(E*A),x1,x2,n1,n2,s21,s22,E,A]
 	return (x1-x2)/Math.sqrt(E*A)
 }
+function sum(numeros){
+	let S=0
+	for(let k=0;k<numeros.length;++k) S += numeros[k]
+	return S
+}
+function E(x){
+	//	x[0]: probabilidad
+	//  x[1]: peso
+	let P=0
+	for(let k=0;k<x[0].length;++k) P += x[0][k]*x[1][k]
+	return P
+}
