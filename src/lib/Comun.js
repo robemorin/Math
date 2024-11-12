@@ -7,7 +7,7 @@ function mcd_new(a, b) {
 	if (b === 0) return a;
 	return mcd_new(b, a % b);
   }
-function polinomio(v){
+function polinomio(v,x='x'){
 	//Se debe modificar para que imprima con fracciones en caso de ser
 	while(v[0]==0){
 		if(v.length==1) return '0'
@@ -16,16 +16,16 @@ function polinomio(v){
 	const n=v.length;
 	let S
 	if(n==1){ S=`${v[0]<0?"-":""} ${Math.abs(v[0])}`
-	}else if(n==2){ S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+"x"
-	}else S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+"x^{"+(n-1)+"}"
+	}else if(n==2){ S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+x
+	}else S=(v[0]<0?"-":"")+(Math.abs(v[0])==1?'':Math.abs(v[0]))+x+"^{"+(n-1)+"}"
 	
 	
 	for(var k=1;k<n;++k){
 		if(v[k]!=0){
 
 		if(k==n-1){ S+=(v[k]<0?"-":"+")+Math.abs(v[k])
-		}else if(k==n-2){ S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x"
-		}else S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x^"+(n-k-1)
+		}else if(k==n-2){ S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+x
+		}else S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+x+"^"+(n-k-1)
 
 		}
 	}

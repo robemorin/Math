@@ -1852,13 +1852,116 @@ function P2(x){
 						}
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:"Parabola con tres puntos",
+					Nota:"",
+					fun:function(){
+						const a = Math.round(Math.random()*18-9)
+						const b = Math.round(Math.random()*18-9)
+						const c = Math.round(Math.random()*18-9)
+
+						let C=abrirPregunta()
+    					let P=[[]]
+						for(let i=0;i<3;++i){
+							do{
+								P[0][i] = Math.round(Math.random()*20-10)
+							}while(repetido(P[0]))
+						}
+						P[1] = evaluar(`${a}*x**2+(${b})*x+(${c})`,P[0])
+						
+						spanContenido(`Encuentre la parábola que pasa por los puntos $(${P[0][0]},${P[1][0]})$, $(${P[0][1]},${P[1][1]})$ y $(${P[0][2]},${P[1][2]})$ en la forma $y=ax^2+bx+c$.`,C[6])
+						const R = [];
+						R[0] = `$y=${polinomio([a,b,c])}$`
+						for(let i=1;i<6;++i){
+							do{		
+								
+								R[i] = `$y=${polinomio([Math.round(Math.random()*18-9),Math.round(Math.random()*18-9),Math.round(Math.random()*18-9)])}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
 				}
+
 				
 			]
 		},
 		{
 			Nombre:"Circunferencia",
-			test:[]
+			test:[
+				{
+					Nombre:"Circunferencia I",
+					Nota:"$(x-h)^2+(y-k)^2=r^2$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = [Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5+1)]
+						let C=abrirPregunta()
+    					const svg=plot([
+										[evaluar(`${c[2]}*Math.cos(x)+(${c[0]})`,t),evaluar(`${c[2]}*Math.sin(x)+(${c[1]})`,t),'-blue']]
+										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
+						spanContenido(`Encuentre la representación la siguiente circunferencia en la forma $(x-h)^2+(y-k)^2=r^2$<br>${svg.outerHTML}`,C[6])
+						const R = [`$(x ${(c[0]==0?'':(c[0]<0?'+'+(-c[0]):-c[0]))})^2+(y ${(c[1]==0?'':(c[1]<0?'+'+(-c[1]):-c[1]))})^2 = ${c[2]**2}$`];
+						let op=Math.floor(Math.random()*3)
+						
+						for(let i=1;i<6;++i){
+							do{		
+								c[op] += Math.ceil(Math.random()*7)*(Math.random()<0.5?1:-1)
+								R[i] = `$(x ${(c[0]==0?'':(c[0]<0?'+'+(-c[0]):-c[0]))})^2+(y ${(c[1]==0?'':(c[1]<0?'+'+(-c[1]):-c[1]))})^2 = ${c[2]**2}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Circunferencia II",
+					Nota:"$(x-h)^2+(y-k)^2=r^2$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = [Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5+1)]
+						let G=[-2*c[0],-2*c[1],c[0]**2+c[1]**2-c[2]**2]
+						let C=abrirPregunta()
+    					const svg=plot([
+										[evaluar(`${c[2]}*Math.cos(x)+(${c[0]})`,t),evaluar(`${c[2]}*Math.sin(x)+(${c[1]})`,t),'-blue']]
+										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
+						spanContenido(`Encuentre la representación la siguiente circunferencia en la forma $Ax^2+Bx+Cy^2+Dy+E=0$<br>${svg.outerHTML}`,C[6])
+						const R = [`$${polinomio([1,G[0],0])}+${polinomio([1,G[1],G[2]],'y')}=0$`];
+						let op=Math.floor(Math.random()*3)
+						
+						for(let i=1;i<6;++i){
+							do{		
+								G[op] += Math.ceil(Math.random()*3)*(Math.random()<0.5?1:-1)
+								R[i] = `$${polinomio([1,G[0],0])}+${polinomio([1,G[1],G[2]],'y')}=0$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Circunferencia III",
+					Nota:"$(x-h)^2+(y-k)^2=r^2$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = [Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 Math.ceil(Math.random()*5+1)]
+						let G=[-2*c[0],-2*c[1],c[0]**2+c[1]**2-c[2]**2]
+						let C=abrirPregunta()
+    					
+						spanContenido(`Encuentre la representación la siguiente circunferencia que tiene centro en $(${c[0]},${c[1]})$ y radio ${c[2]} en la forma $Ax^2+Bx+Cy^2+Dy+E=0$<br>`,C[6])
+						const R = [`$${polinomio([1,G[0],0])}+${polinomio([1,G[1],G[2]],'y')}=0$`];
+						let op=Math.floor(Math.random()*3)
+						
+						for(let i=1;i<6;++i){
+							do{		
+								G[op] += Math.ceil(Math.random()*3)*(Math.random()<0.5?1:-1)
+								R[i] = `$${polinomio([1,G[0],0])}+${polinomio([1,G[1],G[2]],'y')}=0$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
+			]
 		},
 		{
 			Nombre:"Elipse",
