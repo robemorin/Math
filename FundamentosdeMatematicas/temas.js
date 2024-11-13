@@ -1965,7 +1965,113 @@ function P2(x){
 		},
 		{
 			Nombre:"Elipse",
-			test:[]
+			test:[
+				{
+					Nombre:"Elipse I",
+					Nota:"$\\frac{(x-h)^2}{a^2}+\\frac{(y-k)^2}{b^2}=1$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = {h:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 k:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 a:Math.ceil(Math.random()*5+1),
+								 b:Math.ceil(Math.random()*5+1)}
+						while(c.a == c.b){
+							c.b = Math.ceil(Math.random()*5+1)
+						}
+
+						let C=abrirPregunta()
+    					const svg=plot([
+										[evaluar(`${c.a}*Math.cos(x)+(${c.h})`,t),evaluar(`${c.b}*Math.sin(x)+(${c.k})`,t),'-blue']]
+										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
+						spanContenido(`Encuentre la representación la siguiente elipse en la forma $\\frac{(x-h)^2}{a^2}+\\frac{(y-k)^2}{b^2}=1$<br>${svg.outerHTML}`,C[6])
+						const R = [`$\\frac{(${polinomio([1,-c.h])})^2}{${c.a**2}}+\\frac{(${polinomio([1,-c.k])})^2}{${c.b**2}} = 1$`];
+						const va = ['a','b','h','k']
+						let op = Math.floor(Math.random()*va.length)
+						
+						for(let i=1;i<6;++i){
+							do{		
+								c[va[op]] += Math.ceil(Math.random()*7)*(Math.random()<0.5?1:-1)
+								R[i] = `$\\frac{(${polinomio([1,-c.h])})^2}{${c.a**2}}+\\frac{(${polinomio([1,-c.k])})^2}{${c.b**2}} = 1$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Elipse II",
+					Nota:"$Ax^2+Bx+Cy^2+Dy+E=0$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = {h:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 k:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 a:Math.ceil(Math.random()*5+1),
+								 b:Math.ceil(Math.random()*5+1)}
+						while(c.a == c.b){
+							c.b = Math.ceil(Math.random()*5+1)
+						}
+						c['A']=c.b**2
+						c['B']=-2*c.b**2*c.h
+						c['C']=c.a**2
+						c['D']=-2*c.a**2*c.k
+						c['E']=(c.b*c.h)**2+(c.a*c.k)**2-(c.a*c.b)**2
+
+
+
+						let C=abrirPregunta()
+    					const svg=plot([
+										[evaluar(`${c.a}*Math.cos(x)+(${c.h})`,t),evaluar(`${c.b}*Math.sin(x)+(${c.k})`,t),'-blue']]
+										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
+						spanContenido(`Encuentre la representación la siguiente elipse en la forma $Ax^2+Bx+Cy^2+Dy+E=0$<br>${svg.outerHTML}`,C[6])
+						const R = [`$${polinomio([c.A,c.B,0])}+${polinomio([c.C,c.D,c.E],'y')}= 0$`];
+						const va = ['A','B','C','D','E']
+						let op = Math.floor(Math.random()*va.length)
+						
+						for(let i=1;i<6;++i){
+							do{		
+								c[va[op]] += Math.ceil(Math.random()*7)*(Math.random()<0.5?1:-1)
+								R[i] = `$${polinomio([c.A,c.B,0])}+${polinomio([c.C,c.D,c.E],'y')}= 0$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				},{
+					Nombre:"Elipse III",
+					Nota:"$Ax^2+Bx+Cy^2+Dy+E=0$",
+					fun:function(){
+						const t = linspace(0,2*Math.PI)
+						let c = {h:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 k:Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),
+								 a:Math.ceil(Math.random()*5+1),
+								 b:Math.ceil(Math.random()*5+1)}
+						while(c.a == c.b){
+							c.b = Math.ceil(Math.random()*5+1)
+						}
+						c['A']=c.b**2
+						c['B']=-2*c.b**2*c.h
+						c['C']=c.a**2
+						c['D']=-2*c.a**2*c.k
+						c['E']=(c.b*c.h)**2+(c.a*c.k)**2-(c.a*c.b)**2
+
+
+
+						let C=abrirPregunta()
+    					const svg=plot([
+										[evaluar(`${c.a}*Math.cos(x)+(${c.h})`,t),evaluar(`${c.b}*Math.sin(x)+(${c.k})`,t),'-blue']]
+										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
+						spanContenido(`Encuentre la representación la siguiente elipse con centro $C:(${c.h}, ${c.k})$, semieje $x$ ${c.a} y semieje $y$ ${c.b}  en la forma $Ax^2+Bx+Cy^2+Dy+E=0$`,C[6])
+						
+						const R = [`$${polinomio([c.A,c.B,0])}+${polinomio([c.C,c.D,c.E],'y')}= 0$`];
+						const va = ['A','B','C','D','E']
+						let op = Math.floor(Math.random()*va.length)
+						for(let i=1;i<6;++i){
+							do{		
+								c[va[op]] += Math.ceil(Math.random()*7)*(Math.random()<0.5?1:-1)
+								R[i] = `$${polinomio([c.A,c.B,0])}+${polinomio([c.C,c.D,c.E],'y')}= 0$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
+				}
+			]
 		},
 		{
 			Nombre:"Hipérbola",
