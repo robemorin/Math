@@ -1880,6 +1880,30 @@ function P2(x){
 						}
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
 					}
+				},{
+					Nombre:"Parábola a partir de tres puntos II",
+					Nota:"",
+					fun:function(){
+						let P = [Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)]
+						let x 
+						do{
+							x= [0,Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)]
+						}while(x[1]==x[2])
+
+
+						
+						let C=abrirPregunta()
+						spanContenido(`Determine la parabola $y= ax^2+bx+c$ que pasa por los puntos (${x[0]},${P[0]*x[0]**2+P[1]*x[0]+P[2]}), (${x[1]},${P[0]*x[1]**2+P[1]*x[1]+P[2]}) y (${x[2]},${P[0]*x[2]**2+P[1]*x[2]+P[2]})`,C[6])
+						const R = [`$y = ${polinomio(P)}$`];
+						const op = Math.floor(Math.random()*3)
+						for(let i=1;i<6;++i){
+							do{
+								P[op] = Math.ceil(Math.random()*9)*(Math.random()<0.5?1:-1)
+								R[i] = `$y = ${polinomio(P)}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])
+					}
 				}
 
 				

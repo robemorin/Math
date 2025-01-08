@@ -3222,6 +3222,114 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						spanContenido(P,C[6])
 						for(let k=0;k<6;++k) spanContenido(R[k],C[k])			
 					}
+				},
+				{
+					Nombre:"Polígono de frecuencias acumuladas",
+					Nota:"",
+					fun:function(){
+						function aleatorio_local(n_source){
+							let n = Math.round(n_source-4)
+							let x = Math.random()*n*(n-1)/2
+							let aleatorio = 2
+							while(x < n){
+								x += n
+								--n
+								++aleatorio
+							}
+							return aleatorio
+						}
+						let C=abrirPregunta()
+						const base=[[50,10,2],
+									[100,20,5],
+									[200,50,10],
+									[500,100,20]]
+						let Frec=[	[10,2,1],
+										[20,5,1],
+										[50,10,2],
+										[100,20,5],
+										[150,50,10],
+										[200,20,5],
+										[300,50,10],
+										[500,100,20],
+										[800,100,20]]
+						let kf=Math.floor(Math.random()*Frec.length)
+						const k = Math.floor(Math.random()*base.length)
+						let cuartiles=[base[k][2]*Math.round(Math.random()*30),0,0,0,0]//min
+						cuartiles[4] = cuartiles[0]+base[k][2]*Math.floor(base[k][0]/base[k][2]+2*Math.random()+3)//max
+						cuartiles[2] = cuartiles[0]+base[k][2]*(4+Math.floor(Math.random()*((cuartiles[4]-cuartiles[0])/base[k][2] - 8)))//med
+						
+						cuartiles[1] = cuartiles[2]-base[k][2]*aleatorio_local((cuartiles[2]-cuartiles[0])/base[k][2])//q1
+						cuartiles[3] = cuartiles[2]+base[k][2]*aleatorio_local((cuartiles[4]-cuartiles[2])/base[k][2])//q3
+						// let rango=[cuartiles[4]-cuartiles[0],cuartiles[4]-cuartiles[0]]
+						//Vamos a poner un punto extra para percentil
+						let f = tlacu.interpolate_mono(cuartiles,[0,Frec[kf][0]/4,Frec[kf][0]/2,Frec[kf][0]*3/4,Frec[kf][0]])
+						//console.log(` tlacu.interpolate_mono([${cuartiles}],[${[0,Frec[kf][0]/4,Frec[kf][0]/2,Frec[kf][0]*3/4,Frec[kf][0]]}])`)
+						//console.log(`Vamos a evaluar ${cuartiles[2]}-->${f(cuartiles[2])}`)
+
+						let percentil
+						do{
+							percentil = [Math.round(Math.random()*8+1)/10,0]
+						}while(percentil[0]==0.5)
+						
+
+						let error_per=1e10
+						for(let it = cuartiles[0]; it<cuartiles[4];it += base[k][2]){
+							if(error_per>Math.abs(percentil[0]*Frec[kf][0]-f(it))){
+								percentil[1] = it
+								error_per = Math.abs(percentil[0]*Frec[kf][0]-f(it))
+							}
+							
+							//console.log(`${error_per}>Math.abs(${percentil[0]}*${Frec[kf][0]}-${f(it)}):${error_per>Math.abs(percentil[0]*Frec[kf][0]-f(it))}`)
+							//console.log(`----it:${percentil}`)
+
+						}
+						//Que no coincida el percenti con q1 ni q3
+						percentil[1]+=percentil[1]==cuartiles[0]?base[k][2]:0
+						percentil[1]+=percentil[1]==cuartiles[4]?-base[k][2]:0
+						if(percentil[1]==cuartiles[1]){
+							if(percentil[0]>0.25){
+								percentil[1] += base[k][2]
+							}else{
+								percentil[1] -= base[k][2]
+							}
+
+						}else if(percentil[1]==cuartiles[3]){
+							if(percentil[0]>0.75){
+								percentil[1] += base[k][2]
+							}else{
+								percentil[1] -= base[k][2]
+							}
+						}
+						const Q=[...cuartiles]//Solo para referencia
+
+						let frecuencia = [0,Frec[kf][0]/4,Frec[kf][0]/2,Frec[kf][0]*3/4,Frec[kf][0]]
+						
+						cuartiles.push(percentil[1])
+						frecuencia.push(percentil[0]*Frec[kf][0])
+
+						frecuencia = frecuencia.sort(function (a, b) {return a - b;})
+						cuartiles = cuartiles.sort(function (a, b) {return a - b;})
+						
+						let pr=[['$q_1$',Q[1]],
+								["mediana",Q[2]],
+								['$q_3$',Q[3]],
+								[`el percentil ${Math.round(percentil[0]*100)}`,percentil[1]],
+								Math.floor(Math.random()*4)]
+						
+
+						spanContenido(`Encuentre ${pr[pr[4]][0]} en el siguiente gráfico: <center>
+							<tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias acumuladas" xlim="${base[k][1]*(Math.floor(cuartiles[0]/base[k][1])<2?0:Math.floor(cuartiles[0]/base[k][1]))},${base[k][1]*Math.ceil(cuartiles[cuartiles.length-1]/base[k][1])}" ylim="0,${Frec[kf][0]}"  dx="${base[k][1]}" dy="${Frec[kf][1]}" ddx="${base[k][2]}" ddy="${Frec[kf][2]}" >
+							
+    <tlacuache-poligono-frecuencias-acumuladas x="${cuartiles}" y="${frecuencia}" ></tlacuache-poligono-frecuencias-acumuladas>
+  </tlacuache-ejes ><center>`,C[6])
+						const R=[pr[pr[4]][1]];
+						for(let i=1;i<6;++i){
+							do{
+								R[i]=pr[pr[4]][1]+Math.round(Math.random()*6-12)*base[k][2]
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])			
+					}
 				}
 			]
 		},
