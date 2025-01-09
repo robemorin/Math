@@ -70,18 +70,23 @@ function Milimetrado(Dim,Cuadricula ){
 	
 	return salida
 }
-function Cuartiles(datos){
-	var d=datos.sort(function (a, b) { return a - b });
-	n=d.length
-	
-	
-	var Q=[	d[0], 
-		(d[Math.floor(n/4)]+d[Math.ceil(n/4)])/2,
-		(d[Math.floor(n/2)]+d[Math.ceil(n/2)])/2,
-		(d[Math.floor(3*n/4)]+d[Math.ceil(3*n/4)])/2,
-		d[n-1]]
-	
-	return Q
+function Cuartiles(ar){
+let arr = [...ar]
+arr.sort((a, b) => a - b)
+  const n = arr.length
+  const q2 = (n + 1) / 2
+  const q1 = (n + 1) / 4
+  const q3 = 3 * (n + 1) / 4
+  const getQuartile = (index) => {
+    const pos = Math.floor(index);
+    if (index === pos) {
+      return arr[pos - 1];
+    } else {
+      return (arr[pos - 1] + arr[pos]) / 2;
+    }
+  };
+  return [getQuartile(1),getQuartile(q1), getQuartile(q2), getQuartile(q3),getQuartile(n)]
+
 }
 function Max(x){
 

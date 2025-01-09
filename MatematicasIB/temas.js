@@ -3330,6 +3330,47 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						}
 						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])			
 					}
+				},
+				{
+					Nombre:"Caja de bigotes",
+					Nota:"",
+					fun:function(){
+						function aleatorio_local(seed, s, n,it=3){
+							const datos=[]
+							const p = 0.8*Math.random()+.1
+							for(let k=0; k<n; ++k){
+								datos.push(seed)
+								for(let k_it=0;k_it<it;++k_it){
+									datos[k] += Math.round(	Math.random()*s*(Math.random()<0.5?1:-1)	)
+								}
+							}
+							return datos
+						}
+						let C=abrirPregunta()
+						const datos = aleatorio_local(Math.round(20*Math.random()+5),10,Math.round(10+Math.random()*5))
+						/*
+						let pr=[['$q_1$',Q[1]],
+								["mediana",Q[2]],
+								['$q_3$',Q[3]],
+								[`el percentil ${Math.round(percentil[0]*100)}`,percentil[1]],
+								Math.floor(Math.random()*4)]
+						*/
+						let Q = Cuartiles(datos)
+
+						spanContenido(`Bosqueje la caja de bigotes correspondiente a los siguientes datos.<br><center>${tablaDatos([datos],['Datos '])}</center>`,C[6])
+						const R=[`<tlacuache-cuartil q="[${Q}]" lim="${5*Math.floor(Q[0]/5)},${5*Math.ceil(Q[4]/5)},5" dim="200,300" ></tlacuache-cuartil>`];
+						const op=1+Math.floor(Math.random()*3)
+						for(let i=1;i<6;++i){
+							do{
+								let Qa=[...Q]
+								Qa[op]=Math.round(Math.random()*12-6)+Q[op]
+								Qa.sort(function (a, b) {return a - b;})
+
+								R[i]=`<tlacuache-cuartil q="[${Qa}]" lim="${5*Math.floor(Qa[0]/5)},${5*Math.ceil(Qa[4]/5)}" dim="200,300" ></tlacuache-cuartil>`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k)	spanContenido(R[k],C[k])			
+					}
 				}
 			]
 		},
