@@ -3357,7 +3357,7 @@ function plotExpPo(axis,dim,xp,yp,color,color2){
 						*/
 						let Q = tlacu.stat.cuartil(datos)
 
-						spanContenido(`Bosqueje la caja de bigotes correspondiente a los siguientes datos.<br><center>${tablaDatos([datos],['Datos '])}<br>${Q}</center>`,C[6])
+						spanContenido(`Bosqueje la caja de bigotes correspondiente a los siguientes datos.<br><center>${tablaDatos([datos],['Datos '])}<br></center>`,C[6])
 						const R=[`<tlacuache-cuartil q="[${Q}]" lim="${5*Math.floor(Q[0]/5)},${5*Math.ceil(Q[4]/5)}" dim="200,300" ></tlacuache-cuartil>`];
 						const op=1+Math.floor(Math.random()*3)
 						for(let i=1;i<6;++i){
