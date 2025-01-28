@@ -4083,7 +4083,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 				},
 				{
 					Nombre:"Chi cuadrada (tablas)",
-					Nota:"Basarse en el siguiente link:<br>https://estdg.blogs.upv.es/files/2018/04/Tabla-Chi2_cola-derecha.pdf",
+					Nota:"",
 					fun:function(){
 						function P1(){
 							const alpha=[0.01,0.05,0.1]
@@ -4206,7 +4206,7 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 						}
 						
 						
-						var P="Bajo la suposición que no existe independencia entre los datos, determine el valor esperado de la columna $y_"+(i_n[1]+1)+"$"+(n==1?"": "y la fila $x_"+(i_n[0]+1)+"$")
+						var P="Bajo la suposición que no existe dependencia entre los datos, determine el valor esperado de la columna $y_"+(i_n[1]+1)+"$"+(n==1?"": "y la fila $x_"+(i_n[0]+1)+"$")
 							P+="<center><table width='50%' style='padding: 10px;'>"+data+"</table></center>"
 						
 						var R=[];

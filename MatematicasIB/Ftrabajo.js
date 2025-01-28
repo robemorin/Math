@@ -145,7 +145,7 @@ const Ficha = [{
 	Nombre:"Estadística y probabilidad",
 	subtema:[
         {
-            Nombre:"Pearson",
+            Nombre:"Correlación",
             topico:[{
                 Nombre:"Línea de mejor ajuste",
                 func:function(){
@@ -203,6 +203,75 @@ const Ficha = [{
                     <li>Escriba y grafique la línea de mejor ajuste<div>2</div></li>
                     </ol><div>
                     `
+                    
+
+                    
+//VAmos a aqui ----------------------------------------------
+
+                    return [Pregunta,Solucion]
+                }
+            },{
+                Nombre:"Pearson y Spearman",
+                func:function(){
+                    //Vamos a dar un conjunto de datos que se ajusten a un modelo lineal
+                    function datos(){
+                        const x=[],y=[]
+                        const n=Math.round(Math.random()*5+5)
+                        const m=(Math.random()*10+1)*(Math.random()<0.5?-1:1)
+                        const b=(Math.random()*10-10)
+                        
+                        for(let k=0;k<n;++k){
+                            x.push(Math.round(Math.random()*20))
+                            y.push(Math.round(m*x[k]+b+5*Math.random()))
+                        }
+                        return [x,y]
+                    }
+                    function tablaDatos(x,y){
+                        let S=`<center><table class="tablaEspaciada"><tr><td style="border-rigth:solid black 1px">$x$</td>`
+                        let T=`</tr><tr><td style="border-rigth:solid black 1px">$y$</td>`
+                        for(let k=0;k<x.length;++k){
+                            S += `<td>${x[k]}</td>`
+                            T += `<td>${y[k]}</td>`
+                        }
+                        return `${S}${T}</tr></table></center>`
+                    }
+                    function media(x,y){
+                        let xs=0, ys=0
+                        n=x.length
+                        for(let k=0;k<n;++k){
+                            xs +=x[k]
+                            ys +=y[k]
+                        }
+                        return [(xs/n).toPrecision(3),(ys/n).toPrecision(3)]
+                    }
+                    
+                    let x,y
+                    [x,y]=datos()
+                    let Solucion = `<div class="ans"><div>(1b) $M:(${media(x,y)})$</div> <div>(1c)$ ${M_LinReg(x,y,'ec')}$(1d)(i)${tlacu.stat.cuartil(x)}(ii)${tlacu.stat.cuartil(y)}(1e)${Spearman(x,y).toFixed(3)}</div>`
+                    let Pregunta=`<div class="Problema2">1.- Considere los siguientes datos:
+                    <br>${tablaDatos(x,y)}
+                    <ol class="FT_ol_a">
+                    <li>Use el siguiente espacio para graficar los datos<div>2</div></li><br>${Milimetrado(600,[10, 20,.2] )}
+                    <li>Escriba y grafique $M:(\\overline{x},\\overline{y})$<div>1</div></li>
+                    <li>Escriba y grafique la línea de mejor ajuste<div>2</div></li>
+                    <li>Dibuje en el siguiente espacio las cajas de bigotes para <br>eje $x$<br>
+                    ${Milimetrado(600,[3, 20,.2] )}<br>eje $y$<br>${Milimetrado(600,[3, 20,.2] )}
+                    <div>2</div></li><br>
+                    <li>Calcule el valor del factor de correlación de Spearman<div>3</div></li>
+                    </ol><div><!--div class="page"></div-->
+                    `
+                    
+                    
+                    Pregunta+=`<div class="Problema2">2.- Obtenga los factores de correlación de Pearson de los siguientes datos.`
+                    
+                    for(let it=0;it<3;++it){
+                    let x1,y1
+                    [x1,y1]=datos()
+                    Solucion += `<div>(2-${it+1})${Spearman(x1,y1).toFixed(3)}</div>`
+                    Pregunta+=`<br>${tablaDatos(x1,y1)}<br><div style="float: right">[3]</div>`
+                    }
+                    Solucion += `</div>`
+                    Pregunta+=`</div>`
                     
 
                     
