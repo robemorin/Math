@@ -464,15 +464,15 @@ const Ficha = [{
             <li>Escriba las hipótesis nula y alternativa <div>1</div></li>
             <li>Escriba los grados de libertad. <div>1</div></li>
             <li>Escriba las desviaciones estándar. <div>1</div></li>
-            <li>Escriba las desviaciones estándar. 
+            <li> 
                     <ol>
                     <li>Calcule el valor de $\\left(\\frac{(n_1+1)S_1^2+(n_2+1)S_2^2}{n_1+n_2-2}\\right)$</li>
                     <li>Calcule el valor de $\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)$</li>
-                    <li>Calcule el valor de $t_{calc}$<div>1</div></li>
+                    <li>Calcule el valor de $t_{calc}$ sustituyendo<div>1</div></li>
                     </ol>
             </li>
-            <li>Escriba el valor crítico de la prueba. <div>1</div></li>
-            <li>Calcule el valor $t_{calc}$. <div>1</div></li>
+            <li>Escriba el valor crítico de la prueba . <div>1</div></li>
+            <li>Calcule el valor $t_{calc}$ usando su calculadora. <div>1</div></li>
             <li>Realice una conclusión basado en sus respuestas anteriores. <div>1</div></li>
             <ol>
             `
