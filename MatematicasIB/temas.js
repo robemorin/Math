@@ -1701,148 +1701,37 @@ function P4(){
 					fun:function(){
 					//Inicio
 					
-function P1(x){
-	var axis=[-6, 6, -10, 10, 2, 2, 1, 1]
-	var dim=[500, 300]
+function P1(){
+	let a= (Math.random()<0.5?1:-1)*Math.ceil(Math.random()*4+1), c=(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*6+1)
+	let p=[(Math.random()<0?1:-1)*Math.ceil(Math.random()*3+1),(a<0?1:-1)*Math.ceil(Math.random()*6)+c], b=0
 	do{
-		var x=[0, Math.round(Math.random()*10-5)]
-		var y=(Math.random()<0.5?[Math.round(Math.random()*3-10)]:[Math.round(10-Math.random()*3)])
-		if(y[0]<0){
-			y[1]=y[0]+Math.round(Math.random()*5+1)
-			y[2]=y[0]+Math.round(Math.random()*5+1)
-		}else{
-			y[1]=y[0]-Math.round(Math.random()*5+1)
-			y[2]=y[0]-Math.round(Math.random()*5+1)
-		}
-	}while(x[1]==0 || y[1]==y[2])
-	
+		p[1]=(a>0?1:-1)*Math.ceil(Math.random()*6)+c
+		b=Math.pow((p[1]-c)/a,1/p[0])
+	}while(p[1]==c || Math.abs(b-1)<0.1)
 
+	var P=`Determine la función exponencial que aparece a continuación<br><center>
+	<tlacuache-ejes size="320,480" xlabel="" ylabel="" xlim="-6,6" ylim="${c-6+(a<0?-2:2)},${c+6+(a<0?-2:2)}"  dx="1" dy="2" ddy="1" >
+    <tlacuache-plot f='${a}*Math.pow(${b},x)+(${c})' color="green"/></tlacuache-plot>
+	<tlacuache-plot f='${c}' color="black" mark='--'/></tlacuache-plot>
+	<tlacuache-plot x="${p[0]}" y="${p[1]}" mark="o" color="red"></tlacuache-plot >
+  </tlacuache-ejes ></center>`
+	const op = Math.floor(Math.random()*3)
+	const R=[];
 	
-	
-	var P="Determine la función exponencial que aparece a continuación<br><center>"+Lienzo+"</center>"
-		var E=Exp2fun(x,y)
-	var R=[];
-	
-	R[0]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
+	R[0]=`$f(x) = ${a}\\cdot${b.toPrecision(3)}^x${c<0?"":"+"}${c}$`
 	for(var i=1;i<6;++i){
 		do{
-			var qq=Math.random()
-			if(qq<0.5)
-				R[i]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(Math.round(E[2]+Math.random()*10-5))+"</b></i>"
-			else
-				R[i]="<b><i>f</i> (<i>x</i>)="+Math.round(E[0]+Math.random()*10-5)+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
-				
+			R[i]=`$f(x) = ${op==0?(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*4+1):a}\\cdot${(op==1?b+(Math.random()*1.5-.75):b).toPrecision(3)}^x${op==2?(Math.random<0?"-":"+")+Math.ceil(Math.random()*6+1):(c<0?"":"+")+c}$`				
 		}while(repetido(R))
 	
 	}
 	return [P,R]
 }
-function P2(x){
-	var axis=[-6, 6, -10, 10, 2, 2, 1, 1]
-	var dim=[500, 300]
-	do{
-		var x=[0, Math.round(Math.random()*10-5)]
-		var y=(Math.random()<0.5?[Math.round(Math.random()*3-10)]:[Math.round(10-Math.random()*3)])
-		if(y[0]<0){
-			y[1]=y[0]+Math.round(Math.random()*5+1)
-			y[2]=y[0]+Math.round(Math.random()*5+1)
-		}else{
-			y[1]=y[0]-Math.round(Math.random()*5+1)
-			y[2]=y[0]-Math.round(Math.random()*5+1)
-		}
-	}while(x[1]==0 || y[1]==y[2])
-	
-	var Lienzo=plotExpPo(axis,dim,x,y,'#ffa200','#222')
-	
-	
-	
-	var P="Determine la función exponencial que aparece a continuación<br><center>"+Lienzo+"</center>"
-		var E=Exp2fun(x,y)
-	var R=[];
-	
-	R[0]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+E[1].toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
-	for(var i=1;i<6;++i){
-		do{
-			R[i]="<b><i>f</i> (<i>x</i>)="+E[0]+" · "+(E[1]+Math.random()*1.5-.75).toFixed(3)+"<sup><i>x</i></sup> "+(E[2]<0?"-":"+")+Math.abs(E[2])+"</b></i>"
-		}while(repetido(R))
-	
-	}
-	return [P,R]
-}
-function Exp2fun(xp,yp){
-		var a=yp[1]-yp[0]
-		var c=yp[0]
-		var b=Math.pow((yp[2]-yp[0])/(yp[1]-yp[0]),1/xp[1])
-		return [a,b,c]
-	}
-function plotExpPo(axis,dim,xp,yp,color,color2){
-	/*
-	*
-	* axis([xmin xmax ymin ymax xscal yscal])
-	* dim([height width])
-	* 
-	*/
-	function Exp2points(x,xp,yp){
-		var a=yp[1]-yp[0]
-		var c=yp[0]
-		var b=Math.pow((yp[2]-yp[0])/(yp[1]-yp[0]),1/xp[1])
-		var y=[]
-		for(var k=0;k<x.length;++k) y[k]=a*Math.pow(b,x[k])+c
-		return y
-	}
-	var h=10
-	var my=-dim[0]/(axis[3]-axis[2])
-	var by=h-my*axis[3]
-	var mx=dim[1]/(axis[1]-axis[0])
-	var bx=h-mx*axis[0]
-	var csx=Math.log10(axis[4])<0?Math.ceil(-Math.log10(axis[4])):0
-	var csy=Math.log10(axis[5])<0?Math.ceil(-Math.log10(axis[4])):0
-	//alert(csx)
-	
-	
-	var S="<svg width="+(dim[1]+2*h)+" height="+(dim[0]+2*h)+">"
-	for( var k=Math.floor(axis[0]/axis[6])*axis[6];k<=Math.ceil(axis[1]/axis[6])*axis[6];k+=axis[6])
-		S+='<line x1="'+(mx*k+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*k+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.3"/>'
-	
-	for( var k=Math.floor(axis[2]/axis[7])*axis[7];k<=Math.ceil(axis[3]/axis[7])*axis[7];k+=axis[7])
-		S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*k+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*k+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.3"/>'
-	
-	for( var k=Math.floor(axis[0]/axis[4])*axis[4];k<=Math.ceil(axis[1]/axis[4])*axis[4];k+=axis[4]){
-		S+='<line x1="'+(mx*k+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*k+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.5"/>'
-		if(Math.abs(k)>0.5*axis[4])
-		S+='<text x="'+(mx*k+bx)+'" y="'+(by+1)+'" dominant-baseline="hanging" text-anchor="middle">'+k.toFixed(csx)+'</text> '
-	}
-	for( var k=Math.floor(axis[2]/axis[5])*axis[5];k<=Math.ceil(axis[3]/axis[5])*axis[5];k+=axis[5]){
-		S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*k+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*k+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 0.5"/>'
-		if(Math.abs(k)>0.5*axis[5])
-		S+='<text x="'+(bx+1)+'" y="'+(my*k+by+1)+'" dominant-baseline="middle" text-anchor="start">'+k.toFixed(csy)+'</text> '
-	}
-	
-	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*0+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*0+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
-	S+='<line x1="'+(mx*0+bx)+'" y1="'+(my*axis[2]+by)+'" x2="'+(mx*0+bx)+'" y2="'+(my*axis[3]+by)+'" stroke="'+(color==null?'#fccf03':color)+'" style="stroke-width: 2.5"/>'
-	S+='<line x1="'+(mx*axis[0]+bx)+'" y1="'+(my*yp[0]+by)+'" x2="'+(mx*axis[1]+bx)+'" y2="'+(my*yp[0]+by)+'" stroke="#D00" style="stroke-width: 3.5" stroke-dasharray="20 9"/>'
-	x=linspace(-10,10,100)
-	y=Exp2points(x,xp,yp)
-	let P=coor2px(x,y,mx,bx,my,by)
-	S+='<polyline points="'+P+'" fill="none" stroke="'+(color2==null?'#000':color2)+'" style="stroke-width: 2.5" />'
-	S+='<circle cx="'+(bx)+'" cy="'+(my*yp[1]+by)+'" r="5" />'
-	S+='<circle cx="'+(mx*xp[1]+bx)+'" cy="'+(my*yp[2]+by)+'" r="5" />'
-	
-	S+="</svg>"
-	return S
-	
-}
 
-					function PreguntaTema(){
-						if(Math.random()>0.5){
-							return P1(1)
-						}else {
-							return P2(1)
-						}
-					}
+					
 					//Final
 					let C=abrirPregunta()
-					let [P,R]=PreguntaTema()
+					let [P,R]=P1()
 					spanContenido(P,C[6])
 					// C[6].innerHTML=P
 					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
