@@ -4460,6 +4460,51 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				},
 				{
+					Nombre:"Derivadas directas I",
+					Nota:"",
+					fun:function(){
+						function P1(x){
+							let a,b,p,q, dummy
+							a=Math.ceil(Math.random()*10)*(Math.random() > 0.5 ? 1 : -1)
+							b=Math.ceil(Math.random()*10)
+							dummy = tlacu.mcm([a,b])
+							a=Math.round(dummy/a)
+							b=Math.round(dummy/b)
+							
+							do{
+								p=Math.ceil(Math.random()*5+1)*(Math.random() > 0.5 ? 1 : -1)
+								q=Math.ceil(Math.random()*6+1)	
+								dummy = tlacu.mcm([Math.round(p),Math.round(q)])
+								p=Math.round(dummy/p)
+								q=Math.round(dummy/q)
+								console.log("p: "+p+", q: "+q)
+							}while(q==1)
+							
+							let P=`Determine la derivada de ${tlacu.poli.raiz(a, b, "x", p, q)}.`
+								
+							const R=[];
+							let ans=[a*p,b*q,p-q,q]
+							const op=Math.floor(Math.random()*4)
+							
+							R[0]=tlacu.poli.raiz(ans[0], ans[1], "x", ans[2], ans[3])
+							
+							for(let k=1;k<6;++k){
+								do{
+									ans[op]+=Math.ceil(Math.random()*4)*(Math.random() > 0.5 ? 1 : -1)
+								R[k]=tlacu.poli.raiz(ans[0], ans[1], "x", ans[2], ans[3])
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						
+
+					let C=abrirPregunta()
+					let [P,R]=P1()
+					spanContenido(P,C[6])
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
 					Nombre:"Comportamiento de la derivada",
 					Nota:"",
 					fun:function(){
