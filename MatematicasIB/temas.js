@@ -4505,6 +4505,63 @@ for(let k=0;k<6;++k) spanContenido(R[k],C[k])
 					}
 				},
 				{
+					Nombre:"Derivadas directas II",
+					Nota:"",
+					fun:function(){
+						function P1(x){
+							let a=1,b=1,p, dummy
+							while(b==1 || a==1){
+								a=Math.ceil(Math.random()*10)*(Math.random() > 0.5 ? 1 : -1)
+								b=Math.ceil(Math.random()*10+1)
+								dummy = tlacu.mcm([a,b])
+								a=Math.round(dummy/a)
+								b=Math.round(dummy/b)
+							}
+
+							p=Math.ceil(Math.random()*5+1)*(Math.random() > 0.5 ? 1 : -1)
+							dummy = (p>0)?`${a<0?'-':''} \\frac{ ${Math.abs(a)} x${p==1?'':`^{${p}}`}}{${b}}`:`${a<0?'-':''}\\frac{ ${Math.abs(a)} }{${b} x${p==-1?'':`^{${-p}}`} }`
+							
+
+							let P=`Determine la derivada de $ ${dummy} $.`
+							
+							
+							a *= p
+							p -= 1
+							dummy = (p>0)?`${a<0?'-':''} \\frac{ ${Math.abs(a)} x${p==1?'':`^{${p}}`}}{${b}}`:`${a<0?'-':''}\\frac{ ${Math.abs(a)} }{${b} x${p==-1?'':`^{${-p}}`} }`
+							const R=[];
+							//let ans=[a*p,b*q,p-q,q]
+							const op=Math.floor(Math.random()*3)
+							
+							R[0]=`$ ${dummy} $`
+							
+							for(let k=1;k<6;++k){
+								do{
+									switch(op){
+										case 0:
+											a += Math.ceil(Math.random()*4)*(Math.random() > 0.5 ? 1 : -1)
+											break;
+										case 1:
+											b +=Math.abs( Math.ceil(Math.random()*4)*(Math.random() > 0.5 ? 1 : -1))
+											break;
+										case 2:
+											p += Math.ceil(Math.random()*4)*(Math.random() > 0.5 ? 1 : -1)
+											break;
+									}
+								dummy = (p>0)?`${a<0?'-':''} \\frac{ ${Math.abs(a)} x${p==1?'':`^{${p}}`}}{${b}}`:`${a<0?'-':''}\\frac{ ${Math.abs(a)} }{${b} x${p==-1?'':`^{${-p}}`} }`
+								R[k]=`$ ${dummy} $`
+								}while(repetido(R))
+							}
+							return [P,R]
+						}
+						
+
+					let C=abrirPregunta()
+					let [P,R]=P1()
+					spanContenido(P,C[6])
+					for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
+				},
+				{
 					Nombre:"Comportamiento de la derivada",
 					Nota:"",
 					fun:function(){
