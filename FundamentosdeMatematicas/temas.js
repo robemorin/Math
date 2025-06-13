@@ -2037,9 +2037,6 @@ function P2(x){
 						c['C']=c.a**2
 						c['D']=-2*c.a**2*c.k
 						c['E']=(c.b*c.h)**2+(c.a*c.k)**2-(c.a*c.b)**2
-
-
-
 						let C=abrirPregunta()
     					const svg=plot([
 										[evaluar(`${c.a}*Math.cos(x)+(${c.h})`,t),evaluar(`${c.b}*Math.sin(x)+(${c.k})`,t),'-blue']]
@@ -2074,15 +2071,11 @@ function P2(x){
 						c['C']=c.a**2
 						c['D']=-2*c.a**2*c.k
 						c['E']=(c.b*c.h)**2+(c.a*c.k)**2-(c.a*c.b)**2
-
-
-
 						let C=abrirPregunta()
     					const svg=plot([
 										[evaluar(`${c.a}*Math.cos(x)+(${c.h})`,t),evaluar(`${c.b}*Math.sin(x)+(${c.k})`,t),'-blue']]
 										,[400,400],[-10,10,-10,10,[2,2],[1,1]])
 						spanContenido(`Encuentre la representación la siguiente elipse con centro $C:(${c.h}, ${c.k})$, semieje $x$ ${c.a} y semieje $y$ ${c.b}  en la forma $Ax^2+Bx+Cy^2+Dy+E=0$`,C[6])
-						
 						const R = [`$${polinomio([c.A,c.B,0])}+${polinomio([c.C,c.D,c.E],'y')}= 0$`];
 						const va = ['A','B','C','D','E']
 						let op = Math.floor(Math.random()*va.length)
