@@ -1227,7 +1227,7 @@ function P4(){
 			]
 		},
 		{
-			Nombre:"Diferentes formas de expresar la ecuación de una recta",
+			Nombre:"Ecuación de una recta",
 			test:[
 				{
 					Nombre:"Pendiente a partir de dos puntos",
@@ -1569,6 +1569,36 @@ function P4(){
 	
 	
 							}
+				},
+				{
+					Nombre:" Mediatriz",
+					Nota:"",
+					fun:function(){
+						//Inicio
+
+						/*Inicio de preguntas*/
+						let C=abrirPregunta()
+						let p
+						do{ p=[	[Math.ceil(Math.random()*10)-5,Math.ceil(Math.random()*10)-5],
+								[Math.ceil(Math.random()*10)-5,Math.ceil(Math.random()*10)-5]]
+						}while( (p[0][0] == p[1][0]) && (p[0][1] == p[1][1]) )
+	
+						const P=`Determine la mediatriz del $\\overline{AB}$, donde $A:(${p[0]})$ y $B:(${p[1]})$ `
+						op=Math.round(Math.random())
+						spanContenido(P,C[6])
+						let linea = tlacu.mediatriz(p[0],p[1])
+						const R=[`$${op==0?linea.PO:linea.general}$`]
+						for(let i=1;i<6;++i){
+							do{
+								do{ p=[	[Math.ceil(Math.random()*10)-5,Math.ceil(Math.random()*10)-5],
+										[Math.ceil(Math.random()*10)-5,Math.ceil(Math.random()*10)-5]]
+								}while( (p[0][0] == p[1][0]) && (p[0][1] == p[1][1]) )
+									let linea = tlacu.mediatriz(p[0],p[1])
+								R[i]= `$${op==0?linea.PO:linea.general}$`
+							}while(repetido(R))
+						}
+						for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+					}
 				}
 			]
 		},
