@@ -936,7 +936,209 @@ function P4(){
 						}
 				}
 			]
-		}		
+		},{
+			Nombre:"Matemáticas Financieras",
+			test:[
+				{
+					Nombre:"Interés compuesto",
+					Nota:"$FV = PV(1+\\frac{r}{100\\cdot k})^{n\\cdot k}$",
+					fun:function(){
+						function PreguntaTema(){
+							const a=Math.random()
+							if(a<1/4){
+								return P1()
+							}else if(a<2/4){
+								return P2()
+							}else if(a<3/4){
+								return P3()
+							}else{
+								return P4()
+							}
+						}
+
+function P1(){
+	const cortes = [1,2,3,4,6,12]
+	const Cortes = ['anual', 'semestral', 'cuatrimestral', 'trimestral', 'bimestral', 'mensual']
+
+	const PV = Math.round(Math.random() * 10000 + 1000); // Valor del préstamo
+	//const FV = Math.round(PV*(1.2+0.25*Math.random()) ); // Valor del préstamo
+	const I = Math.round(Math.random() * 10 + 1); // Tasa de interés anual en %
+	const PMT = 0
+	const dummy= Math.floor(cortes.length * Math.random()); // Corte de pago
+	const CY = cortes[dummy]; // Corte de pago
+	const PY = CY
+	let N = (Math.random() * 10 + 3)*CY; // Número de años (1 a 10)
+	const FV = tlacu.financiera(N, I, PV, 0, null, CY, PY); // Valor Futuro a calcular
+	N = tlacu.financiera(null,I, PV,PMT,eval(FV.toFixed(2)),CY,PY); // Número de meses
+
+
+    const P = `Se invierte \\$${PV} a una tasa de interés anual del ${I}% compuesto anualmente ${Cortes[dummy]}. 
+    ¿Cuántos periodos se necesitarán para que la inversión crezca a $${FV.toFixed(2)}?`;
+
+    let R = [Math.ceil(N)];
+    for (let k = 1; k < 6; ++k) {
+        do {
+            R[k] = Math.floor(N +Math.random()*10-5); // Valores cercanos a N
+        } while (repetido(R));
+    }
+    return [P, R];
+}
+function P2(){
+	const cortes = [1, 2, 3, 4, 6, 12];
+const Cortes = ['anual', 'semestral', 'cuatrimestral', 'trimestral', 'bimestral', 'mensual'];
+const PV = Math.round(Math.random() * 10000 + 1000); // Valor presente (inversión inicial)
+const FV = Math.round(PV * (1 + Math.random() * 2)); // Valor futuro (meta)
+const dummy = Math.floor(cortes.length * Math.random()); // Frecuencia de capitalización
+const CY = cortes[dummy]; // Capitalizaciones por año
+const PY = CY; // Pagos por año (igual a CY)
+const N = Math.round(Math.random() * 10 + 1); // Número de años (aleatorio entre 1 y 10)
+const I = tlacu.financiera(N*CY, null, PV, 0, FV, CY, PY); // Tasa de interés a calcular
+
+const P = `Se invierte \\$${PV} MXN durante ${N} años con un interés compuesto ${Cortes[dummy]}, y se espera obtener $${FV}. 
+¿Qué tasa de interés anual se requiere?`;
+
+let R = [I.toFixed(2)];
+for (let k = 1; k < 6; ++k) {
+    do {
+        R[k] = (I*(0.8+.2*Math.random())).toFixed(2); // Opciones cercanas a I
+    } while (repetido(R));
+}
+return [P, R];
+}
+function P3(){const cortes = [1, 2, 3, 4, 6, 12];
+const Cortes = ['anual', 'semestral', 'cuatrimestral', 'trimestral', 'bimestral', 'mensual'];
+const FV = Math.round(Math.random() * 20000 + 1000); // Valor futuro deseado
+const I = Math.round(Math.random() * 10 + 1); // Tasa de interés anual (%)
+const dummy = Math.floor(cortes.length * Math.random()); // Frecuencia de capitalización
+const CY = cortes[dummy]; // Capitalizaciones por año
+const PY = CY; // Pagos por año (igual a CY)
+const N = Math.round(Math.random() * 10 + 1); // Número de años (1 a 10)
+const PV = tlacu.financiera(N*CY, I, null, 0, FV, CY, PY); // Valor Presente a calcular
+
+const P = `Se desea acumular $${FV} en ${N} años con una tasa de interés anual del ${I}% compuesto ${Cortes[dummy]}. 
+¿Cuánto se debe invertir hoy?`;
+
+let R = [PV.toFixed(2)];
+for (let k = 1; k < 6; ++k) {
+    do {
+        R[k] = (PV*(0.9+0.2*Math.random())).toFixed(2) // Opciones cercanas a PV
+    } while (repetido(R));
+}
+return [P, R];
+}
+function P4(){
+	const cortes = [1, 2, 3, 4, 6, 12];
+const Cortes = ['anual', 'semestral', 'cuatrimestral', 'trimestral', 'bimestral', 'mensual'];
+const PV = Math.round(Math.random() * 10000 + 1000); // Inversión inicial
+const I = Math.round(Math.random() * 10 + 1); // Tasa de interés anual (%)
+const dummy = Math.floor(cortes.length * Math.random()); // Frecuencia de capitalización
+const CY = cortes[dummy]; // Capitalizaciones por año
+const PY = CY; // Pagos por año (igual a CY)
+const N = Math.round(Math.random() * 10 + 1); // Número de años (1 a 10)
+const FV = tlacu.financiera(N*CY, I, PV, 0, null, CY, PY); // Valor Futuro a calcular
+
+const P = `Se invierte $${PV} a una tasa de interés ${I}% compuesto  anual ${Cortes[dummy]} durante ${N} años. 
+¿Cuál será el valor futuro de la inversión?`;
+
+let R = [FV.toFixed(2)];
+for (let k = 1; k < 6; ++k) {
+    do {
+        R[k] = (PV * (1 + Math.random() * 2)).toFixed(2); // Opciones cercanas a FV
+    } while (repetido(R));
+}
+return [P, R];
+}
+	/*No realizado*/
+	let C=abrirPregunta()
+	let [P,R]=PreguntaTema()
+	spanContenido(P,C[6])
+	for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						}
+				},{
+					Nombre:"Depreciación de activos",
+					Nota:"$FV = PV(1+\\frac{r}{100\\cdot k})^{n\\cdot k}$",
+					fun:function(){
+						function PreguntaTema(){
+							const a=Math.random()
+							if(a<1/3){
+								return P1()
+							}else if(a<2/3){
+								return P2()
+							}else{
+								return P3()
+							}
+						}
+
+function P1(){
+	const PV = Math.round(Math.random() * 100000 + 10000); // Valor inicial del activo
+	const I = Math.round(Math.random() * 10 + 5); // Tasa de depreciación anual (5% a 15%)
+	
+	const annos =Math.round(Math.random() * 15 + 5)
+	const N = annos// Periodos totales (1 a 5 años)
+	const FV = tlacu.financiera(N, -I, PV, 0, null, 1, 1); // Valor final (depreciado)
+
+	const P = `Un activo con valor inicial de \\$${PV} MXN se deprecia a una tasa anual del ${I}% anual. 
+	¿Cuál será su valor al final de ${annos} años?`;
+
+	let R = [FV.toFixed(2)];
+	for (let k = 1; k < 6; ++k) {
+		do {
+			const variacion = (Math.random() * 0.30 + 0.85); // Entre 85% y 100% del valor real
+			R[k] = (FV * variacion).toFixed(2);
+		} while (repetido(R));
+	}
+	return [P, R];
+}
+function P2(){
+	const FV = Math.round(Math.random() * 50000 + 5000); // Valor final del activo (depreciado)
+	const I = Math.round(Math.random() * 10 + 5); // Tasa de depreciación anual (5% a 15%)
+	const annos = Math.round(Math.random() * 15 + 5); // Años de depreciación (5 a 20 años)
+	const CY = 1; // Depreciación compuesta anual (frecuencia = 1)
+	const N = annos * CY; // Total de periodos (igual a los años)
+	const PV = tlacu.financiera(N, -I, null, 0, FV, 1, 1); // Valor inicial a calcular
+
+	const P = `Un activo se deprecia a una tasa anual del ${I}% anual durante ${annos} años, y su valor final es de $${FV.toFixed(2)} MXN. 
+	¿Cuál era su valor inicial?`;
+
+	let R = [PV.toFixed(2)];
+	for (let k = 1; k < 6; ++k) {
+		do {
+			const variacion = (Math.random() * 0.6 + 0.7); // Opciones entre 70% y 100% del valor real
+			R[k] = (PV * variacion).toFixed(2);
+		} while (repetido(R));
+	}
+	return [P, R];
+}
+function P3(){
+	const PV = Math.round(Math.random() * 100000 + 10000); // Valor inicial del activo ($10,000 a $110,000 MXN)
+	const FV = Math.round(PV * (0.1 + Math.random() * 0.3)); // Valor final (10% a 40% del valor inicial)
+	const annos = Math.round(Math.random() * 15 + 5); // Años de depreciación (5 a 20 años)
+	const CY = 1; // Depreciación compuesta anual
+	const N = annos * CY; // Total de periodos
+	const I = -tlacu.financiera(N, null, PV, 0, FV, 1, 1); // Tasa de depreciación anual a calcular
+
+	const P = `Un activo con valor inicial de \\$${PV.toFixed(2)} MXN se deprecia a un valor final de $${FV.toFixed(2)} MXN después de ${annos} años. 
+	¿Cuál es la tasa de depreciación anual?`;
+
+	let R = [I.toPrecision(3)];
+	for (let k = 1; k < 6; ++k) {
+		do {
+			const variacion = (Math.random() * 0.4 + 0.8); // Opciones entre 80% y 120% del valor real
+			R[k] = (I * variacion).toPrecision(3);
+		} while (repetido(R));
+	}
+	return [P, R];
+}
+
+	/*No realizado*/
+	let C=abrirPregunta()
+	let [P,R]=PreguntaTema()
+	spanContenido(P,C[6])
+	for(let k=0;k<6;++k) spanContenido(R[k],C[k])
+						}
+				}
+			]
+		}
 	]
 },
 {
