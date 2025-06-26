@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Múltiples Applets GeoGebra en Tabla</title>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      
+    }
+    td {
+      padding: 10px;
+      vertical-align: top;
+      border-bottom: 1px solid red;
+      align-items: center;
+    }
+    button {
+      margin-top: 10px;
+    }
+  </style>
+  <script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+</head>
+<body>
+  <table>
+    <tr><td width="15%"><center><img width="100%" src="https://raiz2pi.cc/src/icon2.png" loading="lazy"><br>raiz2pi.cc</center></td>
+        <td>
+          <center>
+            <h2>Docente: M.C. Roberto A. Morin Romero</h2>
+            <p>Parábola de la forma vértice a la polinómica</p>
+	        </center>
+  
+        </td></tr>
+  </table>
+  
+
+
+  <h2 id="calificación"></h2>
+  <p><b> Las respuestas numéricas deben ser redondeadas a tres cifras significativas.</b></p>
+
+
+  <table id="applets-table">
+    <tbody></tbody>
+  </table>
+  
+
+  <script>
+    const NUM_APPLETS = 5; // Número de applets a generar
+    const ggbApps = []; // Almacena las instancias de los applets
+
+    // Configuración base para todos los applets
+    const baseParameters = {
+      appName: "classic",
+      width: 570,
+      height: 400,
+      showToolBar: false,
+      showAlgebraInput: false,
+      showMenuBar: false,
+      showResetIcon: true,
+      material_id: "anpgwcp6"
+    };
+    function calificar(){
+      const numberOfApplets = document.getElementsByName("question").length;
+      let correctos = 0;
+      const respuestas = document.getElementsByName("question");
+      for(let i = 0; i < numberOfApplets; i++){
+        if(respuestas[i].innerText === "✅"  || respuestas[i].innerText === "❌"){
+          if(respuestas[i].innerText === "✅"){
+            correctos++;
+          }
+        }else{
+          //No está completado
+          return;
+        }
+      }
+      //El  usuario ha completado todos los applets
+      document.getElementById("calificación").innerText = `Calificación: ${Math.ceil(correctos/numberOfApplets*100)}`
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+
+    }
+
+    // Generar applets dinámicamente dentro de la tabla
+    window.onload = function () {
+      
+
+      const tableBody = document.querySelector("#applets-table tbody");
+      let A, V
+      for (let i = 0; i < NUM_APPLETS; i++) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        A=[Math.round(Math.random() * 10 - 5), Math.round(Math.random() * 6 - 3)];
+        do{
+            V=[Math.round(Math.random() * 10 - 5), Math.round(Math.random() * 6 - 3)];
+        }while(A[0]===V[0] || A[1]===V[1]);
+        
+        cell.innerHTML = `
+          <div id="applet_container_${i}"></div>
+          <br> La parábola tiene vértice en V:(<span id="V${i}">${V[0]}, ${V[1]}</span>) y pasa por el punto A(<span id="A${i}">${A}</span>)<br>
+          a) Mueva los puntos al lugar correspondiente.<span name="question" id="qa${i}"></span><br>
+          b) La parábola tiene la forma $y = ax^2+bx+c$, escriba el valor de <br>$a = $ <input style="width: 5em;" type="number" width="100" id="parabola_a${i}" value="1"></input><br>$b = $ <input style="width: 5em;" id="parabola_b${i}" value="0"></input><br>$c = $ <input style="width: 5em;" id="parabola_c${i}" value="0"></input>.<span name="question" id="qb${i}"></span><br>
+          <button id="check${i}" onclick="accionApplet(${i})">Revisar ${i + 1}</button>
+        `;
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+
+        // Configuración individual para cada applet
+        const params = {
+          ...baseParameters,
+          id: `ggbApplet_${i}`,
+          appletOnLoad(api) {
+            ggbApps[i] = api;
+            console.log(`✅ Applet ${i + 1} listo`);
+          }
+        };
+
+        // Inyectar el applet
+        new GGBApplet(params, true).inject(`applet_container_${i}`);
+      }
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    };
+
+    // Función para manipular cualquier applet
+    function accionApplet(appletIndex) {
+
+      function calcularParabolaDesdeVerticeYPunto(V, A) {
+          const v0=V[0], v1 = V[1]; // Vértice (v0, v1)
+          const a0= A[0], a1 = A[1]; // Punto (a0, a1)
+          console.log(`Calculando parábola desde V: (${v0}, ${v1}) y A: (${a0}, ${a1})`);
+          // Verificar que el punto A no sea el vértice V
+          if (a0 === v0 && a1 === v1) {
+              throw new Error("El punto A no puede ser igual al vértice V (hay infinitas parábolas posibles).");
+          }
+
+          // Calcular coeficiente 'a'
+          const a = (a1 - v1) / Math.pow(a0 - v0, 2);
+
+          // Calcular coeficiente 'b'
+          const b = -2 * a * v0;
+
+          // Calcular coeficiente 'c'
+          const c = a * Math.pow(v0, 2) + v1;
+
+          return [ a, b, c ];
+      }
+
+        if (!ggbApps[appletIndex]) return alert(`Applet ${appletIndex + 1} aún no está listo`);
+        // Vamos a cargar los puntos A y V en el applet
+        const A = document.getElementById(`A${appletIndex}`).innerText.split(',').map(Number);
+        const V = document.getElementById(`V${appletIndex}`).innerText.split(',').map(Number);
+       if(A[0]==ggbApps[appletIndex].getXcoord("A") && A[1]==ggbApps[appletIndex].getYcoord("A") && V[0]==ggbApps[appletIndex].getXcoord("V") && V[1]==ggbApps[appletIndex].getYcoord("V")){
+            console.log(`El punto A ya está en el lugar correcto`);
+            document.getElementById(`qa${appletIndex}`).innerText = "✅";
+          
+          let ap, bp, cp 
+          try {
+            ap = eval(document.getElementById(`parabola_a${appletIndex}`).value);
+            bp = eval(document.getElementById(`parabola_b${appletIndex}`).value);
+            cp = eval(document.getElementById(`parabola_c${appletIndex}`).value);
+          } catch (e) {
+            document.getElementById(`qb${appletIndex}`).innerText = "❌";
+            return
+          }
+
+            let [a,b,c] = calcularParabolaDesdeVerticeYPunto(V, A);
+            let correcto = true;
+            correcto = correcto && (a==0?ap==0:Math.abs((a - ap)/a) < 0.01);
+            correcto = correcto && (c==0?cp==0:Math.abs((c - cp)/c) < 0.01);
+            correcto = correcto && (b==0?bp==0:Math.abs((b - bp)/b) < 0.01);
+            if(correcto){
+                document.getElementById(`qb${appletIndex}`).innerText = "✅";
+                //Vamos a deshabilitar los inputs
+                document.getElementById(`parabola_a${appletIndex}`).disabled = true;
+                document.getElementById(`parabola_b${appletIndex}`).disabled = true
+                document.getElementById(`parabola_c${appletIndex}`).disabled = true;
+                document.getElementById(`check${appletIndex}`).disabled = true;
+                calificar()
+            }else{
+                document.getElementById(`qb${appletIndex}`).innerText = "❌";
+            }
+            console.log(`Parábola: y = ${a}x^2 + ${b}x + ${c}`);
+            ggbApps[appletIndex].evalCommand(`f(x)=${ap}*x^2 + ${bp}*x + ${cp}`);
+
+            return;
+        }else{
+            document.getElementById(`qa${appletIndex}`).innerText = "❌";
+            console.log(`A: (${A[0]}, ${A[1]}) V: (${V[0]}, ${V[1]})`);
+            console.log(`A: (${ggbApps[appletIndex].getXcoord("A")}, ${ggbApps[appletIndex].getYcoord("A")}) V: (${ggbApps[appletIndex].getXcoord("V")}, ${ggbApps[appletIndex].getYcoord("V")})`);
+        }
+    }
+  </script>
+</body>
+</html>
