@@ -263,3 +263,8 @@ function repetido(cadena){
 	}
 	return false;
 }
+function unsortArray(b) {
+	let a=b
+	a.sort(function(){return 0.5 - Math.random()});
+	return a
+}

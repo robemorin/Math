@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>4.D.A Función cuadrática</title>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    td {
+      padding: 10px;
+      vertical-align: top;
+      border-bottom: 1px solid red;
+      align-items: center;
+    }
+    button {
+      margin-top: 10px;
+    }
+    /* Estilos para los tooltips */
+    .tippy-content {
+      font-size: 14px;
+      padding: 8px;
+    }
+  </style>
+  
+  <!-- MathJax (tu configuración existente) -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      extensions: ["tex2jax.js"],
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+      },
+      "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+  </script>
+
+  <!-- Tippy.js -->
+  <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css" />
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+</head>
+<body>
+  <table>
+    <tr>
+      <td width="15%"><center><img width="100%" src="https://raiz2pi.cc/src/icon2.png" loading="lazy"><br>raiz2pi.cc</center></td>
+      <td>
+        <center>
+          <h2>Docente: M.C. Roberto A. Morin Romero</h2>
+          <p>Parábola de la forma vértice a la polinómica II</p>
+        </center>
+      </td>
+    </tr>
+  </table>
+
+  <h2 id="calificación"></h2>
+  <p><b>Las respuestas numéricas deben ser redondeadas a tres cifras significativas.</b></p>
+
+  <table id="applets-table">
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const NUM_APPLETS = 5; // Número de applets a generar
+    const ggbApps = []; // Almacena las instancias de los applets
+
+    // Configuración base para todos los applets
+    const baseParameters = {
+      appName: "classic",
+      width: 570,
+      height: 400,
+      showToolBar: false,
+      showAlgebraInput: false,
+      showMenuBar: false,
+      showResetIcon: true,
+      material_id: "anpgwcp6"
+    };
+
+    function calificar(){
+      const numberOfApplets = document.getElementsByName("question").length;
+      let correctos = 0;
+      const respuestas = document.getElementsByName("question");
+      for(let i = 0; i < numberOfApplets; i++){
+        if(respuestas[i].innerText === "✅" || respuestas[i].innerText === "❌"){
+          if(respuestas[i].innerText === "✅"){
+            correctos++;
+          }
+        }else{
+          //No está completado
+          return;
+        }
+      }
+      //El usuario ha completado todos los applets
+      document.getElementById("calificación").innerText = `Calificación: ${Math.ceil(correctos/numberOfApplets*100)}`
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Generar applets dinámicamente dentro de la tabla
+    window.onload = function () {
+      const tableBody = document.querySelector("#applets-table tbody");
+      let A, V;
+      
+      for (let i = 0; i < NUM_APPLETS; i++) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        
+        A = [Math.round(Math.random() * 10 - 5), Math.round(Math.random() * 6 - 3)];
+        //A=[2,1]
+        do {
+          V = [Math.round(Math.random() * 10 - 5), Math.round(Math.random() * 6 - 3)];
+          //V = [1,0];
+        } while(A[0] === V[0] || A[1] === V[1]);
+        let jq=0, jr=0
+        cell.innerHTML = `
+          <div id="applet_container_${i}"></div>
+          <br> La parábola tiene vértice en V:(<span id="V${i}">${V[0]}, ${V[1]}</span>) y pasa por el punto A(<span id="A${i}">${A}</span>)<br>
+          a) Mueva los puntos al lugar correspondiente.<span name="question" id="q${jq++}_${i}"></span><br>
+          b) La parábola tiene la forma $y = ax^2+bx+c$. Desarrolle el siguiente procedimiento<br>
+          <p>Determine los valores de <br>
+            $h = $<input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$h$" value="1"></input>,
+            $ k = $<input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$k$" value="0"></input>,
+            $ x_0 = $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$x_0$" value="2"></input>,
+            $ y_0 = $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$y_0$" value="1"></input>.<span name="question" id="q${jq++}_${i}"></span>
+            </p>
+          <p>$y = a($<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="x-1" data-tippy-content="$x-h$"></input>$)^2$<input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$ + k$"></input><span name="question" id="q${jq++}_${i}"></span></p>
+          <p>Sustituye el punto $A$ en la ecuación anterior:</p>
+          <p><input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1" data-tippy-content="$y_0$"></input>$ = a($<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="2-1"  data-tippy-content="$x_0-h$"></input>$)^2$<input style="width: 5em;" type="text" value="+0"  id="r${jr++}_${i}" data-tippy-content="$ + k$"></input><span name="question" id="q${jq++}_${i}"></span></p>
+          <p><input style="width: 5em;"  value="1-0"  type="text" id="r${jr++}_${i}" data-tippy-content="$y_0-k$"></input>$ = a($<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1"  data-tippy-content="$(x_0-h)^2$"></input>)<span name="question" id="q${jq++}_${i}"></span></p>
+          <p><input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1"  data-tippy-content="$a$"></input> = $a$<span name="question" id="q${jq++}_${i}"></span></p>
+
+          <p>Por lo tanto, si sustituimos $a$, $h$ y $k$, tendremos:</p>
+          <p>$y = $ <input style="width: 5em;"  pattern="-?[0-9]*" type="text" id="r${jr++}_${i}" value="1" data-tippy-content="$a$"></input>(<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="x-1" data-tippy-content="$x-h$"></input>$)^2$<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="+0" data-tippy-content="$ + k $"></input><span name="question" id="q${jq++}_${i}"></span></p>
+          <p>Desarrolla el cuadrado:</p>
+          <p>$y =  $<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1" data-tippy-content="$ a$"></input>$ ( x^2 $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" value="-2x+1" data-tippy-content="$ -2hx+h^2$"></input>$ ) $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" data-tippy-content="$ +k$"></input><span name="question" id="q${jq++}_${i}"></span></p>
+          <p>$y =  $<input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1" data-tippy-content="$ a$"></input>$ x^2 $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" value="-2" data-tippy-content="$ -2ah $"></input>$x $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" value="+1" data-tippy-content="$ ah^2+k$"></input><span name="question" id="q${jq++}_${i}"></span></p>
+          <p>Por lo tanto</p>
+          
+          $b = $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" value="-2" data-tippy-content="$ b$"></input>; 
+          $c = $ <input style="width: 5em;" type="text" id="r${jr++}_${i}" value="1" data-tippy-content="$ c$"></input>.</input><span name="question" id="q${jq++}_${i}"></span><br>
+          <button id="check${i}" onclick="accionApplet(${i})">Revisar ${i + 1}</button>
+        `;
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+
+        // Configuración individual para cada applet
+        const params = {
+          ...baseParameters,
+          id: `ggbApplet_${i}`,
+          appletOnLoad(api) {
+            ggbApps[i] = api;
+            console.log(`✅ Applet ${i + 1} listo`);
+          }
+        };
+
+        // Inyectar el applet
+        new GGBApplet(params, true).inject(`applet_container_${i}`);
+      }
+      
+      // Inicializar Tippy.js para todos los inputs con data-tippy-content
+      document.querySelectorAll('input[data-tippy-content]').forEach(input => {
+        tippy(input, {
+          content: input.getAttribute('data-tippy-content'),
+          allowHTML: true,
+          placement: 'right',
+          arrow: true,
+          interactive: true,
+          onShow(instance) {
+            if (window.MathJax) {
+              MathJax.Hub.Queue(['Typeset', MathJax.Hub, instance.popper]);
+            }
+          }
+        });
+      });
+
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+    };
+
+    // Función para manipular cualquier applet
+    function accionApplet(appletIndex) {
+      function revision1(ggbApps,appletIndex,A,V){
+        if(A[0] == ggbApps[appletIndex].getXcoord("A") && A[1] == ggbApps[appletIndex].getYcoord("A") && 
+         V[0] == ggbApps[appletIndex].getXcoord("V") && V[1] == ggbApps[appletIndex].getYcoord("V")) {
+          document.getElementById(`q0_${appletIndex}`).innerText = "✅1";
+          return true;
+         }else{
+          document.getElementById(`q0_${appletIndex}`).innerText = "❌";
+          return false
+         }
+      }
+      
+      function revision2(ggbApps,appletIndex,A,V){
+        let h,k, x0, y0;
+        try {
+          h = eval(document.getElementById(`r0_${appletIndex}`).value);
+          k = eval(document.getElementById(`r1_${appletIndex}`).value);
+          x0 = eval(document.getElementById(`r2_${appletIndex}`).value);
+          y0 = eval(document.getElementById(`r3_${appletIndex}`).value);
+        } catch (e) {
+          document.getElementById(`q1_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+        if(h == V[0] && k == V[1] &&
+           x0 == A[0] && y0 == A[1]) {
+          document.getElementById(`q1_${appletIndex}`).innerText = "✅2";
+          return true;
+        } else {
+          document.getElementById(`q1_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+      }
+      function revision3(ggbApps,appletIndex,A,V){
+        function dialogo1(d) {
+          //La respuesta debe ser x-h
+          if(h==0){
+            if(d=='x' || d=='x-0' || d=='x+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`x${h<0?'+':'-'}${Math.abs(h)}` || d==`X${h<0?'+':'-'}${Math.abs(h)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        function dialogo2(d) {
+          //La respuesta debe ser +k
+          if(k==0){
+            if(d=='' || d=='-0' || d=='+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${k<0?'-':'+'}${Math.abs(k)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const diag1 = dialogo1(document.getElementById(`r4_${appletIndex}`).value.trim())
+        const diag2 = dialogo2(document.getElementById(`r5_${appletIndex}`).value.trim())
+        let respuesta1=``, respuesta2=``
+
+        if(diag1 && diag2) {
+          document.getElementById(`q2_${appletIndex}`).innerText = "✅3";
+          return true;
+        } else {
+          document.getElementById(`q2_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+      }
+      function revision4(ggbApps,appletIndex,A,V){
+        function dialogo1(d) {
+          //La respuesta debe ser y0
+          return d==y0? true : false;
+        }
+        function dialogo2(d) {
+          //La respuesta debe ser x_0-h
+          return eval(d) == x0-h? true : false;
+        }
+        function dialogo3(d) {
+          //La respuesta debe ser +k
+          //La respuesta debe ser +k
+          if(k==0){
+            if(d=='' || d=='-0' || d=='+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${k<0?'-':'+'}${Math.abs(k)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const diag1 = dialogo1(document.getElementById(`r6_${appletIndex}`).value.trim())
+        const diag2 = dialogo2(document.getElementById(`r7_${appletIndex}`).value.trim())
+        const diag3 = dialogo3(document.getElementById(`r8_${appletIndex}`).value.trim())
+
+        if(diag1 && diag2 && diag3) {
+          document.getElementById(`q3_${appletIndex}`).innerText = "✅4";
+          return true;
+        } else {
+          document.getElementById(`q3_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+      }
+      function revision5(ggbApps,appletIndex,A,V){
+        function dialogo1(d) {
+          //La respuesta debe ser y0-k
+          return eval(d) == y0-k? true : false;
+        }
+        function dialogo2(d) {
+          //La respuesta debe ser (x_0+h)**2
+          return eval(d) == Math.pow(x0-h,2)? true : false;
+        }
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const diag1 = dialogo1(document.getElementById(`r9_${appletIndex}`).value.trim())
+        const diag2 = dialogo2(document.getElementById(`r10_${appletIndex}`).value.trim())
+        let respuesta1=``, respuesta2=``
+
+        if(diag1 && diag2) {
+          document.getElementById(`q4_${appletIndex}`).innerText = "✅5";
+          return true;
+        } else {
+          document.getElementById(`q4_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+      }
+      function revision6(ggbApps,appletIndex,A,V){
+
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const d = document.getElementById(`r11_${appletIndex}`).value.trim()
+        
+        if(eval(d)==((y0-k)/(Math.pow(x0-h,2)))) {
+          document.getElementById(`q5_${appletIndex}`).innerText = "✅6";
+          return true;
+        } else {
+          document.getElementById(`q5_${appletIndex}`).innerText = "❌";
+          return false;
+        }
+      }
+      function revision7(ggbApps,appletIndex,A,V){
+        function dialogo1(d) {
+          //La respuesta debe ser x-h
+          if(h==0){
+            if(d=='x' || d=='x-0' || d=='x+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`x${h<0?'+':'-'}${Math.abs(h)}` || d==`X${h<0?'+':'-'}${Math.abs(h)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        function dialogo2(d) {
+          //La respuesta debe ser +k
+          if(k==0){
+            if(d=='' || d=='-0' || d=='+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${k<0?'-':'+'}${Math.abs(k)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const d = document.getElementById(`r12_${appletIndex}`).value.trim()
+        const a =((y0-k)/(Math.pow(x0-h,2)))
+        const diag1 = dialogo1(document.getElementById(`r13_${appletIndex}`).value.trim())
+        const diag2 = dialogo2(document.getElementById(`r14_${appletIndex}`).value.trim())
+        
+        if(eval(d)==a  && diag1 && diag2) {
+          document.getElementById(`q6_${appletIndex}`).innerText = "✅7";
+          return true;
+        } else {
+          document.getElementById(`q6_${appletIndex}`).innerText = "❌6";
+          return false;
+        }
+      }
+      function revision8(ggbApps,appletIndex,A,V){
+        function dialogo2(d) {
+          //La respuesta debe ser -2hx+h^2
+          if(h==0){
+            if(d=='' || d=='+0' || d=='-0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${h<0?'+':'-'}${2*Math.abs(h)}x+${h**2}` || d==`${h<0?'+':'-'}${2*Math.abs(h)}X+${h**2}`) {
+            return true;
+          } else {
+            console.log(`Sol ${h<0?'+':'-'}${2*Math.abs(h)}x+${h**2} |${h<0?'+':'-'}${2*Math.abs(h)}X+${h**2}`);
+            return false;
+          }
+        }
+        function dialogo3(d) {
+          //La respuesta debe ser +k
+          console.log(`k: ${k} d: ${d} rev8`);
+          if(k==0){
+            if(d=='' || d=='-0' || d=='+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${k<0?'-':'+'}${Math.abs(k)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const a =((y0-k)/(Math.pow(x0-h,2)))
+        const diag1 = eval(document.getElementById(`r15_${appletIndex}`).value.trim())==a? true : false
+        const diag2 = dialogo2(document.getElementById(`r16_${appletIndex}`).value.trim())
+        const diag3 = dialogo3(document.getElementById(`r17_${appletIndex}`).value.trim())
+        
+        if(diag1 && diag2 && diag3) {
+          document.getElementById(`q7_${appletIndex}`).innerText = "✅8";
+          return true;
+        } else {
+          console.log(` diag1: ${diag1}, diag2: ${diag2}, diag3: ${diag3}`);
+          document.getElementById(`q7_${appletIndex}`).innerText = "❌8";
+          return false;
+        }
+      }
+      function revision9(ggbApps,appletIndex,A,V){
+        function dialogo2(d) {
+          //La respuesta debe ser -2hx+h^2
+          if(h==0){
+            if(d=='+0' || d=='-0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${h<0?'+':'-'}${2*a*Math.abs(h)}`) {
+            return true;
+          } else {
+            //console.log(`Sol ${h<0?'+':'-'}${2*Math.abs(h)}x+${h**2} |${h<0?'+':'-'}${2*Math.abs(h)}X+${h**2}`);
+            return false;
+          }
+        }
+        function dialogo3(d) {
+          //La respuesta debe ser a*h**2+k
+          console.log(`sol: ${a*h**2+k} d: ${d} rev8`);
+          const c=a*h**2+k;
+          if(c==0){
+            if(d=='' || d=='-0' || d=='+0') {
+              return true;
+            } else {
+              return false;
+            }
+          }
+          if(d==`${c<0?'-':'+'}${Math.abs(c)}`) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+        
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const a =((y0-k)/(Math.pow(x0-h,2)))
+        const b = a*(-2*h);
+        const c = a*(h**2) + k;
+        const diag1 = eval(document.getElementById(`r18_${appletIndex}`).value.trim())==a? true : false
+        const diag2 = eval(document.getElementById(`r19_${appletIndex}`).value.trim())==b? true : false
+        const diag3 = eval(document.getElementById(`r20_${appletIndex}`).value.trim())==c? true : false
+        
+        if(diag1 && diag2 && diag3) {
+          document.getElementById(`q8_${appletIndex}`).innerText = "✅9";
+          return true;
+        } else {
+          console.log(` diag1: ${diag1}, diag2: ${diag2}, diag3: ${diag3}`);
+          document.getElementById(`q8_${appletIndex}`).innerText = "❌9";
+          return false;
+        }
+      }
+      function revision10(ggbApps,appletIndex,A,V){
+        function dialogo1(d) {
+          //La respuesta debe ser b
+          const b = a*(-2*h);
+          if (b==0 && d==0){
+            return true;
+          }else if (b==0 && d!=0){
+            return false;
+          }
+          return Math.abs((d-b)/b) < 0.01
+            
+          
+        }
+        function dialogo2(d) {
+          //La respuesta debe ser c
+          const c = a*(h**2) + k;
+          if (c==0 && d==0){
+            return ;
+          } else if (c==0 && d!=0) {
+            return false;
+          }
+          return Math.abs((d-c)/c) < 0.01
+            
+          
+        }
+        
+        const h=V[0],k=V[1], x0=A[0], y0=A[1]
+        
+        const a =((y0-k)/(Math.pow(x0-h,2)))
+        const diag1 = document.getElementById(`r21_${appletIndex}`).value
+        const diag2 = document.getElementById(`r22_${appletIndex}`).value
+        
+        if(diag1 && diag2 ) {
+          document.getElementById(`q9_${appletIndex}`).innerText = "✅10";
+          ggbApps[appletIndex].evalCommand(`f(x)=${a}*x^2 + ${a*(-2*h)}*x + ${a*(h**2) + k}`);
+          return true;
+        } else {
+          console.log(` diag1: ${diag1}, diag2: ${diag2}, diag3: ${diag3}`);
+          document.getElementById(`q9_${appletIndex}`).innerText = "❌10";
+          return false;
+        }
+      }
+
+      if (!ggbApps[appletIndex]) return alert(`Applet ${appletIndex + 1} aún no está listo`);
+      
+      const A = document.getElementById(`A${appletIndex}`).innerText.split(',').map(Number);
+      const V = document.getElementById(`V${appletIndex}`).innerText.split(',').map(Number);
+      
+      if(revision1(ggbApps,appletIndex,A,V)){
+        if(revision2(ggbApps,appletIndex,A,V)){
+          if(revision3(ggbApps,appletIndex,A,V)){
+            if(revision4(ggbApps,appletIndex,A,V)){
+              if(revision5(ggbApps,appletIndex,A,V)){
+                if(revision6(ggbApps,appletIndex,A,V)){
+                  if(revision7(ggbApps,appletIndex,A,V)){
+                    if(revision8(ggbApps,appletIndex,A,V)){
+                      if(revision9(ggbApps,appletIndex,A,V)){
+                        if(revision10(ggbApps,appletIndex,A,V)){
+                          calificar()
+                                console.log(":)")
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+      }
+    }
+    
+  </script>
+</body>
+</html>
