@@ -1,0 +1,23 @@
+<!--actividad.html-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Raiz2𝜋 Actividad</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script type="module">
+    import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+  </script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+  <link rel="stylesheet" href="./src/raiz2pi.css">
+</head>
+<body>
+  <div id="contenedorEjercicio"></div>
+  <script type="module">
+    import { mostrarEjercicio } from './src/main.js';
+    mostrarEjercicio();
+  </script>
+</body>
+</html>
