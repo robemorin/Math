@@ -1,6 +1,4 @@
 //1.1.1.js
-/*import * as tlacu from 'http://127.0.0.1:5500/Math/tlacuache/src/tlacuache-modulo.mjs';
-import 'http://127.0.0.1:5500/Math/tlacuache/src/tlacuache.mjs';*/
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 import {encriptar, generarCodigo} from '../r2p_core.js'
