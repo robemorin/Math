@@ -1,26 +1,32 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export function name() {
-  return 'Redondeo de números I'
+  return 'Redondeo de números II'
 }
 
 export function tipo() {
   return 3;
 }
 
-export async function pregunta(i, code) {
+export async function pregunta(i, code, esImprimible=false) {
   try{
 	const numero = Math.round(Math.random()*10**(Math.random()*5+3))
 	const q=[2,5,10,20,50,100,200,500]
 	const dummy = Math.round(Math.random()*q.length)
 
-	//console.log(`${i}<- Re(a):${r*Math.cos(arg*Math.PI/12)} Im(a):${r*Math.sin(arg*Math.PI/12)}`)
-	return `
+	const Pregunta =  `
 	  <div class="pregunta-abierta"  data-numero="${numero}" data-red="${q[dummy]}" style="display: none;">
-		<p>${i + 1}.- Redondea ${numero} al ${q[dummy]} más cercano.</p>
+	  <p>${i + 1}.- Redondea ${numero} al ${q[dummy]} más cercano.</p>
 		<p>$${numero}\\approx $<math-field></math-field> &Tab;&Tab;
-	  </div>
-	`;
+	  </div>` 
+
+	  if(esImprimible){
+		console.log('Debo imprimir la pregunta y su respuesta')
+		const respuesta='Pendiente'
+		return {Pregunta, respuesta}
+	  }
+	  render()
+	return Pregunta
 	
   }catch (error){
 	console.error('Error al carga la pregunta:', error);

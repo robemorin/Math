@@ -8,24 +8,30 @@ export function tipo() {
   return 3;
 }
 
-export async function pregunta(i, code) {
+export async function pregunta(i, code, esImprimible = false) {
   try{
 	const numero = Math.random()*10**(Math.random()*8)
 	const de = Math.ceil(Math.random()*6)
 	const cs = Math.ceil(Math.random()*6)
 	
 	const otro = Math.ceil(Math.random()*6)
-
-	return `
-	  <div class="pregunta-abierta"  data-numero="${numero}" data-de="${de}" data-cs="${cs}" data-otro="${otro}" style="display: none;">
-	  <p>${i + 1}.- Redondea ${numero} :</p>
+	const Pregunta =  `
+	<div class="pregunta-abierta"  data-numero="${numero}" data-de="${de}" data-cs="${cs}" data-otro="${otro}" style="display: none;">
+	<p>${i + 1}.- Redondea ${numero} :</p>
 	  <center><table>
 	  <tr><td>a ${de} decimales</td><td> <math-field></math-field></td></tr>
 		<tr><td>a ${cs} cifras significativas</td><td> <math-field></math-field></td></tr>
 		<tr><td>al ${otro} más cercano</td><td> <math-field></math-field></td></tr>
 		</table></center>
-	  </div>
-	`;
+		</div>` 
+
+	if(esImprimible){
+		console.log('Debo imprimir la pregunta y su respuesta')
+		const respuesta='Pendiente'
+		return {Pregunta, respuesta}
+		}
+	render()
+	return Pregunta
 	
   }catch (error){
 	console.error('Error al carga la pregunta:', error);

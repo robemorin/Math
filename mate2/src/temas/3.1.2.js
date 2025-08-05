@@ -1,0 +1,48 @@
+//1.1.1.js
+//import * as tlacu from 'http://127.0.0.1:5500/Math/tlacuache/src/tlacuache-modulo.mjs'
+import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
+import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
+
+export function name(){
+  return 'Diagramas de asignación II';
+}
+export function tipo(){
+  return 0
+  /*
+  0 - Opción múltiple
+  1 - Abierto
+  2 - Geogebra
+  */
+}
+export async function pregunta(np) { 
+	function P1(){
+							
+							let tipo=[['RS', 	'Relación no funcional sobreyectiva'],
+										['RNS', 'Relacion no funcional no sobreyectiva'],
+										['FB',	'Funcion biyectiva'],
+										['FSNI','Funcion sobreyectiva no inyectiva'],
+										['FNSNI','Funcion no sobreyectiva no inyectiva'],
+										['FNSI','Funcion inyectiva no sobreyectiva'],]
+							const dummy=Math.floor(Math.random()*tipo.length)
+							const DI=[[1,2,3,4,5],['\u03B1','\u03B2','\u03B3','\u03B4','\u03B5','\u03B6']]
+
+							const P =`${np+1}.- Determine que tipo de relación es el siguiente diagrama: <br> ${tlacu.TipoRelacionesDiagAsig(tipo[dummy][0],DI)}`
+							
+							let R=[tipo[dummy][1]]
+							
+							tipo.splice(dummy,1)
+							tipo=tlacu.unsortArray(tipo)
+							for(let k=1;k<6;++k){
+								R[k] = tipo[k-1][1]
+							}
+							return [P,R]
+						}
+						
+  try {
+
+    return P1()
+
+  } catch (error) {
+    console.error('Error loading r2p_core.js:', error);
+  }
+}

@@ -69,7 +69,7 @@ export function pregunta(Q,code,numeroPregunta){
         for(let k=0; k<R.length;++k){
             S += `
             <div class="col-4 themed-grid-col">
-                <input type="radio" class="r2p-input-radio" name="Resp_${numeroPregunta}" id="radio_${numeroPregunta}_${k}" msm="${msm[k]}" value="${R[k]}">
+                <input type="radio" class="r2p-input-radio" name="Resp_${numeroPregunta}" id="radio_${numeroPregunta}_${k}" msm="${msm[k]}" >
                 <label for="radio_${numeroPregunta}_${k}">${R[k]}</label>
             </div>
             `

@@ -8,13 +8,21 @@ export function tipo() {
   return 3;
 }
 
-export async function pregunta(i, code) {
+export async function pregunta(i, code, esImprimible = false) {
   try{
 	const numero = Math.random()*10**(Math.random()*8)
 	const ndecimales = Math.ceil(Math.random()*6)
+
+	const Pregunta =  `<p>${i + 1}.- Redondea ${numero} a ${ndecimales} cifras sigificativas.</p>` 
+	if(esImprimible){
+		console.log('Debo imprimir la pregunta y su respuesta')
+		const respuesta='Pendiente'
+		return {Pregunta, respuesta}
+	  }
+	render()
 	return `
 	  <div class="pregunta-abierta"  data-numero="${numero}" data-nd="${ndecimales}" style="display: none;">
-		<p>${i + 1}.- Redondea ${numero} a ${ndecimales} cifras sigificativas.</p>
+		${Pregunta}
 		<p>$${numero}\\approx $<math-field></math-field> &Tab;&Tab;
 	  </div>
 	`;
@@ -24,7 +32,7 @@ export async function pregunta(i, code) {
   }
 }
 
-export async function render(container, n, code) {
+export async function render() {
   window.accionR2P = function(i) {
 	let totalPuntos = 1
 	let puntos = 0

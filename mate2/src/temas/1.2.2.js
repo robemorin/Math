@@ -1,43 +1,71 @@
-//1.1.1.js
+//import * as tlacu from 'http://192.168.0.7:5500/Math/tlacuache/src/tlacuache-modulo.mjs'
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
-
-export function name(){
-  return 'Multiplicación de polinomios I';
+export function name() {
+  return 'Notación científica II'
 }
-export function tipo(){
-  return 0
-  /*
-  0 - Opción múltiple
-  1 - Abierto
-  2 - Geogebra
-  */
+
+export function tipo() {
+  return 3;
 }
-export async function pregunta(numeroPregunta) { 
-  try {
-    
-							let a=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
-							let b=[(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),Math.round(Math.random()*19-9),(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
-														
-							let P=`${numeroPregunta+1}.- El valor de la multiplicación de $$(${tlacu.poli.print(a)})(${tlacu.poli.print(b)})$$ es:`
-							//var P="El valor de la división de $$\\frac{"+tlacu.poli.print(tlacu.conv(a,b))+"}{"+tlacu.tlacuPoli.print(a)+"}$$ es:"
-							
-							let c=tlacu.conv(a,b)
-							let R=[];
-							R[0]=`$${tlacu.poli.print(c)}$`
-							let dummy=Math.floor(Math.random()*c.length)
-							for(let i=1;i<6;++i){
-								do{
-									c[dummy]+=Math.round(Math.random()*4-2)
-									R[i]=`$${tlacu.poli.print(c)}$`
-								}while(tlacu.pregunta.hayRepetidos(R))
-							}
-							return [P,R]
-						
 
-  } catch (error) {
+export async function pregunta(i, code, esImprimible = false) {
+  try{
+	const numero = Math.random()*10**(Math.random()*10-5)
 
-    console.error(tlacu.conv([1,1],[1,1]));
-    console.error('Error loading r2p_core.js:', error);
+	const Pregunta = `
+	  <div class="pregunta-abierta"  data-numero="${numero}" style="display: none;">
+	  <p>${i + 1}.- Considera el número ${numero} :</p>
+	  <center><table>
+	  <tr><td>Redondealo a 3 c.s. </td><td> <math-field></math-field></td></tr>
+		<tr><td>Expresa el número en notación científica a 3 c.s.</td><td> <math-field></math-field></td></tr>
+		</table></center>
+	  </div>
+	`
+
+	if(esImprimible){
+			console.log('Debo imprimir la pregunta y su respuesta')
+			const respuesta='Pendiente'
+			return {Pregunta, respuesta}
+			}
+		render()
+		return Pregunta
+
+	
+	
+  }catch (error){
+	console.error('Error al carga la pregunta:', error);
   }
+}
+
+export async function render(container, n, code) {
+  window.accionR2P = function(i) {
+	let totalPuntos = 2
+	let puntos = 0
+	let pregunta = document.getElementsByClassName('pregunta-abierta')
+	const mathFields= pregunta[i].getElementsByTagName('math-field')
+	const rnumero = Number(mathFields[0].value)
+	let rnotCien = mathFields[1].value.replace(/\s+/g, "")
+	
+
+	let numero = Number(pregunta[i].dataset.numero)
+	numero = Number(numero.toPrecision(3))
+	let NC = tlacu.NotacionCientifica(numero)
+
+
+	if(Math.abs(rnumero - numero ) != 0 || pregunta[i].getElementsByTagName('math-field')[0].value == ''){
+	  mathFields[0].style.backgroundColor = "red";
+	} else{
+	  ++puntos
+	  mathFields[0].style.border = "solid 5px green";
+	}
+	if(rnotCien != NC || pregunta[i].getElementsByTagName('math-field')[1].value == ''){
+	  mathFields[1].style.backgroundColor = "red";
+	} else{
+	  ++puntos
+	  mathFields[1].style.border = "solid 5px green";
+	}
+	console.log(`Notación resp: '${rnotCien}' *** compu: '${NC}'`)
+	return [puntos,totalPuntos]
+  };
 }

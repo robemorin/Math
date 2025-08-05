@@ -31,3 +31,65 @@ math-field {
   justify-content: center;
   align-items: center;
 }
+@media print {
+  math-field {
+    border: 2px solid gray !important;
+    background: white !important;
+  }
+  math-field > * {
+    visibility: hidden !important;
+  }
+  math-field::part(container),
+  math-field::part(content) {
+    visibility: hidden !important;
+  }
+}
+.lista-IB {
+    list-style-type: none;
+    counter-reset: item-counter;
+    padding-left: 20px;
+}
+
+.lista-IB > li {
+    counter-increment: item-counter;
+    margin-bottom: 10px;
+}
+
+.lista-IB > li:before {
+    content: counter(item-counter, lower-alpha) ") ";
+    font-weight: bold;
+}
+
+.lista-IB ul {
+    list-style-type: none;
+    counter-reset: subitem-counter;
+    padding-left: 30px;
+    margin-top: 5px;
+}
+
+.lista-IB ul > li {
+    counter-increment: subitem-counter;
+}
+
+.lista-IB ul > li:before {
+    content: counter(subitem-counter, lower-roman) ") ";
+    font-weight: bold;
+}
+.allLines {
+    border-collapse: collapse; /* Esto asegura que los bordes se unan correctamente */
+    margin: 20px 0; /* Opcional: margen superior e inferior */
+    td {
+        border: 1px solid gray; /* Borde de 1px sólido en color negro */
+        padding: 8px 12px; /* Espaciado interno para mejor legibilidad */
+        text-align: center; /* Alineación del texto */
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    
+}
+.noVerMathFiels{
+  
+      border: none !important;
+    
+}
