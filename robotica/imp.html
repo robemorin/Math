@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo impresión</title>
+    <script type="module">
+        import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+    </script>
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+    <link rel="stylesheet" href="./src/raiz2pi.css">
+
+
+    <style>
+
+  </style>
+</head>
+<body>
+<div class="soloPantalla">
+    <h1 id="titulo">Lo siento, algo salió mal</h1>
+        
+    <header id="parametros" style="display: none;">
+        <table><tr><td>
+        <img src="../src/icon2.png" alt="Raiz2pi" /></td><td>
+
+        <details>
+            <summary>Configuración</summary>
+            <div class="contenido">
+             <input type="radio" checked name="portada" id="opcion1" value="1">
+            <label for="opcion1">Sin portada</label><br>
+
+            <input type="radio" name="portada" id="opcion2" value="2">
+            <label for="opcion2">Incluir portada ejercicio</label><br>
+            
+            <input type="radio" name="portada" id="opcion3" value="3">
+            <label for="opcion3">Incliur portada examen</label>
+
+            <fieldset>
+            <legend>Parametros</legend>
+                <input type="number" id="nFichas"  value="3" style="width: 60px;" ><label for="nFichas" > Número de fichas/exámenes</label><br>
+                <input type="text" id="docente" placeholder="Docente"><br>
+                <input type="text" id="escuela" placeholder="Escuela"><br>
+                <input type="number" id="tiempo"  value="40" style="width: 60px;" ><label for="opcion2" > Duración</label><br>
+                <input type="text" id="fecha" placeholder="Fecha aplicación"><label for="fecha" > Fecha de aplicación</label><br>
+            </fieldset>
+            </div>
+        </details></td></tr></table>
+    </header>
+
+    <div id="contenedor" style="display: none;"></div>
+    <button id="addButton"></button>
+
+    <button id="crearCuestionarios">Generar</button>
+    
+    <div id="output"></div>
+</div>
+<div id="imprimir">
+    <div id="cuestionarios"></div>
+    <div id="saltarPagina">-</div>
+
+    <div id="cuestionariosRespuestas"></div>
+
+</div>
+    <script type="module" >
+        import { setup } from './src/impresion.mjs';
+        setup();
+    </script>
+</body>
+</html>

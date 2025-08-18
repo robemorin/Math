@@ -15,8 +15,8 @@ export function tipo(){
 }
 export async function pregunta(numeroPregunta) { 
   try {
-	const numero = Math.random()*10**(Math.random()*5+3)
-	const ndecimales = Math.ceil(Math.random()*6)
+	let numero =Math.random()*10**(Math.random()*5+3)
+	const ndecimales = Math.ceil(Math.random()*5+1)
 
 
     const P=`${numeroPregunta+1}.- Redondea ${numero} a ${ndecimales} cifras significativas.`;
@@ -24,7 +24,11 @@ export async function pregunta(numeroPregunta) {
     
     for(let i=1;i<6;++i){
       do{
-        R[i]=Number(numero.toPrecision(Math.ceil(Math.random()*12))).toLocaleString().replace(/,/g, " ")
+        const cs =Math.ceil(Math.random()*6+1)
+        const dummy = Math.ceil(Math.log10(Math.abs(numero))-cs)
+
+        R[i] = Number((numero+(Math.round(Math.random()*3-1.5))*10**dummy).toPrecision(cs)).toLocaleString().replace(/,/g, " ")
+        //console.log(`numero: ${numero} R:`,R)
       }while( tlacu.pregunta.hayRepetidos(R) )
     }
     return [P,R]

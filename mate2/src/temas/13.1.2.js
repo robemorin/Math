@@ -22,10 +22,6 @@ export async function pregunta(i, code, esImprimible=false) {
 	for(let k=0;k<n;++k) demasColumnas += `<tr><td><math-field class='noVerMathFiels'></math-field></td><td><math-field class='noVerMathFiels'></math-field></td></tr>`
 
 	const dummy = tlacu.metTrapecio(a,b,n,poli)
-	console.log('dummy ')
-	console.log('x',dummy.x)
-	console.log('y',dummy.y)
-	console.log('A',dummy.A)
   const Pregunta =  `
   <div class="pregunta-abierta" data-a="${a}" data-n="${n}" data-b="${b}" data-poli=${poli} style="display: none;">
   <p>${i + 1}.- Use el método del trapecio con ${n} subintervalos para estimar el área de 
@@ -52,9 +48,8 @@ export async function pregunta(i, code, esImprimible=false) {
   </ul>
 	  </div><br><br><br>` 
   if(esImprimible){
-	console.log('Debo imprimir la pregunta y su respuesta')
-	const respuesta='Pendiente'
-	return {Pregunta, respuesta}
+	const respuesta=`a) $h=${h}$ b)$x=${dummy.x}$ , $y=${dummy.y}$ c)$A=${dummy.A}$`
+	return [Pregunta, respuesta]
   }
 
 render()

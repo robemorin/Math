@@ -97,7 +97,7 @@ class R2PDinamico extends HTMLElement {
 
         }else if (tipo === 1 || tipo == 2 || tipo==3){
           for (let i = 0; i < this.n; i++) {
-            const preguntaHTML = await modulo.pregunta(i, code);
+            const preguntaHTML = await modulo.pregunta(i, tipo == 3? this.n:code);
             lienzo += preguntaHTML;
           }
           lienzo += `<button class="r2p-revisar" id="revisar" style="display: none;"></button>

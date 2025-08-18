@@ -1,7 +1,7 @@
 // main.js
 import './r2p.js';
 import * as r2pCoremodule from './r2p_core.js';
-const nombreCurso = 'Matemáticas parte 2';
+const nombreCurso = 'Fundamentos de Robótica';
 const informacionCurso = '<h2>Docente: M.C. Roberto Alejandro Morin Romero</h2>';
 export function nomCurso() {
   return nombreCurso;

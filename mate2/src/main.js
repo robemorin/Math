@@ -3,7 +3,9 @@ import './r2p.js';
 import * as r2pCoremodule from './r2p_core.js';
 const nombreCurso = 'Matemáticas parte 2';
 const informacionCurso = '<h2>Docente: M.C. Roberto Alejandro Morin Romero</h2>';
-
+export function nomCurso() {
+  return nombreCurso;
+}
 export async function info() {
   document.getElementById('nombreCurso').innerText = nombreCurso;
   document.getElementsByTagName('title')[0].innerText = nombreCurso;

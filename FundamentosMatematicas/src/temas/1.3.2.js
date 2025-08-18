@@ -9,13 +9,13 @@ export function tipo() {
   return 3;
 }
 
-export async function pregunta(i, code) {
+export async function pregunta(i, code, esImprimible=false) {
   try{
     const r = Math.ceil(Math.random()*5)
     const arg = Math.round(Math.random()*24)
     const f = tlacu.fraccion(arg,12)
     //console.log(`${i}<- Re(a):${r*Math.cos(arg*Math.PI/12)} Im(a):${r*Math.sin(arg*Math.PI/12)}`)
-    return `
+    const Pregunta = `
       <div class="pregunta-abierta"  data-r="${r}" data-arg="${arg}" style="display: none;">
         <p>${i + 1}.- Obtenga la forma cartesiana de $a = ${r}e^{${f}\\pi j}$. <span id="resultado_${i}" name="question"></span></p>
         <!--div id="applet_container_${i}" class="ggb-container"></div-->
@@ -23,6 +23,13 @@ export async function pregunta(i, code) {
         $\\Im(a)$=<math-field></math-field></p>
       </div>
     `;
+    if(esImprimible){
+	const respuesta=`$\\Re(a)= ${(r*Math.cos(arg*Math.PI/12)).toPrecision(2)}$  $\\Im(a)= ${(r*Math.sin(arg*Math.PI/12)).toPrecision(3)}$`
+	return [Pregunta, respuesta]
+  }
+    render()
+    return Pregunta
+  
     
   }catch (error){
     console.error('Error al carga la pregunta:', error);

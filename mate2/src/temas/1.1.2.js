@@ -12,7 +12,7 @@ export async function pregunta(i, code, esImprimible=false) {
   try{
 	const numero = Math.round(Math.random()*10**(Math.random()*5+3))
 	const q=[2,5,10,20,50,100,200,500]
-	const dummy = Math.round(Math.random()*q.length)
+	const dummy = Math.floor(Math.random()*q.length)
 
 	const Pregunta =  `
 	  <div class="pregunta-abierta"  data-numero="${numero}" data-red="${q[dummy]}" style="display: none;">
@@ -22,8 +22,8 @@ export async function pregunta(i, code, esImprimible=false) {
 
 	  if(esImprimible){
 		console.log('Debo imprimir la pregunta y su respuesta')
-		const respuesta='Pendiente'
-		return {Pregunta, respuesta}
+		const respuesta= Math.round(numero/q[dummy])*q[dummy]
+		return [Pregunta, respuesta]
 	  }
 	  render()
 	return Pregunta

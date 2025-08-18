@@ -28,9 +28,9 @@ export async function pregunta(i, code, esImprimible=false) {
 	</table>
 	  </div>` 
   if(esImprimible){
-	console.log('Debo imprimir la pregunta y su respuesta')
+	//console.log('Debo imprimir la pregunta y su respuesta')
 	const respuesta='Pendiente'
-	return {Pregunta, respuesta}
+	return [Pregunta, respuesta]
   }
 
 render()

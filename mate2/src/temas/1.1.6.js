@@ -15,9 +15,9 @@ export async function pregunta(i, code, esImprimible = false) {
 
 	const Pregunta =  `<p>${i + 1}.- Redondea ${numero} a ${ndecimales} cifras sigificativas.</p>` 
 	if(esImprimible){
-		console.log('Debo imprimir la pregunta y su respuesta')
+		//console.log('Debo imprimir la pregunta y su respuesta')
 		const respuesta='Pendiente'
-		return {Pregunta, respuesta}
+		return [Pregunta, respuesta]
 	  }
 	render()
 	return `

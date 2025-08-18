@@ -17,7 +17,7 @@ export async function pregunta(numeroPregunta) {
   try {
 	const numero = Math.random()*10**(Math.random()*5+3)
 	const q=[2,5,10,20,50,100,200,500]
-	const dummy = Math.round(Math.random()*q.length)
+	const dummy = Math.floor(Math.random()*q.length)
 
 
     const P=`${numeroPregunta+1}.- Redondea ${numero} al ${q[dummy]} más cercano.`;
@@ -26,6 +26,7 @@ export async function pregunta(numeroPregunta) {
     for(let i=1;i<6;++i){
       do{
         R[i]=Math.round(numero/q[dummy])*q[dummy]+Math.round(q[dummy]*(Math.random()*6-3))*q[dummy]
+        console.log('.')
       }while( tlacu.pregunta.hayRepetidos(R) )
     }
     return [P,R]

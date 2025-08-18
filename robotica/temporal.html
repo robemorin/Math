@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Módulo Dinámico Simple</title>
+</head>
+<body>
+    <h1>Prueba de Carga Dinámica Extrema</h1>
+    <button id="loadSimpleModuleBtn">Cargar Módulo Simple</button>
+    <div id="output"></div>
+
+    <script type="module">
+        console.log("Script principal cargado.");
+
+        document.getElementById('loadSimpleModuleBtn').addEventListener('click', async () => {
+            try {
+                console.log("Click detectado. Intentando import('./simpleModule.js')...");
+                // La ruta es vital: './' significa en la misma carpeta que el HTML
+                const module = await import('./simpleModule.js');
+                document.getElementById('output').textContent = module.message;
+                console.log("Éxito: " + module.message);
+            } catch (error) {
+                console.error("Fallo en import() dinámico:", error);
+                document.getElementById('output').textContent = "Error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
