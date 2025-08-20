@@ -407,7 +407,12 @@ export function revisarGeoGebra(contenedor) {
 export function recuperaCodigo(cadena){
     return r2pCore.symbols2array(cadena)
 }
-
+function disableAllInputs(contenedor) {
+    const mathFields = contenedor.querySelectorAll('math-field')
+    mathFields.forEach(mf => {
+        mf.disabled = true;
+    });
+}
 
 export function setupEvents() {
   if (revisarHandlerInitialized) return;
@@ -423,6 +428,7 @@ export function setupEvents() {
         else if (tipo === '1') revisarAbiertas(contenedor);
         else if (tipo === '2') revisarGeoGebra(contenedor);
         else if (tipo === '3') revisarAbiertasII(contenedor);
+        disableAllInputs(contenedor);
         window.scrollTo({
             top: 0,
             behavior: 'smooth'

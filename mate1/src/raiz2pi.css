@@ -1,0 +1,266 @@
+.r2p-revisar {
+    display: block;
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 2em;
+    background-color: #1976d2;
+    color: #fff;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    margin: 0;
+
+}
+.r2p-revisar::after {
+    content: "Revisar";
+}
+math-field {
+  font-size: 1.2em;
+  min-width: 150px;
+  padding: 4px;
+}
+.pregunta-abierta {
+  margin-bottom: 1rem;
+}
+#r2p-qr {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media print {
+  math-field {
+    border: 2px solid gray !important;
+    background: white !important;
+  }
+  math-field > * {
+    visibility: hidden !important;
+  }
+  math-field::part(container),
+  math-field::part(content) {
+    visibility: hidden !important;
+  }
+}
+.lista-IB {
+    list-style-type: none;
+    counter-reset: item-counter;
+    padding-left: 20px;
+}
+
+.lista-IB > li {
+    counter-increment: item-counter;
+    margin-bottom: 10px;
+}
+
+.lista-IB > li:before {
+    content: counter(item-counter, lower-alpha) ") ";
+    font-weight: bold;
+}
+
+.lista-IB ul {
+    list-style-type: none;
+    counter-reset: subitem-counter;
+    padding-left: 30px;
+    margin-top: 5px;
+}
+
+.lista-IB ul > li {
+    counter-increment: subitem-counter;
+}
+
+.lista-IB ul > li:before {
+    content: counter(subitem-counter, lower-roman) ") ";
+    font-weight: bold;
+}
+.allLines {
+    border-collapse: collapse; /* Esto asegura que los bordes se unan correctamente */
+    margin: 20px 0; /* Opcional: margen superior e inferior */
+    td {
+        border: 1px solid gray; /* Borde de 1px sólido en color negro */
+        padding: 8px 12px; /* Espaciado interno para mejor legibilidad */
+        text-align: center; /* Alineación del texto */
+    }
+    tr:hover {
+        background-color: #f5f5f5;
+    }
+    
+}
+.noVerMathFiels{
+  
+      border: none !important;
+    
+}
+
+#parametros img {
+  width: 120px;
+}
+#parametros details{
+    border: solid 1px gray;
+    margin: 20px;
+    padding: 20px;
+    summary{
+        padding: 10px;
+    }
+}
+
+
+#addButton, .addButton{
+    background: #009908;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: rgb(203, 209, 204);
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all 0.3s;
+    font-weight: bold;
+    margin: 8px;
+    padding: 8px;
+        
+}
+#addButton::before, .addButton::before{
+        content: "+";
+}
+.delete{
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+}
+.delete::before{
+    content:"❌";
+}
+.inputDosDigitos{
+    width: 50px;
+}
+.nuevaPregunta{
+    margin: 8px;
+    padding: 8px;
+}
+#cuestionarios{
+  .pregunta-abierta{
+    margin: 10px;
+  }
+}
+.r2pi-encabezado{
+  width: 100%;
+
+  img{
+    width: 100px;
+    height: auto;
+  }
+  tr:nth-child(1) td:nth-child(1) {
+    width: 105px; /* Ancho fijo en píxeles */
+  }
+  td{
+    text-align: left;
+  }
+}
+@media (min-width: 768px) {
+  #parametros {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  #parametros img {
+    margin-right: 2rem;
+  }
+  .r2p-portada{
+    display: none;
+  }
+}
+@media print{
+  #soloPantalla, .soloPantalla{
+    display: none;
+  }
+  .r2p-portada {
+  font-family: Arial, sans-serif;
+  margin: 2cm;
+  line-height: 1.5;
+  max-width: 21cm;
+}
+
+.r2p-portada .header {
+  text-align: center;
+  margin-bottom: 1cm;
+}
+
+.r2p-portada .r2p-logo {
+  font-weight: bold;
+  font-size: 10pt;
+  margin-bottom: 0.5cm;
+}
+
+.r2p-portada .exam-title {
+  font-size: 15pt;
+  font-weight: bold;
+  margin: 1cm 0;
+  text-transform: uppercase;
+}
+
+.r2p-portada .exam-level {
+  font-size: 14pt;
+  margin-bottom: 0.5cm;
+}
+.r2p-portada{
+  page-break-after: always;
+  page-break-before: always;
+}
+.r2pi-encabezado{
+  page-break-before: always;
+}
+
+.r2p-portada .exam-paper {
+  font-size: 14pt;
+  margin-bottom: 0.5cm;
+}
+
+.r2p-portada .exam-duration {
+  font-size: 12pt;
+  margin-bottom: 1.5cm;
+}
+
+.r2p-portada .instructions {
+  border: 1px solid #000;
+  padding: 15px;
+  margin-bottom: 1.5cm;
+}
+
+.r2p-portada .instructions-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.r2p-portada .footer {
+  text-align: center;
+  margin-top: 1.5cm;
+  font-size: 10pt;
+}
+
+.r2p-portada .candidate-info {
+  margin-top: 2cm;
+  border-top: 1px solid #000;
+  padding-top: 10px;
+}
+
+.r2p-portada .session-box {
+  border: 1px solid #000;
+  width: 200px;
+  height: 30px;
+  margin-top: 5px;
+}
+.cuestionariosRespuestas, #cuestionariosRespuestas{
+  page-break-before: always;
+}
+.solucionId{
+  border-bottom: 1px solid black;
+}
+}
