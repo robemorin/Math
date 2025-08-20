@@ -2,7 +2,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 import {desencriptar, encriptar, generarCodigo} from '../r2p_core.js'
 export function name() {
-  return 'Denavit-Hartenberg II';
+  return 'Puntos en el espacio';
 }
 
 export function tipo() {
