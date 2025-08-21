@@ -61,7 +61,7 @@ export async function renderGeoGebra(container, n, code) {
     const A = mathFields[0].value
     
     console.log(`xa=${xa}; ya=${ya}; za=${za} A=${A}`)
-    if(`(${xa},${ya},${za})` == A) return true
+    if( `(${xa},${ya},${za})` == A) return true
     return false
     
   };
