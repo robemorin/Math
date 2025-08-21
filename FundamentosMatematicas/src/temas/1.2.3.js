@@ -33,7 +33,7 @@ export async function pregunta(numeroPregunta,code, esImprimible=false) {
         </div>
       `
     if(esImprimible){
-      const respuesta=`$\\Re(a)= ${(r*Math.cos(arg*Math.PI/12)).toPrecision(2)}$  $\\Im(a)= ${(r*Math.sin(arg*Math.PI/12)).toPrecision(3)}$`
+      const respuesta=`$${tlacu.poli.print(tlacu.poli.conv(a,b))}$`
       return [Pregunta, respuesta]
     }
     render()
