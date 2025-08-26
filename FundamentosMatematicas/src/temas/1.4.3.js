@@ -2,7 +2,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 import {desencriptar, encriptar, generarCodigo} from '../r2p_core.js'
 export function name() {
-  return 'Números complejos en el plano';
+  return 'Graficar línea recta a partir de dos puntos';
 }
 
 export function tipo() {
@@ -69,7 +69,7 @@ export async function renderGeoGebra(container, n, code) {
     let m=(B[1]-A[1])/( B[0]-A[0] )
     let b=B[1]-m*B[0]
 
-    if(ax != bx && ay == (m*ax+b) && by == (m*bx+b) )   return true
+    if(ax != bx && Math.abs(ay - (m*ax+b)) < 0.01 && Math.abs(by - (m*bx+b)) < 0.01 )   return true
     return false
     
   };
