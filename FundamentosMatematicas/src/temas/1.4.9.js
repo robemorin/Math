@@ -22,7 +22,7 @@ export async function pregunta(i, totalPreguntas, esImprimible=false) {
 
     const Pregunta = `
       <div class="pregunta-abierta"  data-a="${A}" data-b="${B}" style="display: none;">
-        <p>${i + 1}.- Obtenga la ecuación de la siguiente gráfica en la forma $Ax+By+C=0$ $${tempEcLine(A,m)}$. <span id="resultado_${i}" name="question"></span></p>
+        <p>${i + 1}.- Obtenga la ecuación de la siguiente gráfica en la forma $Ax+By+C=0$. <span id="resultado_${i}" name="question"></span></p>
         <div id="applet_container_${i}" class="ggb-container"></div>
         
         <table>
