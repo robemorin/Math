@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-  return 'Trinomio cuadrado perfecto I';
+  return 'Trinomio cuadrado perfecto II';
 }
 export function tipo(){
   return 0
