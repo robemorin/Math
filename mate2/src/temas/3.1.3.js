@@ -18,11 +18,11 @@ export async function pregunta(np) {
 	function P1(){
 							
 							let tipo=[['RS', 	'Relación no funcional sobreyectiva'],
-										['RNS', 'Relacion no funcional no sobreyectiva'],
-										['FB',	'Funcion biyectiva'],
-										['FSNI','Funcion sobreyectiva no inyectiva'],
-										['FNSNI','Funcion no sobreyectiva no inyectiva'],
-										['FNSI','Funcion inyectiva no sobreyectiva'],]
+										['RNS', 'Relación no funcional no sobreyectiva'],
+										['FB',	'Función biyectiva'],
+										['FSNI','Función sobreyectiva no inyectiva'],
+										['FNSNI','Función no sobreyectiva no inyectiva'],
+										['FNSI','Función inyectiva no sobreyectiva'],]
 							const dummy=Math.floor(Math.random()*tipo.length)
 							const relacion = tlacu.tipoRelacion(tipo[dummy][0])
 							const x=[], y=[]

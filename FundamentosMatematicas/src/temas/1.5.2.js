@@ -15,7 +15,7 @@ export function tipo(){
 }
 export async function pregunta(numeroPregunta) { 
   try {
-	return reciclado()
+	return reciclado(numeroPregunta+1)
 
   } catch (error) {
     console.error('Error loading r2p_core.js:', error);
@@ -23,14 +23,14 @@ export async function pregunta(numeroPregunta) {
 }
 
 
-function reciclado(){
+function reciclado(numeroPregunta){
 							let a=[	Math.round(Math.random()*9+1),
 									(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1),
 									(Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)]
 							
 								
 							
-							var P=`Exprese a $${tlacu.poli.print([a[0]**2,2*a[0]*a[1],a[1]**2+a[2]])}$ en la forma $(ax+b)^2+c$`
+							var P=`${numeroPregunta}.- Exprese a $${tlacu.poli.print([a[0]**2,2*a[0]*a[1],a[1]**2+a[2]])}$ en la forma $(ax+b)^2+c$`
 							
 							
 							var R=[];

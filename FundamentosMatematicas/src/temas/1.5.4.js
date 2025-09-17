@@ -16,7 +16,7 @@ export function tipo(){
 }
 export async function pregunta(numeroPregunta) { 
   try {
-	return reciclado()
+	return reciclado(numeroPregunta+1)
 
   } catch (error) {
     console.error('Error loading r2p_core.js:', error);
@@ -24,7 +24,7 @@ export async function pregunta(numeroPregunta) {
 }
 
 
-function reciclado(){
+function reciclado(numeroPregunta){
 
 {
 						let c= [Math.ceil(Math.random()*9),
@@ -40,7 +40,7 @@ function reciclado(){
 
 						if(c[0]<c[2]) [c[0],c[2]] = [c[2],c[0]]
     					
-						const P=`Factorice la siguiente expresión $${tlacu.poli.print(tlacu.conv([c[0],c[1]], [c[2],c[3]]))}$.`
+						const P=`${numeroPregunta}.- Factorice la siguiente expresión $${tlacu.poli.print(tlacu.conv([c[0],c[1]], [c[2],c[3]]))}$.`
 						const R = [];
 						R[0] = `$(${tlacu.poli.print([c[0],c[1]])})(${tlacu.poli.print([c[2],c[3]])})$`
 						for(let i=1;i<6;++i){

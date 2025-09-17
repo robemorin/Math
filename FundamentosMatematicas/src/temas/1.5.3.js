@@ -15,7 +15,7 @@ export function tipo(){
 }
 export async function pregunta(numeroPregunta) { 
   try {
-	return reciclado()
+	return reciclado(numeroPregunta+1)
 
   } catch (error) {
     console.error('Error loading r2p_core.js:', error);
@@ -23,7 +23,7 @@ export async function pregunta(numeroPregunta) {
 }
 
 
-function reciclado(){
+function reciclado(numeroPregunta){
 							do{
 							var a=Math.round(Math.random()*20-11)
 							var b=Math.round(Math.random()*20-11)
@@ -37,7 +37,7 @@ function reciclado(){
 							}	
 								
 							
-							var P="La solución de $"+tlacu.poli.print([a,b,c])+"=0$  es"
+							var P=numeroPregunta+".- La solución de $"+tlacu.poli.print([a,b,c])+"=0$  es"
 							
 							
 							var R=[];
