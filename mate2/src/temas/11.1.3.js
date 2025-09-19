@@ -91,7 +91,7 @@ export async function render(container, n, code) {
     api.setVisible("h", true);
     api.setVisible("g", true);
 
-    let totalPuntos = 2
+    let totalPuntos = 4
     let puntos = 0
     let pregunta = document.getElementsByClassName('pregunta-abierta')
     const mathFields= pregunta[i].getElementsByTagName('math-field')
