@@ -1,0 +1,13 @@
+{
+  "name": "---",
+  "version": "1.0.0",
+  "description": "Un proyecto de Node.js para procesar archivos de temas.",
+  "main": "index.js",
+  "type": "module", 
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
