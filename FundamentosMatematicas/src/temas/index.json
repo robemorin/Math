@@ -1,26 +1,102 @@
 [
-  "1.1.1",
-  "1.2.1",
-  "1.2.2",
-  "1.2.3",
-  "1.2.4",
-  "1.3.1",
-  "1.3.2",
-  "1.4.1",
-  "1.4.2",
-  "1.4.3",
-  "1.4.5",
-  "1.4.7",
-  "1.4.8",
-  "1.4.9",
-  "1.5.1",
-  "1.5.2",
-  "1.5.3",
-  "1.5.4",
-  "2.1.1",
-  "2.1.2",
-  "2.2.1",
-  "2.2.2",
-  "2.3.1",
-  "2.3.2"
+  [
+    "1.1.1",
+    "Ecuaciones lineales"
+  ],
+  [
+    "1.2.1",
+    "División de polinomios"
+  ],
+  [
+    "1.2.2",
+    "Multiplicación de polinomios I"
+  ],
+  [
+    "1.2.3",
+    "Multiplicación de polinomios II"
+  ],
+  [
+    "1.2.4",
+    "División de polinomios II"
+  ],
+  [
+    "1.3.1",
+    "Números complejos en el plano"
+  ],
+  [
+    "1.3.2",
+    "Números complejos en el plano II"
+  ],
+  [
+    "1.4.1",
+    "Línea recta a partir de dos puntos"
+  ],
+  [
+    "1.4.2",
+    "Línea recta a partir de dos puntos II"
+  ],
+  [
+    "1.4.3",
+    "Graficar línea recta a partir de dos puntos"
+  ],
+  [
+    "1.4.5",
+    "Línea recta forma punto - pendiente"
+  ],
+  [
+    "1.4.7",
+    "Línea recta: punto - pendiente a pendiente - ordenada al origen"
+  ],
+  [
+    "1.4.8",
+    "Línea recta: pendiente - ordenada al origen a  punto - pendiente"
+  ],
+  [
+    "1.4.9",
+    "Gráfica de la línea forma general"
+  ],
+  [
+    "1.5.1",
+    "Trinomio cuadrado perfecto I"
+  ],
+  [
+    "1.5.2",
+    "Trinomio cuadrado perfecto II"
+  ],
+  [
+    "1.5.3",
+    "Fórmula general"
+  ],
+  [
+    "1.5.4",
+    "Factorización de expresiones cuadráticas"
+  ],
+  [
+    "2.1.1",
+    "Ecuaciones lineales"
+  ],
+  [
+    "2.1.2",
+    "Parábola. eje de simetría"
+  ],
+  [
+    "2.1.3",
+    "Ecuaciones lineales 3x3 (Soluciones Enteras)"
+  ],
+  [
+    "2.2.1",
+    "Gráfica de la parábola I"
+  ],
+  [
+    "2.2.2",
+    "Gráfica de la parábola II"
+  ],
+  [
+    "2.3.1",
+    "Fracciones parciales I parte A"
+  ],
+  [
+    "2.3.2",
+    "Fracciones parciales I parte B"
+  ]
 ]
