@@ -2,7 +2,7 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export function name() {
-  return 'Error absoluto II'
+  return 'Error absoluto II';
 }
 
 export function tipo() {

@@ -47,10 +47,12 @@ async function creaSelectInputTemas(temas){
     let options=``
     try{
         for(let counter=0; counter<n;++counter){
-            const mod = await import(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${temas[counter]}.js`);
-            const nombre = mod.name()
-            const tipo = mod.tipo()
-            if(tipo==0 || tipo == 3 )  options += `<option value="${temas[counter]}">${temas[counter]} ${nombre}</option>`
+            // ¡ESTE IMPORT FALLA!
+            const mod = await import(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${temas[counter][0]}.js`); 
+            
+            //const nombre = mod.name()
+            const tipo = mod.tipo() // Aún se usa para el filtro
+            if(tipo==0 || tipo == 3 )  options += `<option value="${temas[counter][0]}">${temas[counter][0]}.- ${temas[counter][1]} </option>`
         }
         return `<select>${options}</select>`
     }catch(e){

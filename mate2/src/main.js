@@ -25,6 +25,8 @@ export async function autenticar() {
   let cadena = a.substring(nLocation+3)
   //console.log(`a: ${cadena} nloc: ${nLocation}`)
   const msm = r2pCoremodule.desencriptar(cadena,'','raw')
+
+  console.log(`msm: ${msm.slice(12)}  `)
   
   console.log(`mensaje desencriptado: ${msm}`)
   const tema=msm.slice(0,3)
@@ -38,6 +40,7 @@ export async function autenticar() {
 
   let contenedor = document.getElementById('datos')
   contenedor.innerHTML =`
+  ${msm.length>12?`<h2>Alumno: <b>${msm.slice(12).join('')}</b></h2>`:''}
   <h2>Tema: <b>${tema[0]}.${tema[1]}.${tema[2]} ${temaInfo.name()}</b></h2>
   <h2>Fecha de realización <b>${fecha[0]} / ${fecha[1]}</b></h2>
   <h2>Aciertos: <b>${aciertos}/${total}</b></h2>
@@ -123,76 +126,75 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   
 });
+
 async function mostrar() {
-  function separarTemas(name){
-      const partes = name.split('.');
-      return partes.slice(0, 3);
+    function separarTemas(name){
+        // El nuevo formato solo necesita los primeros tres segmentos (e.g., "1.1.1")
+        const partes = name.split('.');
+        return partes.slice(0, 3);
     }
-  //console.log('Cargando temas...');
-  let mainE = document.getElementById('contenido');
-  let lista = [];
-  
-  try {
-    let ruta =window.location.href
-    if(ruta.endsWith('index.html')) ruta = ruta.substring(0,ruta.length-10)
-    if(ruta.endsWith('index')) ruta = ruta.substring(0,ruta.length-5)
-
-    const res = await fetch(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/index.json`);
-    const temas = await res.json();
     
-    //console.log('temas:', temas);
-    mainE.innerHTML = '';
-    for (const t of temas) {
-      const posicionTema = separarTemas(t)
-      
-      
-      /*if (posicionTema[0] in lista && Array.isArray(lista[posicionTema[0]])) {
-          console.log(`lista[${posicionTema[0]}] existe y es un arreglo`);
-      } else {
-          console.log(`lista[${posicionTema[0]}] NO existe o no es un arreglo`);
-          lista[posicionTema[0]] = [];
-      }*/
-     if (!(posicionTema[0] in lista && Array.isArray(lista[posicionTema[0]]))) lista[posicionTema[0]] = [];
-      
-      //console.log(`>${window.location.href}/src/temas/${t}.js ---${posicionTema}`);
-      try {
-        //const ruta =window.location.href
+    let mainE = document.getElementById('contenido');
+    let lista = []; // Usaremos un array para construir la estructura de bloques
+    
+    try {
+        // 1. Determinar la ruta base para el fetch
+        let ruta = window.location.href;
+        if(ruta.endsWith('index.html')) ruta = ruta.substring(0, ruta.length - 10);
+        if(ruta.endsWith('index')) ruta = ruta.substring(0, ruta.length - 5);
         
-        const mod = await import(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${t}.js`);
-        const nombre = `${t} ${mod.name()}`
-        lista[posicionTema[0]].push([t,nombre]);
+        // 2. Cargar el nuevo index.json
+        const res = await fetch(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/index.json`);
         
-        //mainE.innerHTML += ` ${nombre}<br>`;
+        // El formato de temas ahora es: [ ["1.1.1", "Ecuaciones lineales"], ["1.2.1", "otro nombre"] ]
+        const temas = await res.json(); 
         
-      } catch (error) {
-        console.error(`No se pudo cargar el tema ${t}`, error);
-        mainE.innerHTML = error+"<br>"+`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${t}.js`;
-        alert(error)
-      }
-    }
-  } catch (error) {
-    mainE.innerHTML = 'Error al cargar los temas';
-    let ruta =window.location.href
-    if(ruta.endsWith('index.html')) ruta = ruta.substring(0,ruta.length-10)
-    if(ruta.endsWith('index')) ruta = ruta.substring(0,ruta.length-5)
-    console.log(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/index.json`);
-    console.error(error);
-  }
-  
-  for(let k=1; k<lista.length; k++){
-    if(lista[k] && lista[k].length >= 0){
-      let card = `<div class="card"><div class="card-icon">Bloque ${k}</div><div>`
+        mainE.innerHTML = '';
         
-        for(let k2=0; k2<lista[k].length; k2++){
-          
-          card += `<p><a target="_blank" class="activity-link" data-archivo="${lista[k][k2][0]}"> ${lista[k][k2][1]}</a></p>`;
+        // 3. Procesar el JSON y estructurar por Bloque
+        for (const [t, nombreCompleto] of temas) {
+            
+            // t es "1.1.1", nombreCompleto es "Ecuaciones lineales"
+            const posicionTema = separarTemas(t);
+            const bloque = posicionTema[0];
+            
+            // Inicializa el arreglo para el bloque si aún no existe
+            if (!(bloque in lista && Array.isArray(lista[bloque]))) {
+                 lista[bloque] = [];
+            }
+            
+            // El nombre completo ahora incluye el ID y el nombre
+            // Ejemplo: [ "1.1.1", "1.1.1 Ecuaciones lineales" ]
+            const nombreMostrar = `${t} ${nombreCompleto}`;
+            lista[bloque].push([t, nombreMostrar]);
         }
-      card += `</div></div>`;
-      mainE.innerHTML+=card;
-      
+        
+    } catch (error) {
+        // Manejo de error si falla la carga o el parseo del JSON
+        mainE.innerHTML = 'Error al cargar los temas (index.json)';
+        let ruta = window.location.href;
+        if(ruta.endsWith('index.html')) ruta = ruta.substring(0, ruta.length - 10);
+        if(ruta.endsWith('index')) ruta = ruta.substring(0, ruta.length - 5);
+        console.error(`Fallo al intentar cargar index.json en: ${ruta}${ruta.endsWith('/')?'':'/'}src/temas/index.json`, error);
+        
+        // Terminamos la ejecución si hay un error de carga del JSON
+        return; 
     }
-  }
-
+    
+    // 4. Renderizar la lista de temas en el DOM
+    for(let k=1; k<lista.length; k++){
+        if(lista[k] && lista[k].length > 0){
+            let card = `<div class="card"><div class="card-icon">Bloque ${k}</div><div>`;
+            
+            for(let k2=0; k2<lista[k].length; k2++){
+                // lista[k][k2][0] es el ID del tema ("1.1.1")
+                // lista[k][k2][1] es el nombre completo a mostrar ("1.1.1 Ecuaciones lineales")
+                card += `<p><a target="_blank" class="activity-link" data-archivo="${lista[k][k2][0]}"> ${lista[k][k2][1]}</a></p>`;
+            }
+            card += `</div></div>`;
+            mainE.innerHTML += card;
+        }
+    }
 }
 export async function mostrarEjercicio() {
   

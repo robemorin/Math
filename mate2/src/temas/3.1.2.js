@@ -6,6 +6,7 @@ import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export function name(){
   return 'Diagramas de asignación II';
 }
+
 export function tipo(){
   return 0
   /*

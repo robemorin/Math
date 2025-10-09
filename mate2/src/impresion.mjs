@@ -47,6 +47,29 @@ async function creaSelectInputTemas(temas){
     let options=``
     try{
         for(let counter=0; counter<n;++counter){
+            // ¡ESTE IMPORT FALLA!
+            const mod = await import(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${temas[counter][0]}.js`); 
+            
+            //const nombre = mod.name()
+            const tipo = mod.tipo() // Aún se usa para el filtro
+            if(tipo==0 || tipo == 3 )  options += `<option value="${temas[counter][0]}">${temas[counter][0]}.- ${temas[counter][1]} </option>`
+        }
+        return `<select>${options}</select>`
+    }catch(e){
+        console.log(`Error al cargar temas --> funcion crearSelectInputTemas `,e)
+        return 0
+    }
+}
+/*
+async function creaSelectInputTemas(temas){
+    let ruta =window.location.href
+    if(ruta.endsWith('imp.html')) ruta = ruta.substring(0,ruta.length-8)
+    if(ruta.endsWith('imp')) ruta = ruta.substring(0,ruta.length-3)
+
+    const n = temas.length
+    let options=``
+    try{
+        for(let counter=0; counter<n;++counter){
             const mod = await import(`${ruta}${ruta.endsWith('/')?'':'/'}src/temas/${temas[counter]}.js`);
             const nombre = mod.name()
             const tipo = mod.tipo()
@@ -57,7 +80,7 @@ async function creaSelectInputTemas(temas){
         console.log(`Error al cargar temas --> funcion crearSelectInputTemas `,e)
         return 0
     }
-}
+}*/
 export function cerrar(boton){ boton.parentElement.remove() }
 
 export async function addReactivo(){

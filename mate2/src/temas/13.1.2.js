@@ -2,7 +2,7 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export function name() {
-  return 'Método del trapecio'
+  return 'Método del trapecio';
 }
 
 export function tipo() {

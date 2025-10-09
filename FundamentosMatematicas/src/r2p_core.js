@@ -46,9 +46,17 @@ export function desencriptar(emsm,code,op='s'){
         //console.log(`code2 ${code2}`)
         //console.log(`cadena 2: ${cadena2}`)
         const msm = r2pCore.desencriptarString(cadena2,code2)
+        const output = r2pCore.symbols2array( msm.substring(0, 12) )
+        const msmAlumno = msm.substring(12)
+        console.log('msmAlumno: ', msmAlumno)
+        if (msmAlumno.length>0){
+            output.push(...msm.substring(12).split(''))
+            
+        }
+        //console.log('a mandar',msm.substring(0, 12))
         //console.log('Test invesa de encriptar',msm)
 
-        return r2pCore.symbols2array( msm)
+        return output
     }
     return r2pCore.desencriptarArray(emsm,code);
 }
@@ -765,8 +773,10 @@ const r2pCore = (function() {
                 Hinicio.forEach((k) => raw.push(k) ) //Código
                 Hfin.forEach((k) => raw.push(k) ) //Código
                 fecha.forEach((k) => raw.push(k) ) //Código
+                console.log(document.getElementById('alumno').value)
                 console.log("raw: ",raw)
-                let cadena = r2pCore.array2symbols(raw)
+                let cadena = r2pCore.array2symbols(raw)+document.getElementById('alumno').value
+                
                 console.log("cadena raw: ",cadena)
                 console.log("code array: ",code)
                 const cadenaCode = r2pCore.array2symbols(code)

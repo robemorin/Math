@@ -2,7 +2,7 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export function name() {
-  return 'Notación científica II'
+  return 'Notación científica II';
 }
 
 export function tipo() {
