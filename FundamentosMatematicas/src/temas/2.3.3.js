@@ -30,6 +30,7 @@ function problema(){
     let index=Math.floor(Math.random()*3)
     index += index==0?0:1
     //console.log('---')
+    //console.log('---')
     for(let i=1;i<6;++i){
         do{
             a[index] = (Math.random()<0.5?1:-1)*Math.round(Math.random()*9+1)

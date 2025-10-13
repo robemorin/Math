@@ -2,37 +2,39 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 import {desencriptar, encriptar, generarCodigo} from '../r2p_core.js'
 export function name() {
-  return 'Línea recta forma punto - pendiente';
+  return 'Gráfica de la línea forma general';
 }
 
 export function tipo() {
   return 3;
 }
 
-export async function pregunta(i, code, esImprimible=false) {
+export async function pregunta(i, totalPreguntas, esImprimible=false) {
   try{
-      const A=[Math.ceil(Math.random()*10-5),Math.ceil(Math.random()*10-5)]
-      let m=[(Math.random()<0.5?1:-1)*Math.ceil(Math.random()*5),Math.ceil(Math.random()*10)]
-      //m[1]=Math.abs(m[0])//// Código temporal ----------------------------------------------------------------
-        
-      m=tlacu.simplify_frac(m)
-    //console.log(`${i}<- Re(a):${r*Math.cos(arg*Math.PI/12)} Im(a):${r*Math.sin(arg*Math.PI/12)}`)
+    let A=[Math.round(Math.random()*10-5),Math.round(Math.random()*8-4)], B
+    
+    let m=[Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),Math.ceil(Math.random()*5)]
+    m = tlacu.simplify_frac(m)
+
+
 
     const Pregunta = `
       <div class="pregunta-abierta"  data-a="${A}" data-m="${m}" style="display: none;">
-        <p>${i + 1}.- Una línea tiene una pendiente de m=$${tlacu.fraccion(m[0],m[1],true)}$ que pasa por $A:(${A})$. Exprese la línea en la forma $y-y_0=m(x-x_0)$ . <span id="resultado_${i}" name="question"></span></p>
-        <!--div id="applet_container_${i}" class="ggb-container"></div-->
-        <p><math-field>y=</math-field> <i>e.g.</i> $y-5=\\frac{5}{2}(x-4)$</p>
+        <p>${i + 1}.- Obtenga la ecuación de la línea en la forma $y-y_0 = m(x-x_0)$<span id="resultado_${i}" name="question"></span></p>
+        <div id="applet_container_${i}" class="ggb-container"></div>
+        
+        <table>
+          
+          <tr><td>Ecuación de la línea: </td><td><math-field>y=</math-field></td></tr>
+          </table>
       </div>
     `;
     if(esImprimible){
-      
-        let b=[A[1]*m[1]-m[0]*A[0],m[1]]
-        b=tlacu.simplify_frac(b)
-	const respuesta= `$${linea_puntopendiente(m,A)}$`
+	const respuesta=`$${tempEcLine(A,m)}$`
 	return [Pregunta, respuesta]
   }
-    render()
+  
+    if (totalPreguntas-1 == i) render(null,totalPreguntas)
     return Pregunta
   
     
@@ -41,19 +43,46 @@ export async function pregunta(i, code, esImprimible=false) {
   }
 }
 
-export async function render() {
+export async function render(container, n, code) {
+  console.log('Ejecutar render')
+   const material_id = "zpp4kdej";
+  window.ggbApps = [];
+
+  for (let i = 0; i < n; i++) {
+    const params = {
+      appName: 'classic',
+      width: 600,
+      height: 600,
+      material_id,
+      id: `ggbApplet_${i}`,
+      appletOnLoad(api) {
+        let pregunta = document.getElementsByClassName('pregunta-abierta')
+        const A = pregunta[i].dataset.a.split(',').map(Number)
+        const m = pregunta[i].dataset.m.split(',').map(Number)
+        
+        console.log(`${i}.- A:${pregunta[i].dataset.a} m:${pregunta[i].dataset.m}`)
+        window.ggbApps[i] = api;
+      api.evalCommand(`f(x) = (${m[0]}/${m[1]})*(x-(${A[0]}))+(${A[1]})`);
+      api.evalCommand(`A:(${A[0]},${A[1]})`);
+
+      }
+    };
+    new GGBApplet(params, true).inject(`applet_container_${i}`);
+  }
   console.log('vamos a publicar la revisión')
   window.accionR2P = function(i) {
+    const api = window.ggbApps[i];
+    if (!api) return alert("Applet no listo");
+
     let totalPuntos = 1
     let puntos = 0
     let pregunta = document.getElementsByClassName('pregunta-abierta')
-    //console.log(`r: ${pregunta[i].dataset.r} arg: ${pregunta[i].dataset.arg}`)
-    //console.log(`id del mathlive: math-field-${i}-0`)
     const mathFields= pregunta[i].getElementsByTagName('math-field')
     const ans = mathFields[0].value
-    
+
     const A = pregunta[i].dataset.a.split(',').map(Number)
-    const m = pregunta[i].dataset.m.split(',').map(Number)
+    let m = pregunta[i].dataset.m.split(',').map(Number)
+    m = tlacu.simplify_frac(m)
     const correcta = linea_puntopendiente(m,A)
 
     if( ans != correcta ){
