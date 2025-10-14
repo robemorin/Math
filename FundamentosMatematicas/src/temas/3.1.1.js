@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-    return 'TIL (Pendiente)';
+    return 'Fracciones parciales TIL';
 }
 export function tipo(){
     return 0;
@@ -46,7 +46,7 @@ function problema(){
     const R=[];
     
     // Respuesta Correcta R[0]
-    R[0]=`$ ${tlacu.poli.print([A])} \\frac{${tlacu.poli.print([1,b])}}{ (x+${b})^2 + ${omega}^2 } + ${tlacu.poli.print([B])} \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
+    R[0]=`$ ${A} \\cdot \\frac{${tlacu.poli.print([1,b])}}{ (x+${b})^2 + ${omega}^2 } ${B<0?'':'+'} ${B} \\cdot \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
     
     // 6. Generar 5 respuestas incorrectas variando A o B
     const a_resp = [A, B]; // Arreglo para manejar la variación
@@ -63,7 +63,8 @@ function problema(){
             const A_temp = a_temp[0];
             const B_temp = a_temp[1];
             
-            R[i]=`$ ${tlacu.poli.print([A_temp])} \\frac{${tlacu.poli.print([1,b])}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 } + ${tlacu.poli.print([B_temp])} \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
+            //R[i]=`$ ${tlacu.poli.print([A_temp])} \\frac{${tlacu.poli.print([1,b])}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 } + ${tlacu.poli.print([B_temp])} \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
+            R[i]= `$ ${A_temp} \\cdot \\frac{${tlacu.poli.print([1,b])}}{ (x+${b})^2 + ${omega}^2 } ${B_temp<0?'':'+'} ${B_temp} \\cdot \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
 
         }while(tlacu.pregunta.hayRepetidos(R))
     }
