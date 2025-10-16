@@ -64,6 +64,7 @@ export async function render(container, n, code) {
         window.ggbApps[i] = api;
       api.evalCommand(`f(x) = (${m[0]}/${m[1]})*(x-(${A[0]}))+(${A[1]})`);
       api.evalCommand(`A:(${A[0]},${A[1]})`);
+      api.setFixed('A', true);
 
       }
     };
