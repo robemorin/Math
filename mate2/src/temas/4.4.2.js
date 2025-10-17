@@ -108,7 +108,7 @@ export async function render(container, n, code) {
         }
         
         // Calificación para 'c'
-        if(Math.abs(c_sol - Usuario_c) > 0.0001 || mathFields[1].value == ''){
+        if(Math.abs(c_sol - Usuario_c) > 0.0001 || mathFields[1].value == '' || isNaN(Usuario_c)){
             mathFields[1].style.backgroundColor = "red";
         } else {
             ++puntos
