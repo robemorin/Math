@@ -24,7 +24,7 @@ export async function pregunta(i, code, esImprimible=false) {
         do {
             x1 = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 2 + 1);
             x2 = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 2 + 1);
-        } while (x1 === x2);
+        } while (Math.abs(x1) === Math.abs(x2));
 
         const y1 = a_sol * (x1**2) + b_dado * x1 + c_sol;
         const y2 = a_sol * (x2**2) + b_dado * x2 + c_sol;
@@ -100,7 +100,7 @@ export async function render(container, n, code) {
         // 4. CALIFICACIÓN
         
         // Calificación para 'a'
-        if(Math.abs(a_sol - Usuario_a) > 0.0001 || mathFields[0].value == ''){
+        if(Math.abs(a_sol - Usuario_a) > 0.0001 || mathFields[0].value == '' || isNaN(Usuario_a)){
             mathFields[0].style.backgroundColor = "red";
         } else {
             ++puntos
