@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tlacuache</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./src/tlacuache.css" rel="stylesheet">
+
+
+<!--Aqui termina--->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script type="module">
+    import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+  </script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+  <link rel="stylesheet" href="https://raiz2pi.cc/src/raiz2pi.css">
+
+
+
+
+    <script type="module" src="./src/tlacuache.mjs">  </script>
+    <style>
+      /* Contenedor principal de cada pregunta */
+details[name="faq"] {
+  background: #ffffff;
+  border-radius: 12px; /* Bordes más redondeados para un look más suave */
+  margin-bottom: 50px; /* Más espacio entre preguntas */
+  box-shadow: 0 4px 15px rgba(84, 84, 114, 0.08); /* Sombra sutil y moderna */
+  border: 1px solid #eef0f4;
+  transition: all 0.3s ease-in-out; /* Animación para todos los cambios */
+}
+
+/* Efecto al pasar el mouse por encima: levanta la tarjeta */
+details[name="faq"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(84, 84, 114, 0.15);
+}
+
+/* El encabezado de la pregunta (lo que es clickeable) */
+details[name="faq"] summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 25px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f9faff 0%, #f0f4ff 100%); /* Gradiente sutil y elegante */
+  border-radius: 12px; /* Asegura que el radio coincida con el contenedor */
+  transition: background-color 0.2s ease;
+}
+
+/* Elimina el marcador por defecto del navegador */
+details[name="faq"] summary::-webkit-details-marker { display: none; }
+details[name="faq"] summary { list-style: none; }
+
+/* El ícono '+' que creamos con CSS */
+details[name="faq"] summary::after {
+  content: '+';
+  font-size: 2rem;
+  font-weight: 300; /* Un ícono más fino */
+  color: #5a67d8; /* Un color morado-azulado alegre */
+  transform: rotate(0deg);
+  /* Transición "elástica" para un toque divertido */
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+/* Cuando la pregunta está ABIERTA... */
+details[name="faq"][open] {
+  box-shadow: 0 8px 30px rgba(84, 84, 114, 0.18);
+}
+
+details[name="faq"][open] > summary {
+  background: linear-gradient(135deg, #e7efff 0%, #dfe8ff 100%);
+  /* Asegura que no haya borde redondeado en la parte de abajo cuando está abierto */
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid #9db5f0;
+}
+
+/* ...el ícono '+' gira para convertirse en una 'x' */
+details[name="faq"][open] summary::after {
+  transform: rotate(45deg);
+}
+
+/* Animación para que el contenido aparezca suavemente */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo y animación para el contenido desplegado */
+details[name="faq"] > *:not(summary) {
+    padding: 10px 25px 25px 25px;
+    /* Aplica la animación */
+    animation: fadeIn 0.5s ease-out;
+}
+ /* --- ESTILOS BASE --- */
+.elemento-animado {
+  width: 250px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  border-radius: 8px; /* Bordes redondeados para un look más moderno */
+}
+.galeria-flex {
+  display: flex;
+  gap: 20px; 
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap; 
+  padding-top: 20px;
+}
+
+.imagen-clickeable {
+  width: 100%; /* Ajustado para llenar el contenedor */
+  height: 250px;
+  border-bottom: 1px solid #eee; 
+  overflow: hidden; 
+  object-fit: contain; /* Asegura que la imagen se vea completa sin deformarse */
+  transition: transform 0.5s ease;
+  padding: 10px; /* Añade un pequeño margen interno */
+  box-sizing: border-box; /* Asegura que el padding no altere el tamaño total */
+}
+
+/* --- ESTILOS DE LA DESCRIPCIÓN --- */
+.descripcion-oculta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background-color: rgba(0, 86, 179, 0.9); /* Fondo azul semi-transparente */
+  color: white;
+  height: 0; 
+  opacity: 0;
+  transition: height 0.5s ease, opacity 0.5s ease; 
+  font-size: 0.9rem;
+  /* Flexbox para centrar el contenido vertical y horizontalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.descripcion-oculta h5 a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+ .descripcion-oculta h5 a:hover {
+    text-decoration: underline;
+}
+.descripcion-oculta p {
+    margin: 10px 0 0 0;
+}
+
+/* --- LA INTERACCIÓN: HOVER --- */
+.elemento-animado:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.elemento-animado:hover .imagen-clickeable {
+  transform: scale(1.1);
+}
+.elemento-animado:hover .descripcion-oculta {
+  height: 100%;
+  opacity: 1;
+}
+        body {
+            overflow-x: hidden;
+        }
+        #wrapper {
+            display: flex;
+        }
+        #sidebar-wrapper {
+            min-height: 100vh;
+            margin-left: -15rem;
+            transition: margin .25s ease-out;
+            background-color: #343a40; /* Dark background for sidebar */
+            color: rgb(31, 30, 30);
+            width: 15rem; /* Fixed width for sidebar */
+        }
+        #sidebar-wrapper .sidebar-heading {
+            padding: 0.875rem 1.25rem;
+            font-size: 1.2rem;
+        }
+        #sidebar-wrapper .list-group {
+            width: 15rem;
+        }
+        #page-content-wrapper {
+            min-width: 100vw;
+        }
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: 0;
+        }
+        /* Media query for larger screens - sidebar always visible */
+        @media (min-width: 768px) {
+            #sidebar-wrapper {
+                margin-left: 0;
+            }
+            #page-content-wrapper {
+                min-width: 0;
+                width: 100%;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+                margin-left: -15rem;
+            }
+        }
+/* --- ESTILO PARA EL DIV DE INFORMACIÓN FIJA --- */
+/* --- ESTILO PARA EL DISEÑO DE IMAGEN + TEXTO EN INFO-FIJA --- */
+
+/* 1. Convertimos el contenedor principal en un layout Flexbox */
+#info-fija {
+  display: flex;         /* ¡La magia principal! Activa el modo Flexbox */
+  align-items: center;   /* Centra verticalmente la imagen y el texto */
+  gap: 15px;             /* Crea un espacio de 15px entre la imagen y el texto */
+}
+
+/* 2. Le damos estilo a la imagen */
+.info-imagen {
+  width: 120px;          /* Ancho fijo para la imagen */
+  height: auto;         /* Altura automática para mantener la proporción */
+  border-radius: 8px;   /* Bordes ligeramente redondeados */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra sutil para darle profundidad */
+}
+
+/* 3. Ajustes finos para el contenedor del texto */
+.info-texto h6,
+.info-texto ul {
+  margin-bottom: 0; /* Quitamos los márgenes por defecto para un mejor alineamiento vertical */
+}
+
+.info-texto h6 {
+    margin-bottom: 8px !important; /* Añadimos un pequeño espacio solo debajo del título */
+}
+
+#info-fija {
+  /* La magia está aquí: posición fija 
+  position: fixed; */
+  
+  /* Lo ubicamos en la esquina superior derecha */
+  top: 20px;
+  left: 20px;
+  
+  /* Le damos un ancho definido */
+  /*width:  */
+  
+  /* Estilos para que se vea bien */
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* Sombra para que destaque */
+  border: 1px solid #eef0f4;
+  
+  /* Muy importante: asegura que siempre esté por encima de otro contenido */
+  z-index: 1000; 
+}
+details[name="faq"] p + ul {
+  margin-top: 0.5rem; /* El valor normal es 1rem, aquí lo reducimos a la mitad */
+}
+/* --- AJUSTE DE ESPACIADO PARA PÁRRAFOS DENTRO DE LAS PREGUNTAS --- */
+
+/* Selecciona TODOS los párrafos que están DENTRO del contenido de una pregunta */
+details[name="faq"] p {
+  /* Reduce el margen inferior a un valor mucho más pequeño. */
+  /* El valor por defecto es 1rem. Prueba con 0.5rem o incluso menos. */
+  margin-bottom: -0.3rem; 
+}
+
+/* Selecciona TODAS las listas que están DENTRO del contenido de una pregunta */
+details[name="faq"] ul {
+  /* Reduce el margen superior para que la lista se pegue más al párrafo anterior. */
+  margin-top: 0.25rem;
+  /* También ajustamos el margen inferior para que sea consistente */
+  margin-bottom: 0.75rem; 
+}
+
+    </style>
+</head>
+<body>
+
+
+
+  
+  <div class="container-fluid" id="page-content-wrapper">
+        
+     
+<div id="info-fija">
+    <img src="https://robemorin.github.io/tlacuache/queretaro.png" alt="Logo del proyecto" class="info-imagen" height="350px">
+
+    <div class="info-texto">
+        <strong>Actividad 3.1</strong>
+    <h6 class="text-muted text-uppercase small border-bottom pb-2 mb-3">Gamificación</h6>
+    
+        <ul class="list-unstyled">
+            <li class="mb-1"> <small class="text-muted">Asignatura:</small>
+            <strong>Pedagogía Mediada por TIC</strong>
+            </li>
+            <li class="mb-1">
+                <small class="text-muted">Docente:</small>
+            <strong>Dra. Reyna Moreno Beltrán</strong>
+            </li>
+            <li>
+                <small class="text-muted">Alumno:</small>
+            <strong>Roberto Alejandro Morin Romero</strong>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+        <div id="page-comunes"  >
+
+            <div class="container-fluid" name="contenido">
+
+<center>
+  <br>
+  <h3>Actividades gamificadas WordWall</h3>
+  <br>
+<iframe style="max-width:100%; aspect-ratio: 16 / 9;" src="https://wordwall.net/embed/b6e8f395d4114b998e2729a8aa6af3e7?themeId=1&templateId=8&fontStackId=0" width="80%"  frameborder="0" allowfullscreen></iframe>
+<br>
+<iframe style="max-width:100%;aspect-ratio: 16 / 9;" src="https://wordwall.net/embed/ea2eaa62d19845c580eb34e59db21876?themeId=1&templateId=3&fontStackId=0" width="80%"  frameborder="0" allowfullscreen></iframe>
+<br>
+</center>
+<br>
+  <h3 >Actividades tipo cuestionario</h3>
+  <div style="border: solid 1px green;">Para activar el material de llenar el campo del nombre y dar enter.</div>
+  <br>
+<r2p-dinamico tema="1.4.3" n="2" modo="0" tiempo="60"></r2p-dinamico>
+
+
+</div>
+
+   <!--https://raiz2pi.cc/FundamentosMatematicas/src/r2p.js-->
+
+        
+            
+            
+        </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!--script>
+    // --- SCRIPT PARA AJUSTAR LA ALTURA DEL ESPACIADOR ---
+
+    // Creamos una función para que el código sea reutilizable
+    function ajustarAlturaVacio() {
+      // 1. Obtenemos una referencia a nuestros dos elementos
+      const infoFija = document.getElementById('info-fija');
+      const divVacio = document.getElementById('empty');
+
+      // 2. Nos aseguramos de que ambos elementos existan en la página
+      if (infoFija && divVacio) {
+        // 3. Medimos la altura REAL del div de información (incluyendo padding y borde)
+        const alturaInfoFija = infoFija.offsetHeight;
+
+        // 4. Calculamos la nueva altura para el div vacío (altura del info + 40px)
+        const nuevaAltura = alturaInfoFija + 40;
+
+        // 5. Aplicamos esa nueva altura al div vacío usando CSS
+        divVacio.style.height = nuevaAltura + 'px';
+      }
+    }
+
+    // --- DISPARADORES DE LA FUNCIÓN ---
+
+    // 6. Ejecutamos la función una vez que la página se ha cargado por completo
+    window.addEventListener('DOMContentLoaded', ajustarAlturaVacio);
+
+    // 7. (IMPORTANTE) Volvemos a ejecutar la función si el usuario cambia el tamaño de la ventana,
+    // por si la altura del div de información cambia.
+    window.addEventListener('resize', ajustarAlturaVacio);
+    window.addEventListener('DOMContentLoaded', function() {
+  
+  // 2. Buscamos nuestra notificación en el documento
+  const notificacion = document.getElementById('notificacion-temporal');
+
+  // 3. Si la notificación existe, programamos su desaparición
+  if (notificacion) {
+    // La función setTimeout ejecuta un código después de un tiempo específico
+    setTimeout(function() {
+      // 4. Después de 5000 milisegundos (5 segundos), le agregamos la clase 'oculto'
+      notificacion.classList.add('oculto');
+    }, 5000);
+  }
+
+});
+
+    </script-->
+    <script src="https://raiz2pi.cc/FundamentosMatematicas/src/r2p.js" type="module"></script>
+    <!--script type="module">
+    import { mostrarEjercicio } from 'https://raiz2pi.cc/FundamentosMatematicas/src/main.js';
+    mostrarEjercicio();
+  </script-->
+  <script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(','\\)'], ['$', '$']],
+      displayMath: [['$$','$$'], ['\\[','\\]']],
+      packages: {'[+]': ['mhchem']}
+    },
+    options: {
+      skipHtmlTags: ['script','noscript','style','textarea','pre','code']
+    },
+    startup: {
+      typeset: true
+    }
+  };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>
