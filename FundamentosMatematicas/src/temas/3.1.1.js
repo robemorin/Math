@@ -64,7 +64,7 @@ function problema(){
             const B_temp = a_temp[1];
             
             //R[i]=`$ ${tlacu.poli.print([A_temp])} \\frac{${tlacu.poli.print([1,b])}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 } + ${tlacu.poli.print([B_temp])} \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
-            R[i]= `$ ${A_temp} \\cdot \\frac{${tlacu.poli.print([1,b])}}{ (x+${b})^2 + ${omega}^2 } ${B_temp<0?'':'+'} ${B_temp} \\cdot \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
+            R[i]= `$ ${A_temp} \\cdot \\frac{${tlacu.poli.print([1,b])}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 } ${B_temp<0?'':'+'} ${B_temp} \\cdot \\frac{${omega}}{ (${tlacu.poli.print([1,b])})^2 + ${omega}^2 }$`;
 
         }while(tlacu.pregunta.hayRepetidos(R))
     }
