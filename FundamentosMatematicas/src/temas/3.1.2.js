@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         let P, R = [];
-        const tipoFactorizacion = Math.random() < 0.5 ? 1 : 2; // 1: Lineales, 2: Cuadrático Irreducible
+        const tipoFactorizacion =2// Math.random() < 0.5 ? 1 : 2; // 1: Lineales, 2: Cuadrático Irreducible
 
         if (tipoFactorizacion === 1) {
             // --- Caso 1: Tres Factores Lineales Distintos (x-a)(x-b)(x-c) ---
@@ -21,20 +21,22 @@ export async function pregunta(numeroPregunta) {
             // Raíces distintas y pequeñas
             let a, b, c;
             do {
-                a = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 3 + 1);
-                b = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 3 + 1);
-                c = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 3 + 1);
+                a = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 9 + 1);
+                b = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 9 + 1);
+                c = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 9 + 1);
             } while (a === b || a === c || b === c);
+            if (a > b) [a, b] = [b, a];
+            if (a > c) [a, c] = [c, a];
+            if (b > c) [b, c] = [c, b];
 
-            // Polinomio (x-a)(x-b) = x^2 - (a+b)x + ab
-            const p2 = [1, -(a + b), a * b];
-            // Polinomio final (x^2...) * (x-c)
-            const p3_coef = tlacu.conv(p2, [1, -c]);
+            // 
+            let Pol = [1, -(a + b), a * b];
+            Pol = tlacu.conv(Pol, [1, -c]);
             
             // Formato de la respuesta correcta
             R[0] = `$(${tlacu.poli.print([1, -a])})(${tlacu.poli.print([1, -b])})(${tlacu.poli.print([1, -c])})$`;
             
-            P = `${numeroPregunta+1}.- Factorice el polinomio $${tlacu.poli.print(p3_coef)}$:`;
+            P = `${numeroPregunta+1}.- Factorice el polinomio $${tlacu.poli.print(Pol)}$:`;
 
             // Generar distractores (factorizaciones incorrectas)
             for(let i = 1; i < 6; ++i){
@@ -42,9 +44,13 @@ export async function pregunta(numeroPregunta) {
                     let d = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 4 + 1);
                     let e = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 4 + 1);
                     let f = (Math.random() < 0.5 ? 1 : -1) * Math.round(Math.random() * 4 + 1);
+                    if (d>e) [d, e] = [e, d];
+                    if (d>f) [d, f] = [f, d];
+                    if (e>f) [e, f] = [f, e];
                     R[i] = `$(${tlacu.poli.print([1, -d])})(${tlacu.poli.print([1, -e])})(${tlacu.poli.print([1, -f])})$`;
                 } while (tlacu.pregunta.hayRepetidos(R));
             }
+            return [P, R];
 
         } else {
             // --- Caso 2: Factor Cuadrático Irreducible ((x-a)^2+b^2)(x-c) ---
@@ -63,7 +69,7 @@ export async function pregunta(numeroPregunta) {
             const p3_coef = tlacu.conv(p2, [1, -c_lin]);
 
             // Formato de la respuesta correcta
-            R[0] = `$[(${tlacu.poli.print([1, -a_sq])})^2+${b_sq_sq}](${tlacu.poli.print([1, -c_lin])})$`;
+            R[0] = `$\\left((${tlacu.poli.print([1, -a_sq])})^2+${b_sq_sq}\\right)(${tlacu.poli.print([1, -c_lin])})$`;
             
             P = `${numeroPregunta+1}.- Factorice el polinomio $${tlacu.poli.print(p3_coef)}$:`;
 
@@ -79,8 +85,8 @@ export async function pregunta(numeroPregunta) {
         }
 
         // Desordenar las respuestas y devolver [Pregunta, Respuestas]
-        const R_desordenadas = tlacu.unsortArray(R);
-        return [P, R_desordenadas];
+        
+        return [P, R];
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
