@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         let P, R = [];
-        const tipoFactorizacion =2// Math.random() < 0.5 ? 1 : 2; // 1: Lineales, 2: Cuadrático Irreducible
+        const tipoFactorizacion =Math.random() < 0.5 ? 1 : 2; // 1: Lineales, 2: Cuadrático Irreducible
 
         if (tipoFactorizacion === 1) {
             // --- Caso 1: Tres Factores Lineales Distintos (x-a)(x-b)(x-c) ---
