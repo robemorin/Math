@@ -206,11 +206,8 @@ fecha = `${mes} ${ano}`;
     <ul style="margin-top: 0; padding-left: 20px;">
       <li>Escriba su nombre en el recuadro correspondiente.</li>
       <li>No abra este examen hasta que se lo indiquen.</li>
-      <li>En esta prueba es necesario usar una calculadora de pantalla gráfica.</li>
+      <li>En esta prueba es necesario usar una calculadora.</li>
       <li>Conteste todas las preguntas.</li>
-      <li>Escriba sus respuesas en las casillas provistas para tal efecto.</li>
-      <li>A menos que se indique lo contrario en la pregunta, todas las respuestas numéricas deben ser exactas o tener tres cifras significativas.</li>
-      <li>Necesitará un ejemplar limpio del cuadernillo de fórmulas de Matemáticas: Aplicaciones e interpretaciones.</li>
     </ul>
   </div>
 </div>
