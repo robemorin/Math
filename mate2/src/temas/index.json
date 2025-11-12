@@ -125,7 +125,15 @@
   ],
   [
     "5.2.2",
-    "Línea de mejor ajuste (Calculadora)"
+    "Factor de correación de Pearson (Calculadora)"
+  ],
+  [
+    "5.2.3",
+    "Línea de mejor ajuste (Cuadro de diálogo)"
+  ],
+  [
+    "5.2.4",
+    "Factor de correlación de Pearson (Cuadro de diálogo)"
   ],
   [
     "5.3.1",

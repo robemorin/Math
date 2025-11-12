@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-  return 'Factor de correlación de Pearson (Cuadro de diálogo)';
+  return 'Línea de mejor ajuste (Cuadro de diálogo)';
 }
 export function tipo(){
   return 0
@@ -35,17 +35,16 @@ function P1(numPreg){
         y[k]=(Math.round(a*x[k]+b+e*(Math.random()-0.5))/10)
     }
 
-
-    const ans=tlacu.stat.pearson(x,y)
+    const ans=tlacu.stat.linReg(x,y)
         
         
-        const P=`${numPreg}.- Obtenga el factor de correlaciónd de Pearson a partir de lo siguiente ${tlacu.stat.calc_2varStat(x,y)}.`
+        const P=`${numPreg}.- Obtenga la línea de mejor ajuste de los siguientes datos ${tlacu.stat.calc_2varStat(x,y)}.`
         var R=[];
         
-        R[0]=`$r = ${ans.toPrecision(3)}$`
+        R[0]=`$y=${tlacu.poli.print([ans[0].toPrecision(3),ans[1].toPrecision(3)])}$`
         for(var i=1;i<6;++i){
             do{
-                R[i]=`$r = ${((ans<0?-1:1)*Math.random()).toPrecision(3)}$`
+                R[i]=`$y=${tlacu.poli.print([(ans[0]+Math.random()-0.5).toPrecision(3),(ans[1]+Math.random()-0.5).toPrecision(3)])}$`
             }while(tlacu.pregunta.hayRepetidos(R))
         }
         console.log(P)
