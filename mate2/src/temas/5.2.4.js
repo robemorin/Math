@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-  return 'Factor de correación de Pearson (Calculadora)';
+  return 'Factor de correlación de Pearson (Cuadro de diálogo)';
 }
 export function tipo(){
   return 0
@@ -29,21 +29,17 @@ function P1(numPreg){
     
 
     const x=[], y=[]
-    let tablex='<table style="border-spacing: 15px;"><tr><td style="border-right:solid black 2px">x</td>', 
-        tabley='</tr><tr><td style="border-right:solid black 2px">y</td>';
     const n=Math.round(Math.random()*5+5)
     for(let k=0;k<n;++k){
         x.push(Math.round(Math.random()*100-50)/10)
         y[k]=(Math.round(a*x[k]+b+e*(Math.random()-0.5))/10)
-        tablex+="<td>"+x[k].toFixed(1)+"</td>"
-        tabley+="<td>"+y[k].toFixed(1)+"</td>"
     }
 
 
     const ans=tlacu.stat.pearson(x,y)
         
         
-        var P=`${numPreg}.- Obtenga la línea de mejor ajuste de los siguientes datos <br><center>${tablex+tabley}</tr></table></center>`
+        var P=`${numPreg}.- Obtenga la línea de mejor ajuste de los siguientes datos <br><center>${tlacu.stat.calc_2varStat(x,y)}</tr></table></center>`
         var R=[];
         
         R[0]=`$r = ${ans.toPrecision(3)}$`
