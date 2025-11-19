@@ -37,7 +37,7 @@ function PP(numeroPregunta){
 							}
               let P=''
               if(numeroPregunta===1){
-                P = `<center><h3>Factor de correlación de Spearman</h3><br>$\\rho =  1-\\frac{6\\sigma d_i^2}{n(n^2-1)}$</center><br><br>`
+                P = `<center><h3>Factor de correlación de Spearman</h3><br>$\\rho =  1-\\frac{6\\sum d_i^2}{n(n^2-1)}$</center><br><br>`
               }
 							P+=numeroPregunta+'.- Calcule el factor de correlación de Spearman de la siguiente tabla'+Sx+Sy+"</table></center>"
 							

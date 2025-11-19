@@ -81,8 +81,6 @@ export async function genCuestionarios(){
         //Por ahora solo están habilitados los tipo 0 y 3.
         if(modulo.tipo() == 0){// Es de opción múltiple
             const [P, R] = await modulo.pregunta(cont)
-            //console.log(`Pregunta: ${P}`)
-            //console.log(`R: ${R}`)
             return [`<div class="pregunta-abierta">${P}<br></div>`,`<span class="solucionario">[${cont+1}] ${R[0]}</span>`]
 
         }else if(modulo.tipo() == 3){// es un objeto

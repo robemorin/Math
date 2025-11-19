@@ -108,6 +108,15 @@ class R2PDinamico extends HTMLElement {
       if (tipo === 2 && modulo.renderGeoGebra) {
         await modulo.renderGeoGebra(this.container, this.n, code);
       }
+
+      if (tipo === 0 ) {
+        console.log('Render geogebra en opción múltiple')
+        try{
+        await modulo.render(this.container, this.n, code);
+        }catch(e){
+          console.log('no hay geogebra')
+        }
+      }
       /*
       if (tipo === 3 && modulo.render) {
         await modulo.render(this.container, this.n, code);
