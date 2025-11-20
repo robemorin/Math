@@ -1,67 +1,71 @@
+//1.1.1.js
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
-import {desencriptar, encriptar, generarCodigo} from '../r2p_core.js'
-export function name() {
-  return 'Gráficas a trozos';
+
+export function name(){
+  return 'Funcion a trozos';
 }
-
-export function tipo() {
-  return 3;
+export function tipo(){
+  return 0
+  /*
+  0 - Opción múltiple
+  1 - Abierto
+  2 - Geogebra
+  */
 }
+export async function pregunta(numeroPregunta) { 
+  try {
+    return PP(numeroPregunta+1)
 
-export async function pregunta(i, totalPreguntas, esImprimible=false) {
-  try{
-    let f = generarFuncion_Prob1();
-
-
-
-    const Pregunta = `
-      <div class="pregunta-abierta"  style="display: none;">
-        <p>${i + 1}.- Obtenga la ecuación de la línea en la forma $y-y_0 = m(x-x_0)$<span id="resultado_${i}" name="question"></span></p>
-        <div id="applet_container_${i}" class="ggb-container"></div>
-        
-        <table>
-          
-          <tr><td>Ecuación de la línea: </td><td><math-field>y=</math-field></td></tr>
-          </table>
-      </div>
-    `;
-    if(esImprimible){
-	const respuesta=`$${f.latex}$`
-	return [Pregunta, respuesta]
-  }
-  
-    if (totalPreguntas-1 == i) render(null,totalPreguntas)
-    return Pregunta
-  
-    
-  }catch (error){
-    console.error('Error al carga la pregunta:', error);
+  } catch (error) {
+    console.error('Error loading r2p_core.js:', error);
   }
 }
 
+function PP(numeroPregunta){
+						function P1(numeroPregunta){
+              let f= generarFuncion_Prob1();
+              console.log(f)
+							
+              let P=`<div class="pregunta" data-f="${f.geogebra}">${numeroPregunta}.- Determine la función a trozos que corresponde a la siguiente gráfica:
+              <div id="applet_container_${numeroPregunta-1}" class="ggb-container"></div></div>`
+              
+							
+						
+					var R=[];
+					R[0]=`$${f.latex}$`
+
+					for(var i=1;i<6;++i){
+						do{
+              f= generarFuncion_Prob1();
+							R[i]=`$${f.latex}$`
+						}while(tlacu.pregunta.hayRepetidos(R))
+					
+					}
+					return [P,R]
+						}
+						return P1(numeroPregunta)
+					}
+			
 export async function render(container, n, code) {
   console.log('Ejecutar render')
    const material_id = "zpp4kdej";
   window.ggbApps = [];
-
+  console.log('n=',document.getElementsByClassName('ggb-container').length)
+  const preguntas = document.getElementsByClassName('ggb-container');
+//Vamos a tomar la función de cada contenedor
   for (let i = 0; i < n; i++) {
     const params = {
       appName: 'classic',
       width: 600,
       height: 600,
       material_id,
-      id: `ggbApplet_${i}`,
+      id: `applet_container_${i}`,
       appletOnLoad(api) {
-        let pregunta = document.getElementsByClassName('pregunta-abierta')
-        const A = pregunta[i].dataset.a.split(',').map(Number)
-        const m = pregunta[i].dataset.m.split(',').map(Number)
-        
-        console.log(`${i}.- A:${pregunta[i].dataset.a} m:${pregunta[i].dataset.m}`)
+        const latexXpression = preguntas[i].parentElement.getAttribute('data-f');
         window.ggbApps[i] = api;
-      api.evalCommand(`f(x) = If(x<-2,-x,If(x<=2, x^2,4))`);
-      api.evalCommand(`A:(${A[0]},${A[1]})`);
-      api.setFixed('A', true);
+      api.evalCommand(latexXpression);
+
 
       }
     };
@@ -72,25 +76,7 @@ export async function render(container, n, code) {
     const api = window.ggbApps[i];
     if (!api) return alert("Applet no listo");
 
-    let totalPuntos = 1
-    let puntos = 0
-    let pregunta = document.getElementsByClassName('pregunta-abierta')
-    const mathFields= pregunta[i].getElementsByTagName('math-field')
-    const ans = mathFields[0].value
-
-    const A = pregunta[i].dataset.a.split(',').map(Number)
-    let m = pregunta[i].dataset.m.split(',').map(Number)
-    m = tlacu.simplify_frac(m)
-    const correcta = linea_puntopendiente(m,A)
-
-    if( ans != correcta ){
-      mathFields[0].style.backgroundColor = "red";
-      document.getElementById(`resultado_${i}`).innerHTML = `'${correcta}' != '${ans}'`
-    } else{
-      ++puntos
-      mathFields[0].style.border = "solid 5px green";
-    }
-    return [puntos,totalPuntos]
+    
   };
 }
 
@@ -188,26 +174,3 @@ function generarFuncion_Prob1() {
 
     return { latex, geogebra, callable, bp1, bp2 };
 }
-
-// ============ EJEMPLO DE USO ============
-/*
-console.log("=== GENERANDO FUNCIÓN A TROZOS ===\n");
-
-const funcion = generarFuncion_Prob1();
-
-console.log("LaTeX (para mostrar):");
-console.log(funcion.latex);
-console.log("\n");
-
-console.log("GeoGebra (copiar y pegar):");
-console.log(funcion.geogebra);
-console.log("\n");
-
-console.log(`Puntos de ruptura: x = ${funcion.bp1} y x = ${funcion.bp2}`);
-console.log("\n");
-
-// Probar la función
-console.log("Evaluaciones de prueba:");
-[-5, funcion.bp1, 0, funcion.bp2, 5].forEach(x => {
-    console.log(`f(${x}) = ${funcion.callable(x)}`);
-});*/

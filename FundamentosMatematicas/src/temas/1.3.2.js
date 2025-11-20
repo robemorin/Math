@@ -53,16 +53,17 @@ export async function render(container, n, code) {
     const bx = r*Math.cos(arg*Math.PI/12)
     const by = r*Math.sin(arg*Math.PI/12)
 
-
-    if(Math.abs(ax-bx)>0.01 || ax==''){
+    console.log(`pregunta ${i}: Re(a)=${ax} Im(a)=${ay}  vs  Re(a)=${bx} Im(a)=${by}`)
+    if(Math.abs(ax-bx)>0.01 || mathFields[0].value==''){
       mathFields[0].style.backgroundColor = "red";
     } else{
       ++puntos
       mathFields[0].style.border = "solid 5px green";
     }
     mathFields[0].disabled = true;
-    if(Math.abs(ay-by)>0.01 || ay==''){
-      console.log(`${ay}-${by} = ${ay-by}`)
+
+    if(Math.abs(ay-by)>0.01 || mathFields[1].value==''){
+      console.log(`|${ay}-${by}| = ${ay-by}`)
       mathFields[1].style.backgroundColor = "red";
     } else{
       ++puntos

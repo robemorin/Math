@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-  return 'Transformaciones de funciones';
+  return 'Transformaciones de funciones II';
 }
 export function tipo(){
   return 0
@@ -36,7 +36,8 @@ function PP(numeroPregunta){
     console.log('Transformación:', trans);
     console.log('Función transformada:', g);
     
-    let P = `<div class="pregunta" data-f="${f.geogebra}" data-g="${g.geogebra}">${numeroPregunta}.- La gráfica azul representa la función $f(x)$ y la gráfica roja representa la función $g(x)$. Exprese a $g(x)$ en términos de  $f(x)$:
+    let P = `<div class="pregunta" data-f="${f.geogebra}" data-g="${g.geogebra}">
+    ${numeroPregunta}.- La gráfica azul representa la función $f(x)$ y la gráfica roja representa la función $g(x)$. Exprese a $g(x)$ en términos de  $f(x)$:
     <div id="applet_container_${numeroPregunta-1}" class="ggb-container"></div></div>`;
     
     var R = [];
@@ -72,6 +73,8 @@ export async function render(container, n, code) {
       appletOnLoad(api) {
         const funcionBase = preguntas[i].parentElement.getAttribute('data-f');
         const funcionTransformada = preguntas[i].parentElement.getAttribute('data-g');
+        preguntas[i].parentElement.setAttribute('data-f', "");
+        preguntas[i].parentElement.setAttribute('data-g', "");
         window.ggbApps[i] = api;
         
         // Función base f(x) en azul
@@ -221,34 +224,50 @@ function generarTransformacion() {
 
     case 'escalamiento_x':
       // f(ax) o f(x/a)
-      const factores_x = [3, 2, 0.5, 1/3];
+      const factores_x = [3, 2, 1/2, 1/3, -1, -2, -3, -1/2, -1/3];
       valor = randomChoice(factores_x);
       
-      if (valor === 0.5) {
-        latex = `f(\\frac{x}{2})`;
+      if (valor === 1/2) {
+        latex = `f(2x)`;
       } else if (valor === 1/3) {
         latex = `f(3x)`;
       } else if (valor === 2) {
         latex = `f(\\frac{x}{2})`;
       } else if (valor === 3) {
         latex = `f(\\frac{x}{3})`;
+      } else if (valor === -1) {
+        latex = `f(-x)`;
+      } else if (valor === -2) {
+        latex = `f(-\\frac{x}{2})`;
+      } else if (valor === -3) {
+        latex = `f(-\\frac{x}{3})`;
+      } else if (valor === -1/2) {
+        latex = `f(-2x)`;
+      } else if (valor === -1/3) {
+        latex = `f(-3x)`;
       }
-      descripcion = `Escalamiento horizontal`;
+      descripcion = `Escalamiento/Reflexión horizontal`;
       break;
 
     case 'escalamiento_y':
       // a*f(x)
-      const factores_y = [3, 2, 0.5, 1/3];
+      const factores_y = [3, 2, 1/2, 1/3, -1, -2, -3, -1/2, -1/3];
       valor = randomChoice(factores_y);
       
-      if (valor === 0.5) {
+      if (valor === 1/2) {
         latex = `\\frac{1}{2}f(x)`;
       } else if (valor === 1/3) {
         latex = `\\frac{1}{3}f(x)`;
+      } else if (valor === -1/2) {
+        latex = `-\\frac{1}{2}f(x)`;
+      } else if (valor === -1/3) {
+        latex = `-\\frac{1}{3}f(x)`;
+      } else if (valor < 0) {
+        latex = `${valor}f(x)`;
       } else {
         latex = `${valor}f(x)`;
       }
-      descripcion = `Escalamiento vertical`;
+      descripcion = `Escalamiento/Reflexión vertical`;
       break;
   }
 
@@ -306,7 +325,14 @@ function aplicarTransformacionATrozos(funcion, transformacion) {
       let factor_x = valor;
       let nuevoBp1_ex, nuevoBp2_ex, expr1_ex, expr2_ex, expr3_ex;
       
-      if (valor === 1/3) {
+      if (valor === 1/2) {
+        // f(2x)
+        nuevoBp1_ex = bp1 / 2;
+        nuevoBp2_ex = bp2 / 2;
+        expr1_ex = expr1.replace(/x/g, `(2*x)`);
+        expr2_ex = expr2.replace(/x/g, `(2*x)`);
+        expr3_ex = expr3.replace(/x/g, `(2*x)`);
+      } else if (valor === 1/3) {
         // f(3x)
         nuevoBp1_ex = bp1 / 3;
         nuevoBp2_ex = bp2 / 3;
@@ -327,13 +353,41 @@ function aplicarTransformacionATrozos(funcion, transformacion) {
         expr1_ex = expr1.replace(/x/g, `(x/3)`);
         expr2_ex = expr2.replace(/x/g, `(x/3)`);
         expr3_ex = expr3.replace(/x/g, `(x/3)`);
-      } else { // 0.5
-        // f(2x)
-        nuevoBp1_ex = bp1 / 2;
-        nuevoBp2_ex = bp2 / 2;
-        expr1_ex = expr1.replace(/x/g, `(2*x)`);
-        expr2_ex = expr2.replace(/x/g, `(2*x)`);
-        expr3_ex = expr3.replace(/x/g, `(2*x)`);
+      } else if (valor === -1) {
+        // f(-x) - Reflexión sobre el eje y
+        nuevoBp1_ex = -bp2;
+        nuevoBp2_ex = -bp1;
+        expr1_ex = expr3.replace(/x/g, `(-x)`);
+        expr2_ex = expr2.replace(/x/g, `(-x)`);
+        expr3_ex = expr1.replace(/x/g, `(-x)`);
+      } else if (valor === -2) {
+        // f(-x/2)
+        nuevoBp1_ex = -bp2 * 2;
+        nuevoBp2_ex = -bp1 * 2;
+        expr1_ex = expr3.replace(/x/g, `(-x/2)`);
+        expr2_ex = expr2.replace(/x/g, `(-x/2)`);
+        expr3_ex = expr1.replace(/x/g, `(-x/2)`);
+      } else if (valor === -3) {
+        // f(-x/3)
+        nuevoBp1_ex = -bp2 * 3;
+        nuevoBp2_ex = -bp1 * 3;
+        expr1_ex = expr3.replace(/x/g, `(-x/3)`);
+        expr2_ex = expr2.replace(/x/g, `(-x/3)`);
+        expr3_ex = expr1.replace(/x/g, `(-x/3)`);
+      } else if (valor === -1/2) {
+        // f(-2x)
+        nuevoBp1_ex = -bp2 / 2;
+        nuevoBp2_ex = -bp1 / 2;
+        expr1_ex = expr3.replace(/x/g, `(-2*x)`);
+        expr2_ex = expr2.replace(/x/g, `(-2*x)`);
+        expr3_ex = expr1.replace(/x/g, `(-2*x)`);
+      } else if (valor === -1/3) {
+        // f(-3x)
+        nuevoBp1_ex = -bp2 / 3;
+        nuevoBp2_ex = -bp1 / 3;
+        expr1_ex = expr3.replace(/x/g, `(-3*x)`);
+        expr2_ex = expr2.replace(/x/g, `(-3*x)`);
+        expr3_ex = expr1.replace(/x/g, `(-3*x)`);
       }
       
       geogebra_expr = `g(x) = If(x <= ${nuevoBp1_ex}, ${expr1_ex}, If(x <= ${nuevoBp2_ex}, ${expr2_ex}, ${expr3_ex}))`;
@@ -342,9 +396,29 @@ function aplicarTransformacionATrozos(funcion, transformacion) {
     case 'escalamiento_y':
       // g(x) = a*f(x) -> multiplicar cada expresión por a
       const a = valor;
-      const expr1_ey = `${a}*(${expr1})`;
-      const expr2_ey = `${a}*(${expr2})`;
-      const expr3_ey = `${a}*(${expr3})`;
+      let expr1_ey, expr2_ey, expr3_ey;
+      
+      if (valor === 1/2) {
+        expr1_ey = `(1/2)*(${expr1})`;
+        expr2_ey = `(1/2)*(${expr2})`;
+        expr3_ey = `(1/2)*(${expr3})`;
+      } else if (valor === 1/3) {
+        expr1_ey = `(1/3)*(${expr1})`;
+        expr2_ey = `(1/3)*(${expr2})`;
+        expr3_ey = `(1/3)*(${expr3})`;
+      } else if (valor === -1/2) {
+        expr1_ey = `(-1/2)*(${expr1})`;
+        expr2_ey = `(-1/2)*(${expr2})`;
+        expr3_ey = `(-1/2)*(${expr3})`;
+      } else if (valor === -1/3) {
+        expr1_ey = `(-1/3)*(${expr1})`;
+        expr2_ey = `(-1/3)*(${expr2})`;
+        expr3_ey = `(-1/3)*(${expr3})`;
+      } else {
+        expr1_ey = `${a}*(${expr1})`;
+        expr2_ey = `${a}*(${expr2})`;
+        expr3_ey = `${a}*(${expr3})`;
+      }
       
       geogebra_expr = `g(x) = If(x <= ${bp1}, ${expr1_ey}, If(x <= ${bp2}, ${expr2_ey}, ${expr3_ey}))`;
       break;
