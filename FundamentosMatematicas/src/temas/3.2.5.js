@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
@@ -21,8 +21,8 @@ export async function pregunta(numeroPregunta) {
     }
 }
 
-function PP(){
-					function P1(){
+function PP(numeroPregunta){
+					function P1(numeroPregunta){
 						
 						let R=[],side=[],angle=[]
 						side[0]=Math.round(Math.random()*20+1)
@@ -41,7 +41,7 @@ function PP(){
 										['c','a','C','A'],
 										['c','b','C','B']]
 						const op=Math.floor(Math.random()*label.length-.01)
-						const P= "Considere un triángulo con lados $"+label[op][0]+"="+side[0]+"$, $"+label[op][1]+"="+side[1]+"$ y angulo $"+label[op][2]+"="+angle[0]+
+						const P=numeroPregunta+ ".- Considere un triángulo con lados $"+label[op][0]+"="+side[0]+"$, $"+label[op][1]+"="+side[1]+"$ y angulo $"+label[op][2]+"="+angle[0]+
 						"$. Calcule ángulo $"+label[op][3]+"$."
 						
 
@@ -55,7 +55,7 @@ function PP(){
 						}
 						return [P,R]
 					}
-					function P2(){
+					function P2(numeroPregunta){
 						
 						const R=[],side=[],angle=[]
 						side[0]  = Math.round(Math.random()*20+1)
@@ -76,7 +76,7 @@ function PP(){
 						const op=Math.floor(Math.random()*label.length-.01)
 						
 						
-						const P="Considere un triángulo con ángulos de $"+label[op][0]+" = "+angle[0]+"°$, $"+label[op][1]+"="+angle[1]+
+						const P=numeroPregunta+".- Considere un triángulo con ángulos de $"+label[op][0]+" = "+angle[0]+"°$, $"+label[op][1]+"="+angle[1]+
 						"°$ y un lado $"+label[op][2]+"="+side[0]+"$. Calcule el lado "+label[op][3]+"."
 						
 						
@@ -90,5 +90,5 @@ function PP(){
 						}
 						return [P,R]
 					}
-					return Math.random()<0.5 ? P1() : P2()
+					return Math.random()<0.5 ? P1(numeroPregunta+1) : P2(numeroPregunta+1)
 				}

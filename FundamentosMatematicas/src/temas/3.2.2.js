@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
@@ -21,7 +21,7 @@ export async function pregunta(numeroPregunta) {
     }
 }
 
-function PP(){
+function PP(numeroPregunta){
 					function pitagorasSVG(a,b,c){
 						var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
 							P+='<polyline points="20,20 20,150 300,150 20,20"'
@@ -36,7 +36,7 @@ function PP(){
 							
 						return P
 					}
-					function P1(){
+					function P1(numeroPregunta){
 						if(Math.random()<1/3){
 							var a=Math.round(Math.random()*20+1)
 							var c=a+Math.round(Math.random()*20+1)
@@ -83,7 +83,7 @@ function PP(){
 							var q="$\\frac{"+ct+"}{"+at+"}$"
 						}
 						
-						var P="Obtenga el valor "+ftrig+" según el siguiente triángulo<br>"+pitagorasSVG(a,b,c)
+						var P=numeroPregunta+".- Obtenga el valor "+ftrig+" según el siguiente triángulo<br>"+pitagorasSVG(a,b,c)
 							
 						var R=[];
 						
@@ -96,5 +96,5 @@ function PP(){
 						}
 						return [P,R]
 					}
-					return P1()	
+					return P1(numeroPregunta+1)	
 				}

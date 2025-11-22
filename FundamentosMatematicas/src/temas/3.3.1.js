@@ -13,18 +13,18 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta+1);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
         return [`${numeroPregunta+1}.- Error al generar la pregunta.`, ["Error"]];
     }
 }
-function PP(x){
+function PP(numeroPregunta){
 	const a = new Complejo(Math.round(Math.random()*19-9.5),Math.round(Math.random()*19-9.5))
 	const b = new Complejo(Math.round(Math.random()*19-9.5),Math.round(Math.random()*19-9.5))
 
-	const P=`Sea $a=${a.toString()}$ y $b=${b.toString()}$, calcule $a\\div b$`
+	const P=`${numeroPregunta}.- Sea $a=${a.toString()}$ y $b=${b.toString()}$, calcule $a\\div b$`
 	
 	const R=[];
 	R[0]=`$${a.dividir(b).toString()}$`//`$|${b.toString()}|^2 =(${b.toString()})(${b.conjugado().toString()}) = ${b.multiplicar(b.conjugado()).toString()}$`

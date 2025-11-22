@@ -12,19 +12,19 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
         return [`${numeroPregunta+1}.- Error al generar la pregunta.`, ["Error"]];
     }
 }
-function PP(x){
+function PP(numeroPregunta){
 	const z = [Math.round(Math.random()*19-9.5),Math.round(Math.random()*19-9.5)]
 	const r = Math.sqrt(z[0]**2+z[1]**2).toFixed(2)
 	const theta = (Math.atan2(z[1],z[0])*(180/Math.PI)).toFixed(2)
 
-	const P=`Exprese a $${z[0]} ${z[1]<0?'-':'+'} ${Math.abs(z[1])}j$ en forma exponencial $re^{\\theta j}$`
+	const P=`${numeroPregunta+1}.- Exprese a $${z[0]} ${z[1]<0?'-':'+'} ${Math.abs(z[1])}j$ en forma exponencial $re^{\\theta j}$`
 	const op = Math.round(Math.random())
 	const R=[];
 	R[0]=`$${r}e^{${theta}°j}$`

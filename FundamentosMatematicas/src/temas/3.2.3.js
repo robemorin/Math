@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
@@ -21,7 +21,7 @@ export async function pregunta(numeroPregunta) {
     }
 }
 
-function PP(){
+function PP(numeroPregunta){
 					function pitagorasSVG(a,b,c,angulo){
 						var P='<center><svg width="340" height="200"  fill="none" xmlns="http://www.w3.org/2000/svg">'
 							P+='<polyline points="20,20 20,150 300,150 20,20"'
@@ -50,7 +50,7 @@ function PP(){
 							
 						return P
 					}
-					function P1(x){
+					function P1(numeroPregunta){
 						var op=Math.random()
 						if(op<1/6){
 							var angulo=(Math.random()*70+10).toFixed(2)
@@ -90,7 +90,7 @@ function PP(){
 							var q=eval(c)*Math.cos(eval(angulo)*Math.PI/180)
 						}
 						
-						var P="Obtenga el valor de $x$ <br>"+(Math.random()<0.5?pitagorasSVG(a,b,c,angulo):pitagorasSVG2(a,b,c,angulo))
+						var P=numeroPregunta+".- Obtenga el valor de $x$ <br>"+(Math.random()<0.5?pitagorasSVG(a,b,c,angulo):pitagorasSVG2(a,b,c,angulo))
 							
 						var R=[];
 						
@@ -104,6 +104,6 @@ function PP(){
 						return [P,R]
 					}
 					
-					return P1()
+					return P1(numeroPregunta+1)
 					
 				}

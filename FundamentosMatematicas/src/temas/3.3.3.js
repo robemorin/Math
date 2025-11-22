@@ -11,7 +11,7 @@ export function tipo(){
 
 export async function pregunta(numeroPregunta) { 
     try {
-    return PP(); // Llamamos a la nueva función PP
+    return PP(numeroPregunta); // Llamamos a la nueva función PP
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
@@ -22,12 +22,12 @@ export async function pregunta(numeroPregunta) {
 /**
  * Genera la pregunta de Polar/Exponencial a Cartesiana
  */
-function PP(x){
+function PP(numeroPregunta){
     const r = (Math.random() * 19 + 1).toFixed(2); 
     const theta_deg = (Math.random() * 360 - 180).toFixed(2); 
 
     
-    const P = `Exprese a $${r}e^{${theta_deg}°j}$ en forma cartesiana $a + bj$`;
+    const P = `${numeroPregunta+1}.- Exprese a $${r}e^{${theta_deg}°j}$ en forma cartesiana $a + bj$`;
 
     
     const theta_rad = theta_deg * (Math.PI / 180);

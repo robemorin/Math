@@ -13,7 +13,7 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
     try {
         
-        return PP();
+        return PP(numeroPregunta);
 
     } catch (error) {
         console.error('Error al cargar la pregunta:', error);
@@ -21,8 +21,8 @@ export async function pregunta(numeroPregunta) {
     }
 }
 
-function PP(){
-					function P1(){
+function PP(numeroPregunta){
+					function P1(numeroPregunta){
 						
 						const R=[],side=[],angle=[]
 						side[0]=Math.round(Math.random()*20+1)
@@ -40,7 +40,7 @@ function PP(){
 						const Angle=['A','B','C']
 						
 						
-						const P = "Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y $c="+side[2].toFixed(2)+
+						const P = numeroPregunta+".- Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y $c="+side[2].toFixed(2)+
 						"$. Calcule ángulo $"+Angle[op]+"$."
 						
 						
@@ -55,7 +55,7 @@ function PP(){
 						}
 						return [P,R]
 					}
-					function P2(){
+					function P2(numeroPregunta){
 						
 						const R=[],side=[],angle=[]
 						side[0]=Math.round(Math.random()*20+1)
@@ -66,7 +66,7 @@ function PP(){
 						
 						/*R[6]="Considere un triángulo con lados a="+side[0]+"b="+side[1]+"c="+side[2].toFixed(2)+
 						". Calcule ángulo "+Angle[op]*/
-						const P="Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y un ángulo entre ellos de $C="+angle[2]+
+						const P=numeroPregunta+".- Considere un triángulo con lados $a="+side[0]+"$, $b="+side[1]+"$ y un ángulo entre ellos de $C="+angle[2]+
 						"°$. Calcule el lado faltante."
 						
 						
@@ -82,7 +82,7 @@ function PP(){
 						
 						return [P,R]
 					}
-					return Math.random()<0.5?P1():P2()
+					return Math.random()<0.5?P1(numeroPregunta+1):P2(numeroPregunta+1)
 					
 
 
