@@ -197,12 +197,23 @@ export function revisarAbiertas(contenedor) {
   const numeroPreguntas = preguntas.length;
   let correctas = 0;
 //Todas la respuestas se esperan que esten encriptadas
-  preguntas.forEach(p => {
-    const mf = p.querySelector('math-field');
-    const valor = mf.getValue()
-    let code = mf.dataset.code
-    let tipo = mf.dataset.tipo
-    code = code.split(',').map(Number);
+    preguntas.forEach(p => {
+        const mf = p.querySelector('math-field');
+        if(!mf){
+            console.warn('pregunta sin math-field encontrada, se omite');
+            p.style.border = '2px solid orange';
+            return;
+        }
+        const valor = mf.getValue()
+        let code = mf.dataset.code
+        let tipo = mf.dataset.tipo
+        if(!code){
+            console.warn('math-field sin dataset.code, se omite');
+            p.style.border = '2px solid orange';
+            mf.disabled = true;
+            return;
+        }
+        code = code.split(',').map(Number);
     //console.log(`code: ${code}`)
     const esperado = desencriptar(mf.dataset.respuesta_e,code)
     if(tipo == 'expresion'){
