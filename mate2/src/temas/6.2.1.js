@@ -2,7 +2,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name(){
-  return 'Cuadráticas - Raíces reales (Opción múltiple)';
+  return 'Cuadráticas - Raíces reales I';
 }
 
 export function tipo(){

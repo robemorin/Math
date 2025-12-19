@@ -3,7 +3,7 @@ import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 import {encriptar, generarCodigo} from '../r2p_core.js'
 
 export function name(){
-  return 'Cuadráticas - Evaluación (Find y)';
+  return 'Cuadráticas - Evaluación II';
 }
 
 export function tipo(){

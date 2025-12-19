@@ -83,6 +83,16 @@ export function setupActividad(callback) {
       document.getElementById('setup').style.display = 'block';
     }
   });
+  
+  // Agregar evento de doble click en iconR2p
+  const iconR2p = document.getElementById('iconR2p');
+  if (iconR2p) {
+    iconR2p.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      console.log('Doble click en iconR2p detectado');
+      document.getElementById('setup').style.display = 'block';
+    });
+  }
 }
 export function generaLink(archivoString){
   

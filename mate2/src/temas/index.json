@@ -4,6 +4,10 @@
     "Redondeo de números I"
   ],
   [
+    "1.1.2",
+    "Redondeo de números II"
+  ],
+  [
     "1.1.3",
     "Redondeo decimales I"
   ],
@@ -105,11 +109,15 @@
   ],
   [
     "4.3.1",
-    "Gráficas a trozos"
+    "Funcion a trozos"
   ],
   [
     "4.3.2",
-    "Funcion a trozos 2"
+    "Transformaciones de funciones"
+  ],
+  [
+    "4.3.3",
+    "Transformaciones de funciones II"
   ],
   [
     "4.4.1",
@@ -142,29 +150,33 @@
   [
     "5.3.1",
     "Factor de correlación de Spearman"
-  ]
-  ,
+  ],
   [
     "6.1.1",
-    "Cuadráticas - Evaluación (Encuentra y) I"
-  ]
-  ,
+    "Cuadráticas - Evaluación I"
+  ],
   [
     "6.1.2",
-    "Cuadráticas - Evaluación (Encuentra y) II"
+    "Cuadráticas - Evaluación II"
   ],
   [
     "6.1.3",
-    "Cuadráticas - Tabla de valores (Complete the table)"
-  ]
-  ,
+    "Cuadráticas - Tabla de valores"
+  ],
   [
     "6.2.1",
-    "Cuadráticas - Raíces reales (Opción múltiple)"
-  ]
-  ,
+    "Cuadráticas - Raíces reales I"
+  ],
   [
     "6.2.2",
-    "Cuadráticas - Sustitución en fórmula general (Opción múltiple)"
+    "Cuadráticas - Sustitución en fórmula general"
+  ],
+  [
+    "6.2.3",
+    "Cuadráticas - Graficar puntos"
+  ],
+  [
+    "6.2.4",
+    "Cuadráticas - Forma factorizada"
   ]
 ]
