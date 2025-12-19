@@ -20,7 +20,7 @@ export async function pregunta(numeroPregunta){
     }while(a===0)
 
     const poliPrint = tlacu.poli.print([a,b,c]);
-    const P = `${numeroPregunta+1}.- Aplica la fórmula general y selecciona la sustitución correcta para la ecuación $f(x)=${poliPrint}$:`;
+    const P = `${numeroPregunta+1}.- Aplica la fórmula general para solucionar $f(x)=${poliPrint}=0$:`;
 
     // Construir la sustitución correcta (cerrando llaves en \sqrt y en \frac)
     const corr = `\\frac{${-b}\\pm\\sqrt{(${b})^2-4(${a})(${c})}}{2(${a})}`;
