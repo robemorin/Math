@@ -90,7 +90,8 @@ export function setupActividad(callback) {
     iconR2p.addEventListener('dblclick', (e) => {
       e.preventDefault();
       console.log('Doble click en iconR2p detectado');
-      document.getElementById('setup').style.display = 'block';
+      let estado = document.getElementById('setup').style.display == 'block' ? 'none' : 'block';
+      document.getElementById('setup').style.display = estado;
     });
   }
 }
