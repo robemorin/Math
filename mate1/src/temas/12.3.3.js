@@ -41,7 +41,7 @@ if (!tlacu.stat.medTendenciaCentral) {
 // -----------------------------------------------------------
 
 export function name() {
-  return 'Medidas de Tendencia Central (Tabla de Frecuencias)';
+  return 'Medidas de Tendencia Central (Histograma)';
 }
 
 export function tipo() {
@@ -65,7 +65,7 @@ export async function pregunta(numeroPregunta) {
         let freq = Math.floor(Math.random() * 8) + 2; 
         f.push(freq);
         sum_f += freq;
-        F.push(freq);
+        F.push(sum_f);
     }
     
     // 2. Construir la Tabla HTML (mostrando solo x y F)
@@ -75,24 +75,21 @@ export async function pregunta(numeroPregunta) {
     }
     const opcion = Math.floor(Math.random()*3)
     const tipoTendencia = ['media', 'mediana', 'moda'][opcion];
-
+    // 3. Calcular respuesta correcta usando la función solicitada
+    let [mean, median, mode] = tlacu.stat.medTendenciaCentral(x, f);
     
     const P = `
-    ${numeroPregunta + 1}.- Dada la siguiente tabla de frecuencias, determine la ${tipoTendencia}.
+    ${numeroPregunta + 1}.- Dado el siguiente histograma, determine la ${tipoTendencia}.
     <br><br>
     <center>
-    <table border="1" style="border-collapse: collapse; text-align: center; font-family: sans-serif; min-width: 150px;">
-        <tr style="background-color: #f0f0f0;">
-            <th style="padding: 5px;">$x$</th>
-            <th style="padding: 5px;">$F$</th>
-        </tr>
-        ${tableRows}
-    </table>
+    
+    <tlacuache-ejes size="240,360" xlabel="" ylabel="Frecuencia"  xlim="${start-1},${start + n_rows + 1}" dx="1" ylim="0,${Math.max(...f)+2}" dy="2"  >
+  <tlacuache-histograma  inicio="${start}" paso="1" frecuencias="${f}" ></tlacuache-histograma>
+</tlacuache-ejes>
     </center>
     `;
     
-    // 3. Calcular respuesta correcta usando la función solicitada
-    let [mean, median, mode] = tlacu.stat.medTendenciaCentral(x, f);
+    
     
     // Función auxiliar de formateo
     const format = (m, med, mo, opcion) => {

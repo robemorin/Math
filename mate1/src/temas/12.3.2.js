@@ -41,7 +41,7 @@ if (!tlacu.stat.medTendenciaCentral) {
 // -----------------------------------------------------------
 
 export function name() {
-  return 'Medidas de Tendencia Central (Tabla de Frecuencias)';
+  return 'Medidas de Tendencia Central (Tabla Frecuencia Acumulada)';
 }
 
 export function tipo() {
@@ -65,7 +65,7 @@ export async function pregunta(numeroPregunta) {
         let freq = Math.floor(Math.random() * 8) + 2; 
         f.push(freq);
         sum_f += freq;
-        F.push(freq);
+        F.push(sum_f);
     }
     
     // 2. Construir la Tabla HTML (mostrando solo x y F)
@@ -78,13 +78,13 @@ export async function pregunta(numeroPregunta) {
 
     
     const P = `
-    ${numeroPregunta + 1}.- Dada la siguiente tabla de frecuencias, determine la ${tipoTendencia}.
+    ${numeroPregunta + 1}.- Dada la siguiente tabla de frecuencia acumulada, determine la ${tipoTendencia}.
     <br><br>
     <center>
     <table border="1" style="border-collapse: collapse; text-align: center; font-family: sans-serif; min-width: 150px;">
         <tr style="background-color: #f0f0f0;">
             <th style="padding: 5px;">$x$</th>
-            <th style="padding: 5px;">$F$</th>
+            <th style="padding: 5px;"><b>F A</b></th>
         </tr>
         ${tableRows}
     </table>
