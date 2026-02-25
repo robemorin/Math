@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
 
 export function name() {
-    return 'Distribución Binomial Acumulada';
+    return 'Distribución Binomial III';
 }
 export function tipo() {
     return 0
