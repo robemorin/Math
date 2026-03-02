@@ -76,7 +76,7 @@ function P2(numeroPregunta) {
 }
 
 function P3(numeroPregunta) {
-    // Ambas probabilidades son mayores (cola derecha) P(X > x1) y P(X > x2) y pide AHORA AMBOS parámetros
+    // Ambas probabilidades son mayores (cola derecha) P(X > x1) y P(X > x2)
     let mu = Math.floor(Math.random() * 200 + 500);
     let sigma = Math.floor(Math.random() * 20 + 10);
 
@@ -90,16 +90,19 @@ function P3(numeroPregunta) {
     let p1 = tlacu.stat.normalcdf(x1, 1e99, mu, sigma); // P(X > x1)
     let p2 = tlacu.stat.normalcdf(x2, 1e99, mu, sigma); // P(X > x2)
 
-    let P = `${numeroPregunta + 1}.- Se sabe que una variable aleatoria $X$ tiene una distribución normal estadística y cumple con las condiciones de que $P(X > ${x1}) = ${p1.toFixed(4)}$ y $P(X > ${x2}) = ${p2.toFixed(4)}$. Con esto en mente, modele un sistema de ecuaciones para encontrar el valor de la media $\\mu$ y la desviación estándar $\\sigma$.`;
+    let ask_mu = Math.random() < 0.5;
+    let word = ask_mu ? 'la media ($\\mu$)' : 'la desviación estándar ($\\sigma$)';
+    let ans = ask_mu ? mu : sigma;
 
-    let R = [`$\\mu = ${mu}$, $\\sigma = ${sigma}$`];
+    let P = `${numeroPregunta + 1}.- Se sabe que una variable aleatoria $X$ tiene una distribución normal estadística y cumple con las condiciones de que $P(X > ${x1}) = ${p1.toFixed(4)}$ y $P(X > ${x2}) = ${p2.toFixed(4)}$. Calcule ${word}.`;
+
+    let R = [`$${ans}$`];
 
     for (let i = 1; i < 6; ++i) {
         do {
-            let mu_dummy = mu + Math.floor(Math.random() * 20 - 10);
-            let sigma_dummy = sigma + Math.floor(Math.random() * 10 - 5);
-            if (sigma_dummy <= 0) sigma_dummy = sigma + Math.floor(Math.random() * 5 + 1);
-            R[i] = `$\\mu = ${mu_dummy}$, $\\sigma = ${sigma_dummy}$`;
+            let dummy = ans + Math.floor(Math.random() * 20 - 10);
+            if (dummy <= 0 && !ask_mu) dummy = ans + Math.floor(Math.random() * 5 + 1);
+            R[i] = `$${dummy}$`;
         } while (tlacu.pregunta.hayRepetidos(R))
     }
     return [P, R];
