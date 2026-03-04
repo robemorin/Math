@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raiz2𝜋 - Actividades Dinámicas</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script type="module">
+        import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+    </script>
+    <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+    <link rel="stylesheet" href="../src/raiz2pi.css">
+    <style>
+        /* Ocultar el contenido del ejercicio hasta que se escriba el nombre */
+        #contenedorEjercicio .pregunta-abierta,
+        #contenedorEjercicio .pregunta-opcion-multiple,
+        #contenedorEjercicio .r2p-revisar {
+            display: none !important;
+        }
+
+        #contenedorEjercicio.nombre-activo .pregunta-abierta,
+        #contenedorEjercicio.nombre-activo .pregunta-opcion-multiple,
+        #contenedorEjercicio.nombre-activo .r2p-revisar {
+            display: block !important;
+        }
+
+        /* Asegurar que los math-field muestren al menos ~3 dígitos especialmente en tablets */
+        math-field {
+            min-width: 120px !important;
+            max-width: 100%;
+        }
+    </style>
+    <script type="module" src="../src/r2p.js"></script>
+</head>
+
+<body style="padding: 2rem; font-family: 'Inter', sans-serif;">
+    <div id="contenedorEjercicio"></div>
+
+    <script type="module">
+        // Esta función emula el mismo método de la página actividad.html general, 
+        // pero adapta la ruta para cargar dinámicamente cualquier JS que esté en esta carpeta.
+        function mostrarEjercicioDinamico() {
+            const url = new URL(window.location.href);
+            const parametrosString = url.searchParams.get('a');
+            const contenedor = document.getElementById('contenedorEjercicio');
+
+            if (!parametrosString) {
+                contenedor.innerHTML = '<p>No se especificó actividad. Añade ?a=[nombre_del_archivo] a la URL (ej. ?a=17.1).</p>';
+                return;
+            }
+
+            // Al pasarle "../../dinamico/17.1", forzamos a r2p.js (que está en /src) a salir de la carpeta
+            // "src/temas" usando el path relativo y dirigirse hacia la carpeta dinámica.
+            // Para estas actividades interactivas fijamos defaults razonables:
+            const n = 1;
+            const modo = 0;       // Ver respuesta correcta u otros ajustes de debug
+            const tiempo = 60;
+
+            contenedor.innerHTML = `<r2p-dinamico tema="../../dinamico/${parametrosString}" n="${n}" modo="${modo}" tiempo="${tiempo}"></r2p-dinamico>`;
+        }
+
+        // Delegar el evento de input para detectar cuando se escribe en el campo "alumno"
+        document.getElementById('contenedorEjercicio').addEventListener('input', function (e) {
+            if (e.target && e.target.id === 'alumno') {
+                if (e.target.value.trim().length > 0) {
+                    this.classList.add('nombre-activo');
+                } else {
+                    this.classList.remove('nombre-activo');
+                }
+            }
+        });
+
+        mostrarEjercicioDinamico();
+    </script>
+</body>
+
+</html>
