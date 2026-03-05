@@ -63,7 +63,7 @@ export async function pregunta() {
           <h3>Paso 4: El Diagrama de Voronoi</h3>
           <p>Se ha calculado automáticamente el diagrama de Voronoi completo utilizando la herramienta de GeoGebra. Podrás comparar tus aproximaciones con el resultado.</p>
           <div style="background:#e8f4f8; padding: 10px; border-radius: 5px; border-left: 4px solid #17a2b8;">
-              <p><b>Evidencia final:</b> Toma una <b>captura de pantalla</b> que abarque toda esta página (incluyendo el diagrama y tu nombre en la parte superior) para enviarla como evidencia de tu práctica. Tu nombre en la casilla se ha bloqueado para validar la entrega.</p>
+              <p><b>Evidencia final:</b> Toma una <b>captura de pantalla</b> que abarque toda esta página (incluyendo el diagrama y tu nombre en la parte superior) para enviarla como evidencia de tu práctica.</p>
           </div>
         </div>
         
@@ -184,6 +184,11 @@ export async function render() {
         }
 
         if (paso === 3) {
+            // Bloquear nombre del alumno
+            let cellAlumno = document.getElementById('alumno');
+            if (cellAlumno) {
+                cellAlumno.disabled = true;
+            }
             let i_base = parseInt(preguntaDiv.dataset.i_base || 1, 10);
             let k = parseInt(preguntaDiv.dataset.k, 10);
             let n = parseInt(preguntaDiv.dataset.n, 10);
@@ -424,9 +429,19 @@ export async function render() {
                     for (let pt_idx = 1; pt_idx <= n; pt_idx++) {
                         lstPts.push(`P_${pt_idx}`);
                     }
-                    api.evalCommand(`Voronoi_1 = Voronoi({${lstPts.join(',')}})`);
-                    api.evalCommand(`SetColor(Voronoi_1, 0, 0, 1)`);
-                    api.evalCommand(`SetLineThickness(Voronoi_1, 5)`);
+                    let voronoiCmd = `Voronoi_1 = Voronoi({${lstPts.join(',')}})`;
+                    try {
+                        api.evalCommand(voronoiCmd);
+                        api.evalCommand(`SetColor(Voronoi_1, 0, 0, 1)`);
+                        api.evalCommand(`SetLineThickness(Voronoi_1, 5)`);
+                    } catch (e) {
+                        // Si falla porque el módulo discreto de GeoGebra no ha cargado, intentamos de nuevo después de medio segundo
+                        setTimeout(() => {
+                            api.evalCommand(voronoiCmd);
+                            api.evalCommand(`SetColor(Voronoi_1, 0, 0, 1)`);
+                            api.evalCommand(`SetLineThickness(Voronoi_1, 5)`);
+                        }, 500);
+                    }
 
                     // Bloquear nombre del alumno
                     let cellAlumno = document.getElementById('alumno');
