@@ -2,7 +2,7 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 
 export function name() {
-    return 'Prueba t para una muestra (Datos) I';
+    return 'Prueba t para una muestra (Estadísticos) I';
 }
 export function tipo() {
     return 0;

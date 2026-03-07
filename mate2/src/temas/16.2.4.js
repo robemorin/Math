@@ -3,7 +3,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
 
 export function name() {
-    return 'Prueba t para una muestra (Muestra) II';
+    return 'Prueba t para una muestra (Datos) II';
 }
 export function tipo() {
     return 3;
