@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prueba t - Actividad Dinámica</title>
+    <script type="module">
+        import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+    </script>
+    <script>
+        window.MathJax = {
+            loader: { load: ['[tex]/cancel'] },
+            tex: {
+                packages: { '[+]': ['cancel'] },
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+    <link rel="stylesheet" href="../src/raiz2pi.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+        }
+
+        .pregunta-abierta {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 6px solid #17a2b8;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .opciones-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opcion-item {
+            padding: 15px;
+            background: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
+        }
+
+        .opcion-item:hover {
+            background: #f1f8fc;
+            border-color: #17a2b8;
+        }
+
+        .opcion-item input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        #contenedorEjercicio {
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            color: #34495e;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .btn-modern {
+            padding: 12px 24px;
+            margin-top: 15px;
+            cursor: pointer;
+            background-color: #fdad00;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #fff;
+            transition: background-color 0.2s;
+            box-shadow: 0 2px 4px rgba(253, 173, 0, 0.3);
+        }
+
+        .btn-modern:hover {
+            background-color: #e69c00;
+        }
+
+        .feedback-msg {
+            margin-top: 15px;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .feedback-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .correct-choice {
+            border: 2px solid #28a745 !important;
+            background-color: #d4edda !important;
+        }
+
+        .incorrect-choice {
+            border: 2px solid #dc3545 !important;
+            background-color: #f8d7da !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="contenedorEjercicio">
+        <h1>Prueba t de Student - Actividad</h1>
+
+        <!-- Pantalla de inicio -->
+        <div id="pantalla-inicio" class="pregunta-abierta" style="text-align: center;">
+            <h3>Bienvenido a la actividad de Prueba t</h3>
+            <p>Por favor, ingresa tu nombre completo para comenzar:</p>
+            <input type="text" id="alumno" placeholder="Nombre completo"
+                style="padding: 10px; font-size: 1rem; width: 60%; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
+            <br>
+            <button class="btn-modern" style="background-color: #28a745;" onclick="window.iniciarActividad()">Iniciar
+                Actividad</button>
+        </div>
+
+        <!-- Headers del estado del estudiante -->
+        <div id="estado-ui"
+            style="display: none; justify-content: space-between; margin-bottom: 20px; font-weight: bold; font-size: 1.1rem; border-bottom: 2px solid #ccc; padding-bottom: 10px;">
+            <span id="label_nombre"></span>
+            <span>Ejercicio: <span id="label_ejercicio">0</span> / 3</span>
+            <span>Puntaje: <span id="label_puntaje">0</span></span>
+        </div>
+
+        <div id="historial-container"></div>
+        <div id="ejercicio-container"></div>
+    </div>
+
+    <script type="module">
+        import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
+
+        // Contexto global de la solución para validar los pasos
+        window.solucionContexto = {};
+        window.estadoApp = { nombre: '', ejercicioActual: 0, totalEjercicios: 3, puntaje: 0 };
+
+        window.iniciarActividad = function () {
+            let nombre = document.getElementById('alumno').value.trim();
+            if (!nombre) {
+                alert("Por favor ingresa tu nombre.");
+                return;
+            }
+            window.estadoApp.nombre = nombre;
+
+            // Iniciar metadatos temporales
+            let date = new Date();
+            window.estadoApp.Hinicio = [date.getHours(), date.getMinutes()];
+            window.estadoApp.fecha = [date.getDate(), date.getMonth() + 1];
+
+            document.getElementById('pantalla-inicio').style.display = 'none';
+            document.getElementById('estado-ui').style.display = 'flex';
+            document.getElementById('label_nombre').innerText = "Estudiante: " + nombre;
+            window.siguienteEjercicio();
+        };
+
+        window.actualizarPuntaje = function (puntos) {
+            window.estadoApp.puntaje += puntos;
+            document.getElementById('label_puntaje').innerText = window.estadoApp.puntaje;
+        };
+
+        function generarParte1() {
+            let mu0 = Math.floor(Math.random() * 50 + 100);
+            let H1_type = Math.floor(Math.random() * 3); // 0: >, 1: <, 2: !=
+            let context = Math.floor(Math.random() * 14); // Los mismos 14 contextos de 16.1.1.js
+
+            let compText = H1_type === 0 ? "mayor a" : (H1_type === 1 ? "menor a" : "diferente a");
+
+            let P = "";
+            let baseText = "";
+            let unidad = "";
+
+            // Adaptación de los contextos de 16.1.1.js
+            if (context === 0) {
+                unidad = "gramos"; baseText = "El peso promedio del producto";
+                P = `Se afirma que el peso promedio de un producto es de $\\mu = ${mu0}$ ${unidad}. Si el equipo de control de calidad desea probar la hipótesis de que el peso promedio real es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 1) {
+                unidad = "horas"; baseText = "El tiempo de vida de las baterías";
+                P = `Una empresa indica que el tiempo de vida de sus baterías es de $\\mu = ${mu0}$ ${unidad}. Se realizará un estudio para probar la hipótesis de que el tiempo de vida real es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 2) {
+                unidad = "km/l"; baseText = "El rendimiento promedio del automóvil";
+                P = `El rendimiento promedio reportado de un automóvil es de $\\mu = ${mu0}$ ${unidad}. En pruebas recientes se busca verificar la hipótesis de que el rendimiento real es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 3) {
+                unidad = "$^{\\circ}\\text{C}$"; baseText = "La temperatura promedio del proceso";
+                P = `Históricamente la temperatura promedio de un proceso químico es de $\\mu = ${mu0}$ ${unidad}. Se plantea la hipótesis de que la temperatura ha cambiado a ser ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 4) {
+                unidad = "pesos"; baseText = "El gasto promedio diario de los estudiantes";
+                P = `Un análisis previo señala que el gasto promedio diario de los estudiantes en la cafetería es de $\\mu = ${mu0}$ ${unidad}. Si se desea evaluar la hipótesis de que el gasto promedio diario es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 5) {
+                unidad = "ml"; baseText = "El contenido promedio de la botella";
+                P = `La etiqueta de un refresco indica que el volumen promedio por botella es de $\\mu = ${mu0}$ ${unidad}. Un organismo evalúa la hipótesis de que el contenido promedio real es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 6) {
+                unidad = "minutos"; baseText = "El tiempo promedio de espera";
+                P = `Un banco afirma que el tiempo promedio de espera en fila para sus clientes es de $\\mu = ${mu0}$ ${unidad}. Se lleva a cabo una auditoría para comprobar la hipótesis de que el tiempo promedio de espera es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 7) {
+                unidad = "kg"; baseText = "La resistencia promedio del cable";
+                P = `El fabricante asegura que la resistencia a la tensión promedio de un cable es de $\\mu = ${mu0}$ ${unidad}. Para garantizar la seguridad del producto, se busca someter a prueba la hipótesis de que la resistencia promedio es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 8) {
+                unidad = "días"; baseText = "El tiempo de vida de los focos";
+                P = `El fabricante reporta que el tiempo de vida de sus focos LED es de $\\mu = ${mu0}$ ${unidad}. Si se analiza una muestra para investigar la hipótesis de que el tiempo de vida es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 9) {
+                unidad = "ml"; baseText = "La cantidad promedio de jugo";
+                P = `Se empacan botellas de jugo donde la cantidad promedio declarada es $\\mu = ${mu0}$ ${unidad}. Si se hace una auditoría para verificar la hipótesis de que la cantidad promedio es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 10) {
+                unidad = "cm"; baseText = "La longitud promedio de las piezas";
+                P = `Las especificaciones de una pieza de madera exigen que su longitud promedio sea de $\\mu = ${mu0}$ ${unidad}. Si se toma una muestra para someter a prueba la hipótesis de que la longitud promedio de las piezas es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 11) {
+                unidad = "puntos"; baseText = "El puntaje promedio del examen";
+                P = `Históricamente, el puntaje promedio de cierto examen estandarizado es de $\\mu = ${mu0}$ ${unidad}. Si se busca probar la hipótesis de que el puntaje promedio de la última generación de estudiantes es ${compText} ${mu0} ${unidad}.`;
+            } else if (context === 12) {
+                unidad = "meses"; baseText = "El tiempo promedio de uso de una computadora";
+                P = `Se afirma que el tiempo promedio que un usuario conserva su computadora antes de reemplazarla es de $\\mu = ${mu0}$ ${unidad}. Si un analista de mercado quiere comprobar la hipótesis de que el tiempo de uso es ${compText} ${mu0} ${unidad}.`;
+            } else {
+                unidad = "calorías"; baseText = "La cantidad promedio de calorías del platillo";
+                P = `Un menú dietético exhibe que la cantidad de calorías de cierto platillo es de $\\mu = ${mu0}$ ${unidad}. Si se evalúa la hipótesis de que la cantidad promedio de calorías real es ${compText} ${mu0} ${unidad}.`;
+            }
+
+            // Opciones de configuración de H0 y H1 en su forma matemática
+            let correctH1_sign = H1_type === 0 ? ">" : (H1_type === 1 ? "<" : "\\cancel{=}");
+            let correctH0_sign = H1_type === 0 ? "\\cancel{>}" : (H1_type === 1 ? "\\cancel{<}" : "=");
+
+            let correctH1_text = H1_type === 0 ? `es mayor a ${mu0} ${unidad}` : (H1_type === 1 ? `es menor a ${mu0} ${unidad}` : `es diferente a ${mu0} ${unidad}`);
+            let correctH0_text = H1_type === 0 ? `no es mayor a ${mu0} ${unidad}` : (H1_type === 1 ? `no es menor a ${mu0} ${unidad}` : `es igual a ${mu0} ${unidad}`);
+
+            window.solucionContexto = {
+                mu0, H1_type, compText, baseText, unidad, correctH1_sign, correctH0_sign, correctH1_text, correctH0_text
+            };
+
+            let signOptionsH0 = ["\\cancel{>}", "\\cancel{<}", "="];
+            let signOptionsH1 = [">", "<", "\\cancel{=}"];
+
+            let htmlH0 = signOptionsH0.map((s, index) => `
+                <label class="opcion-item" for="h0_${index}">
+                    <input type="radio" name="hipotesis_h0" id="h0_${index}" value="${s}">
+                    $H_0: \\mu ${s} ${mu0}$
+                </label>
+            `).join('');
+
+            let htmlH1 = signOptionsH1.map((s, index) => `
+                <label class="opcion-item" for="h1_${index}">
+                    <input type="radio" name="hipotesis_h1" id="h1_${index}" value="${s}">
+                    $H_1: \\mu ${s} ${mu0}$
+                </label>
+            `).join('');
+
+            let textOptionsH0 = [
+                `no es mayor a ${mu0} ${unidad}`,
+                `no es menor a ${mu0} ${unidad}`,
+                `es igual a ${mu0} ${unidad}`
+            ];
+
+            let textOptionsH1 = [
+                `es mayor a ${mu0} ${unidad}`,
+                `es menor a ${mu0} ${unidad}`,
+                `es diferente a ${mu0} ${unidad}`
+            ];
+
+            let htmlH0_text = textOptionsH0.map((t, index) => `
+                <label class="opcion-item" for="h0t_${index}">
+                    <input type="radio" name="hipotesis_h0_text" id="h0t_${index}" value="${t}">
+                    $H_0: $ ${baseText} ${t}
+                </label>
+            `).join('');
+
+            let htmlH1_text = textOptionsH1.map((t, index) => `
+                <label class="opcion-item" for="h1t_${index}">
+                    <input type="radio" name="hipotesis_h1_text" id="h1t_${index}" value="${t}">
+                    $H_1: $ ${baseText} ${t}
+                </label>
+            `).join('');
+
+            return `
+                <div class="pregunta-abierta" id="parte1">
+                    <h3>Parte 1: Declaración de las hipótesis</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.6;">${P}</p>
+                    
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><strong>Selecciona la hipótesis nula ($H_0$):</strong></p>
+                            <div class="opciones-container">
+                                ${htmlH0}
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><strong>Selecciona la hipótesis alternativa ($H_1$):</strong></p>
+                            <div class="opciones-container">
+                                ${htmlH1}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pregunta-abierta" id="parte1b" style="display: none; border-left: 6px solid #28a745;">
+                    <h3>Parte 1b: Interpretación en Texto</h3>
+                    <p>Ahora selecciona cómo se leen estas mismas hipótesis en el contexto del problema:</p>
+                    
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 20px;">
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><strong>Texto de la hipótesis nula ($H_0$):</strong></p>
+                            <div class="opciones-container">
+                                ${htmlH0_text}
+                            </div>
+                        </div>
+                        <div style="flex: 1; min-width: 250px;">
+                            <p><strong>Texto de la hipótesis alternativa ($H_1$):</strong></p>
+                            <div class="opciones-container">
+                                ${htmlH1_text}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generarParte2() {
+            let mu0 = window.solucionContexto.mu0;
+            let n = Math.floor(Math.random() * 3) + 5; // 5 a 7 datos
+            let datos = [];
+            let suma = 0;
+            for (let i = 0; i < n; i++) {
+                // Generar datos cercanos a la media poblacional, con algo de variación
+                let val = mu0 + Math.floor((Math.random() - 0.5) * 20);
+                datos.push(val);
+                suma += val;
+            }
+
+            let promedio = suma / n;
+            let difCuadrados = [];
+            let sumaCuadrados = 0;
+
+            for (let i = 0; i < n; i++) {
+                let dif2 = Math.pow(datos[i] - promedio, 2);
+                difCuadrados.push(dif2);
+                sumaCuadrados += dif2;
+            }
+
+            let s = Math.sqrt(sumaCuadrados / (n - 1));
+
+            window.solucionContexto.datos = datos;
+            window.solucionContexto.n = n;
+            window.solucionContexto.suma = suma;
+            window.solucionContexto.promedio = promedio;
+            window.solucionContexto.difCuadrados = difCuadrados;
+            window.solucionContexto.sumaCuadrados = sumaCuadrados;
+            window.solucionContexto.s = s;
+
+            // Formatear los datos como un texto separado por comas
+            let textDatos = datos.join(', ');
+
+            return `
+                <div class="pregunta-abierta" id="parte2" style="border-left: 6px solid #007bff; margin-top: 20px;">
+                    <h3>Parte 2: Cálculo de la Media y Desviación Estándar</h3>
+                    <p>Se tomó una muestra aleatoria de tamaño $n = ${n}$ para analizar la hipótesis planteada. Los datos obtenidos son los siguientes:</p>
+                    <p style="font-size: 1.2rem; font-weight: bold; text-align: center; padding: 10px; background: #e9ecef; border-radius: 5px;">
+                        ${textDatos}
+                    </p>
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <strong>a) Suma Total ($\\sum x_i$): </strong> <math-field id="mf_suma"></math-field>
+                        </div>
+                        <div>
+                            <strong>b) Promedio ($\\bar{x}$): </strong> <math-field id="mf_promedio"></math-field>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 15px;"><strong>c)</strong> Calcula y completa la siguiente tabla utilizando el promedio anterior para obtener la desviación estándar:</p>
+                    
+                    <table style="width:100%; text-align: center; border-collapse: collapse; margin-top: 15px;">
+                        <thead>
+                            <tr style="background:#f1f1f1;">
+                                <th style="border: 1px solid #ccc; padding: 8px;">Dato ($x_i$)</th>
+                                <th style="border: 1px solid #ccc; padding: 8px;">$(x_i - \\bar{x})^2$</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 8px;">$x_1 = ${datos[0]}$</td>
+                                <td style="border: 1px solid #ccc; padding: 8px;"><math-field id="mf_dif1"></math-field></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #ccc; padding: 8px;">$x_2 = ${datos[1]}$</td>
+                                <td style="border: 1px solid #ccc; padding: 8px;"><math-field id="mf_dif2"></math-field></td>
+                            </tr>
+                            <tr id="filas_ocultas" style="display: none;">
+                                <td colspan="2" style="border: 1px solid #ccc; padding: 8px; font-style: italic; background:#fafafa;">
+                                    (Resto de los datos calculados automáticamente una vez revisados estos dos ejemplos)
+                                    <br>
+                                    <div id="resto_calculos"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <strong>d) Suma de las diferencias al cuadrado ($\\sum (x_i-\\bar{x})^2$): </strong> <math-field id="mf_suma_cuadrados"></math-field>
+                        </div>
+                        <div>
+                            <strong>e) Desviación estándar de la muestra ($S_x = \\sqrt{\\frac{\\sum (x_i-\\bar{x})^2}{n-1}}$): </strong> <math-field id="mf_s"></math-field>
+                        </div>
+                    </div>
+
+                    <div id="resultado_2" class="feedback-msg" style="display: none;"></div>
+                    <button id="btn_revisar_2" class="btn-modern" style="background-color: #007bff;" onclick="window.accionR2P(2)">Revisar Cálculos</button>
+                    
+                    <div id="parte2b" style="display: none; margin-top:20px; padding:15px; background: #e8f4f8; border-radius: 6px;">
+                        <p><strong>Resultados finales verificados:</strong></p>
+                        <p>$\\bar{x} = ${promedio.toFixed(4)}$</p>
+                        <p>$S_x = ${s.toFixed(4)}$</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generarParte3() {
+            let res = tlacu.stat.t_test(
+                window.solucionContexto.mu0,
+                window.solucionContexto.datos,
+                window.solucionContexto.H1_type
+            );
+            window.solucionContexto.t_calc = res[0];
+            window.solucionContexto.p_value = res[1];
+
+            return `
+                <div class="pregunta-abierta" id="parte3" style="border-left: 6px solid #6f42c1; margin-top: 20px;">
+                    <h3>Parte 3: Estadístico de Prueba y Valor p</h3>
+                    <p>Utiliza la fórmula manual para obtener el valor del estadístico de prueba $t_{calc}$, y luego apóyate en tu calculadora (TI-84 o similar) para encontrar el <strong>p-value</strong> correspondiente a tu prueba de hipótesis.</p>
+                    
+                    <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <strong>a) Estadístico de prueba ($t_{calc} = \\frac{\\bar{x} - \\mu_0}{\\frac{S_x}{\\sqrt{n}}}$): </strong> <math-field id="mf_tcalc"></math-field>
+                        </div>
+                        <div>
+                            <strong>b) Valor p (p-value): </strong> <math-field id="mf_pvalue"></math-field>
+                        </div>
+                    </div>
+
+                    <div id="resultado_3" class="feedback-msg" style="display: none;"></div>
+                    <button id="btn_revisar_3" class="btn-modern" style="background-color: #6f42c1;" onclick="window.accionR2P(3)">Revisar Estadísticos</button>
+                    
+                    <div id="parte3b" style="display: none; margin-top:20px; padding:15px; background: #f4ecf8; border-radius: 6px;">
+                        <p><strong>Resultados verificados:</strong></p>
+                        <p>$t_{calc} = ${window.solucionContexto.t_calc.toFixed(4)}$</p>
+                        <p>$p\\text{-value} = ${window.solucionContexto.p_value.toFixed(4)}$</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generarParte4() {
+            let p_val = window.solucionContexto.p_value;
+            let alpha = 0.05;
+            window.solucionContexto.alpha = alpha;
+            let rechazaH0 = p_val < alpha;
+            window.solucionContexto.rechazaH0 = rechazaH0;
+
+            return `
+                <div class="pregunta-abierta" id="parte4" style="border-left: 6px solid #e83e8c; margin-top: 20px;">
+                    <h3>Parte 4: Conclusión Final</h3>
+                    <p>Usando un nivel de significancia de $\\alpha = ${alpha}$, compara con tu p-value calculado y toma una decisión respecto a la Hipótesis Nula ($H_0$).</p>
+                    
+                    <div style="margin-top: 20px;">
+                        <p><strong>¿Qué decisión tomas respecto a $H_0$?</strong></p>
+                        <div class="opciones-container">
+                            <label class="opcion-item" for="decision_rechazar">
+                                <input type="radio" name="decision_h0" id="decision_rechazar" value="rechazar">
+                                Rechazamos $H_0$ (Hay evidencia suficiente a favor de $H_1$)
+                            </label>
+                            <label class="opcion-item" for="decision_norechazar">
+                                <input type="radio" name="decision_h0" id="decision_norechazar" value="norechazar">
+                                No rechazamos $H_0$ (No hay evidencia suficiente a favor de $H_1$)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="resultado_4" class="feedback-msg" style="display: none;"></div>
+                    <button id="btn_revisar_4" class="btn-modern" style="background-color: #e83e8c;" onclick="window.accionR2P(4)">Revisar Conclusión</button>
+                    <div id="seccion_siguiente" style="display: none; margin-top: 20px; text-align: right; border-top: 2px solid #ccc; padding-top: 20px;">
+                        <button class="btn-modern" style="background-color: #28a745;" onclick="window.siguienteEjercicio()">Continuar</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.siguienteEjercicio = function () {
+            // Guardar ejercicio actual en el historial si es > 0
+            if (window.estadoApp.ejercicioActual > 0) {
+                let divHistorial = document.getElementById('historial-container');
+                let copyHTML = document.getElementById('ejercicio-container').innerHTML;
+                let idSuffix = '_hist_' + window.estadoApp.ejercicioActual;
+
+                // Renombrar IDs y Names para evitar conflictos
+                copyHTML = copyHTML.replace(/id="([^"]+)"/g, 'id="$1' + idSuffix + '"');
+                copyHTML = copyHTML.replace(/name="([^"]+)"/g, 'name="$1' + idSuffix + '"');
+                copyHTML = copyHTML.replace(/for="([^"]+)"/g, 'for="$1' + idSuffix + '"');
+
+                divHistorial.insertAdjacentHTML('beforeend', `
+                    <div style="margin-bottom: 30px; border: 2px dashed #17a2b8; padding: 20px; border-radius: 8px;">
+                        <h4 style="color:#17a2b8;">--- Ejercicio ${window.estadoApp.ejercicioActual} Contestado ---</h4>
+                        ${copyHTML}
+                    </div>`);
+            }
+
+            window.estadoApp.ejercicioActual++;
+            if (window.estadoApp.ejercicioActual > window.estadoApp.totalEjercicios) {
+                // Finalizó todo
+                let date = new Date();
+                let fHinicio = window.estadoApp.Hinicio[0].toString().padStart(2, '0') + ":" + window.estadoApp.Hinicio[1].toString().padStart(2, '0');
+                let fHfin = date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0');
+                let fFecha = window.estadoApp.fecha[0].toString().padStart(2, '0') + "/" + window.estadoApp.fecha[1].toString().padStart(2, '0') + "/" + date.getFullYear();
+
+                let calificacion = Math.round((window.estadoApp.puntaje / (window.estadoApp.totalEjercicios * 5)) * 100);
+
+                // Insertamos el reporte de impresion en la parte superoior del historial o en el mismo contenedor
+                document.getElementById('ejercicio-container').innerHTML = `
+                    <div class="pregunta-abierta" style="text-align: center; border-left: 6px solid #28a745; margin-bottom: 20px;" id="reporte-final">
+                        <h2 style="color: #28a745;">¡Actividad Completada!</h2>
+                        <div style="font-size: 1.2rem; text-align: left; background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <p><strong>Alumno(a):</strong> ${window.estadoApp.nombre}</p>
+                            <p><strong>Fecha de realización:</strong> ${fFecha}</p>
+                            <p><strong>Hora de inicio:</strong> ${fHinicio}</p>
+                            <p><strong>Hora de finalización:</strong> ${fHfin}</p>
+                        </div>
+                        <p style="font-size: 2rem; font-weight: bold; color: #007bff; margin: 20px 0;">Calificación Final: ${calificacion} / 100</p>
+                        
+                        <div style="margin-top: 20px; padding: 20px; background-color: #fff3cd; border-radius: 8px; border: 1px solid #ffeeba;" class="no-print">
+                            <p style="font-weight:bold; color: #856404; font-size:1.1rem;">
+                                Por favor, presiona el botón de abajo e imprime toda esta página hacia un archivo PDF. 
+                                ¡Envía ese PDF a tu docente como evidencia de tu trabajo!
+                            </p>
+                            <br>
+                            <button class="btn-modern" style="background-color: #ffc107; color: #212529; font-weight: bold; margin-top: 15px; font-size:1.1rem; border: 2px solid #e0a800;" onclick="window.print()">
+                                Imprimir a PDF (Evidencia)
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('estado-ui').style.display = 'none'; // ocultar header interactivo superior
+
+                // Agregamos regla de impresion dinamica para ocultar elementos inncesarios en el pdf
+                let printStyle = document.createElement('style');
+                printStyle.innerHTML = "@media print { .no-print { display: none !important; } button { display: none !important; } }";
+                document.head.appendChild(printStyle);
+
+                // Mover reporte al principio
+                let historial = document.getElementById('historial-container');
+                historial.insertBefore(document.getElementById('reporte-final'), historial.firstChild);
+                document.getElementById('ejercicio-container').innerHTML = ""; // Limpiarlo despues de mover
+
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+                return;
+            }
+
+            document.getElementById('label_ejercicio').innerText = window.estadoApp.ejercicioActual;
+
+            const container = document.getElementById('ejercicio-container');
+            const parte1HTML = generarParte1();
+
+            container.innerHTML = `
+                ${parte1HTML}
+                <div id="resultado_1" class="feedback-msg" style="display: none;"></div>
+                <button id="btn_revisar_1" class="btn-modern" onclick="window.accionR2P(1)">Revisar Parte 1</button>
+
+                <div id="resultado_1b" class="feedback-msg" style="display: none;"></div>
+                <button id="btn_revisar_1b" class="btn-modern" onclick="window.accionR2P(1.5)" style="display: none;">Revisar Interpretación</button>
+            `;
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        };
+
+        async function renderizar() {
+            // function intentionally left for any other manual render triggers
+        }
+
+        window.accionR2P = function (paso) {
+            if (paso === 1) {
+                const radiosH0 = document.getElementsByName('hipotesis_h0');
+                const radiosH1 = document.getElementsByName('hipotesis_h1');
+
+                let userH0 = null;
+                for (let r of radiosH0) { if (r.checked) { userH0 = r.value; break; } }
+
+                let userH1 = null;
+                for (let r of radiosH1) { if (r.checked) { userH1 = r.value; break; } }
+
+                const resultadoDiv = document.getElementById('resultado_1');
+                resultadoDiv.style.display = 'block';
+
+                if (!userH0 || !userH1) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Por favor, selecciona una opción tanto para $H_0$ como para $H_1$ antes de revisar.";
+                    return;
+                }
+
+                let isH0Correct = userH0 === window.solucionContexto.correctH0_sign;
+                let isH1Correct = userH1 === window.solucionContexto.correctH1_sign;
+
+                // Marcar con verde o rojo la opción seleccionada
+                let selectedH0Radio = Array.from(radiosH0).find(r => r.checked);
+                let selectedH1Radio = Array.from(radiosH1).find(r => r.checked);
+                if (selectedH0Radio) selectedH0Radio.parentElement.classList.add(isH0Correct ? 'correct-choice' : 'incorrect-choice');
+                if (selectedH1Radio) selectedH1Radio.parentElement.classList.add(isH1Correct ? 'correct-choice' : 'incorrect-choice');
+
+                // Deshabilitar botones incondicionalmente tras revisar
+                for (let r of radiosH0) r.disabled = true;
+                for (let r of radiosH1) r.disabled = true;
+                document.getElementById('btn_revisar_1').style.display = 'none';
+
+                if (isH0Correct && isH1Correct) {
+                    resultadoDiv.className = 'feedback-msg feedback-success';
+                    resultadoDiv.innerHTML = "¡Correcto! Has definido las hipótesis matemáticas adecuadamente.";
+                    window.actualizarPuntaje(1);
+                } else if (!isH0Correct && isH1Correct) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "La hipótesis alternativa ($H_1$) es correcta, pero la hipótesis nula ($H_0$) no lo es.";
+                } else if (isH0Correct && !isH1Correct) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "La hipótesis nula ($H_0$) es correcta, pero la hipótesis alternativa ($H_1$) no lo es. Revisa la palabra clave (" + window.solucionContexto.compText + ").";
+                } else {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Ambas hipótesis son incorrectas.";
+                }
+
+                // Mostrar parte de texto independientemente
+                document.getElementById('parte1b').style.display = 'block';
+                document.getElementById('btn_revisar_1b').style.display = 'inline-block';
+                if (window.MathJax) MathJax.typesetPromise();
+            } else if (paso === 1.5) {
+                const radiosH0T = document.getElementsByName('hipotesis_h0_text');
+                const radiosH1T = document.getElementsByName('hipotesis_h1_text');
+
+                let userH0T = null;
+                for (let r of radiosH0T) { if (r.checked) { userH0T = r.value; break; } }
+
+                let userH1T = null;
+                for (let r of radiosH1T) { if (r.checked) { userH1T = r.value; break; } }
+
+                const resultadoDiv = document.getElementById('resultado_1b');
+                resultadoDiv.style.display = 'block';
+
+                if (!userH0T || !userH1T) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Por favor, selecciona una opción para ambas interpretaciones.";
+                    return;
+                }
+
+                let isH0TCorrect = userH0T === window.solucionContexto.correctH0_text;
+                let isH1TCorrect = userH1T === window.solucionContexto.correctH1_text;
+
+                // Marcar selección de texto con verde o rojo
+                let selectedH0TRadio = Array.from(radiosH0T).find(r => r.checked);
+                let selectedH1TRadio = Array.from(radiosH1T).find(r => r.checked);
+                if (selectedH0TRadio) selectedH0TRadio.parentElement.classList.add(isH0TCorrect ? 'correct-choice' : 'incorrect-choice');
+                if (selectedH1TRadio) selectedH1TRadio.parentElement.classList.add(isH1TCorrect ? 'correct-choice' : 'incorrect-choice');
+
+                // Deshabilitar incondicionalmente
+                for (let r of radiosH0T) r.disabled = true;
+                for (let r of radiosH1T) r.disabled = true;
+                document.getElementById('btn_revisar_1b').style.display = 'none';
+
+                if (isH0TCorrect && isH1TCorrect) {
+                    resultadoDiv.className = 'feedback-msg feedback-success';
+                    resultadoDiv.innerHTML = "¡Excelente! Has interpretado correctamente ambas hipótesis.";
+                    window.actualizarPuntaje(1);
+                } else if (!isH0TCorrect && isH1TCorrect) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "La interpretación de $H_1$ es correcta, pero la de $H_0$ no lo es.";
+                } else if (isH0TCorrect && !isH1TCorrect) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "La interpretación de $H_0$ es correcta, pero la de $H_1$ no lo es.";
+                } else {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Ambas interpretaciones son incorrectas.";
+                }
+
+                // Desplegar Parte 2
+                document.getElementById('ejercicio-container').insertAdjacentHTML('beforeend', generarParte2());
+                if (window.MathJax) MathJax.typesetPromise();
+
+            } else if (paso === 2) {
+                // Validación para la Parte 2
+                const mfSuma = document.getElementById('mf_suma').value;
+                const mfPromedio = document.getElementById('mf_promedio').value;
+                const mfDif1 = document.getElementById('mf_dif1').value;
+                const mfDif2 = document.getElementById('mf_dif2').value;
+                const mfSumaCuadrados = document.getElementById('mf_suma_cuadrados').value;
+                const mfS = document.getElementById('mf_s').value;
+
+                const resultadoDiv = document.getElementById('resultado_2');
+                resultadoDiv.style.display = 'block';
+
+                if (!mfSuma || !mfPromedio || !mfDif1 || !mfDif2 || !mfSumaCuadrados || !mfS) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Por favor, completa todas las cajitas numéricas (Suma, Promedio, tabla, suma de cuadrados y desviación estándar).";
+                    return;
+                }
+
+                const esCorrecto = (valUsuario, valReal) => {
+                    // Diferencia absoluta pequeña
+                    if (Math.abs(valUsuario - valReal) <= 0.05) return true;
+                    // O un error relativo admisible para ~3 cifras significativas (alrededor del 0.8%)
+                    if (valReal !== 0 && Math.abs(valUsuario - valReal) / Math.abs(valReal) < 0.008) return true;
+                    return false;
+                };
+
+                // Evaluar utilizando parseFloat
+                let userSuma = parseFloat(mfSuma);
+                let userPromedio = parseFloat(mfPromedio);
+                let userDif1 = parseFloat(mfDif1);
+                let userDif2 = parseFloat(mfDif2);
+                let userSumaCuadrados = parseFloat(mfSumaCuadrados);
+                let userS = parseFloat(mfS);
+
+                let errores = [];
+
+                if (!esCorrecto(userSuma, window.solucionContexto.suma)) {
+                    errores.push("La suma total es incorrecta.");
+                    document.getElementById('mf_suma').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_suma').style.backgroundColor = "#d4edda";
+
+                if (!esCorrecto(userPromedio, window.solucionContexto.promedio)) {
+                    errores.push("El promedio es incorrecto.");
+                    document.getElementById('mf_promedio').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_promedio').style.backgroundColor = "#d4edda";
+
+                // Para las diferencias al cuadrado y sumas, el alumno podría haber usado el promedio exacto o su promedio redondeado
+                let dif1Exacta = window.solucionContexto.difCuadrados[0];
+                let dif1UsandoRedondeado = Math.pow(window.solucionContexto.datos[0] - userPromedio, 2);
+                if (!esCorrecto(userDif1, dif1Exacta) && !esCorrecto(userDif1, dif1UsandoRedondeado)) {
+                    errores.push(`El cálculo de (x1 - promedio) al cuadrado para ${window.solucionContexto.datos[0]} es incorrecto.`);
+                    document.getElementById('mf_dif1').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_dif1').style.backgroundColor = "#d4edda";
+
+                let dif2Exacta = window.solucionContexto.difCuadrados[1];
+                let dif2UsandoRedondeado = Math.pow(window.solucionContexto.datos[1] - userPromedio, 2);
+                if (!esCorrecto(userDif2, dif2Exacta) && !esCorrecto(userDif2, dif2UsandoRedondeado)) {
+                    errores.push(`El cálculo de (x2 - promedio) al cuadrado para ${window.solucionContexto.datos[1]} es incorrecto.`);
+                    document.getElementById('mf_dif2').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_dif2').style.backgroundColor = "#d4edda";
+
+                // Validar d) suma de cuadrados
+                let sumaCuadradosUsandoRedondeado = 0;
+                window.solucionContexto.datos.forEach(dato => {
+                    sumaCuadradosUsandoRedondeado += Math.pow(dato - userPromedio, 2);
+                });
+
+                if (!esCorrecto(userSumaCuadrados, window.solucionContexto.sumaCuadrados) && !esCorrecto(userSumaCuadrados, sumaCuadradosUsandoRedondeado)) {
+                    errores.push("La suma de las diferencias al cuadrado es incorrecta.");
+                    document.getElementById('mf_suma_cuadrados').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_suma_cuadrados').style.backgroundColor = "#d4edda";
+
+                // Validar e) desviación estándar
+                let sUsandoRedondeado = Math.sqrt(sumaCuadradosUsandoRedondeado / (window.solucionContexto.n - 1));
+                if (!esCorrecto(userS, window.solucionContexto.s) && !esCorrecto(userS, sUsandoRedondeado)) {
+                    errores.push("La desviación estándar (Sx) es incorrecta.");
+                    document.getElementById('mf_s').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_s').style.backgroundColor = "#d4edda";
+
+
+                if (errores.length === 0) {
+                    resultadoDiv.className = 'feedback-msg feedback-success';
+                    resultadoDiv.innerHTML = "¡Excelente! Has realizado los cálculos correctamente.";
+                    window.actualizarPuntaje(1);
+                } else {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Tienes algunos errores:<br>- " + errores.join("<br>- ");
+                }
+
+                document.getElementById('btn_revisar_2').style.display = 'none';
+
+                // Mostrar resto de la tabla y resultados calculándolas con la info real
+                let hResto = '';
+                for (let j = 2; j < window.solucionContexto.n; j++) {
+                    hResto += `( $${window.solucionContexto.datos[j]} - \\bar{x}$ )² = ${window.solucionContexto.difCuadrados[j].toFixed(4)} <br>`;
+                }
+                document.getElementById('resto_calculos').innerHTML = hResto;
+                document.getElementById('filas_ocultas').style.display = 'table-row';
+                document.getElementById('parte2b').style.display = 'block';
+
+                // Desplegar Parte 3
+                document.getElementById('ejercicio-container').insertAdjacentHTML('beforeend', generarParte3());
+                if (window.MathJax) MathJax.typesetPromise();
+
+            } else if (paso === 3) {
+                const mfTcalc = document.getElementById('mf_tcalc').value;
+                const mfPvalue = document.getElementById('mf_pvalue').value;
+
+                const resultadoDiv = document.getElementById('resultado_3');
+                resultadoDiv.style.display = 'block';
+
+                if (!mfTcalc || !mfPvalue) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Por favor, completa los campos de $t_{calc}$ y p-value.";
+                    return;
+                }
+
+                const esCorrecto = (valUsuario, valReal) => {
+                    if (Math.abs(valUsuario - valReal) <= 0.05) return true;
+                    // Error relativo para ~3 cifras significativas
+                    if (valReal !== 0 && Math.abs(valUsuario - valReal) / Math.abs(valReal) < 0.008) return true;
+                    return false;
+                };
+
+                let userTcalc = parseFloat(mfTcalc);
+                let userPvalue = parseFloat(mfPvalue);
+
+                let errores = [];
+
+                // Validamos la t: Podría usar el promedio y desviación exactos, o los valores redondeados de la tabla
+                let tExacta = window.solucionContexto.t_calc;
+                let tRedondeada = (window.solucionContexto.promedio - window.solucionContexto.mu0) / (window.solucionContexto.s / Math.sqrt(window.solucionContexto.n));
+
+                if (!esCorrecto(userTcalc, tExacta) && !esCorrecto(userTcalc, tRedondeada)) {
+                    errores.push("El estadístico de prueba ($t_{calc}$) es incorrecto.");
+                    document.getElementById('mf_tcalc').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_tcalc').style.backgroundColor = "#d4edda";
+
+                if (!esCorrecto(userPvalue, window.solucionContexto.p_value)) {
+                    errores.push("El p-value es incorrecto.");
+                    document.getElementById('mf_pvalue').style.backgroundColor = "#f8d7da";
+                } else document.getElementById('mf_pvalue').style.backgroundColor = "#d4edda";
+
+                if (errores.length === 0) {
+                    resultadoDiv.className = 'feedback-msg feedback-success';
+                    resultadoDiv.innerHTML = "¡Excelente! Has calculado correctamente el estadístico de prueba y el p-value.";
+                    window.actualizarPuntaje(1);
+                } else {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Tienes algunos errores:<br>- " + errores.join("<br>- ");
+                }
+
+                // Estos pasos ocurren siempre, independientemente de si hay errores
+                document.getElementById('btn_revisar_3').style.display = 'none';
+                document.getElementById('parte3b').style.display = 'block';
+
+                // Desplegar parte 4 aquí
+                document.getElementById('ejercicio-container').insertAdjacentHTML('beforeend', generarParte4());
+
+                if (window.MathJax) MathJax.typesetPromise();
+            } else if (paso === 4) {
+                const radiosDecision = document.getElementsByName('decision_h0');
+                let userDecision = null;
+                for (let r of radiosDecision) {
+                    if (r.checked) {
+                        userDecision = r.value;
+                        break;
+                    }
+                }
+
+                const resultadoDiv = document.getElementById('resultado_4');
+                resultadoDiv.style.display = 'block';
+
+                if (!userDecision) {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "Por favor, selecciona una decisión antes de revisar.";
+                    return;
+                }
+
+                let esCorrecto = (userDecision === 'rechazar' && window.solucionContexto.rechazaH0) ||
+                    (userDecision === 'norechazar' && !window.solucionContexto.rechazaH0);
+
+                let selectedRadio = Array.from(radiosDecision).find(r => r.checked);
+                if (selectedRadio) {
+                    selectedRadio.parentElement.classList.add(esCorrecto ? 'correct-choice' : 'incorrect-choice');
+                }
+
+                if (esCorrecto) {
+                    resultadoDiv.className = 'feedback-msg feedback-success';
+                    resultadoDiv.innerHTML = "¡Excelente! Has llegado a la conclusión correcta para esta prueba de hipótesis.";
+                    window.actualizarPuntaje(1);
+                } else {
+                    resultadoDiv.className = 'feedback-msg feedback-error';
+                    resultadoDiv.innerHTML = "La conclusión no es correcta. Recuerda que si el p-value es menor a $\\alpha$, se rechaza $H_0$.";
+                }
+
+                document.getElementById('btn_revisar_4').style.display = 'none';
+                for (let r of radiosDecision) r.disabled = true;
+
+                // Desplegar la sección continuar
+                document.getElementById('seccion_siguiente').style.display = 'block';
+
+                if (window.MathJax) MathJax.typesetPromise();
+            }
+        };
+
+        // En lugar de renderizar automático, esperamos evento
+        // renderizar();
+
+    </script>
+</body>
+
+</html>

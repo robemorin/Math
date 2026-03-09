@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <style>
+    :root {
+      --color-primary: #fdad00;
+      --color-primary-text: #414141;
+      --color-bg: #ffffff;
+      --color-text: #2c3e50;
+      --color-border: #ccc;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    header img {
+      width: 120px;
+    }
+
+    h1 {
+      color: var(--color-primary-text);
+      margin: 1rem 0 0.5rem;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .card {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem;
+      border-left: 4px solid var(--color-primary);
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+    }
+
+    .card h3 {
+      margin: 0 0 0.5rem;
+    }
+
+    a {
+      color: var(--color-primary-text);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @media (min-width: 768px) {
+      header {
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      header img {
+        margin-right: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img id="icono" src="../src/icon2.png" alt="Raiz2pi" />
+    <div>
+      <h1 id="nombreCurso"></h1>
+      <p id="Info">Contenido</p>
+    </div>
+  </header>
+  <main id="datos">
+    <h2>Espere un momento</h2>
+    <p>Si no recarga puede es posible que no tenga internet o no sea válido.</p>
+  </main>
+  <main id="oculto" style="display: none;">
+    Datos no cargados
+
+  </main>
+
+  
+ <script type="module">
+  import { autenticar } from './src/main.js';
+  autenticar(); // Correcto: se llama después de que el módulo esté cargado
+
+  document.getElementById('icono').addEventListener('dblclick',(e)=>{
+    console.log('doble click')
+    if(document.getElementById('oculto').style.display=='block') document.getElementById('oculto').style.display='none'
+    else    document.getElementById('oculto').style.display='block'
+  })
+</script>
+   
+</body>
+</html>
