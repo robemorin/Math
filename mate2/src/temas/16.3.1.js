@@ -30,14 +30,10 @@ function generarParametrosValidos() {
         let r = Math.random();
         if (r < 0.3) {
             H1_str = '!=';
+        } else if (mean1 > mean2) {
+            H1_str = '>';
         } else {
-            if (mean1 > mean2) {
-                H1_str = '>';
-            } else if (mean1 < mean2) {
-                H1_str = '<';
-            } else {
-                H1_str = '!=';
-            }
+            H1_str = '<';
         }
 
         let res = tlacu.stat.two_sampTTest(mean1, sd1, n1, mean2, sd2, n2, H1_str, pooled);
@@ -46,9 +42,8 @@ function generarParametrosValidos() {
         df = res[2];
 
         askPValue = Math.random() < 0.5;
-
         // Validamos p < 0.5 para que la hipótesis alternativa sea factible y no muy contradictoria, ademas se cuida p >= 1e-4
-    } while (p >= 0.5 || (askPValue && p < 1e-4));
+    } while (p >= 0.5 || p < 1e-4);
 
     let ans = askPValue ? p : t;
     let ansStr = tlacu.cs(ans, 3);
@@ -63,7 +58,7 @@ export async function pregunta(i, code) {
         let P = "";
 
         let compText = H1_str === '>' ? "mayor al de" : (H1_str === '<' ? "menor al de" : "diferente al de");
-        let pooledText = pooled ? "se asume que las varianzas poblacionales son similares (iguales)" : "no se asume que las varianzas poblacionales sean similares";
+        let pooledText = pooled ? "se asume que las varianzas poblacionales son similares (iguales)" : "no se asume que las varianzas poblacionales sean similares (diferentes)";
         let queryText = askPValue ? "el valor $p$ (p-value)" : "el valor del estadístico de prueba ($t$)";
 
         if (a < 1 / 4) {
