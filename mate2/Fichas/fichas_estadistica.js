@@ -72,8 +72,6 @@ const f_estadistica = {
 
 
 
-                    //VAmos a aqui ----------------------------------------------
-
                     return [Pregunta, Solucion]
                 }
             }, {
@@ -246,102 +244,166 @@ const f_estadistica = {
             topico: [{
                 Nombre: "prueba t student",
                 func: function () {
+                    // Función auxiliar para obtener un contexto aleatorio
+                    function getContexto() {
+                        let context = Math.floor(Math.random() * 14);
+                        let text1, text2, baseText, unidad;
 
+                        if (context === 0) {
+                            unidad = "gramos"; baseText = "el peso";
+                            text1 = "la Máquina A"; text2 = "la Máquina B";
+                        } else if (context === 1) {
+                            unidad = "horas"; baseText = "el tiempo de vida";
+                            text1 = "la Marca 1"; text2 = "la Marca 2";
+                        } else if (context === 2) {
+                            unidad = "km/l"; baseText = "el rendimiento";
+                            text1 = "el Modelo X"; text2 = "el Modelo Y";
+                        } else if (context === 3) {
+                            unidad = "$^{\\circ}\\text{C}$"; baseText = "la temperatura";
+                            text1 = "el Proceso Antiguo"; text2 = "el Proceso Nuevo";
+                        } else if (context === 4) {
+                            unidad = "pesos"; baseText = "el gasto diario";
+                            text1 = "los Estudiantes de primer año"; text2 = "los Estudiantes de último año";
+                        } else if (context === 5) {
+                            unidad = "ml"; baseText = "el contenido";
+                            text1 = "la Planta Lote 1"; text2 = "la Planta Lote 2";
+                        } else if (context === 6) {
+                            unidad = "minutos"; baseText = "el tiempo de espera";
+                            text1 = "la Sucursal 1"; text2 = "la Sucursal 2";
+                        } else if (context === 7) {
+                            unidad = "kg"; baseText = "la resistencia";
+                            text1 = "el Cable Tipo A"; text2 = "el Cable Tipo B";
+                        } else if (context === 8) {
+                            unidad = "días"; baseText = "el tiempo de vida";
+                            text1 = "los Focos Lote X"; text2 = "los Focos Lote Y";
+                        } else if (context === 9) {
+                            unidad = "ml"; baseText = "la cantidad de jugo";
+                            text1 = "la Envasadora 1"; text2 = "la Envasadora 2";
+                        } else if (context === 10) {
+                            unidad = "cm"; baseText = "la longitud";
+                            text1 = "el Proveedor A"; text2 = "el Proveedor B";
+                        } else if (context === 11) {
+                            unidad = "puntos"; baseText = "el puntaje en el examen";
+                            text1 = "el Grupo Matutino"; text2 = "el Grupo Vespertino";
+                        } else if (context === 12) {
+                            unidad = "meses"; baseText = "el tiempo de uso";
+                            text1 = "el Dispositivo Gamma"; text2 = "el Dispositivo Delta";
+                        } else {
+                            unidad = "calorías"; baseText = "la cantidad de calorías";
+                            text1 = "la Receta Original"; text2 = "la Receta Modificada";
+                        }
 
-                    /*let datos=[ [21,21,26,25,28,24],
-                                [24,25,25,26,32,29]]*/
+                        return { text1, text2, baseText, unidad };
+                    }
+
+                    // --- GENERACIÓN DEL PROBLEMA 1 (Varianza No Agrupada) ---
+                    let ctx1 = getContexto();
                     let datos = [[], []]
                     let n = [Math.round(Math.random() * 10 + 5), Math.round(Math.random() * 10 + 5)]
-                    if (n[0] == n[1]) {
-                        ++n[1]
-                    }
-                    let dummy = [Math.random() * 20, Math.random() * 2]
+                    let dummy = [Math.random() * 20, Math.random() * 10 + 5]
 
-                    for (let k = 0; k < n[0]; ++k) datos[0].push(Math.round(dummy[0] + 1 / ((1 - Math.random()) * dummy[1])))
-                    for (let k = 0; k < n[1]; ++k) datos[1].push(Math.round(dummy[0] + 1 / ((1 - Math.random()) * dummy[1])))
+                    for (let k = 0; k < n[0]; ++k) datos[0].push(Math.round(dummy[0] + ((1 - Math.random()) * dummy[1])))
+                    for (let k = 0; k < n[1]; ++k) datos[1].push(Math.round(dummy[0] + ((1 - Math.random()) * dummy[1])))
 
+                    let m1 = datos[0].reduce((a, b) => a + b, 0) / n[0];
+                    let m2 = datos[1].reduce((a, b) => a + b, 0) / n[1];
+                    let s1 = Math.sqrt(datos[0].reduce((a, b) => a + Math.pow(b - m1, 2), 0) / (n[0] - 1));
+                    let s2 = Math.sqrt(datos[1].reduce((a, b) => a + Math.pow(b - m2, 2), 0) / (n[1] - 1));
+
+                    let gl = n[0] + n[1] - 2;
+                    let t_calc1 = (m1 - m2) / Math.sqrt((s1 * s1) / n[0] + (s2 * s2) / n[1]);
+
+                    let P1 = `Se desea comparar ${ctx1.baseText} de dos elementos distintos. Al obtener una muestra para evaluarlo, de ${ctx1.text1} se obtuvieron los siguientes valores (en ${ctx1.unidad}) y también se tomaron mediciones de ${ctx1.text2}.`;
 
                     let Pregunta = `
-        <h3>Fórmula</h3>
-        <p>La estadística de t-student para muestras pequeñas con misma cantidad de muestras y con misma desviación estándar similar, se calcula usando la siguiente fórmula:</p>
+        <p>Cuando <u>no se asume que las varianzas poblacionales son similares</u>, la estadística de prueba se calcula usando la siguiente fórmula:</p>
         <p>
             \\[
-            t_{calc} = \\frac{\\overline{x_1}-\\overline{x_2}}{\\sqrt{\\frac{S_1^2}{n_1}+\\frac{S_2^2}{n_2}}}
+            t_{calc} = \\frac{\\overline{x}_1-\\overline{x}_2}{\\sqrt{\\frac{S_1^2}{n_1}+\\frac{S_2^2}{n_2}}}
             \\]
         </p>
-        
     
         <div class="problema2">
-
-        1. Se desea aplicar la prueba de t-student para saber si existe uns diferencia significativa entre dos muestras con un nivel de significancia de 5%.
-        las muestra son las siguientes<br> <center>${tablaDatos(datos, ['muestra 1', 'muestra 2'])}</center>
-        
+        1. ${P1}
+        Se busca aplicar la prueba de t-Student para evaluar si existe una diferencia significativa entre ambas muestras, con un nivel de significancia de 5%.
+        Las muestras recopiladas son las siguientes:<br> <center>${tablaDatos(datos, [ctx1.text1, ctx1.text2])}</center>
         
         <ol class="FT_ol_a">
             <li>Escriba las hipótesis nula y alternativa <div>1</div></li>
-            <li>Escriba los grados de libertad. <div>1</div></li> 
-            <li>Escriba las desviaciones estándar. <div>1</div></li>
-            <li>Escriba el valor crítico de la prueba. <div>1</div></li>
+            <li>Escriba los grados de libertad (usando la aproximación $n_1 + n_2 - 2$). <div>1</div></li> 
+            <li>Escriba las medias y desviaciones estándar muestrales. <div>2</div></li>
             <li>Calcule el valor $t_{calc}$. <div>1</div></li>
-            <li>Realice una conclusión basado en sus respuestas anteriores. <div>1</div></li>
-            </ol><div class="page"></div>
+            <li>Obtenga el valor p (p-value). <div>1</div></li>
+            <li>Realice una conclusión basada en sus resultados anteriores. <div>1</div></li>
+            </ol></div><div class="page"></div>
             `
-                    let resp = tcalc_1(datos, true)
-                    let Solucion = `  (1b) gl = ${datos[0].length + datos[1].length - 2}
-                            (1c) S_1=${Math.sqrt(resp[3]).toPrecision(4)}, S_2=${Math.sqrt(resp[4]).toPrecision(4)}
-                            (1e) $t_{calc} = ${resp[0].toPrecision(4)}$
-                            `
+                    let test1 = tlacu.stat.two_sampTTest(datos[0], datos[1], '!=', false);
+                    let Solucion = `<div class="ans">
+                            <div>(1a) $H_0: \\mu_1 = \\mu_2$, $H_1: \\mu_1 \\neq \\mu_2$</div>
+                            <div>(1b) $gl = ${gl}$</div>
+                            <div>(1c) $\\overline{x}_1 = ${m1.toPrecision(4)}$, $S_1 = ${s1.toPrecision(4)}$<br>$\\overline{x}_2 = ${m2.toPrecision(4)}$, $S_2 = ${s2.toPrecision(4)}$</div>
+                            <div>(1d) $t_{calc} = \\frac{${m1.toPrecision(4)} - ${m2.toPrecision(4)}}{\\sqrt{\\frac{${(s1 * s1).toPrecision(4)}}{${n[0]}}+\\frac{${(s2 * s2).toPrecision(4)}}{${n[1]}}}} = ${t_calc1.toPrecision(4)}$</div>
+                            <div>(1e)$p \\approx ${test1[1].toPrecision(4)}$</div>
+                            </div>`
 
+                    // --- GENERACIÓN DEL PROBLEMA 2 (Varianza Agrupada) ---
+                    let ctx2 = getContexto();
                     datos = [[], []]
                     n = [Math.round(Math.random() * 10 + 5), Math.round(Math.random() * 10 + 5)]
-                    if (n[0] == n[1]) {
-                        ++n[1]
-                    }
-                    dummy = [Math.random() * 20, Math.random() * 2]
+                    for (let k = 0; k < n[0]; ++k) datos[0].push(Math.round(dummy[0] + ((1 - Math.random()) * dummy[1])))
+                    for (let k = 0; k < n[1]; ++k) datos[1].push(Math.round(dummy[0] + ((1 - Math.random()) * dummy[1])))
 
-                    for (let k = 0; k < n[0]; ++k) datos[0].push(Math.round(dummy[0] + 1 / ((1 - Math.random()) * dummy[1])))
-                    for (let k = 0; k < n[1]; ++k) datos[1].push(Math.round(dummy[0] + 1 / ((1 - Math.random()) * dummy[1])))
+                    m1 = datos[0].reduce((a, b) => a + b, 0) / n[0];
+                    m2 = datos[1].reduce((a, b) => a + b, 0) / n[1];
+                    s1 = Math.sqrt(datos[0].reduce((a, b) => a + Math.pow(b - m1, 2), 0) / (n[0] - 1));
+                    s2 = Math.sqrt(datos[1].reduce((a, b) => a + Math.pow(b - m2, 2), 0) / (n[1] - 1));
+                    gl = n[0] + n[1] - 2;
 
+                    let SP2 = ((n[0] - 1) * s1 * s1 + (n[1] - 1) * s2 * s2) / gl;
+                    let factorInv = (1 / n[0] + 1 / n[1]);
+                    let t_calc2 = (m1 - m2) / Math.sqrt(SP2 * factorInv);
 
-                    resp = tcalc(datos, true)
-                    Solucion += `  (2b) gl = ${datos[0].length + datos[1].length - 2}
-                            (2c) S_1=${Math.sqrt(resp[3]).toPrecision(4)}, S_2=${Math.sqrt(resp[4]).toPrecision(4)}
-                            (2e) $t_{calc} = ${resp[0].toPrecision(4)}$
-                            `
-                    //Solucion +=`(2e) ${tcalc(datos)}`
+                    let P2 = `Se documentan datos sobre ${ctx2.baseText} reportado en dos escenarios diferentes. Investigadores de ${ctx2.text1} publicaron resultados que son contrastados directamente contra ${ctx2.text2} (medido en ${ctx2.unidad}).`;
 
                     Pregunta += `
-        <h3>Fórmula</h3>
-        <p>La estadística de t-student para muestras con distinta desviación estándar, se calcula usando la siguiente fórmula:</p>
+        <p>Cuando se <u>asume que las varianzas poblacionales son similares</u>, primero se calcula la varianza agrupada ($S_p^2$) y luego el estadístico:</p>
         <p>
             \\[
-            t_{calc} = \\frac{\\overline{x_1}-\\overline{x_2}}{\\sqrt{\\left(\\frac{(n_1+1)S_1^2+(n_2+1)S_2^2}{n_1+n_2-2}\\right)\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)}}
+            t_{calc} = \\frac{\\overline{x}_1-\\overline{x}_2}{\\sqrt{\\left(\\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}\\right)\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)}}
             \\]
         </p>
-        
     
         <div class="problema2">
-
-        1. Se desea aplicar la prueba de t-student para saber si existe uns diferencia significativa entre dos muestras con un nivel de significancia de 5%.
-        las muestra son las siguientes<br> <center>${tablaDatos(datos, ['muestra 1', 'muestra 2'])}</center>
-        
+        2. ${P2}
+        Se desea aplicar la prueba de t-Student para saber si existe una diferencia significativa entre las medias poblacionales de ambas fuentes, asumiendo su varianza similar con un nivel de significancia de 5%.
+        Las muestras son las siguientes:<br> <center>${tablaDatos(datos, [ctx2.text1, ctx2.text2])}</center>
         
         <ol class="FT_ol_a">
             <li>Escriba las hipótesis nula y alternativa <div>1</div></li>
             <li>Escriba los grados de libertad. <div>1</div></li>
-            <li>Escriba las desviaciones estándar. <div>1</div></li>
+            <li>Escriba las medias y desviaciones estándar muestrales. <div>2</div></li>
             <li> 
                     <ol>
-                    <li>Calcule el valor de $\\left(\\frac{(n_1+1)S_1^2+(n_2+1)S_2^2}{n_1+n_2-2}\\right)$</li>
+                    <li>Calcule la varianza agrupada $S_p^2 = \\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$</li>
                     <li>Calcule el valor de $\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right)$</li>
-                    <li>Calcule el valor de $t_{calc}$ sustituyendo<div>1</div></li>
+                    <li>Calcule el valor de $t_{calc}$ sustituyendo <div>1</div></li>
                     </ol>
             </li>
-            <li>Escriba el valor crítico de la prueba . <div>1</div></li>
-            <li>Calcule el valor $t_{calc}$ usando su calculadora. <div>1</div></li>
-            <li>Realice una conclusión basado en sus respuestas anteriores. <div>1</div></li>
-            </ol>
+            <li>Obtenga el valor p (p-value). <div>1</div></li>
+            <li>Realice una conclusión basada en sus resultados. <div>1</div></li>
+            </ol></div>
             `
+                    let test2 = tlacu.stat.two_sampTTest(datos[0], datos[1], '!=', true);
+                    Solucion += `<div class="ans">
+                            <div>(2a) $H_0: \\mu_1 = \\mu_2$, $H_1: \\mu_1 \\neq \\mu_2$</div>
+                            <div>(2b) $gl = ${gl}$</div>
+                            <div>(2c) $\\overline{x}_1 = ${m1.toPrecision(4)}$, $S_1 = ${s1.toPrecision(4)}$<br>$\\overline{x}_2 = ${m2.toPrecision(4)}$, $S_2 = ${s2.toPrecision(4)}$</div>
+                            <div>(2d-1) $S_p^2 = \\frac{(${n[0] - 1})(${(s1 * s1).toPrecision(4)})+(${n[1] - 1})(${(s2 * s2).toPrecision(4)})}{${gl}} = ${SP2.toPrecision(4)}$</div>
+                            <div>(2d-2) $\\left(\\frac{1}{n_1}+\\frac{1}{n_2}\\right) = ${factorInv.toPrecision(4)}$</div>
+                            <div>(2d-3) $t_{calc} = \\frac{${(m1 - m2).toPrecision(4)}}{\\sqrt{(${SP2.toPrecision(4)})(${factorInv.toPrecision(4)})}} = ${t_calc2.toPrecision(4)}$</div>
+                            <div>(2e)$p \\approx ${test2[1].toPrecision(4)}$</div>
+                            </div>`
+
                     return [Pregunta, Solucion]
                 }
 
@@ -380,16 +442,17 @@ const f_estadistica = {
                         let baseText = "";
                         let unidad = "";
 
-                        let res = "";
+                        let res = tlacu.stat.t_test(mu0, datos, H1_type);
+                        /*
                         if (window.tlacu && window.tlacu.stat && window.tlacu.stat.t_test) {
                             res = window.tlacu.stat.t_test(mu0, datos, H1_type);
                         } else {
                             let t = (promedio - mu0) / (s / Math.sqrt(n));
                             res = [t, 0.05]; // fallback para test local si tlacu no ha cargado bien
-                        }
+                        }*/
 
-                        let t_calc = res[0] || (promedio - mu0) / (s / Math.sqrt(n));
-                        let p_value = res[1] || 0.05;
+                        let t_calc = res[0];
+                        let p_value = res[1];
 
                         if (context === 0) {
                             unidad = "gramos"; baseText = "El peso promedio del producto";
