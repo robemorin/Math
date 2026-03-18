@@ -15,12 +15,25 @@ export function tipo(){
 export async function pregunta(numeroPregunta) { 
   try {
     function tempEcLine(m,b){
-        let cadena = `$y =`
-        if(m[0]!=0){
-            cadena += (m[1]==1 && Math.abs(m[0])==1?(m[0]<0?"-":"")+'x':(m[0]<0?"-":"")+tlacu.fraccion(Math.abs(m[0]),m[1])+'x') 
+        let ms = tlacu.simplify_frac([m[0], m[1]]);
+        let bs = tlacu.simplify_frac([b[0], b[1]]);
+        let cadena = `$y =`;
+        if (ms[0] != 0) {
+            if (ms[0] < 0) cadena += "-";
+            if (Math.abs(ms[0]) == 1 && ms[1] == 1) {
+                cadena += "x";
+            } else {
+                cadena += tlacu.fraccion(Math.abs(ms[0]), ms[1]) + "x";
+            }
         }
-        cadena += (b[0]==0?'':(b[0]<0?"-":"+")+tlacu.fraccion(Math.abs(b[0]),b[1]))+"$"
-        return cadena
+        if (bs[0] != 0) {
+            if (ms[0] != 0 && bs[0] > 0) cadena += "+";
+            else if (bs[0] < 0) cadena += "-";
+            cadena += tlacu.fraccion(Math.abs(bs[0]), bs[1]);
+        } else if (ms[0] == 0) {
+            cadena += "0";
+        }
+        return cadena + "$";
     }
 
 

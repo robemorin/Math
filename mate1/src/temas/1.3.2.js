@@ -1,0 +1,111 @@
+import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
+import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
+import { desencriptar, encriptar, generarCodigo } from '../r2p_core.js'
+export function name() {
+  return 'Ecuación de la mediatriz II';
+}
+
+export function tipo() {
+  return 3;
+}
+
+export async function pregunta(i, code, esImprimible = false) {
+  try {
+
+
+
+    let A = [Math.ceil(Math.random() * 10 - 5), Math.ceil(Math.random() * 10 - 5)], B
+    do {
+      B = [Math.ceil(Math.random() * 10 - 5), Math.ceil(Math.random() * 10 - 5)]
+      //console.log(`A:${A}, B:${B}`)
+    } while ((A[0] == B[0]) || (A[1] == B[1]))
+
+
+    //console.log(`${i}<- Re(a):${r*Math.cos(arg*Math.PI/12)} Im(a):${r*Math.sin(arg*Math.PI/12)}`)
+
+    const Pregunta = `
+      <div class="pregunta-abierta"  data-a="${A}" data-b="${B}" style="display: none;">
+        <p>${i + 1}.- Determine la ecuación de la mediatriz del segmento con extremos en los puntos 
+        $A:(${A[0]}, ${A[1]})$ y $B:(${B[0]}, ${B[1]})$ en la forma mínima. <span id="resultado_${i}" name="question"></span></p>
+        <!--div id="applet_container_${i}" class="ggb-container"></div-->
+        <p><math-field>y=</math-field> <span id="ans_${i}"><i>e.g.</i> $y=\\frac{5}{2}x-\\frac{5}{3}$</span></p>
+      </div>
+    `;
+    if (esImprimible) {
+      let m = [-(B[0] - A[0]), B[1] - A[1]]
+      m = tlacu.simplify_frac(m)
+
+      let b = [(A[1] + B[1]) * m[1] - m[0] * (A[0] + B[0]), 2 * m[1]]
+      b = tlacu.simplify_frac(b)
+
+      const respuesta = tempEcLine(m, b)
+      return [Pregunta, respuesta]
+    }
+    render()
+    return Pregunta
+
+
+  } catch (error) {
+    console.error('Error al carga la pregunta:', error);
+  }
+}
+
+export async function render() {
+  console.log('vamos a publicar la revisión')
+  window.accionR2P = function (i) {
+    let totalPuntos = 1
+    let puntos = 0
+    let pregunta = document.getElementsByClassName('pregunta-abierta')
+    //console.log(`r: ${pregunta[i].dataset.r} arg: ${pregunta[i].dataset.arg}`)
+    //console.log(`id del mathlive: math-field-${i}-0`)
+    const mathFields = pregunta[i].getElementsByTagName('math-field')
+    const ans = mathFields[0].value
+
+    const A = pregunta[i].dataset.a.split(',').map(Number)
+    const B = pregunta[i].dataset.b.split(',').map(Number)
+
+    let m = [-(B[0] - A[0]), B[1] - A[1]]
+    m = tlacu.simplify_frac(m)
+
+    let b = [(A[1] + B[1]) * m[1] - m[0] * (A[0] + B[0]), 2 * m[1]]
+    b = tlacu.simplify_frac(b)
+
+    let respuesta = tempEcLine(m, b)
+
+    if (ans != respuesta) {
+      mathFields[0].style.backgroundColor = "red";
+      let ansElement = document.getElementById(`ans_${i}`);
+      ansElement.innerHTML = `R: $${respuesta}$`;
+      if (window.MathJax && window.MathJax.typesetPromise) {
+        MathJax.typesetPromise([ansElement]).catch(err => console.error("Error procesando MathJax:", err));
+      }
+    } else {
+      ++puntos
+      mathFields[0].style.border = "solid 5px green";
+      document.getElementById(`ans_${i}`).innerHTML = '';
+    }
+    return [puntos, totalPuntos]
+  };
+}
+
+function tempEcLine(m, b) {
+  let ms = tlacu.simplify_frac([m[0], m[1]]);
+  let bs = tlacu.simplify_frac([b[0], b[1]]);
+  let cadena = `y=`;
+  if (ms[0] != 0) {
+    if (ms[0] < 0) cadena += "-";
+    if (Math.abs(ms[0]) == 1 && ms[1] == 1) {
+      cadena += "x";
+    } else {
+      cadena += tlacu.fraccion(Math.abs(ms[0]), ms[1]) + "x";
+    }
+  }
+  if (bs[0] != 0) {
+    if (ms[0] != 0 && bs[0] > 0) cadena += "+";
+    else if (bs[0] < 0) cadena += "-";
+    cadena += tlacu.fraccion(Math.abs(bs[0]), bs[1]);
+  } else if (ms[0] == 0) {
+    cadena += "0";
+  }
+  return cadena;
+}
