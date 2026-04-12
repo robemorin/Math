@@ -1,7 +1,7 @@
 //Archivo r2p.js
 class R2PDinamico extends HTMLElement {
   static get observedAttributes() {
-    return ['tema', 'n', 'docente', 'tiempo','modo'];
+    return ['tema', 'n', 'docente', 'tiempo', 'modo'];
   }
 
   constructor() {
@@ -13,7 +13,7 @@ class R2PDinamico extends HTMLElement {
     this.docente = 'M.C. Roberto Alejandro Morin Romero';
     this.tiempo = 60;
     this.clave = null;
-    this.modo=0//0 R+E; 1 R *** R-Revsión E-mostrar correcto
+    this.modo = 0//0 R+E; 1 R *** R-Revsión E-mostrar correcto
   }
 
   connectedCallback() {
@@ -23,7 +23,7 @@ class R2PDinamico extends HTMLElement {
     if (oldValue === newValue) return;
     switch (name) {
       case 'tema':
-        
+
         this.cargarTema(newValue);
         break;
       case 'n':
@@ -53,7 +53,7 @@ class R2PDinamico extends HTMLElement {
       revisar();
     });
   }
-  
+
 
   async cargarTema(tema) {
     try {
@@ -61,7 +61,11 @@ class R2PDinamico extends HTMLElement {
       const code = coreModule.generarCodigo();
       const modulo = await import(`./temas/${tema}.js`);
       const tipo = modulo.tipo()
-      let lienzo 
+      //cargar fecha y hora
+      const fecha = new Date();
+      const fechaStr = fecha.toLocaleDateString();
+      const horaStr = fecha.toLocaleTimeString();
+      let lienzo
 
       this.container.innerHTML = `
         <table class="r2pi-head">
@@ -74,35 +78,36 @@ class R2PDinamico extends HTMLElement {
             </td>
             <td>
               <center><h2>Tema: ${tema} ${modulo.name()}</h2></center>
+              <center><h3 style="color:blue;">Fecha: ${fechaStr} ${horaStr}</h3></center>
               <center><h3>Docente: <span id='docente'>${this.docente}<span></h3></center>
             </td>
           </tr>
         </table>
         `;
-        lienzo = `<div class="r2pi-contenedor" code="${code}" type="${tipo}" modo="${this.modo}" tiempo="${this.tiempo}">
+      lienzo = `<div class="r2pi-contenedor" code="${code}" type="${tipo}" modo="${this.modo}" tiempo="${this.tiempo}">
           <p>Alumno: <input type="text" id="alumno" placeholder="Nombre del alumno"></p>
           <p id="r2p-calificacion"></p>
           <div id="r2p-evidencia"></div>
           <div id="r2p-qr"></div>
           `
-        if (tipo === 0) {// Opcion múltiple
-          
-          for (let i = 0; i < this.n; i++) {
-            const preguntaHTML = await modulo.pregunta( i);
-            lienzo += coreModule.pregunta(preguntaHTML,code,i);
-          }
-          lienzo += `<button class="r2p-revisar" id="revisar" style="display: none;"></button>
+      if (tipo === 0) {// Opcion múltiple
+
+        for (let i = 0; i < this.n; i++) {
+          const preguntaHTML = await modulo.pregunta(i);
+          lienzo += coreModule.pregunta(preguntaHTML, code, i);
+        }
+        lienzo += `<button class="r2p-revisar" id="revisar" style="display: none;"></button>
           
           </div>`;
 
-        }else if (tipo === 1 || tipo == 2 || tipo==3){
-          for (let i = 0; i < this.n; i++) {
-            const preguntaHTML = await modulo.pregunta(i, tipo == 3? this.n:code);
-            lienzo += preguntaHTML;
-          }
-          lienzo += `<button class="r2p-revisar" id="revisar" style="display: none;"></button>
-          </div>`;
+      } else if (tipo === 1 || tipo == 2 || tipo == 3) {
+        for (let i = 0; i < this.n; i++) {
+          const preguntaHTML = await modulo.pregunta(i, tipo == 3 ? this.n : code);
+          lienzo += preguntaHTML;
         }
+        lienzo += `<button class="r2p-revisar" id="revisar" style="display: none;"></button>
+          </div>`;
+      }
       this.container.innerHTML += lienzo;
       coreModule.setupEvents();
       if (tipo === 2 && modulo.renderGeoGebra) {
