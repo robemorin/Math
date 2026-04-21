@@ -1,0 +1,68 @@
+{
+  "1": {
+    "nombre": "Número y álgebra",
+    "subtemas": {
+      "1.1": "Aproximaciones, errores y notación científica",
+      "1.2": "Sucesiones y series aritméticas",
+      "1.3": "Sucesiones y series geométricas",
+      "1.4": "Aplicaciones financieras (interés, ahorro y amortización)",
+      "1.5": "Leyes de los exponentes y logaritmos (Bases 10 y e)",
+      "1.6": "Sistemas de ecuaciones lineales y resolución de problemas"
+    }
+  },
+  "2": {
+    "nombre": "Funciones",
+    "subtemas": {
+      "2.1": "Funciones de la línea recta (pendiente e intersección)",
+      "2.2": "Concepto de función, dominio y recorrido",
+      "2.3": "Modelización lineal y aplicaciones",
+      "2.4": "Funciones cuadráticas (vértices y puntos de corte)",
+      "2.5": "Funciones exponenciales (crecimiento y decrecimiento)",
+      "2.6": "Funciones logarítmicas y modelización",
+      "2.7": "Funciones sinusoidales (modelos periódicos: Seno y Coseno)",
+      "2.8": "Funciones polinómicas, racionales y de potencia",
+      "2.9": "Transformaciones de funciones (traslaciones y escalas)"
+    }
+  },
+  "3": {
+    "nombre": "Geometría y trigonometría",
+    "subtemas": {
+      "3.1": "Geometría analítica en 2D y 3D (puntos y distancias)",
+      "3.2": "Área de superficie y volumen de sólidos (prismas, pirámides, esferas)",
+      "3.3": "Razones trigonométricas en triángulos rectángulos",
+      "3.4": "Regla del seno, coseno y área de un triángulo",
+      "3.5": "Aplicaciones prácticas (ángulos de elevación/depresión y rumbos)",
+      "3.6": "Geometría del círculo: Longitud de arco y área del sector",
+      "3.7": "Diagramas de Voronoi: Celdas, sitios y aplicaciones de búsqueda"
+    }
+  },
+  "4": {
+    "nombre": "Estadística y probabilidad",
+    "subtemas": {
+      "4.1": "Recolección de datos, técnicas de muestreo y sesgos",
+      "4.2": "Estadística descriptiva (medidas de tendencia central y dispersión)",
+      "4.3": "Representación de datos (histogramas, diagramas de caja y bigotes)",
+      "4.4": "Análisis de bivariados: Pearson (r) y regresión lineal",
+      "4.5": "Correlación de Spearman (rs) y fiabilidad del modelo",
+      "4.6": "Probabilidad básica, diagramas de Venn y de árbol",
+      "4.7": "Probabilidad condicional e independencia de eventos",
+      "4.8": "Variables aleatorias discretas y esperanza matemática",
+      "4.9": "Distribución Binomial y Distribución Normal",
+      "4.10": "Pruebas de hipótesis: χ² (Independencia y bondad de ajuste)",
+      "4.11": "Prueba T de Student (Una y dos muestras)"
+    }
+  },
+  "5": {
+    "nombre": "Cálculo",
+    "subtemas": {
+      "5.1": "Concepto de límite y derivada como tasa de cambio",
+      "5.2": "Reglas de derivación y pendiente de la recta tangente",
+      "5.3": "Análisis de derivadas (puntos máximos, mínimos e inflexión)",
+      "5.4": "Optimización de funciones en contextos reales",
+      "5.5": "Cinemática: Desplazamiento, velocidad y aceleración",
+      "5.6": "Integración básica (antiderivadas)",
+      "5.7": "Cálculo de áreas bajo una curva y entre dos curvas",
+      "5.8": "Aproximaciones de área mediante la regla del trapecio"
+    }
+  }
+}

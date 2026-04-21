@@ -1,0 +1,50 @@
+<!--actividad.html-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Generador de Fichas</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script type="module">
+    import { MathfieldElement } from 'https://unpkg.com/mathlive?module';
+  </script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/mathlive/dist/mathlive-static.css">
+  <link rel="stylesheet" href="./src/raiz2pi.css">
+
+</head>
+<body>
+  <div class="noprint" style="background: #f7f7f7; padding: 10px; border-bottom: 2px solid #ccc; text-align: center; margin-bottom: 20px;">
+
+      <label style="margin-right: 15px;">Cantidad de Fichas: <input type="number" id="uiFichas" value="1" min="1" style="width: 60px;"></label>
+      <button id="btnGenerar" style="padding: 5px 15px; font-weight: bold; background: #0275d8; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">Generar</button>
+      <button onclick="window.print()" style="padding: 5px 15px; font-weight: bold; background: #5cb85c; color: white; border: none; border-radius: 4px; cursor: pointer;">🖨️ Imprimir</button>
+  </div>
+  <div id="contenedorEjercicio"></div>
+  <script type="module">
+    import { mostrarEjercicioFicha } from './src/main.js';
+    
+    // Al cargar la pantalla por primera vez
+    mostrarEjercicioFicha();
+    
+    // Al dar click en Generar
+    document.getElementById('btnGenerar').addEventListener('click', () => {
+        const nfichas = document.getElementById('uiFichas').value;
+        
+        // Obtener el tema actual a partir de la URL (parámetro 'a')
+        const urlParams = new URL(window.location.href).searchParams.get('a');
+        if (urlParams) {
+             const parametros = urlParams.split('.').map(Number);
+             const tema = parametros.slice(0, 3).join('.');
+             const n = parametros[3] || 5; 
+             
+             // Actualizar el DOM
+             const contenedor = document.getElementById('contenedorEjercicio');
+             contenedor.innerHTML = `<r2p-dinamico tema="${tema}" n="${n}" nfichas="${nfichas}"></r2p-dinamico>`;
+        }
+    });
+
+  </script>
+</body>
+</html>
