@@ -99,19 +99,23 @@ export async function pregunta() {
     
     let P1 = manyCoordinates(4);
     Pregunta += `<div class="problema2">1.- Realice el diagrama de Voronoi con los puntos ${displayP(P1)}.<div class="mark">5</div>
-        <br><center>${createAxis([-15, 15, -10, 10, [5, 5], [1, 1]], [600, 400])}</center></div>`;
+        <br><center><tlacuache-ejes size="320,320" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
+ </tlacuache-ejes></center></div>`;
         
     let P2 = manyCoordinates(4);
     Pregunta += `<div class="problema2">2.- Realice el diagrama de Voronoi con los puntos ${displayP(P2)}.<div class="mark">5</div>
-        <br><center>${createAxis([-15, 15, -10, 10, [5, 5], [1, 1]], [600, 400])}</center></div><div class="page"></div>`;
+        <br><center><center><tlacuache-ejes size="320,320" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
+ </tlacuache-ejes></center></center></div><div class="page"></div>`;
         
     let P3 = manyCoordinates(4);
     Pregunta += `<div class="problema2">3.- Realice el diagrama de Voronoi con los puntos ${displayP(P3)}.<div class="mark">5</div>
-        <br><center>${createAxis([-15, 15, -10, 10, [5, 5], [1, 1]], [600, 400])}</center></div>`;
+        <br><center><center><tlacuache-ejes size="380,380" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
+ </tlacuache-ejes></center></center></div>`;
         
     let P4 = manyCoordinates(5);
     Pregunta += `<div class="problema2">4.- Realice el diagrama de Voronoi con los puntos ${displayP(P4)}.<div class="mark">5</div>
-        <br><center>${createAxis([-15, 15, -10, 10, [5, 5], [1, 1]], [600, 400])}</center></div>`;
+        <br><center><tlacuache-ejes size="380,380" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
+ </tlacuache-ejes></center></div>`;
 
     let Solucion = `<div class="ans">Resolución geométrica directa visual esperada. No hay texto para respuesta.</div>`;
     return [Pregunta, Solucion];
