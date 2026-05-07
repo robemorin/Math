@@ -74,6 +74,12 @@ export async function render(container, n, code) {
       material_id,
       id: `applet_container_${i}`,
       appletOnLoad(api) {
+        api.setAxisSteps(1, 45, 1, 1)
+        api.setGraphicsOptions(1, {
+          gridType: 0,                    // 0 = cuadrícula cartesiana
+          gridDistance: { "x": 15, "y": 1 },     //  funciona
+          gridIsAutomatic: false,         // si funciona
+        });
         const latexXpression = preguntas[i].parentElement.getAttribute('data-f');
         window.ggbApps[i] = api;
         api.evalCommand(latexXpression);
