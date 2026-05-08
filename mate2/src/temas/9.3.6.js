@@ -2,150 +2,160 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
 
 export function name() {
-  return 'Grafica de funciones sinusoidales';
+  return 'Gráfica de funciones sinusoidales';
 }
 
 export function tipo() {
   return 2;
 }
 
-function randomInt(min, max, exclude = []) {
-  let num;
-  do {
-    num = Math.floor(Math.random() * (max - min + 1)) + min;
-  } while (exclude.includes(num));
-  return num;
-}
-
-export async function pregunta(numeroPregunta) {
+export async function pregunta(i, code) {
   try {
-    let a = randomInt(1, 4);  // Amplitud
-    let periodo =2 * randomInt(2, 8);  // Periodo
-    let b = 360 / periodo;  // Coeficiente de x
-    let c = randomInt(-180, 180, [0]);  // Desplazamiento de fase (en grados)
-    let d = randomInt(0, 3);  // Desplazamiento vertical
+    let a = (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 2); // Amplitud
+    let periodo = 4 * Math.ceil(Math.random() * 25); // Periodo
+    let b = 360 / periodo; // Coeficiente de x
+    let d = (Math.random() < 0.5 ? 1 : -1) * Math.floor(Math.random() * 4) + 1; // Desplazamiento vertical
     let funcType = Math.random() < 0.5 ? 'sin' : 'cos';
+    let frecuencia = tlacu.fraccion(360, periodo);
 
-    // Función para GeoGebra (usamos pi/180 para que el eje x represente grados)
-    let geogebraExpr = `f(x) = ${a}*${funcType}(${b}*x*pi/180 ) ${d > 0 ? '+' : ''} ${d}`;
 
-    let P = `<div class="pregunta" data-params='{"a":${a},"b":${b},"c":${c},"d":${d},"type":"${funcType}","periodo":${periodo}}'
-     data-f="${a} ${funcType}(${b}x°) + ${d}">
-      ${numeroPregunta + 1}.- Grafique la función $f(x)=${a} \\${funcType}(${b}x°) + ${d}$:
-   <strong style="color: green;">Q</strong>: un nodo (donde la función cruza el eje x)</li>
-      </ul>
-      <div id="applet_container_${numeroPregunta}" class="ggb-container"></div>
-    </div>`;
+    let geogebraExpr = `f(x) = ${a}*${funcType}(${b}*x*pi/180) ${d > 0 ? '+' : ''} ${d != 0 ? d : ''}`;
 
-    return P;
+    return `
+      <div class="pregunta-geogebra" data-params='{"a":${a},"b":${b},"d":${d},"type":"${funcType}"}' style="display: none;">
+        <p>${i + 1}.- Coloque 5 puntos consecutivos, en el mismo orden, que representen nodos, crestas y 
+        valles de la función $f(x) = ${a} \\${funcType}(${frecuencia}x°) ${d > 0 ? '+' : ''} ${d == 0 ? "" : d}$. <span id="resultado_${i}" name="question"></span></p>
+        <center>
+        <input id="slider_${i}" type="range" style="width: 800px;" min="1" max="30" value="1"><br>
+        <div id="applet_container_${i}" class="ggb-container"></div>
+        
+        </center>
 
+      </div>
+    `;
   } catch (error) {
-    console.error('Error al generar pregunta 9.3.6:', error);
+    console.error('Error al cargar la pregunta:', error);
   }
 }
 
-export async function render(container, n, code) {
+export async function renderGeoGebra(container, n, code) {
   const material_id = "uaxkzmpb";
   window.ggbApps = window.ggbApps || [];
-  const preguntas = document.getElementsByClassName('ggb-container');
 
   for (let i = 0; i < n; i++) {
     const params = {
       appName: 'classic',
-      width: 600,
+      width: 800,
       height: 600,
-      //material_id,
-      id: `applet_container_${i}`,
+      material_id,
+      id: `ggbApplet_${i}`,
+
       appletOnLoad(api) {
-        api.setAxisSteps(1, 1, 1);
-        api.setGraphicsOptions(1, {
-          gridType: 0,
-          gridDistance: { "x": 0.5, "y": 0.5 },
-          gridIsAutomatic: false,
-        });
-
-        const latexExpression = preguntas[i].parentElement.getAttribute('data-f');
-        const parametrosStr = preguntas[i].parentElement.getAttribute('data-params');
-        const parametros = JSON.parse(parametrosStr);
-
         window.ggbApps[i] = api;
+        let pregunta = document.getElementsByClassName('pregunta-geogebra')[i];
+        const parametrosStr = pregunta.getAttribute('data-params');
+        const parametros = JSON.parse(parametrosStr);
         window.ggbApps[i].parametros = parametros;
 
-        // Graficar la función
-        api.evalCommand(latexExpression);
+        let slider = document.getElementById(`slider_${i}`);
+        if (slider) {
+          slider.addEventListener('input', function (e) {
+            let v = parseFloat(e.target.value);
+            let tick = v;
 
-        // Crear puntos móviles iniciales
-        const { a,b, d } = parametros;
-        api.evalCommand(`P = (0, 1)`);  // Nodo inicial aproximado
-        api.evalCommand(`Q = (1, 0)`);  // Cresta inicial aproximada
-        api.evalCommand(`SetColor(P, "Orange")`);
-        api.evalCommand(`SetColor(Q, "Orange")`);
-        api.setLabelVisible('P', false);
-        api.setLabelVisible('Q', false);
-        api.evalCommand(`p = 4*(P(1,0)-Q(1,0))`);
-        api.evalCommand(`frec=360/p`);
-        api.evalCommand(`a = P(0,1)-Q(0,1)`);
-        api.evalCommand(`h = P(1,0)`);
-        api.evalCommand(`k = P(0,1)`);
-        api.evalCommand(`g(x)=a*sin(frec*(x-h)°)+k`);
+            api.setCoordSystem(- tick, 7 * tick, -8, 8);
+            api.setAxisSteps(1, tick, 1);
+            api.setGraphicsOptions(1, {
+              gridType: 0,
+              gridDistance: { "x": tick / 2, "y": 1 },
+              gridIsAutomatic: false,
+            });
+            api.evalCommand(`A_0 = (0, 0)`); // Nodo
+            api.evalCommand(`A_1 = (${tick / 2},0)`); // Cresta
+            api.evalCommand(`A_2 = (${tick},0)`); // Nodo
+            api.evalCommand(`A_3 = (${3 * tick / 2},0)`); // Valle
+            api.evalCommand(`A_4 = (${2 * tick},0)`); // Nodo
+          });
+          slider.dispatchEvent(new Event('input'));
+        }
+
+        // Crear puntos móviles iniciales para 5 puntos consecutivos
+        const { a, b, d, type } = parametros;
+        api.evalCommand(`f(x) = ${a}*${type}(${b}*x°) + ${d}`);
+        api.setVisible('f', false); // No mostrar la gráfica inicialmente
+        api.evalCommand(`SetColor(f, "Orange")`);
+
+        // Inicializar 5 puntos: alternando nodos y crestas/valles
+        // Secuencia: Nodo, Cresta, Nodo, Valle, Nodo
+        api.evalCommand(`A_0 = (0, 0)`); // Nodo
+        api.evalCommand(`A_1 = (1, 0)`); // Cresta
+        api.evalCommand(`A_2 = (2, 0)`); // Nodo
+        api.evalCommand(`A_3 = (3, 0)`); // Valle
+        api.evalCommand(`A_4 = (4, 0)`); // Nodo
+
+        api.evalCommand(`SetColor(A_0, "Orange")`);
+        api.evalCommand(`SetColor(A_1, "Orange")`);
+        api.evalCommand(`SetColor(A_2, "Orange")`);
+        api.evalCommand(`SetColor(A_3, "Orange")`);
+        api.evalCommand(`SetColor(A_4, "Orange")`);
 
 
       }
     };
     new GGBApplet(params, true).inject(`applet_container_${i}`);
   }
-}
 
-// Registrar función específica del tema
-window.accionGeoGebra = function (i) {
-  const api = window.ggbApps[i];
-  if (!api) return alert("Applet no listo");
-/*
-  const parametros = api.parametros;
-  const { a, b, c, d, type } = parametros;
+  // Registrar función específica del tema
+  window.accionGeoGebra = function (i) {
+    const api = window.ggbApps[i];
+    let pregunta = document.getElementsByClassName('pregunta-geogebra')[i];
+    if (!api) return alert("Applet no listo");
 
-  // Obtener coordenadas de los puntos
-  const px = api.getXcoord("P");
-  const py = api.getYcoord("P");
-  const qx = api.getXcoord("Q");
-  const qy = api.getYcoord("Q");
+    api.setVisible('f', true); // Mostrar la gráfica al revisar
 
-  // Bloquear puntos
-  api.setFixed('P', true);
-  api.setFixed('Q', true);
+    const parametros = api.parametros;
+    const { a, b, d, type } = parametros;
 
-  // Tolerancia para validación
-  const tolerance = 0.3;
+    // Fijar puntos
+    api.setFixed('A_0', true);
+    api.setFixed('A_1', true);
+    api.setFixed('A_2', true);
+    api.setFixed('A_3', true);
+    api.setFixed('A_4', true);
 
-  // Calcular valores de la función esperados
-  const angleP = b * px + c;  // en grados
-  const angleQ = b * qx + c;  // en grados
-  
-  const fP = type === 'sin' ? a * Math.sin(angleP * Math.PI / 180) + d : a * Math.cos(angleP * Math.PI / 180) + d;
-  const fQ = type === 'sin' ? a * Math.sin(angleQ * Math.PI / 180) + d : a * Math.cos(angleQ * Math.PI / 180) + d;
+    const tolerance = 0.5;
 
-  // Validar que P esté en un nodo (donde y ≈ d)
-  const isPNode = Math.abs(py - d) < tolerance;
+    // Verificar posiciones
+    const xstep = Math.round(90 / b)
+    let x = []
+    x.push(api.getXcoord('A_0'))
+    x.push(api.getXcoord('A_1'))
+    x.push(api.getXcoord('A_2'))
+    x.push(api.getXcoord('A_3'))
+    x.push(api.getXcoord('A_4'))
 
-  // Validar que Q esté en una cresta (y ≈ a + d) o valle (y ≈ -a + d)
-  const isQCrest = Math.abs(py - (a + d)) < tolerance;
-  const isQValley = Math.abs(py - (-a + d)) < tolerance;*/
+    let y = []
+    y.push(api.getYcoord('A_0'))
+    y.push(api.getYcoord('A_1'))
+    y.push(api.getYcoord('A_2'))
+    y.push(api.getYcoord('A_3'))
+    y.push(api.getYcoord('A_4'))
+    //Vamos a verificar que los puntos estén en la posición correcta: A_0, A_2 y A_4 deben ser nodos (y cercanos a d), A_1 debe ser una cresta (y cercano a d+a) y A_3 debe ser un valle (y cercano a d-a)
 
-
-/*
-  if (isPNode && (isQCrest || isQValley)) {
-    return true;
+    for (let j = 0; j < 4; j++) {
+      if (Math.abs((x[j] + xstep) - x[j + 1]) > tolerance) {
+        console.log('Error en la posición de los puntos')
+        console.log(x[j], x[j + 1], xstep)
+        return false; // No están en orden creciente
+      }
+    }
+    //Ahora que corresponda con la función
+    for (let j = 0; j < 5; j++) {
+      const expectedY = a * (type === 'sin' ? Math.sin(b * x[j] * Math.PI / 180) : Math.cos(b * x[j] * Math.PI / 180)) + d;
+      if (Math.abs(y[j] - expectedY) > tolerance) {
+        return false; // No está cerca de la función
+      }
+    }
+    return true
   }
-
-  // Mostrar líneas de referencia si no es correcto
-  api.evalCommand(`lineX = y = ${d}`);
-  api.evalCommand(`SetColor(lineX, "LightGray")`);
-  api.evalCommand(`lineCrest = y = ${a + d}`);
-  api.evalCommand(`SetColor(lineCrest, "LightGreen")`);
-  api.evalCommand(`lineValley = y = ${-a + d}`);
-  api.evalCommand(`SetColor(lineValley, "LightGreen")`);
-
-  return false;*/
-  api.evalCommand(`Q(x)=Simplify(f(x)=g(x))`);
-  return true;
-};
+}

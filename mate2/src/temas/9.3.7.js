@@ -2,7 +2,7 @@ import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modu
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export function name() {
-  return 'Gráfica de la mediatriz a partir de dos puntos';
+  return 'Gráfica de funciones sinusoidales';
 }
 
 export function tipo() {
@@ -11,17 +11,17 @@ export function tipo() {
 
 export async function pregunta(i, code) {
   try {
-    let a = (Math.random()<0.5?1:-1)* (Math.floor(Math.random() * 4) + 2);  // Amplitud
-    let periodo =4 * Math.floor(Math.random() * 5 +1) ;  // Periodo
+    let a = (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 2);  // Amplitud
+    let periodo = 4 * Math.floor(Math.random() * 5 + 1);  // Periodo
     let b = 360 / periodo;  // Coeficiente de x
-    let d = (Math.random()<0.5?1:-1)* Math.floor(Math.random() * 4) + 1;  // Desplazamiento vertical
+    let d = (Math.random() < 0.5 ? 1 : -1) * Math.floor(Math.random() * 4) + 1;  // Desplazamiento vertical
     let funcType = Math.random() < 0.5 ? 'sin' : 'cos';
-  
+
     let geogebraExpr = `f(x) = ${a}*${funcType}(${b}*x*pi/180 ) ${d > 0 ? '+' : ''} ${d}`;
 
     return `
       <div class="pregunta-geogebra" data-params='{"a":${a},"b":${b},"d":${d},"type":"${funcType}"}'   style="display: none;">
-        <p>${i + 1}.- Grafique la función $f(x)=${a} \\${funcType}(${b}x°) + ${d}$.  <span id="resultado_${i}" name="question"></span></p>
+        <p>${i + 1}.- Grafique la función $f(x)=${a} \\${funcType}(${b}x°) ${d > 0 ? '+' : ''} ${d == 0 ? "" : d}$.  <span id="resultado_${i}" name="question"></span></p>
         <div id="applet_container_${i}" class="ggb-container"></div>
       </div>
     `;
@@ -58,7 +58,7 @@ export async function renderGeoGebra(container, n, code) {
         window.ggbApps[i].parametros = parametros;
 
         // Crear puntos móviles iniciales
-        const { a,b, d,type } = parametros;
+        const { a, b, d, type } = parametros;
         api.evalCommand(`f(x) = ${a}*${type}(${b}*x°) + ${d}`);
         api.setVisible('f', false);
         api.evalCommand(`SetColor(f, "Red")`);
@@ -74,7 +74,7 @@ export async function renderGeoGebra(container, n, code) {
         api.evalCommand(`h = P(1,0)`);
         api.evalCommand(`k = P(0,1)`);
         api.evalCommand(`g(x)=a*sin(frec*(x-h)°)+k`);
-        
+
         api.evalCommand(`SetColor(g, "Orange")`);
 
       }
@@ -87,18 +87,21 @@ export async function renderGeoGebra(container, n, code) {
     const api = window.ggbApps[i];
     let pregunta = document.getElementsByClassName('pregunta-geogebra')[i];
     if (!api) return alert("Applet no listo");
-    
-   api.setVisible('f', true);
-    const maxIt=9
-    for (let it=0;it<maxIt;++it){
-      const x = Math.random() * 10 -5; // x aleatorio entre -5 y 5
+
+    api.setVisible('f', true);
+    const maxIt = 9
+    // fijar puntos para que no se muevan
+    api.setFixed('P', true);
+    api.setFixed('Q', true);
+    for (let it = 0; it < maxIt; ++it) {
+      const x = Math.random() * 10 - 5; // x aleatorio entre -5 y 5
       const fx = api.getValue(`f(${x})`);
       const gx = api.getValue(`g(${x})`);
-      if (Math.abs(fx-gx)>0.1) {
+      if (Math.abs(fx - gx) > 0.1) {
         return false;
       }
     }
-    
+
     return true;
   };
 }
