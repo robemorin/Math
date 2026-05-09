@@ -48,9 +48,9 @@ export async function renderGeoGebra(container, n, code) {
 
         // Generar valores aleatorios
         let a = (Math.random() < 0.5 ? 1 : -1) * (Math.floor(Math.random() * 4) + 2);
-        let periodo = 4 * Math.floor(Math.random() * 5 + 1);
+        let periodo = 4 * Math.ceil(Math.random() * 30);
         let b = 360 / periodo;
-        let c = (Math.random() < 0.5 ? 1 : -1) * Math.floor(Math.random() * 4) + 1;
+        let c = (Math.random() < 0.5 ? 1 : -1) * Math.floor(Math.random() * 10) + 1;
         let funcType = Math.random() < 0.5 ? 'sin' : 'cos';
         //Configurar los ejes
         let tick = periodo / 4;
