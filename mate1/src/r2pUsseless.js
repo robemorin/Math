@@ -113,16 +113,10 @@ class R2PDinamico extends HTMLElement {
       if (tipo === 2 && modulo.renderGeoGebra) {
         await modulo.renderGeoGebra(this.container, this.n, code);
       }
-
-      // Si el módulo define una función render(), llámala.
-      // Esto permite que los módulos de tipo 1 y 3 registren window.accionR2P
-      if (modulo.render) {
-        try {
-          await modulo.render(this.container, this.n, code);
-        } catch (e) {
-          console.warn('Error al ejecutar modulo.render:', e);
-        }
-      }
+      /*
+      if (tipo === 3 && modulo.render) {
+        await modulo.render(this.container, this.n, code);
+      }*/
 
 
       //console.log(`n: ${this.n}, codigo: ${code}`);

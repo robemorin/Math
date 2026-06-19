@@ -7,20 +7,13 @@ export function name(){
 }
 export function tipo(){
   return 0
-  /*
-  0 - Opción múltiple
-  1 - Abierto
-  2 - Geogebra
-  */
 }
 export async function pregunta(np) { 
     function P1(){
-	const PV = Math.round(Math.random() * 100000 + 10000); // Valor inicial del activo
-	const I = Math.round(Math.random() * 10 + 5); // Tasa de depreciación anual (5% a 15%)
-	
+	const PV = Math.round(Math.random() * 100000 + 10000);
+	const I = Math.round(Math.random() * 10 + 5);
 	const annos =Math.round(Math.random() * 15 + 5)
-	const N = annos// Periodos totales (1 a 5 años)
-	const FV = tlacu.financiera(N, -I, PV, 0, null, 1, 1); // Valor final (depreciado)
+	const FV = tlacu.financiera(N, -I, PV, 0, null, 1, 1);
 
 	const P = `Un activo con valor inicial de \\$${PV} MXN se deprecia a una tasa anual del ${I}% anual. 
 	¿Cuál será su valor al final de ${annos} años?`;
@@ -28,7 +21,7 @@ export async function pregunta(np) {
 	let R = [FV.toFixed(2)];
 	for (let k = 1; k < 6; ++k) {
 		do {
-			const variacion = (Math.random() * 0.30 + 0.85); // Entre 85% y 100% del valor real
+			const variacion = (Math.random() * 0.30 + 0.85);
 			R[k] = (FV * variacion).toFixed(2);
 		} while (tlacu.pregunta.hayRepetidos(R));
 	}

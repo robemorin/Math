@@ -7,11 +7,6 @@ export function name(){
 }
 export function tipo(){
   return 0
-  /*
-  0 - Opción múltiple
-  1 - Abierto
-  2 - Geogebra
-  */
 }
 export async function pregunta(numeroPregunta) { 
   try {
