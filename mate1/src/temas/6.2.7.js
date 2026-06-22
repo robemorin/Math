@@ -39,7 +39,8 @@ function PP(numeroPregunta) {
     const angleA = Math.acos((b * b + c * c - a * a) / (2 * b * c));
     const area = 0.5 * b * c * Math.sin(angleA);
 
-    let P = `<div class="pregunta" data-a="${a}" data-b="${b}" data-c="${c}">${numeroPregunta}.- Calcule el área de un triángulo cuyos lados miden ${a} cm, ${b} cm y ${c} cm.
+    let P = `${numeroPregunta == 1 ? `<a href="https://www.youtube.com/shorts/JFiL5djex4o" target="_blank">Video de ayuda</a>` : ``}
+    <div class="pregunta" data-a="${a}" data-b="${b}" data-c="${c}">${numeroPregunta}.- Calcule el área de un triángulo cuyos lados miden ${a} cm, ${b} cm y ${c} cm.
               <div width="200" height="200" style="width=200px; height=200px;" id="applet_container_${numeroPregunta - 1}" class="ggb-container"></div></div>`
 
 
