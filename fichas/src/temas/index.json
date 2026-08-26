@@ -16,6 +16,7 @@
   ["1.3.4","Sucesiones y Series Geométricas - Práctica de Examen"],
   ["1.3.5","Evaluación de Sucesiones y Series Geométricas"],
   ["1.3.6","La Curva de Von Koch y Series Geométricas"],
+  ["1.3.7","Sucesiones Geométricas: Modelos de Población"],
   ["1.4.1","Aplicaciones Financieras: Interés Compuesto"],
   ["1.4.2","Evaluación: Aplicaciones Financieras (Interés Compuesto)"],
   ["1.4.3","Aplicaciones Financieras: Inflación e Interés"],
@@ -142,6 +143,7 @@
   ["4.6.2","Bondad de ajuste (1 renglón)"],
   ["4.7.1","Prueba t de Student (Dos muestras)"],
   ["4.7.2","Prueba t de Student (Una muestra contextual)"],
+  ["5.1.1","Estimación de la derivada mediante tablas"],
   ["5.2.1","Línea tangente y normal"],
   ["5.5.1","Cálculo de Volumen: Regla de Simpson"]
 ]
