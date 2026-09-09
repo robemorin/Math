@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Fichas Múltiples | FIME</title>
+    
+    <link rel="stylesheet" href="./src/style.css">
+
+    <style>
+        /* Estilos específicos para la vista múltiple */
+        .controls-group {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .controls-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        .controls-group input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        @media print {
+            .ficha-container {
+                break-after: page;
+            }
+            .sidebar, .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            TeX: {
+                extensions: ["AMSmath.js", "AMSsymbols.js"]
+            },            tex2jax: {
+                inlineMath: [['$','$'], ["\\(","\\)"]],
+                displayMath: [['$$','$$'], ["\\\[","\\\]"]],
+                processEscapes: true
+            },
+            "HTML-CSS": { availableFonts: ["TeX"] },
+            messageStyle: "none"
+        });
+    </script>
+
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+    </script>
+    <script type="text/javascript" src="https://www.geogebra.org/apps/deployggb.js"></script>
+    <script type="module" src="https://robemorin.github.io/tlacuache/src/tlacuache.mjs"></script>
+    <!--script type="importmap">
+    {
+        "imports": {
+            "https://robemorin.github.io/tlacuache/src/tlacuache-elements.js": "../src/tlacuache-elements.js",
+            "https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs": "../src/tlacuache-modulo.mjs"
+        }
+    }
+    </script-->
+
+    <!-- Usamos el nuevo script multiple.js -->
+    <script type="module" src="./src/multiple.js" defer></script>
+</head>
+<body>
+
+    <aside class="sidebar no-print">
+        <div class="brand">
+            <h2>Generador Múltiple</h2>
+            <p>Fichas Aleatorias</p>
+        </div>
+
+        <div class="controls-group">
+            <label for="num-copias">Cantidad de Fichas:</label>
+            <input type="number" id="num-copias" value="5" min="1" max="50">
+            
+            <label for="id-inicial">ID Inicial (Letra o Núm):</label>
+            <input type="text" id="id-inicial" value="A" maxlength="3">
+
+            <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+            
+            <label style="display:inline-flex; align-items:center; font-weight:normal;">
+                <input type="checkbox" id="check-examenes" checked style="width:auto; margin-right:5px; margin-bottom:0;"> 
+                Incluir Exámenes
+            </label>
+            <label style="display:inline-flex; align-items:center; font-weight:normal; margin-top:5px;">
+                <input type="checkbox" id="check-respuestas" checked style="width:auto; margin-right:5px; margin-bottom:0;"> 
+                Incluir Solucionarios
+            </label>
+        </div>
+
+        <div class="tab-container" id="menu-container">
+            <p style="text-align:center; color:#666;">Cargando temario...</p>
+        </div>
+        
+        <div class="contenedor-boton">
+            <button onclick="window.generarFichasMultiples()" class="btn-primary">Generar Fichas</button>
+            <button onclick="window.print()" class="btn-secondary">🖨️ Imprimir / PDF</button>
+        </div>
+        
+        <div style="margin-top:10px; text-align:center;">
+            <a href="index.html" style="font-size:0.8em; color:blue;">&larr; Volver al Generador Simple</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="examen_completo" id="examen-lienzo">
+            <div class="placeholder-inicial">
+                <h3>Modo Generación Múltiple</h3>
+                <p>1. Selecciona los ejercicios a la izquierda.</p>
+                <p>2. Define cuántas copias distintas quieres.</p>
+                <p>3. Pulsa "Generar Fichas".</p>
+                <hr>
+                <p><small>Cada ficha tendrá valores aleatorios distintos (si el ejercicio lo soporta).</small></p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

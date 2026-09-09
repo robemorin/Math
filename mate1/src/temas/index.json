@@ -96,6 +96,14 @@
     "Funcion a trozos"
   ],
   [
+    "5.1.1",
+    "Término general de una sucesión"
+  ],
+  [
+    "5.1.2",
+    "Término general de una sucesión (Abierta)"
+  ],
+  [
     "5.2.1",
     "Sucesiones aritméticas I"
   ],
@@ -118,6 +126,46 @@
   [
     "5.3.3",
     "Sucesiones geométricas III"
+  ],
+  [
+    "5.4.1",
+    "Crecimiento exponencial"
+  ],
+  [
+    "5.4.2",
+    "Crecimiento exponencial (Abierta)"
+  ],
+  [
+    "5.4.3",
+    "Decaimiento exponencial"
+  ],
+  [
+    "5.4.4",
+    "Decaimiento exponencial (Abierta)"
+  ],
+  [
+    "5.4.5",
+    "Tiempo en modelos exponenciales"
+  ],
+  [
+    "5.4.6",
+    "Tiempo en modelos exponenciales (Abierta)"
+  ],
+  [
+    "5.5.1",
+    "Interés compuesto y depreciación"
+  ],
+  [
+    "5.5.2",
+    "Interés compuesto y depreciación (Abierta)"
+  ],
+  [
+    "5.5.3",
+    "Anualidades, préstamos y amortizaciones"
+  ],
+  [
+    "5.5.4",
+    "Anualidades, préstamos y amortizaciones (Abierta)"
   ],
   [
     "6.1.1",
@@ -170,5 +218,25 @@
   [
     "6.2.7",
     "Área de triángulos - 3L"
+  ],
+  [
+    "6.3.1",
+    "Área superficial de prismas rectos"
+  ],
+  [
+    "6.3.2",
+    "Área superficial de cilindros"
+  ],
+  [
+    "6.4.1",
+    "Volumen de prismas y cilindros"
+  ],
+  [
+    "6.4.2",
+    "Volumen de pirámides y conos"
+  ],
+  [
+    "6.5.1",
+    "Capacidad y unidades de volumen"
   ]
 ]

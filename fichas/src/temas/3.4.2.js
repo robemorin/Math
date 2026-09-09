@@ -1,178 +1,97 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
-import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
+import * as ai from '../utils/fichas-ai.js';
+
+ai.initTlacuache();
 
 export function name() {
-    return 'D. Voronoi (3 coordenadas)';
+    return "Ficha: Teorema del Seno";
 }
 
-function CR(n) {
-    let s = "";
-    for (let i = 0; i < n; i++) s += "<br>";
-    return s;
-}
+export async function pregunta(numeroPregunta, globalIndex) {
+    let html = '';
+    let solucion = '';
 
-function simplify_frac(a) {
-    function mcd_new(x, y) {
-        if (y === 0) return x;
-        return mcd_new(y, x % y);
-    }
-    let mcd = mcd_new(a[0], a[1]);
-    mcd *= mcd * a[1] < 0 ? -1 : 1;
-    return [a[0] / mcd, a[1] / mcd];
-}
+    html += ai.getHeader("3.4.2", "3. Geometría y trigonometría", "Ficha: Teorema del Seno");
+    html += `<div class="contexto-especial" style="margin-bottom: 20px;"><b>Instrucción:</b> Para cada ejercicio, dibuje el triángulo correspondiente y calcule lo solicitado (3 puntos cada uno).</div>`;
 
-function fraccion(a, b, op = false) {
-    if (b == 0) return `${a < 0 ? '-' : ''}\\infty`;
-    else if (a == 0) return 0;
-    let den = simplify_frac([a, b]);
-    if (Math.abs(den[1]) == 1) return den[0] * den[1];
-    if (!op) {
-        const sig = den[1] < 0 ? -1 : 1;
-        return `\\frac{${sig * den[0]}}{${sig * den[1]}}`;
-    } else {
-        const sig = den[0] * den[1] < 0 ? '-' : '';
-        return `${sig}\\frac{${Math.abs(den[0])}}{${Math.abs(den[1])}}`;
-    }
-}
+    const problemas = [];
+    const respuestasVal = [];
+    const letrasTriangulos = [
+        { v1: "A", v2: "B", v3: "C", s1: "a", s2: "b", s3: "c" },
+        { v1: "P", v2: "Q", v3: "R", s1: "p", s2: "q", s3: "r" },
+        { v1: "X", v2: "Y", v3: "Z", s1: "x", s2: "y", s3: "z" },
+        { v1: "D", v2: "E", v3: "F", s1: "d", s2: "e", s3: "f" },
+        { v1: "H", v2: "J", v3: "K", s1: "h", s2: "j", s3: "k" },
+        { v1: "A", v2: "B", v3: "C", s1: "a", s2: "b", s3: "c" },
+        { v1: "P", v2: "Q", v3: "R", s1: "p", s2: "q", s3: "r" },
+        { v1: "X", v2: "Y", v3: "Z", s1: "x", s2: "y", s3: "z" },
+        { v1: "D", v2: "E", v3: "F", s1: "d", s2: "e", s3: "f" },
+        { v1: "H", v2: "J", v3: "K", s1: "h", s2: "j", s3: "k" }
+    ];
 
-function createSVG(dim = [300, 200]) {
-    let SVG = document.createElement('svg');
-    // Emular el NS para toString literal
-    SVG.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    SVG.setAttribute("width", dim[0] + "px");
-    SVG.setAttribute("height", dim[1] + "px");
-    SVG.setAttribute('fill', 'none');
-    SVG.setAttribute('stroke', 'black');
-    return SVG;
-}
+    const unidades = ["cm", "m", "cm", "mm", "m", "cm", "m", "cm", "mm", "m"];
 
-function createAxis(lim = [-1, 1, -1, 1, [0.5, 0.5]], dim = [300, 200]) {
-    function coo2px(P, dim, lim) {
-        const m = [(dim[0] - 40) / (lim[1] - lim[0]), -(dim[1] - 40) / (lim[3] - lim[2])];
-        const b = [20 - m[0] * lim[0], 20 - m[1] * lim[3]];
-        return [m[0] * P[0] + b[0], m[1] * P[1] + b[1]];
-    }
-    let SVG = createSVG(dim);
-    let group = "";
+    for (let k = 0; k < 10; k++) {
+        const u = unidades[k];
+        const lt = letrasTriangulos[k];
+        const tipo = k % 2; // 0: Hallar lado, 1: Hallar ángulo
 
-    // Cuadricula principal
-    if (lim.length > 4) {
-        for (let k = Math.floor(lim[0] / lim[4][0]); k <= Math.ceil(lim[1] / lim[4][0]); ++k) {
-            let p1 = coo2px([k * lim[4][0], lim[2]], dim, lim);
-            let p2 = coo2px([k * lim[4][0], lim[3]], dim, lim);
-            group += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#FE7200" stroke-width="1"></line>`;
+        let pText = '';
+        let rText = '';
+
+        if (tipo === 0) {
+            const A_deg = Math.floor(Math.random() * 50) + 35; // 35 a 84
+            const B_deg = Math.floor(Math.random() * 50) + 35; // 35 a 84
+            const b = Math.floor(Math.random() * 12) + 6;      // 6 a 17
+
+            const A_rad = A_deg * Math.PI / 180;
+            const B_rad = B_deg * Math.PI / 180;
+            const a_exact = b * Math.sin(A_rad) / Math.sin(B_rad);
+            const a = parseFloat(a_exact.toFixed(1));
+
+            pText = `En el triángulo $${lt.v1}${lt.v2}${lt.v3}$, se sabe que el ángulo en $${lt.v1}$ mide $${A_deg}^\\circ$, el ángulo en $${lt.v2}$ mide $${B_deg}^\\circ$ y el lado $${lt.s2} = ${b}\\text{ ${u}}$. Halle la longitud del lado $${lt.s1}$.`;
+            rText = `$${lt.s1} = \\frac{${b} \\cdot \\sin(${A_deg}^\\circ)}{\\sin(${B_deg}^\\circ)} = \\mathbf{${a.toFixed(1)}\\text{ ${u}}}$`;
+        } else {
+            const A_deg = Math.floor(Math.random() * 30) + 30; // 30 a 59 (A menor que B)
+            const B_deg = Math.floor(Math.random() * 30) + 65; // 65 a 94 (B mayor que A)
+            const b = Math.floor(Math.random() * 12) + 8;      // 8 a 19
+
+            const A_rad = A_deg * Math.PI / 180;
+            const B_rad = B_deg * Math.PI / 180;
+            
+            const a_exact = b * Math.sin(A_rad) / Math.sin(B_rad);
+            const a = parseFloat(a_exact.toFixed(1));
+
+            const sinA = (a * Math.sin(B_rad)) / b;
+            const A_calc_deg = Math.asin(sinA) * 180 / Math.PI;
+
+            pText = `En el triángulo $${lt.v1}${lt.v2}${lt.v3}$, se sabe que el lado $${lt.s1} = ${a}\\text{ ${u}}$, el lado $${lt.s2} = ${b}\\text{ ${u}}$ y el ángulo en $${lt.v2}$ mide $${B_deg}^\\circ$. Halle la medida del ángulo en el vértice $${lt.v1}$.`;
+            rText = `$\\sin(${lt.v1}) = \\frac{${a} \\cdot \\sin(${B_deg}^\\circ)}{${b}} \\implies \\mathbf{${lt.v1} = ${A_calc_deg.toFixed(1)}^\\circ}$`;
         }
-        for (let k = Math.floor(lim[2] / lim[4][1]); k <= Math.ceil(lim[3] / lim[4][1]); ++k) {
-            let p1 = coo2px([lim[0], k * lim[4][1]], dim, lim);
-            let p2 = coo2px([lim[1], k * lim[4][1]], dim, lim);
-            group += `<line x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}" stroke="#FE7200" stroke-width="1"></line>`;
-        }
-    }
-    // Ejes principales
-    let xAxis1 = coo2px([lim[0], 0], dim, lim), xAxis2 = coo2px([lim[1], 0], dim, lim);
-    group += `<line x1="${xAxis1[0]}" y1="${xAxis1[1]}" x2="${xAxis2[0]}" y2="${xAxis2[1]}" stroke="#FE7200" stroke-width="2"></line>`;
 
-    let yAxis1 = coo2px([0, lim[2]], dim, lim), yAxis2 = coo2px([0, lim[3]], dim, lim);
-    group += `<line x1="${yAxis1[0]}" y1="${yAxis1[1]}" x2="${yAxis2[0]}" y2="${yAxis2[1]}" stroke="#FE7200" stroke-width="2"></line>`;
-
-    if (lim.length > 4) {
-        for (let k = Math.floor(lim[0] / lim[4][0]); k <= Math.ceil(lim[1] / lim[4][0]); ++k) {
-            if (k != 0) {
-                let p = coo2px([k * lim[4][0], 0], dim, lim);
-                group += `<text x="${p[0]}" y="${p[1] + 12}" fill="black" style="font: italic 12px sans-serif;" text-anchor="middle">${k * lim[4][0]}</text>`;
-            }
-        }
-        for (let k = Math.floor(lim[2] / lim[4][1]); k <= Math.ceil(lim[3] / lim[4][1]); ++k) {
-            if (k != 0) {
-                let p = coo2px([0, k * lim[4][1]], dim, lim);
-                group += `<text x="${p[0] + 4}" y="${p[1] + 4}" fill="black" style="font: italic 12px sans-serif;">${k * lim[4][1]}</text>`;
-            }
-        }
+        problemas.push(pText);
+        respuestasVal.push(rText);
     }
 
-    SVG.innerHTML = group;
-    return SVG.outerHTML;
-}
+    html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">`;
+    for (let k = 0; k < 10; k++) {
+        if (k === 6) { 
+            html += `</div><div class="page-break"></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">`;
+        }
+        html += `
+        <div class="exercise-step" style="margin: 0; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div><span style="font-weight: bold;">Ejercicio ${k + 1}.</span> <span style="font-size: 0.95em;">${problemas[k]}</span> <span class="mark">3</span></div>
+            <div style="margin-top: 10px;"><tlacuache-renglon n="4" color="#f9f9f9"></tlacuache-renglon></div>
+        </div>`;
+    }
+    html += `</div><div class="page-break"></div>`;
 
-export async function pregunta() {
-    let A = [], B = [], C = [];
-    let angle = 0, Dangle;
+    solucion += `<div style="font-family: sans-serif; font-size: 0.85rem;">`;
+    solucion += `<b>Solucionario 3.4.2 (Teorema del Seno):</b><br><ol>`;
+    for (let k = 0; k < 10; k++) {
+        solucion += `<li style="margin-bottom: 8px;">${respuestasVal[k]}</li>`;
+    }
+    solucion += `</ol></div>`;
 
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        A = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < A[0] && A[0] < 10 && -10 < A[1] && A[1] < 10));
-    angle += Dangle;
-
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        B = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < B[0] && B[0] < 10 && -10 < B[1] && B[1] < 10));
-    angle += Dangle;
-
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        C = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < C[0] && C[0] < 10 && -10 < C[1] && C[1] < 10));
-
-    let Pregunta = `<div class="problema2">1.- Considere que $A:(${A})$, $B:(${B})$ y $C:(${C})$.
-        <br><center><tlacuache-ejes size="430,430" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
- </tlacuache-ejes></center>
-        <ol class="FT_ol_a">
-        <li>Ubique los puntos $A$, $B$ y $C$ en el plano cartesiano <div>3</div></li>
-        <li>Calcule el punto medio del segmento $\\overline{AB}$<div>1</div></li>   
-        <li>Calcule la pendiente del segmento $\\overline{AB}$ <div>1</div></li>
-        <li>Calcule la pendiente de la mediatriz del segmento $\\overline{AB}$<div>1</div></li>
-        <li>Coloque los puntos medios de los segmentos $\\overline{AB}$, $\\overline{AC}$ y $\\overline{BC}$ en la gráfica <div>1</div> </li>
-        <li>Trace las mediatrices de los segmentos $\\overline{AB}$, $\\overline{AC}$ y $\\overline{BC}$ con una línea poco remarcada <div>3</div> </li>
-        <li>Usando las mediatrices dibujadas. Grafique el diagrama de Voronoi correspondiente. Resáltelo claramente.<div>5</div></li>
-        </ol></div><div class="page"></div>`;
-
-    let pm = [simplify_frac([A[0] + B[0], 2]), simplify_frac([A[1] + B[1], 2])];
-    let mab = simplify_frac([A[1] - B[1], A[0] - B[0]]);
-    let mpab = simplify_frac([-mab[1], mab[0]]);
-
-    let Solucion = `<div class="ans">
-        <div style="font-weight: bold;">Problema 1</div>
-        <div>(1b) $P_{AB}=(${fraccion(pm[0][0], pm[0][1])},${fraccion(pm[1][0], pm[1][1])}) $</div>
-        <div>(1c) $m_{AB}=${fraccion(mab[0], mab[1])}$</div>
-        <div>(1d) $m^p_{AB}=${fraccion(mpab[0], mpab[1], true)}$</div>
-    </div><br>`;
-
-    // --- Problema 2 ---
-    angle = 0;
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        A = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < A[0] && A[0] < 10 && -10 < A[1] && A[1] < 10));
-    angle += Dangle;
-
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        B = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < B[0] && B[0] < 10 && -10 < B[1] && B[1] < 10));
-    angle += Dangle;
-
-    do {
-        Dangle = Math.random() * .2 + 1.8;
-        let r = Math.random() * 10 + 2;
-        C = [Math.round((r + 1) * Math.cos(angle + Dangle)), Math.round((r + 1) * Math.sin(angle + Dangle))];
-    } while (!(-10 < C[0] && C[0] < 10 && -10 < C[1] && C[1] < 10));
-
-    Pregunta += `<div class="problema2">2.- En el siguiente plano realice el diagrama de Voronoi cuyas semillas (sitios) son $A:(${A})$, $B:(${B})$ y $C:(${C})$    <br><center>
-    <tlacuache-ejes size="430,430" xlabel="" ylabel="" xlim="-10,10" ylim="-10,10" dx="2" dy="2" ddx="1" ddy="1">
- </tlacuache-ejes>
-    <center><div class="mark">5</div></div>`;
-
-    Solucion += `<div class="ans">
-    <div style="font-weight: bold;">Problema 2</div>
-    <div>(Gráfico visual unicamente, unir mediatrices trazadas).</div>
-    </div>`;
-
-    return [Pregunta, Solucion];
+    return [html, solucion];
 }

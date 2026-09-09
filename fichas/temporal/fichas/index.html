@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Exámenes | FIME</title>
+    
+    <link rel="stylesheet" href="./src/style.css">
+
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+                inlineMath: [['$','$'], ["\\(","\\)"]],
+                displayMath: [['$$','$$'], ["\\[","\\]"]],
+                processEscapes: true
+            },
+            "HTML-CSS": { availableFonts: ["TeX"] },
+            messageStyle: "none"
+        });
+    </script>
+
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+    </script>
+    <script type="text/javascript" src="https://www.geogebra.org/apps/deployggb.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "https://robemorin.github.io/tlacuache/src/tlacuache-elements.js": "../src/tlacuache-elements.js",
+            "https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs": "../src/tlacuache-modulo.mjs"
+        }
+    }
+    </script>
+
+    <script type="module" src="./src/core.js" defer></script>
+</head>
+<body>
+
+    <aside class="sidebar no-print">
+        <div class="brand">
+            <h2>Banco de Reactivos</h2>
+            <p>Selecciona los temas</p>
+        </div>
+        <div class="tab-container" id="menu-container">
+            <p style="text-align:center; color:#666;">Cargando temario...</p>
+        </div>
+        <div class="contenedor-boton">
+            <button onclick="window.generarExamen()" class="btn-primary">Generar Vista Previa</button>
+            <button onclick="window.print()" class="btn-secondary">🖨️ Imprimir / PDF</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <div class="examen_completo" id="examen-lienzo">
+            <div class="placeholder-inicial">
+                <h3>Bienvenido</h3>
+                <p>Selecciona ejercicios del menú izquierdo y pulsa "Generar".</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

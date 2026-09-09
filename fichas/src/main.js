@@ -309,7 +309,7 @@ export async function mostrarEjercicioFicha() {
   // En caso que desde index.html lleguen las cosas en la url
   const tema = parametros.slice(0, 3).join('.');
   const n = parametros[3] || 5; 
-  const nfichas = 1; // Por deceto generamos 1 ficha
+  const nfichas = 3; // Por deceto generamos 1 ficha
 
   const UI_num = document.getElementById('uiNum');
   const UI_fichas = document.getElementById('uiFichas');

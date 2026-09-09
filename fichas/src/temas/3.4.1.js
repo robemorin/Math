@@ -1,85 +1,85 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
-import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
+import * as ai from '../utils/fichas-ai.js';
+
+ai.initTlacuache();
 
 export function name() {
-    return 'Introducción a D. Voronoi';
+    return "Ficha: Teorema del Coseno (10 Ejercicios)";
 }
 
-function CR(n) {
-    let s = "";
-    for (let i = 0; i < n; i++) s += "<br>";
-    return s;
-}
+export async function pregunta(numeroPregunta, globalIndex) {
+    let html = '';
+    let solucion = '';
 
-export async function pregunta(globalIndex = 0) {
-    let Pregunta = `<div class="problema2">
-        <h3>Introducción al Diagrama de Voronoi</h3>
-        <p>El diagrama de Voronoi es una construcción geométrica que divide el plano en regiones (celdas) basadas en la distancia a un conjunto de puntos específicos llamados <b>semillas</b> (o sitios). Cada región contiene todos los puntos que están más cerca de su semilla correspondiente que de cualquier otra semilla.</p>
-        <p>Observe el siguiente diagrama de Voronoi generado en GeoGebra y responda o identifique lo que se le pide.</p>
-        <br>
-        <center>
-          <div class="pregunta-geogebra noprint_border" data-n="5">
-            <div id="applet_container_${globalIndex}" class="ggb-container" style="border: 1px solid #ccc; width: 500px; height: 350px; margin: 0 auto; pointer-events: none;"></div>
-          </div>
-        </center>
-        <div class="page"></div>
+    html += ai.getHeader("3.4.1", "3. Geometría y trigonometría", "Ficha: Teorema del Coseno (10 Ejercicios)");
+    html += `<div class="contexto-especial" style="margin-bottom: 20px;"><b>Instrucción:</b> Para cada ejercicio, dibuje el triángulo correspondiente y calcule lo solicitado (3 puntos cada uno).</div>`;
+
+    const problemas = [];
+    const respuestasVal = [];
+    const letrasTriangulos = [
+        { v1: "A", v2: "B", v3: "C", s1: "a", s2: "b", s3: "c" },
+        { v1: "P", v2: "Q", v3: "R", s1: "p", s2: "q", s3: "r" },
+        { v1: "X", v2: "Y", v3: "Z", s1: "x", s2: "y", s3: "z" },
+        { v1: "D", v2: "E", v3: "F", s1: "d", s2: "e", s3: "f" },
+        { v1: "H", v2: "J", v3: "K", s1: "h", s2: "j", s3: "k" },
+        { v1: "A", v2: "B", v3: "C", s1: "a", s2: "b", s3: "c" },
+        { v1: "P", v2: "Q", v3: "R", s1: "p", s2: "q", s3: "r" },
+        { v1: "X", v2: "Y", v3: "Z", s1: "x", s2: "y", s3: "z" },
+        { v1: "D", v2: "E", v3: "F", s1: "d", s2: "e", s3: "f" },
+        { v1: "H", v2: "J", v3: "K", s1: "h", s2: "j", s3: "k" }
+    ];
+
+    const unidades = ["cm", "m", "cm", "mm", "m", "cm", "m", "cm", "mm", "m"];
+
+    for (let k = 0; k < 10; k++) {
+        const u = unidades[k];
+        const lt = letrasTriangulos[k];
+        const tipo = k % 2; // 0: SAS, 1: SSS
+
+        const b = Math.floor(Math.random() * 12) + 6;
+        const c = Math.floor(Math.random() * 12) + 6;
+        const A_deg = Math.floor(Math.random() * 90) + 40;
+        const A_rad = A_deg * Math.PI / 180;
         
-        <ol class="FT_ol_a">
-        <li><b>Semillas (sitios):</b> Utilice una pluma o color para resaltar claramente las semillas en la gráfica. Defina con sus propias palabras qué representa una "semilla" en este contexto. <div>2</div></li>${CR(3)}
-        <li><b>Regiones (Celdas):</b> Pinte o sombree cada región de Voronoi con un color diferente. Explique brevemente cómo se define el área que abarca la celda de una semilla en particular. <div>2</div></li>${CR(3)}
-        <li><b>Fronteras (Aristas):</b> Remarque con color rojo las líneas que dividen las regiones. Conceptualmente, ¿qué propiedad cumplen todos los puntos que están sobre la frontera que divide exactamente a dos semillas?. <div>2</div></li>${CR(3)}
-        <li><b>Vértices:</b> Encierre en un círculo de color verde los vértices donde chocan las fronteras. Defina con sus propias palabras qué es un vértice geométricamente y qué relación de distancia mantiene con las semillas adyacentes. <div>2</div></li>${CR(4)}
-        <li><b>Aplicación:</b> Describa de forma creativa un ejemplo en el que usted utilizaría un diagrama de Voronoi en la vida real (ej. cobertura, localización). <div>2</div></li>${CR(4)}
-        </ol>
-        </div><div class="page"></div>`;
+        const a_exact = Math.sqrt(b*b + c*c - 2*b*c*Math.cos(A_rad));
+        const a = parseFloat(a_exact.toFixed(1));
 
-    let Solucion = `<div class="ans">
-    <div><b>Introducción Conceptual (Sin solución estructurada por ser teórica)</b></div>
-    </div>`;
+        let pText = '';
+        let rText = '';
 
-    return [Pregunta, Solucion];
-}
+        if (tipo === 0) {
+            pText = `En el triángulo $${lt.v1}${lt.v2}${lt.v3}$, se sabe que el lado $${lt.s2} = ${b}\\text{ ${u}}$, el lado $${lt.s3} = ${c}\\text{ ${u}}$ y el ángulo en el vértice $${lt.v1}$ mide $${A_deg}^\\circ$. Halle la longitud del lado $${lt.s1}$.`;
+            rText = `$${lt.s1} = \\sqrt{${b}^2 + ${c}^2 - 2(${b})(${c})\\cos(${A_deg}^\\circ)} = \\mathbf{${a.toFixed(1)}\\text{ ${u}}}$`;
+        } else {
+            const cosA = (b*b + c*c - a*a) / (2*b*c);
+            const A_deg_calc = Math.acos(cosA) * 180 / Math.PI;
+            pText = `En el triángulo $${lt.v1}${lt.v2}${lt.v3}$, se conocen las longitudes de sus tres lados: $${lt.s1} = ${a}\\text{ ${u}}$, $${lt.s2} = ${b}\\text{ ${u}}$ y $${lt.s3} = ${c}\\text{ ${u}}$. Halle la medida del ángulo del vértice $${lt.v1}$.`;
+            rText = `$\\cos(${lt.v1}) = \\frac{${b}^2 + ${c}^2 - ${a}^2}{2(${b})(${c})} \\implies \\mathbf{${lt.v1} = ${A_deg_calc.toFixed(1)}^\\circ}$`;
+        }
 
-export async function renderGeoGebra(container, totalElements) {
-    window.ggbApps = window.ggbApps || [];
-
-    for (let i = 0; i < totalElements; i++) {
-        const material_id = "uaxkzmpb";
-        const params = {
-            appName: 'classic',
-            width: 500,
-            height: 350,
-            material_id: material_id,
-            showToolBar: false,
-            showAlgebraInput: false,
-            showMenuBar: false,
-            id: `ggbApplet_${i}`,
-
-            appletOnLoad(api) {
-                window.ggbApps[i] = api;
-
-                api.setCoordSystem(-10, 10, -7, 7);
-                api.setGraphicsOptions(1, { gridType: 0, gridDistance: { "x": 1, "y": 1 }, gridIsAutomatic: false });
-
-                // Generar 5 a 6 puntos aleatorios dispersos
-                let pts = [];
-                for (let j = 0; j < 5; j++) {
-                    let rx = Math.round((Math.random() * 16) - 8);
-                    let ry = Math.round((Math.random() * 10) - 5);
-                    let nombre = String.fromCharCode(65 + j); // A, B, C...
-                    api.evalCommand(`${nombre} = (${rx}, ${ry})`);
-                    //api.setFixed(nombre, true);
-                    api.evalCommand(`SetColor(${nombre}, "Black")`);
-                    api.evalCommand(`SetPointSize(${nombre}, 5)`);
-                    pts.push(nombre);
-                }
-
-                // Traza el diagrama general
-                api.evalCommand(`V = Voronoi({${pts.join(',')}})`);
-                api.evalCommand(`SetColor(V, "Black")`);
-                api.evalCommand(`SetLineThickness(V, 5)`);
-            }
-        };
-        new GGBApplet(params, true).inject(`applet_container_${i}`);
+        problemas.push(pText);
+        respuestasVal.push(rText);
     }
+
+    html += `<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">`;
+    for (let k = 0; k < 10; k++) {
+        if (k === 6) { 
+            html += `</div><div class="page-break"></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">`;
+        }
+        html += `
+        <div class="exercise-step" style="margin: 0; min-height: 200px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div><span style="font-weight: bold;">Ejercicio ${k + 1}.</span> <span style="font-size: 0.95em;">${problemas[k]}</span> <span class="mark">3</span></div>
+            <div style="margin-top: 10px;"><tlacuache-renglon n="4" color="#f9f9f9"></tlacuache-renglon></div>
+        </div>`;
+    }
+    html += `</div><div class="page-break"></div>`;
+
+    solucion += `<div style="font-family: sans-serif; font-size: 0.85rem;">`;
+    solucion += `<b>Solucionario 3.4.1 (Teorema del Coseno):</b><br><ol>`;
+    for (let k = 0; k < 10; k++) {
+        solucion += `<li style="margin-bottom: 8px;">${respuestasVal[k]}</li>`;
+    }
+    solucion += `</ol></div>`;
+
+    return [html, solucion];
 }

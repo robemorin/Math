@@ -1,135 +1,142 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
-import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js';
+import * as ai from '../utils/fichas-ai.js';
+
+ai.initTlacuache();
 
 export function name() {
-    return 'Prueba t de Student (Una muestra contextual)';
+    return "Ficha: Probabilidad Condicional y Teorema de Bayes";
 }
 
-export async function pregunta() {
-    function generarProblema(num) {
-        let H1_type = 2;
-        let context = Math.floor(Math.random() * 14);
+export function tipo() {
+    return 1; // Abierta / Imprimible
+}
 
-        let n = Math.floor(Math.random() * 5) + 10; // 10 a 14 datos
-        let datos = [];
-        let suma = 0;
-        for (let i = 0; i < n; i++) {
-            let val = Math.floor(Math.random() * 50 + 100) + Math.floor((Math.random() - 0.5) * 20);
-            datos.push(val);
-            suma += val;
-        }
+export async function pregunta(numeroPregunta, globalIndex) {
+    let html = '';
+    let solucion = '';
 
-        let promedio = suma / n;
-        let difCuadrados = [];
-        let sumaCuadrados = 0;
+    html += ai.getHeader("4.7.2", "4. Estadística y probabilidad", "Ficha: Probabilidad Condicional y Teorema de Bayes");
 
-        for (let i = 0; i < n; i++) {
-            let dif2 = Math.pow(datos[i] - promedio, 2);
-            difCuadrados.push(dif2);
-            sumaCuadrados += dif2;
-        }
+    // ==========================================
+    // EJERCICIO 1 (CUARTILLA 1): CONDICIONAL BÁSICA Y TABLA DE FRECUENCIAS
+    // ==========================================
+    const pA = parseFloat((Math.floor(Math.random() * 3) * 0.1 + 0.5).toFixed(2)); // 0.5, 0.6, 0.7
+    const pB = parseFloat((Math.floor(Math.random() * 3) * 0.1 + 0.3).toFixed(2)); // 0.3, 0.4, 0.5
+    const pInt = parseFloat((Math.floor(Math.random() * 2) * 0.05 + 0.15).toFixed(2)); // 0.15, 0.20
+    const pUnion = parseFloat((pA + pB - pInt).toFixed(2));
 
-        let s = Math.sqrt(sumaCuadrados / (n - 1));
+    const cond_A_dado_B = (pInt / pB).toFixed(3);
+    const cond_B_dado_A = (pInt / pA).toFixed(3);
 
-        let mu0 = Math.round(promedio + 3 * (Math.random() < .5 ? 1 : -1) * Math.random() * s);
-        H1_type = Math.random() < .25 ? 2 : (promedio > mu0 ? 0 : 1);
-        let compText = H1_type === 0 ? "mayor a" : (H1_type === 1 ? "menor a" : "diferente a");
-        let P = "";
-        let baseText = "";
-        let unidad = "";
+    // Contexto de idiomas
+    const totalEstudiantes = 100;
+    const esp = Math.floor(Math.random() * 10) + 55; // 55 a 64
+    const fra = Math.floor(Math.random() * 10) + 35; // 35 a 44
+    const ambos = Math.floor(Math.random() * 5) + 15; // 15 a 19
 
-        // Fallback manual 
-        let t_calc = (promedio - mu0) / (s / Math.sqrt(n));
-        let p_value = 0.05;
+    const soloEsp = esp - ambos;
+    const soloFra = fra - ambos;
+    const exactUno = soloEsp + soloFra;
 
-        // Intentamos invocar tlacu.stat.t_test si existe
-        if (tlacu.stat && typeof tlacu.stat.t_test === 'function') {
-            let res = tlacu.stat.t_test(mu0, datos, H1_type);
-            t_calc = res[0] !== undefined ? res[0] : t_calc;
-            p_value = res[1] !== undefined ? res[1] : p_value;
-        }
+    const cond_fra_dado_esp = (ambos / esp).toFixed(3);
+    const cond_esp_dado_uno = (soloEsp / exactUno).toFixed(3);
 
-        if (context === 0) {
-            unidad = "gramos"; baseText = "El peso promedio del producto";
-            P = `Se afirma que el peso promedio de un producto es de $\\mu = ${mu0}$ ${unidad}. Si el equipo de control de calidad desea probar la hipótesis de que el peso promedio real es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 1) {
-            unidad = "horas"; baseText = "El tiempo de vida de las baterías";
-            P = `Una empresa indica que el tiempo de vida de sus baterías es de $\\mu = ${mu0}$ ${unidad}. Se realizará un estudio para probar la hipótesis de que el tiempo de vida real es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 2) {
-            unidad = "km/l"; baseText = "El rendimiento promedio del automóvil";
-            P = `El rendimiento promedio reportado de un automóvil es de $\\mu = ${mu0}$ ${unidad}. En pruebas recientes se busca verificar la hipótesis de que el rendimiento real es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 3) {
-            unidad = "$^{\\circ}\\text{C}$"; baseText = "La temperatura promedio del proceso";
-            P = `Históricamente la temperatura promedio de un proceso químico es de $\\mu = ${mu0}$ ${unidad}. Se plantea la hipótesis de que la temperatura ha cambiado a ser ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 4) {
-            unidad = "pesos"; baseText = "El gasto promedio diario de los estudiantes";
-            P = `Un análisis previo señala que el gasto promedio diario de los estudiantes en la cafetería es de $\\mu = ${mu0}$ ${unidad}. Si se desea evaluar la hipótesis de que el gasto promedio diario es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 5) {
-            unidad = "ml"; baseText = "El contenido promedio de la botella";
-            P = `La etiqueta de un refresco indica que el volumen promedio por botella es de $\\mu = ${mu0}$ ${unidad}. Un organismo evalúa la hipótesis de que el contenido promedio real es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 6) {
-            unidad = "minutos"; baseText = "El tiempo promedio de espera";
-            P = `Un banco afirma que el tiempo promedio de espera en fila para sus clientes es de $\\mu = ${mu0}$ ${unidad}. Se lleva a cabo una auditoría para comprobar la hipótesis de que el tiempo promedio de espera es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 7) {
-            unidad = "kg"; baseText = "La resistencia promedio del cable";
-            P = `El fabricante asegura que la resistencia a la tensión promedio de un cable es de $\\mu = ${mu0}$ ${unidad}. Para garantizar la seguridad del producto, se busca someter a prueba la hipótesis de que la resistencia promedio es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 8) {
-            unidad = "días"; baseText = "El tiempo de vida de los focos";
-            P = `El fabricante reporta que el tiempo de vida de sus focos LED es de $\\mu = ${mu0}$ ${unidad}. Si se analiza una muestra para investigar la hipótesis de que el tiempo de vida es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 9) {
-            unidad = "ml"; baseText = "La cantidad promedio de jugo";
-            P = `Se empacan botellas de jugo donde la cantidad promedio declarada es $\\mu = ${mu0}$ ${unidad}. Si se hace una auditoría para verificar la hipótesis de que la cantidad promedio es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 10) {
-            unidad = "cm"; baseText = "La longitud promedio de las piezas";
-            P = `Las especificaciones de una pieza de madera exigen que su longitud promedio sea de $\\mu = ${mu0}$ ${unidad}. Si se toma una muestra para someter a prueba la hipótesis de que la longitud promedio de las piezas es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 11) {
-            unidad = "puntos"; baseText = "El puntaje promedio del examen";
-            P = `Históricamente, el puntaje promedio de cierto examen estandarizado es de $\\mu = ${mu0}$ ${unidad}. Si se busca probar la hipótesis de que el puntaje promedio de la última generación de estudiantes es ${compText} ${mu0} ${unidad}.`;
-        } else if (context === 12) {
-            unidad = "meses"; baseText = "El tiempo promedio de uso de una computadora";
-            P = `Se afirma que el tiempo promedio que un usuario conserva su computadora antes de reemplazarla es de $\\mu = ${mu0}$ ${unidad}. Si un analista de mercado quiere comprobar la hipótesis de que el tiempo de uso es ${compText} ${mu0} ${unidad}.`;
-        } else {
-            unidad = "calorías"; baseText = "La cantidad promedio de calorías del platillo";
-            P = `Un menú dietético exhibe que la cantidad de calorías de cierto platillo es de $\\mu = ${mu0}$ ${unidad}. Si se evalúa la hipótesis de que la cantidad promedio de calorías real es ${compText} ${mu0} ${unidad}.`;
-        }
+    html += `
+    <div class="seccion-title">I. Definición de Probabilidad Condicional y Espacios Muestrales Reducidos</div>
+    <div class="exercise-step">
+        <p><strong>1.</strong> Sean $A$ y $B$ dos eventos de un mismo espacio muestral tales que $P(A) = ${pA}$, $P(B) = ${pB}$ y $P(A \\cup B) = ${pUnion}$.</p>
+        <ol class="FT_ol_a">
+            <li>
+                Halle el valor exacto de la probabilidad de la intersección $P(A \\cap B)$. <span class="mark">2</span>
+                <tlacuache-renglon n="2" color="#f9f9f9"></tlacuache-renglon>
+            </li>
+            <li>
+                Calcule el valor de las probabilidades condicionales:
+                <ol class="FT_ol_i">
+                    <li>$P(A \\mid B)$ <span class="mark">2</span>
+                        <tlacuache-renglon n="2" color="#f9f9f9"></tlacuache-renglon>
+                    </li>
+                    <li>$P(B \\mid A)$ <span class="mark">2</span>
+                        <tlacuache-renglon n="2" color="#f9f9f9"></tlacuache-renglon>
+                    </li>
+                </ol>
+            </li>
+        </ol>
 
-        let tablaDifHtml = '<center><table style="border-collapse: collapse; margin: 25px 0; width: 90%; text-align: center;" border="1">';
-        tablaDifHtml += '<tr><th style="padding: 8px;">$x_i$</th>' + datos.map(d => `<td style="padding: 8px;">${d}</td>`).join('') + '</tr>';
-        tablaDifHtml += '<tr><th style="padding: 8px;">$(x_i - \\bar{x})^2$</th>' + datos.map(d => `<td style="padding: 8px; height: 40px;"></td>`).join('') + '</tr>';
-        tablaDifHtml += `<tr><th style="padding: 8px;">$\\sum$</th><td colspan="${n}" style="height: 40px;"></td></tr></table></center>`;
+        <p style="margin-top: 25px;"><strong>2.</strong> En una escuela que cuenta con un grupo de $${totalEstudiantes}$ estudiantes, $${esp}$ estudian Español ($S$), $${fra}$ estudian Francés ($F$) y $${ambos}$ estudian ambos idiomas simultáneamente. Se elige un estudiante al azar.</p>
+        <ol class="FT_ol_a">
+            <li>
+                Calcule la probabilidad de que el estudiante curse Francés sabiendo que ya cursa Español: $P(F \\mid S)$. <span class="mark">2</span>
+                <tlacuache-renglon n="2" color="#f9f9f9"></tlacuache-renglon>
+            </li>
+            <li>
+                Halle la probabilidad de que el estudiante curse únicamente Español, dado que se sabe que estudia exactamente uno solo de los dos idiomas. <span class="mark">2</span>
+                <tlacuache-renglon n="2" color="#f9f9f9"></tlacuache-renglon>
+            </li>
+        </ol>
+    </div>
 
-        let Pregunta = `
-        <div class="problema2">
-            <p>${num}.- ${P}</p>
-            <ol class="FT_ol_a">
-                <li>Escriba la hipótesis nula ($H_0$) y la hipótesis alternativa ($H_1$).<div>2</div></li>
-                <tlacuache-renglon n="2" color="gray" alto="30"></tlacuache-renglon>
-                <li>A continuación aparecen los datos recolectados. Calcule la media muestral ($\\bar{x}$) y la desviación estándar de la muestra ($S_x$). Puede apoyarse completando la siguiente tabla para sumar sus diferencias.<div>4</div></li>
-                ${tablaDifHtml}
-                <li>Calcule el estadístico de prueba. $$t_{calc} = \\frac{\\bar{x} - \\mu_0}{\\frac{S_x}{\\sqrt{n}}} $$.<div>2</div></li>
-                <tlacuache-renglon n="2" color="gray" alto="30"></tlacuache-renglon>
-                <li>Escriba el valor p (p-value). Con un nivel de significancia de $\\alpha = 0.05$, redacte la conclusión de su estudio.<div>2</div></li>
-                <tlacuache-renglon n="2" color="gray" alto="30"></tlacuache-renglon>
-            </ol>
-        </div>`;
+    <div class="page-break"></div>
+    `;
 
-        let correctH1_sign = H1_type === 0 ? ">" : (H1_type === 1 ? "<" : "\\neq");
-        let correctH0_sign = H1_type === 0 ? "\\leq" : (H1_type === 1 ? "\\geq" : "=");
-        let correctH1_text = H1_type === 0 ? "es mayor a" : (H1_type === 1 ? "es menor a" : "es diferente a");
+    // ==========================================
+    // EJERCICIO 2 (CUARTILLA 2): PROBABILIDAD CONDICIONAL INVERSA (TEOREMA DE BAYES)
+    // ==========================================
+    const pLluvia = parseFloat((Math.floor(Math.random() * 3) * 0.1 + 0.2).toFixed(2)); // 0.2, 0.3, 0.4
+    const pNoLluvia = parseFloat((1 - pLluvia).toFixed(2));
+    const pCine_dado_L = parseFloat((Math.floor(Math.random() * 2) * 0.1 + 0.7).toFixed(2)); // 0.7, 0.8
+    const pCine_dado_noL = parseFloat((Math.floor(Math.random() * 2) * 0.1 + 0.3).toFixed(2)); // 0.3, 0.4
 
-        let Solucion = `<div class="ans">
-            <div style="font-weight: bold; width: 100%;">Pregunta ${num}</div>
-            <div>(a) $H_0: \\mu ${correctH0_sign} ${mu0}$, $H_1: \\mu ${correctH1_sign} ${mu0}$. Textual: ${baseText} ${correctH1_text} ${mu0} ${unidad}.</div>
-            <div>(b) $\\bar{x} = ${promedio.toFixed(4)}$ y $S_x = ${s.toFixed(4)}$</div>
-            <div>(c) $t_{calc} = ${t_calc.toFixed(4)}$</div>
-            <div>(d) $p\\text{-value} = ${p_value.toFixed(4)}$. ${p_value < 0.05 ? "Se rechaza $H_0$" : "No se rechaza $H_0$"}.</div>
-        </div><br>`;
+    const pCine_total = parseFloat((pLluvia * pCine_dado_L + pNoLluvia * pCine_dado_noL).toFixed(4));
+    const pLluvia_dado_Cine = ((pLluvia * pCine_dado_L) / pCine_total).toFixed(4);
 
-        return [Pregunta, Solucion];
-    }
+    html += `
+    <div class="seccion-title">II. Probabilidad Total y Probabilidad A Posteriori (Teorema de Bayes)</div>
+    <div class="exercise-step">
+        <p><strong>3.</strong> La probabilidad de que mañana llueva ($L$) en una ciudad es de $${pLluvia}$. Si llueve, la probabilidad de que Juan asista al cine ($C$) es de $${pCine_dado_L}$. Si no llueve ($L'$), la probabilidad de que asista al cine es de $${pCine_dado_noL}$.</p>
 
-    let p1 = generarProblema(1);
-    let p2 = generarProblema(2);
+        <ol class="FT_ol_a">
+            <li>
+                Construya un diagrama de árbol o esquema que represente las distintas combinaciones de sucesos y sus respectivas probabilidades. <span class="mark">2</span>
+                <div style="border: 1px dashed #bbb; height: 130px; margin: 8px 0; background-color: #fafafa; border-radius: 4px;"></div>
+            </li>
+            <li>
+                Demuestre que la probabilidad total de que Juan vaya al cine mañana es $P(C) = ${pCine_total}$. <span class="mark">3</span>
+                <tlacuache-renglon n="3" color="#f9f9f9"></tlacuache-renglon>
+            </li>
+            <li>
+                Sabiendo que Juan fue al cine esa tarde, halle la probabilidad de que haya llovido: $P(L \\mid C)$. <span class="mark">3</span>
+                <tlacuache-renglon n="3" color="#f9f9f9"></tlacuache-renglon>
+            </li>
+        </ol>
+    </div>
+    <div class="page-break"></div>
+    `;
 
-    return [p1[0] + '<div class="page"></div>' + p2[0], p1[1] + p2[1]];
+    solucion += `
+    <div style="font-family: sans-serif; font-size: 0.85rem;">
+        <b>Solucionario 4.7.2 (Probabilidad Condicional y Teorema de Bayes):</b><br><br>
+
+        <b>1. Eventos Abstractos:</b><br>
+        * a) $P(A \\cap B) = P(A) + P(B) - P(A \\cup B) = ${pA} + ${pB} - ${pUnion} = $ <b>${pInt}</b><br>
+        * b) (i) $P(A \\mid B) = \\frac{P(A \\cap B)}{P(B)} = \\frac{${pInt}}{${pB}} \\approx $ <b>${cond_A_dado_B}</b><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(ii) $P(B \\mid A) = \\frac{P(A \\cap B)}{P(A)} = \\frac{${pInt}}{${pA}} \\approx $ <b>${cond_B_dado_A}</b><br><br>
+
+        <b>2. Estudiantes de Idiomas:</b><br>
+        * a) $P(F \\mid S) = \\frac{n(F \\cap S)}{n(S)} = \\frac{${ambos}}{${esp}} \\approx $ <b>${cond_fra_dado_esp}</b><br>
+        * b) Solo Español = $${esp} - ${ambos} = ${soloEsp}$. Solo Francés = $${fra} - ${ambos} = ${soloFra}$.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Exactamente un idioma = $${soloEsp} + ${soloFra} = ${exactUno}$.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;$P(S \\mid \\text{Exacto 1}) = \\frac{${soloEsp}}{${exactUno}} \\approx $ <b>${cond_esp_dado_uno}</b><br><br>
+
+        <b>3. Lluvia y Cine (Bayes):</b><br>
+        * a) Diagrama de árbol con ramas $L$ (${pLluvia}) y $L'$ (${pNoLluvia}); desde $L$: $C$ (${pCine_dado_L}) y $C'$ (${(1-pCine_dado_L).toFixed(2)}); desde $L'$: $C$ (${pCine_dado_noL}) y $C'$ (${(1-pCine_dado_noL).toFixed(2)}).<br>
+        * b) $P(C) = P(L)P(C \\mid L) + P(L')P(C \\mid L') = (${pLluvia})(${pCine_dado_L}) + (${pNoLluvia})(${pCine_dado_noL}) = $ <b>${pCine_total}</b><br>
+        * c) $P(L \\mid C) = \\frac{P(L \\cap C)}{P(C)} = \\frac{(${pLluvia})(${pCine_dado_L})}{${pCine_total}} = \\frac{${(pLluvia*pCine_dado_L).toFixed(3)}}{${pCine_total}} \\approx $ <b>${pLluvia_dado_Cine}</b>
+    </div>
+    `;
+
+    return [html, solucion];
+}
+
+export async function render(container, n, code) {
 }
