@@ -64,15 +64,6 @@ export async function render(container, n, code) {
       api.setValue("theta2", `${90*Math.round(Math.random()*3-1.5)*Math.PI/180}`)
       api.setValue("alpha2", `${90*Math.round(Math.random()*3-1.5)*Math.PI/180}`)
       
-     /*
-     api.setValue("a1", 2)
-      api.setValue("d1", 3)
-      api.setValue("theta1", `${-90*Math.PI/180}`)
-      api.setValue("alpha1", `${-90*Math.PI/180}`)
-      api.setValue("a2", -3)
-      api.setValue("d2", -1)
-      api.setValue("theta2", `${-90*Math.PI/180}`)
-      api.setValue("alpha2", `${90*Math.PI/180}`)*/
       }
     };
     new GGBApplet(params, true).inject(`applet_container_${i}`);
