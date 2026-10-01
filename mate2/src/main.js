@@ -1,7 +1,8 @@
 // main.js
-import './r2p.js';
-import * as r2pCoremodule from './r2p_core.js';
+import '../../src/r2p.js';
+import * as r2pCoremodule from '../../src/r2p_core.js';
 const nombreCurso = 'Matemáticas parte 2';
+window.r2pNomCurso = nombreCurso; // Para impresion.mjs centralizado
 const informacionCurso = '<h2>Docente: M.C. Roberto Alejandro Morin Romero</h2>';
 export function nomCurso() {
   return nombreCurso;
@@ -104,21 +105,7 @@ export function generaLink(archivoString){
   const setup = `${archivoString}.${numPreguntas}.${modo}.${tiempo}`
   window.open(`./actividad.html?a=${setup}`, "_blank");
 }
-window.MathJax = {
-  tex: {
-    inlineMath: [['$', '$'], ['\\(', '\\)']],
-    displayMath: [['$$', '$$'], ['\\[', '\\]']]
-  },
-  options: {
-    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-    ignoreHtmlClass: 'tex2jax_ignore',
-    processHtmlClass: 'tex2jax_process'
-  }
-};
-const script = document.createElement('script');
-script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-script.async = true;
-document.head.appendChild(script);
+// MathJax es inyectado automáticamente por src/r2p.js
 
 // Cambiar tema desde botón
 window.cambiarTema = function(nuevoTema) {
@@ -127,7 +114,9 @@ window.cambiarTema = function(nuevoTema) {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('contenido').addEventListener('click', (e) => {
+  const contenido = document.getElementById('contenido');
+  if (!contenido) return; // actividad.html no tiene #contenido
+  contenido.addEventListener('click', (e) => {
     const link = e.target.closest('.activity-link');
     if (link) {
       e.preventDefault();
@@ -218,6 +207,6 @@ export async function mostrarEjercicio() {
   const parametros = parametrosString.split('.').map(Number);
   //console.log(parametros); // [1, 1, 1, 10, 0, 60]
   const contenedor = document.getElementById('contenedorEjercicio');
-  contenedor.innerHTML = `<r2p-dinamico tema="${parametros[0]}.${parametros[1]}.${parametros[2]}" n="${parametros[3]}" modo="${parametros[4]}" tiempo="${parametros[5]}"></r2p-dinamico>`;
+  contenedor.innerHTML = `<r2p-dinamico curso="mate2" tema="${parametros[0]}.${parametros[1]}.${parametros[2]}" n="${parametros[3]}" modo="${parametros[4]}" tiempo="${parametros[5]}"></r2p-dinamico>`;
 }
 
