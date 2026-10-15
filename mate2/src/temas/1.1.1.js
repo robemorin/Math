@@ -12,7 +12,10 @@ export function tipo(){
   1 - Abierto
   2 - Geogebra
   */
-}
+}/*
+export function directivaIA(){
+  return "Enfócate en explicar cómo dividir el número entre la unidad de aproximación solicitada (ej. múltiplos de 10, 50, etc.) o fijarse en la cifra relevante para decidir si sube o se mantiene.";
+}*/
 export async function pregunta(numeroPregunta) { 
   try {
 	const numero = Math.random()*10**(Math.random()*5+3)

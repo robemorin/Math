@@ -42,13 +42,14 @@ export async function pregunta(i, code, esImprimible=false) {
   Use el método del trapecio para estimar el área 
 	$$\\int_a^b f(x)dx \\approx \\frac{h}{2}\\left(f(x_0)+2f(x_1)+\\cdots +2f(x_{n-1})+f(x_n) \\right)$$
 	 <center>
-	$\\int_a^b f(x)dx \\approx$ <math-field></math-field>
-	<center>
+	$\\int_a^b f(x)dx \\approx$ <math-field></math-field><span class="trueSolution" style="margin-left: 10px; font-weight: bold; color: red;"></span>
+	</center>
   </li>
   </ul>
 	  </div><br><br><br>` 
   if(esImprimible){
-	const respuesta=`a) $h=${h}$ b)$x=${dummy.x}$ , $y=${dummy.y}$ c)$A=${dummy.A}$`
+	const areaImprimible = Number(dummy.A.toPrecision(3)).toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 10 });
+	const respuesta=`a) $h=${h}$ b)$x=${dummy.x}$ , $y=${dummy.y}$ c)$A=${areaImprimible}$`
 	return [Pregunta, respuesta]
   }
 
@@ -77,7 +78,7 @@ export async function render() {
 	//console.log(`(${i+1}) ans: ${rnumero} rans=(${va}-${ve})/${ve}) = ${ans}`)
 
 	if( sol.h != rh || pregunta[i].getElementsByTagName('math-field')[0].value == ''){
-	  mathFields[0].style.backgroundColor = "red";
+	  mathFields[0].style.border = "solid 5px red";
 	} else{
 	  ++puntos
 	  mathFields[0].style.border = "solid 5px green";
@@ -90,7 +91,7 @@ export async function render() {
 		let rans = Number(mathFields[counter].value)	
 		if( ans.toPrecision(3) != rans.toPrecision(3) || pregunta[i].getElementsByTagName('math-field')[counter].value == ''){
 			dummyPuntos = 0
-			mathFields[counter].style.backgroundColor = "red";
+			mathFields[counter].style.border = "solid 5px red";
 		} else{	
 			
 			mathFields[counter].classList.remove('noVerMathFiels')
@@ -99,12 +100,31 @@ export async function render() {
 	}
 	puntos += dummyPuntos
 
-	const Area = Number(mathFields[mathFields.length-1].value)	
-	if( Number(sol.A.toPrecision(3)) != Area || mathFields[mathFields.length-1].value == ''){
-	  mathFields[mathFields.length-1].style.backgroundColor = "red";
+	const trueSolutionSpan = pregunta[i].getElementsByClassName('trueSolution')[0] || pregunta[i].querySelector('#trueSolution');
+	const Area = Number(mathFields[mathFields.length-1].value);
+	const areaRedondeada = Number(sol.A.toPrecision(3));
+	const areaStrSinCientifica = areaRedondeada.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 10 });
+	
+	const errorRelReal = Math.abs(sol.A) > 1e-12 ? Math.abs((Area - sol.A) / sol.A) * 100 : Math.abs(Area - sol.A);
+	const errorRelRedondeado = Math.abs(areaRedondeada) > 1e-12 ? Math.abs((Area - areaRedondeada) / areaRedondeada) * 100 : Math.abs(Area - areaRedondeada);
+	const esAreaCorrecta = mathFields[mathFields.length-1].value !== '' && !isNaN(Area) && (
+		Area === sol.A ||
+		Area === areaRedondeada ||
+		errorRelReal <= 1.5 ||
+		errorRelRedondeado <= 1.5
+	);
+
+	if( !esAreaCorrecta ){
+	  mathFields[mathFields.length-1].style.border = "solid 5px red";
+	  if (trueSolutionSpan) {
+	    trueSolutionSpan.textContent = ` Solución: ${areaStrSinCientifica}`;
+	  }
 	} else{
 	  ++puntos
 	  mathFields[mathFields.length-1].style.border = "solid 5px green";
+	  if (trueSolutionSpan) {
+	    trueSolutionSpan.textContent = '';
+	  }
 	}
 	
 	return [puntos,totalPuntos]

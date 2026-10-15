@@ -62,7 +62,7 @@ export function desencriptar(emsm, code, op = 's') {
 }
 
 export function pregunta(Q, code, numeroPregunta) {
-    const [P, Rt] = Q
+    const [P, Rt, datosPrimarios] = Q
     const msmt = [r2pCore.encriptarArray([78], code)]
     for (let i = 1; i < 6; ++i) {
         msmt[i] = r2pCore.encriptarArray([Math.floor(Math.random() * 78)], code)
@@ -70,6 +70,13 @@ export function pregunta(Q, code, numeroPregunta) {
 
     //console.log(`msmt: ${msmt}`)
     const [R, msm] = r2pCore.pregunta.revolver(Rt, msmt)
+
+    let dataAttributes = '';
+    if (datosPrimarios && typeof datosPrimarios === 'object') {
+        dataAttributes = Object.entries(datosPrimarios)
+            .map(([k, v]) => `data-${k}="${v}"`)
+            .join(' ');
+    }
 
     let S = `<div class="r2pi-pregunta" style="display: none;">
         <p>${P}</p>
@@ -81,6 +88,9 @@ export function pregunta(Q, code, numeroPregunta) {
                 <label for="radio_${numeroPregunta}_${k}">${R[k]}</label>
             </div>
             `
+    }
+    if (dataAttributes) {
+        S += `<template class="datos_primarios" ${dataAttributes}></template>`
     }
     S += "</div>"
     return S
@@ -152,6 +162,82 @@ export async function revisarOP(botonRevisar) {
     console.log(`Correctas: ${correctas} de ${numeroPreguntas}`);
     let calificacion = Math.ceil((correctas / numeroPreguntas) * 10)
     contenedor.querySelector('#r2p-calificacion').innerHTML = `Aciertos ${correctas} de ${numeroPreguntas}. Calificación: ${calificacion}`;
+
+    // ── Asistencia de IA contextual por intento ──
+    try {
+        const moduloTema = r2pElement?._moduloTema;
+        if (moduloTema && typeof moduloTema.directivaIA === 'function') {
+            import('./ia_service.js').then(({ solicitarApiKeySiNecesario, consultarIA, renderizarMarkdownMath }) => {
+                const cursoNombre = r2pElement.getAttribute('curso') || '';
+                // Intentar cargar la directiva general del curso
+                const cargarDirectivaCurso = async () => {
+                    try {
+                        if (cursoNombre) {
+                            const modDir = await import(`../${cursoNombre}/src/directiva.js`);
+                            return modDir.directivaCurso || '';
+                        }
+                    } catch (e) {
+                        // Sin directiva general de curso
+                    }
+                    return '';
+                };
+
+                const preguntasContenedor = contenedor.querySelectorAll('.r2pi-pregunta');
+                preguntasContenedor.forEach((elemPregunta, idx) => {
+                    const radios = elemPregunta.querySelectorAll('.r2p-input-radio');
+                    let seleccionada = null;
+                    let correcta = null;
+                    radios.forEach(r => {
+                        const esCorrecta = r2pCore.desencriptarString(r.getAttribute('msm'), code) === '_';
+                        if (r.checked) seleccionada = r;
+                        if (esCorrecta) correcta = r;
+                    });
+
+                    // Permitir pedir explicación si fue contestada incorrectamente o pedir ejercicio similar
+                    const esIncorrecta = seleccionada && seleccionada !== correcta;
+                    const textoPregunta = elemPregunta.querySelector('p')?.innerText || `Pregunta ${idx + 1}`;
+                    const textoOpcionSeleccionada = seleccionada ? seleccionada.parentElement.innerText.trim() : 'Sin responder';
+                    const textoOpcionCorrecta = correcta ? correcta.parentElement.innerText.trim() : '';
+
+                    const templateDatos = elemPregunta.querySelector('template.datos_primarios');
+                    const tieneProcedimientoModulo = Boolean(templateDatos && typeof moduloTema.procedimiento === 'function');
+
+                    if (tieneProcedimientoModulo) {
+                        const actionsDiv = document.createElement('div');
+                        actionsDiv.className = 'r2p-ia-actions-bar';
+                        actionsDiv.innerHTML = `
+                            <span style="font-size:0.85em; font-weight:600; color:#475569;">🛠️ Solución:</span>
+                            <button type="button" class="r2p-ia-action-btn btn-procedimiento">🔍 Ver procedimiento (Paso a paso)</button>
+                            <div class="r2p-procedimiento-box" style="display: none; width: 100%;"></div>
+                        `;
+                        elemPregunta.appendChild(actionsDiv);
+
+                        const procedimientoBox = actionsDiv.querySelector('.r2p-procedimiento-box');
+                        const btnProcedimiento = actionsDiv.querySelector('.btn-procedimiento');
+
+                        btnProcedimiento.addEventListener('click', async () => {
+                            const estaVisible = procedimientoBox.style.display !== 'none';
+                            if (estaVisible) {
+                                procedimientoBox.style.display = 'none';
+                                btnProcedimiento.innerText = '🔍 Ver procedimiento (Paso a paso)';
+                            } else {
+                                const datos = { ...templateDatos.dataset };
+                                const htmlGenerado = await moduloTema.procedimiento(datos);
+                                procedimientoBox.innerHTML = htmlGenerado;
+                                procedimientoBox.style.display = 'block';
+                                btnProcedimiento.innerText = '🔼 Ocultar procedimiento';
+                                if (window.MathJax && window.MathJax.typesetPromise) {
+                                    window.MathJax.typesetPromise([procedimientoBox]);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    } catch (e) {
+        console.warn('No se pudo inicializar la asistencia de IA:', e);
+    }
     const date = new Date();
     let boton = contenedor.querySelector('#revisar')
     boton.id = ''

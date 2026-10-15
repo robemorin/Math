@@ -1,0 +1,778 @@
+diff --git a/mate1/src/temas/1.1.1.js b/mate1/src/temas/1.1.1.js
+index 8f2d151..0e30aee 100644
+--- a/mate1/src/temas/1.1.1.js
++++ b/mate1/src/temas/1.1.1.js
+@@ -12,6 +12,33 @@ export function tipo(){
+   2 - Geogebra
+   */
+ }
++export function directivaIA(){
++  return `Actúa como un examinador senior y redactor jefe de currículo para el curso de Matemáticas: Aplicaciones e Interpretaciones NM (Nivel Medio) 
++del Bachillerato Internacional (IB). Tu tarea es diseñar un único ejercicio original tipo examen (que conste de varios incisos progresivos: a, b, c...) 
++acompañado de su respectivo criterio de corrección oficial (mark scheme).Sigue rigurosamente las siguientes directrices pedagógicas y de formato del IB:
++1. Contextualización Realista: El problema debe estar situado en un contexto del mundo real con el tema central sea '${name()}' y
++contextualizado (ej. economía y finanzas, ecología, logística, crecimiento poblacional, ergonomía o análisis estadístico de un fenómeno social). 
++Evita problemas puramente abstractos o algebraicos sin aplicación.
++2. Uso de la Tecnología (GDC) Recuerda que en el curso AI SL el uso de la calculadora gráfica (GDC) está permitido en ambos exámenes (Paper 1 y Paper 2).
++Diseña el ejercicio de modo que requiera el uso inteligente de funciones de la GDC, sin caer en cálculos manuales tediosos innecesarios.
++3. Selección y Rigor de los Términos de Instrucción (Command Terms)Utiliza estrictamente la taxonomía oficial de términos de instrucción del IB para los distintos incisos
++(por ejemplo: Determine, Escriba, Calcula, Encuentre, Mueste, Demuestre, Explique, Interprete, Compruebe, Bosqueje). La dificultad debe escalar de forma natural:
++Inciso inicial (a): Directo, uso básico de una fórmula del cuadernillo de fórmulas o lectura simple de datos (1-2 marcas).
++Inciso intermedio (b): Aplicación de un modelo matemático, interpretación de un parámetro en contexto o análisis estadístico (2-4 marcas).
++Inciso final (c): Justificación crítica, limitación del modelo matemático propuesto, o un cálculo más complejo que requiera conectar dos bloques temáticos (2-3 marcas).
++El puntaje total del ejercicio debe oscilar entre 6 y 9 marcas.
++4. Estructura de Salida Requerida: Proporciona la respuesta estructurada estrictamente en dos secciones con encabezados de nivel 3:
++### Enunciado del Ejercicio
++Numerado correctamente, con contexto del mundo real y definición clara de variables y unidades. Con incisos progresivos (a, b, c...).
++### Solución y Mark Scheme Oficial
++Desglosando paso a paso las marcas de método ($M$), de respuesta exacta/precisa ($A$), de razonamiento/explicación ($R$), y las marcas de tendencia (FT - Follow Through) si aplican en incisos posteriores.
++5. Formato de Respuesta y Matemáticas: Redacta la respuesta en formato Markdown estándar estructurado (usa encabezados ###, negritas **, listas - y párrafos limpios). Para todas las expresiones, variables y fórmulas matemáticas utiliza estrictamente delimitadores LaTeX: usa $...$ para matemáticas en línea (ejemplo: $y = mx + b$, marcas $[M1]$) y $$...$$ para ecuaciones principales en bloque. Asegúrate de cerrar siempre cada signo de dólar para no romper el modo matemático. NO uses el signo $ para representar dinero (si hablas de dinero escribe "USD", "euros" o "MXN").
++6. La respuesta debe ser exclusivamente en español, sin traducciones al inglés ni a otros idiomas. No incluyas explicaciones adicionales fuera de la estructura solicitada.
++`;
++}
++export function video(){
++  return "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; // Reemplaza con tu enlace de YouTube
++}
+ export async function pregunta(numeroPregunta) { 
+   try {
+     function tempEcLine(m,b){
+@@ -52,7 +79,7 @@ export async function pregunta(numeroPregunta) {
+ 
+ 
+     const P=`${numeroPregunta+1}.- Determine la ecuación de la línea recta que pasa por los puntos $A:(${A[0]}, ${A[1]})$ y $B:(${B[0]}, ${B[1]})$`
+-    const R=[tempEcLine(m,b)];
++    const R=[tempEcLine(m, b)];
+     
+     for(let i=1;i<6;++i){
+       do{
+@@ -64,13 +91,76 @@ export async function pregunta(numeroPregunta) {
+ 								R[i]= tempEcLine(m,b)
+       }while( tlacu.pregunta.hayRepetidos(R) )
+     }
+-    return [P,R]
++
++    // Datos primarios (únicamente las coordenadas de entrada, sin respuestas ni ecuaciones calculadas)
++    const datosPrimarios = {
++      x1: A[0],
++      y1: A[1],
++      x2: B[0],
++      y2: B[1]
++    };
++
++    return [P, R, datosPrimarios]
+ 
+   } catch (error) {
+-    console.error('Error loading r2p_core.js:', error);
++    console.error('Error generando pregunta:', error);
+   }
+ }
+ 
++/**
++ * Genera el procedimiento matemático paso a paso BAJO DEMANDA.
++ * Se invoca únicamente cuando el usuario presiona el botón "Ver procedimiento" tras calificar.
++ */
++export function procedimiento(datos) {
++    function formatearRecta(m, b) {
++        let ms = tlacu.simplify_frac([m[0], m[1]]);
++        let bs = tlacu.simplify_frac([b[0], b[1]]);
++        let cadena = `$y =`;
++        if (ms[0] != 0) {
++            if (ms[0] < 0) cadena += "-";
++            if (Math.abs(ms[0]) == 1 && ms[1] == 1) {
++                cadena += "x";
++            } else {
++                cadena += tlacu.fraccion(Math.abs(ms[0]), ms[1]) + "x";
++            }
++        }
++        if (bs[0] != 0) {
++            if (ms[0] != 0 && bs[0] > 0) cadena += "+";
++            else if (bs[0] < 0) cadena += "-";
++            cadena += tlacu.fraccion(Math.abs(bs[0]), bs[1]);
++        } else if (ms[0] == 0) {
++            cadena += "0";
++        }
++        return cadena + "$";
++    }
++
++    const x1 = Number(datos.x1);
++    const y1 = Number(datos.y1);
++    const x2 = Number(datos.x2);
++    const y2 = Number(datos.y2);
++
++    const dy = y2 - y1;
++    const dx = x2 - x1;
++    let m = tlacu.simplify_frac([dy, dx]);
++    let b = tlacu.simplify_frac([m[1] * y1 - m[0] * x1, m[1]]);
++    const fracM = tlacu.fraccion(m[0], m[1]);
++    const fracB = tlacu.fraccion(b[0], b[1]);
++    const ecuacionFinal = formatearRecta(m, b);
++
++    return `
++      <p><strong>Paso 1: Calcular la pendiente $m$</strong></p>
++      <p>Usando la fórmula $m = \\frac{y_2 - y_1}{x_2 - x_1}$ con $A(${x1}, ${y1})$ y $B(${x2}, ${y2})$:</p>
++      <p>$$m = \\frac{${y2} - (${y1})}{${x2} - (${x1})} = \\frac{${dy}}{${dx}} = ${fracM}$$</p>
++      
++      <p><strong>Paso 2: Calcular la ordenada al origen $b$</strong></p>
++      <p>Sustituyendo el punto $A(${x1}, ${y1})$ en $y = mx + b$:</p>
++      <p>$$${y1} = (${fracM})(${x1}) + b \\implies b = ${y1} - (${fracM})(${x1}) = ${fracB}$$</p>
++      
++      <p><strong>Paso 3: Escribir la ecuación de la recta</strong></p>
++      <p>Resultado final: <strong>${ecuacionFinal}</strong></p>
++    `;
++}
++
+ /*
+ 
+ 						//  Inicio de preguntas
+diff --git a/mate2/src/temas/1.1.1.js b/mate2/src/temas/1.1.1.js
+index 4d7a3f2..0406ea8 100644
+--- a/mate2/src/temas/1.1.1.js
++++ b/mate2/src/temas/1.1.1.js
+@@ -13,6 +13,9 @@ export function tipo(){
+   2 - Geogebra
+   */
+ }
++export function directivaIA(){
++  return "Enfócate en explicar cómo dividir el número entre la unidad de aproximación solicitada (ej. múltiplos de 10, 50, etc.) o fijarse en la cifra relevante para decidir si sube o se mantiene.";
++}
+ export async function pregunta(numeroPregunta) { 
+   try {
+ 	const numero = Math.random()*10**(Math.random()*5+3)
+diff --git a/src/r2p.js b/src/r2p.js
+index 5c6de6e..6fac22c 100644
+--- a/src/r2p.js
++++ b/src/r2p.js
+@@ -209,11 +209,52 @@ class R2PDinamico extends HTMLElement {
+             const modulo = await import(temaUrl);
+             const tipo = modulo.tipo();
+ 
++            this._moduloTema = modulo;
++
+             // ── Encabezado ──
+             const fecha = new Date();
+             const fechaStr = fecha.toLocaleDateString();
+             const horaStr = fecha.toLocaleTimeString();
+ 
++            // Cargar estado de API Key e IA
++            const iaModule = await import(`${_BASE}ia_service.js`);
++            const tieneDirectivaIA = typeof modulo.directivaIA === 'function';
++            const tieneApiKeyGuardada = Boolean(iaModule.getApiKey());
++
++            const iaBotonHTML = tieneDirectivaIA ? `
++                <button type="button" class="r2p-ia-config-btn" id="btn-config-ia" title="Configurar o borrar tu clave de Inteligencia Artificial">
++                  🤖
++                </button>` : '';
++
++            // Botón opcional de Video explicativo de YouTube (si el tema exporta video())
++            const tieneVideo = typeof modulo.video === 'function' && Boolean(modulo.video());
++            const videoUrl = tieneVideo ? modulo.video() : '';
++            const videoBotonHTML = tieneVideo ? `
++                <a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="r2p-video-btn" title="Ver video explicativo en YouTube">
++                  <svg class="r2p-yt-icon" viewBox="0 0 24 24" width="20" height="20">
++                    <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
++                    <path fill="#FFFFFF" d="m9.545 15.568 6.273-3.568-6.273-3.568z"/>
++                  </svg>
++                </a>` : '';
++
++            // Botón para generar problema con IA (debajo de los iconos, visible solo si hay API Key almacenada)
++            const botonGenerarProblemaHTML = (tieneDirectivaIA && tieneApiKeyGuardada) ? `
++                <div class="r2p-generar-problema-wrapper">
++                    <button type="button" class="r2p-btn-generar-problema" id="btn-generar-problema-ia">
++                        📝 Generar problema tipo examen con IA
++                    </button>
++                    <div id="r2p-problema-ia-box" class="r2p-problema-ia-container" style="display: none;"></div>
++                </div>` : '';
++
++            const barraHerramientasHTML = (iaBotonHTML || videoBotonHTML) ? `
++              <center>
++                <div class="r2p-header-tools-bar">
++                  ${videoBotonHTML}
++                  ${iaBotonHTML}
++                </div>
++                ${botonGenerarProblemaHTML}
++              </center>` : '';
++
+             this.container.innerHTML = `
+         <table class="r2pi-head">
+           <tr>
+@@ -227,6 +268,7 @@ class R2PDinamico extends HTMLElement {
+               <center><h2>Tema: ${tema} ${modulo.name()}</h2></center>
+               <center><h3 style="color:blue;">Fecha: ${fechaStr} ${horaStr}</h3></center>
+               <center><h3>Docente: <span id='docente'>${this.docente}<span></h3></center>
++              ${barraHerramientasHTML}
+             </td>
+           </tr>
+         </table>
+@@ -260,6 +302,59 @@ class R2PDinamico extends HTMLElement {
+             this.container.innerHTML += lienzo;
+             coreModule.setupEvents();
+ 
++            if (tieneDirectivaIA) {
++                const btnConfigIA = this.container.querySelector('#btn-config-ia');
++                if (btnConfigIA) {
++                    btnConfigIA.addEventListener('click', async () => {
++                        const nuevaClave = await iaModule.solicitarApiKeySiNecesario(true);
++                        // Refrescar para reflejar si ahora hay o no clave
++                        this.cargarTema(this.tema);
++                    });
++                }
++
++                const btnGenerarProblema = this.container.querySelector('#btn-generar-problema-ia');
++                const problemaIABox = this.container.querySelector('#r2p-problema-ia-box');
++
++                if (btnGenerarProblema && problemaIABox) {
++                    btnGenerarProblema.addEventListener('click', async () => {
++                        const key = iaModule.getApiKey();
++                        if (!key) {
++                            await iaModule.solicitarApiKeySiNecesario(true);
++                            return;
++                        }
++
++                        problemaIABox.style.display = 'block';
++                        problemaIABox.className = 'r2p-problema-ia-container loading';
++                        problemaIABox.innerHTML = '🤖 Diseñando un problema tipo examen original con base en este tema... por favor espera.';
++
++                        try {
++                            // Cargar la directiva pedagógica general del curso si existe
++                            let dirCurso = '';
++                            const cursoNombre = this._obtenerCurso();
++                            if (cursoNombre) {
++                                try {
++                                    const modDir = await import(`../${cursoNombre}/src/directiva.js`);
++                                    dirCurso = modDir.directivaCurso || '';
++                                } catch (e) { }
++                            }
++
++                            // La directiva específica proviene directamente de la función del tema actual
++                            const dirTema = modulo.directivaIA();
++                            const systemInstruction = dirCurso ? `${dirCurso}\n\nDIRECTIVA ESPECÍFICA:\n${dirTema}` : dirTema;
++
++                            const prompt = `Diseña ahora un problema original tipo examen para el tema "${modulo.name()}" siguiendo estrictamente las instrucciones pedagógicas.`;
++
++                            const respuesta = await iaModule.consultarIA({ prompt, systemInstruction, apiKey: key });
++                            problemaIABox.className = 'r2p-problema-ia-container';
++                            await iaModule.renderizarMarkdownMath(respuesta, problemaIABox);
++                        } catch (err) {
++                            problemaIABox.className = 'r2p-problema-ia-container error';
++                            problemaIABox.innerText = `Error al generar problema: ${err.message}`;
++                        }
++                    });
++                }
++            }
++
+             if (tipo === 2 && modulo.renderGeoGebra) {
+                 await modulo.renderGeoGebra(this.container, this.n, code);
+             }
+diff --git a/src/r2p_core.js b/src/r2p_core.js
+index 6624b92..d88b6c3 100644
+--- a/src/r2p_core.js
++++ b/src/r2p_core.js
+@@ -62,7 +62,7 @@ export function desencriptar(emsm, code, op = 's') {
+ }
+ 
+ export function pregunta(Q, code, numeroPregunta) {
+-    const [P, Rt] = Q
++    const [P, Rt, datosPrimarios] = Q
+     const msmt = [r2pCore.encriptarArray([78], code)]
+     for (let i = 1; i < 6; ++i) {
+         msmt[i] = r2pCore.encriptarArray([Math.floor(Math.random() * 78)], code)
+@@ -71,6 +71,13 @@ export function pregunta(Q, code, numeroPregunta) {
+     //console.log(`msmt: ${msmt}`)
+     const [R, msm] = r2pCore.pregunta.revolver(Rt, msmt)
+ 
++    let dataAttributes = '';
++    if (datosPrimarios && typeof datosPrimarios === 'object') {
++        dataAttributes = Object.entries(datosPrimarios)
++            .map(([k, v]) => `data-${k}="${v}"`)
++            .join(' ');
++    }
++
+     let S = `<div class="r2pi-pregunta" style="display: none;">
+         <p>${P}</p>
+         `
+@@ -82,6 +89,9 @@ export function pregunta(Q, code, numeroPregunta) {
+             </div>
+             `
+     }
++    if (dataAttributes) {
++        S += `<template class="datos_primarios" ${dataAttributes}></template>`
++    }
+     S += "</div>"
+     return S
+ }
+@@ -152,6 +162,82 @@ export async function revisarOP(botonRevisar) {
+     console.log(`Correctas: ${correctas} de ${numeroPreguntas}`);
+     let calificacion = Math.ceil((correctas / numeroPreguntas) * 10)
+     contenedor.querySelector('#r2p-calificacion').innerHTML = `Aciertos ${correctas} de ${numeroPreguntas}. Calificación: ${calificacion}`;
++
++    // ── Asistencia de IA contextual por intento ──
++    try {
++        const moduloTema = r2pElement?._moduloTema;
++        if (moduloTema && typeof moduloTema.directivaIA === 'function') {
++            import('./ia_service.js').then(({ solicitarApiKeySiNecesario, consultarIA, renderizarMarkdownMath }) => {
++                const cursoNombre = r2pElement.getAttribute('curso') || '';
++                // Intentar cargar la directiva general del curso
++                const cargarDirectivaCurso = async () => {
++                    try {
++                        if (cursoNombre) {
++                            const modDir = await import(`../${cursoNombre}/src/directiva.js`);
++                            return modDir.directivaCurso || '';
++                        }
++                    } catch (e) {
++                        // Sin directiva general de curso
++                    }
++                    return '';
++                };
++
++                const preguntasContenedor = contenedor.querySelectorAll('.r2pi-pregunta');
++                preguntasContenedor.forEach((elemPregunta, idx) => {
++                    const radios = elemPregunta.querySelectorAll('.r2p-input-radio');
++                    let seleccionada = null;
++                    let correcta = null;
++                    radios.forEach(r => {
++                        const esCorrecta = r2pCore.desencriptarString(r.getAttribute('msm'), code) === '_';
++                        if (r.checked) seleccionada = r;
++                        if (esCorrecta) correcta = r;
++                    });
++
++                    // Permitir pedir explicación si fue contestada incorrectamente o pedir ejercicio similar
++                    const esIncorrecta = seleccionada && seleccionada !== correcta;
++                    const textoPregunta = elemPregunta.querySelector('p')?.innerText || `Pregunta ${idx + 1}`;
++                    const textoOpcionSeleccionada = seleccionada ? seleccionada.parentElement.innerText.trim() : 'Sin responder';
++                    const textoOpcionCorrecta = correcta ? correcta.parentElement.innerText.trim() : '';
++
++                    const templateDatos = elemPregunta.querySelector('template.datos_primarios');
++                    const tieneProcedimientoModulo = Boolean(templateDatos && typeof moduloTema.procedimiento === 'function');
++
++                    if (tieneProcedimientoModulo) {
++                        const actionsDiv = document.createElement('div');
++                        actionsDiv.className = 'r2p-ia-actions-bar';
++                        actionsDiv.innerHTML = `
++                            <span style="font-size:0.85em; font-weight:600; color:#475569;">🛠️ Solución:</span>
++                            <button type="button" class="r2p-ia-action-btn btn-procedimiento">🔍 Ver procedimiento (Paso a paso)</button>
++                            <div class="r2p-procedimiento-box" style="display: none; width: 100%;"></div>
++                        `;
++                        elemPregunta.appendChild(actionsDiv);
++
++                        const procedimientoBox = actionsDiv.querySelector('.r2p-procedimiento-box');
++                        const btnProcedimiento = actionsDiv.querySelector('.btn-procedimiento');
++
++                        btnProcedimiento.addEventListener('click', async () => {
++                            const estaVisible = procedimientoBox.style.display !== 'none';
++                            if (estaVisible) {
++                                procedimientoBox.style.display = 'none';
++                                btnProcedimiento.innerText = '🔍 Ver procedimiento (Paso a paso)';
++                            } else {
++                                const datos = { ...templateDatos.dataset };
++                                const htmlGenerado = await moduloTema.procedimiento(datos);
++                                procedimientoBox.innerHTML = htmlGenerado;
++                                procedimientoBox.style.display = 'block';
++                                btnProcedimiento.innerText = '🔼 Ocultar procedimiento';
++                                if (window.MathJax && window.MathJax.typesetPromise) {
++                                    window.MathJax.typesetPromise([procedimientoBox]);
++                                }
++                            }
++                        });
++                    }
++                });
++            });
++        }
++    } catch (e) {
++        console.warn('No se pudo inicializar la asistencia de IA:', e);
++    }
+     const date = new Date();
+     let boton = contenedor.querySelector('#revisar')
+     boton.id = ''
+diff --git a/src/raiz2pi.css b/src/raiz2pi.css
+index c34ad4a..556fbbe 100644
+--- a/src/raiz2pi.css
++++ b/src/raiz2pi.css
+@@ -264,3 +264,388 @@ math-field {
+   border-bottom: 1px solid black;
+ }
+ }
++
++.r2p-header-tools-bar {
++  display: inline-flex;
++  align-items: center;
++  gap: 10px;
++  margin-top: 8px;
++  flex-wrap: wrap;
++  justify-content: center;
++}
++
++.r2p-video-btn {
++  background: #ffffff;
++  border: 1px solid #e2e8f0;
++  border-radius: 6px;
++  padding: 6px 12px;
++  font-size: 0.9em;
++  font-weight: 500;
++  text-decoration: none;
++  cursor: pointer;
++  display: inline-flex;
++  align-items: center;
++  gap: 6px;
++  color: #0f172a;
++  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
++  transition: all 0.2s ease;
++}
++.r2p-video-btn:hover {
++  background: #f8fafc;
++  border-color: #cbd5e1;
++  color: #dc2626;
++  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
++  transform: translateY(-1px);
++}
++.r2p-yt-icon {
++  flex-shrink: 0;
++}
++
++.r2p-ia-config-btn {
++  background: #f0f4f8;
++  border: 1px solid #cbd5e1;
++  border-radius: 6px;
++  padding: 6px 12px;
++  font-size: 0.9em;
++  cursor: pointer;
++  display: inline-flex;
++  align-items: center;
++  gap: 6px;
++  color: #334155;
++  transition: all 0.2s ease;
++  margin-top: 0;
++}
++.r2p-ia-config-btn:hover {
++  background: #e2e8f0;
++  border-color: #94a3b8;
++}
++
++/* Botón y contenedor para generar problema tipo examen con IA */
++.r2p-generar-problema-wrapper {
++  margin-top: 10px;
++  max-width: 720px;
++  width: 95%;
++}
++
++.r2p-btn-generar-problema {
++  background: #f8fafc;
++  color: #1e293b;
++  border: 1px solid #cbd5e1;
++  border-radius: 8px;
++  padding: 8px 16px;
++  font-size: 0.92em;
++  font-weight: 600;
++  cursor: pointer;
++  display: inline-flex;
++  align-items: center;
++  gap: 8px;
++  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
++  transition: all 0.2s ease;
++}
++.r2p-btn-generar-problema:hover {
++  background: #f1f5f9;
++  border-color: #3b82f6;
++  color: #2563eb;
++  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
++  transform: translateY(-1px);
++}
++
++.r2p-problema-ia-container {
++  margin-top: 14px;
++  padding: 16px 20px;
++  background: #ffffff;
++  border: 1px solid #cbd5e1;
++  border-left: 5px solid #3b82f6;
++  border-radius: 8px;
++  font-size: 0.95em;
++  color: #1e293b;
++  line-height: 1.6;
++  text-align: left;
++  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
++}
++
++.r2p-problema-ia-container h3,
++.r2p-problema-ia-container h4 {
++  margin-top: 12px;
++  margin-bottom: 6px;
++  color: #0f172a;
++}
++
++.r2p-problema-ia-container p {
++  margin: 8px 0;
++}
++
++.r2p-problema-ia-container ul,
++.r2p-problema-ia-container ol {
++  margin: 8px 0;
++  padding-left: 22px;
++}
++
++.r2p-problema-ia-container.loading {
++  background: #f8fafc;
++  border-color: #e2e8f0;
++  border-left-color: #3b82f6;
++  color: #475569;
++  font-style: italic;
++}
++
++.r2p-problema-ia-container.error {
++  background: #fef2f2;
++  border-color: #fecaca;
++  border-left-color: #dc2626;
++  color: #991b1b;
++}
++
++.r2p-ia-modal-overlay {
++  position: fixed;
++  top: 0;
++  left: 0;
++  width: 100vw;
++  height: 100vh;
++  background: rgba(15, 23, 42, 0.65);
++  display: flex;
++  justify-content: center;
++  align-items: center;
++  z-index: 999999;
++  backdrop-filter: blur(2px);
++}
++
++.r2p-ia-modal {
++  background: #ffffff;
++  padding: 24px;
++  border-radius: 12px;
++  max-width: 520px;
++  width: 90%;
++  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
++  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
++  box-sizing: border-box;
++}
++
++.r2p-ia-modal h3 {
++  margin-top: 0;
++  color: #0f172a;
++}
++
++.r2p-ia-aviso-privacidad {
++  background: #f8fafc;
++  border-left: 4px solid #3b82f6;
++  padding: 10px 14px;
++  border-radius: 4px;
++  font-size: 0.88em;
++  color: #334155;
++  margin-bottom: 15px;
++}
++
++.r2p-ia-aviso-privacidad ul {
++  padding-left: 18px;
++  margin: 6px 0;
++}
++
++.r2p-ia-aviso-privacidad li {
++  margin-bottom: 6px;
++}
++
++.r2p-ia-input {
++  width: 100%;
++  padding: 10px 12px;
++  border: 1px solid #cbd5e1;
++  border-radius: 6px;
++  box-sizing: border-box;
++  font-size: 0.95em;
++  margin-bottom: 5px;
++}
++
++.r2p-ia-modal-buttons {
++  display: flex;
++  justify-content: flex-end;
++  gap: 10px;
++  margin-top: 15px;
++}
++
++.r2p-btn {
++  padding: 8px 16px;
++  border-radius: 6px;
++  font-weight: 500;
++  font-size: 0.95em;
++  cursor: pointer;
++  border: none;
++  transition: background 0.2s;
++}
++
++.r2p-btn-primary {
++  background: #2563eb;
++  color: #ffffff;
++}
++.r2p-btn-primary:hover {
++  background: #1d4ed8;
++}
++
++.r2p-btn-danger {
++  background: #ef4444;
++  color: #ffffff;
++}
++.r2p-btn-danger:hover {
++  background: #dc2626;
++}
++
++/* Icono estilizado T-800 (Cybernetic Skull) */
++.r2p-t800-icon {
++  display: inline-flex;
++  align-items: center;
++  justify-content: center;
++  vertical-align: middle;
++  transition: transform 0.2s ease, filter 0.2s ease;
++}
++.r2p-t800-icon svg {
++  width: 22px;
++  height: 22px;
++  fill: currentColor;
++}
++.r2p-ia-config-btn:hover .r2p-t800-icon {
++  transform: scale(1.1);
++  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.7));
++}
++
++/* Barra de acciones de IA por pregunta */
++.r2p-ia-actions-bar {
++  margin-top: 12px;
++  padding: 8px 12px;
++  background: #f8fafc;
++  border: 1px solid #e2e8f0;
++  border-radius: 8px;
++  display: flex;
++  flex-wrap: wrap;
++  align-items: center;
++  gap: 8px;
++}
++
++.r2p-ia-action-btn {
++  background: #ffffff;
++  border: 1px solid #cbd5e1;
++  border-radius: 6px;
++  padding: 6px 12px;
++  font-size: 0.88em;
++  font-weight: 500;
++  cursor: pointer;
++  color: #1e293b;
++  display: inline-flex;
++  align-items: center;
++  gap: 5px;
++  transition: all 0.15s ease;
++}
++
++.r2p-ia-action-btn:hover {
++  background: #f1f5f9;
++  border-color: #3b82f6;
++  color: #2563eb;
++}
++
++.r2p-procedimiento-box {
++  margin-top: 10px;
++  padding: 14px 16px;
++  background: #eff6ff;
++  border: 1px solid #bfdbfe;
++  border-left: 4px solid #2563eb;
++  border-radius: 6px;
++  font-size: 0.95em;
++  color: #1e293b;
++  line-height: 1.6;
++}
++
++.r2p-ia-feedback-box {
++  margin-top: 10px;
++  padding: 14px 16px;
++  background: #f0fdf4;
++  border: 1px solid #bbf7d0;
++  border-left: 4px solid #16a34a;
++  border-radius: 6px;
++  font-size: 0.95em;
++  color: #1e293b;
++  line-height: 1.6;
++}
++
++.r2p-ia-feedback-box h3,
++.r2p-ia-feedback-box h4 {
++  margin-top: 10px;
++  margin-bottom: 6px;
++  color: #0f172a;
++}
++
++.r2p-ia-feedback-box p {
++  margin: 6px 0;
++}
++
++.r2p-ia-feedback-box ul,
++.r2p-ia-feedback-box ol {
++  margin: 6px 0;
++  padding-left: 20px;
++}
++
++/* Acordeón interactivo para Solución y Mark Scheme */
++.r2p-ia-solution-details {
++  margin-top: 15px;
++  border: 1px solid #cbd5e1;
++  border-radius: 8px;
++  background: #ffffff;
++  overflow: hidden;
++  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
++}
++
++.r2p-ia-solution-summary {
++  padding: 10px 14px;
++  background: #f8fafc;
++  font-weight: 600;
++  font-size: 0.92em;
++  color: #1e293b;
++  cursor: pointer;
++  user-select: none;
++  list-style: none;
++  display: flex;
++  align-items: center;
++  gap: 8px;
++  border-bottom: 1px solid transparent;
++  transition: background 0.15s ease, color 0.15s ease;
++}
++
++.r2p-ia-solution-summary::-webkit-details-marker {
++  display: none;
++}
++
++.r2p-ia-solution-summary:hover {
++  background: #f1f5f9;
++  color: #0284c7;
++}
++
++.r2p-ia-solution-details[open] .r2p-ia-solution-summary {
++  background: #e2e8f0;
++  border-bottom-color: #cbd5e1;
++}
++
++.r2p-ia-solution-details[open] .r2p-ia-solution-summary span::after {
++  content: ' (Clic para ocultar)';
++  font-weight: normal;
++  color: #64748b;
++  font-size: 0.9em;
++}
++
++.r2p-ia-solution-content {
++  padding: 14px 16px;
++  background: #fafaf9;
++  border-top: 1px solid #e2e8f0;
++}
++
++.r2p-ia-feedback-box.error {
++  background: #fef2f2;
++  border-color: #fecaca;
++  border-left-color: #dc2626;
++  color: #991b1b;
++}
++
++.r2p-ia-feedback-box.loading {
++  background: #f8fafc;
++  border-color: #e2e8f0;
++  border-left-color: #3b82f6;
++  color: #475569;
++  font-style: italic;
++}
++

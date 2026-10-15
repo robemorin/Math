@@ -67,6 +67,7 @@
   ["3.1.27","Ficha: Volumen de Prismas y Sólidos de Sección Uniforme"],
   ["3.1.28","Ficha: Volumen de Pirámides, Conos y Esferas"],
   ["3.1.29","Ficha: Capacidad, Masa y Densidad en Contextos Reales"],
+  ["3.1.30","Ficha: Superficie y Volumen de Sólidos (Prismas, Cilindros, Pirámides y Conos)"],
   ["3.2.1","Razones Trigonométricas - Ejercicios de Práctica"],
   ["3.2.2","Razones Trigonométricas en Triángulos Rectángulos"],
   ["3.2.3","Razones Trigonométricas en Triángulos Rectángulos"],
@@ -104,6 +105,7 @@
   ["3.3.19","Ficha: Trigonometría Aplicada Contextualizada"],
   ["3.3.20","Ficha: Geometría 3D (Prismas, Pirámides y Conos)"],
   ["3.3.21","Ficha: Trigonometría y Geometría 3D (Sin Gráficos)"],
+  ["3.3.22","Ficha: Razones Trigonométricas y Triángulos Rectángulos"],
   ["3.4.1","Ficha: Teorema del Coseno (10 Ejercicios)"],
   ["3.4.2","Ficha: Teorema del Seno"],
   ["3.4.3","Ficha: Aplicaciones del Teorema del Seno y Coseno y Trigonometría Algebraica"],
@@ -194,8 +196,11 @@
   ["5.2.3","Cuadráticas + derivadas"],
   ["5.2.4","Ficha: Recta Tangente y Normal (Tipo Prueba 1)"],
   ["5.2.5","Ficha: Recta Tangente y Normal con Potencias Racionales y Negativas (Tipo Prueba 1)"],
+  ["5.3.1","Ficha: Puntos Máximos, Mínimos y Optimización (Polinomiales, Radicales y Racionales)"],
   ["5.5.1","Cálculo de Volumen: Regla de Simpson"],
   ["5.6.1","Ficha: Integración en Contextos Físicos"],
   ["5.6.2","Ficha: Integración Avanzada en Física"],
-  ["5.6.3","Ficha: Integral en Física (Nivel Alto)"]
+  ["5.6.3","Ficha: Integral en Física (Nivel Alto)"],
+  ["5.8.1","Ficha: Integración Numérica (Sumas de Riemann por la Izquierda)"],
+  ["5.8.2","Ficha: Integración Numérica (Regla del Trapecio)"]
 ]

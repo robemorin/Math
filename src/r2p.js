@@ -209,10 +209,51 @@ class R2PDinamico extends HTMLElement {
             const modulo = await import(temaUrl);
             const tipo = modulo.tipo();
 
+            this._moduloTema = modulo;
+
             // ── Encabezado ──
             const fecha = new Date();
             const fechaStr = fecha.toLocaleDateString();
             const horaStr = fecha.toLocaleTimeString();
+
+            // Cargar estado de API Key e IA
+            const iaModule = await import(`${_BASE}ia_service.js`);
+            const tieneDirectivaIA = typeof modulo.directivaIA === 'function';
+            const tieneApiKeyGuardada = Boolean(iaModule.getApiKey());
+
+            const iaBotonHTML = tieneDirectivaIA ? `
+                <button type="button" class="r2p-ia-config-btn" id="btn-config-ia" title="Configurar o borrar tu clave de Inteligencia Artificial">
+                  🤖
+                </button>` : '';
+
+            // Botón opcional de Video explicativo de YouTube (si el tema exporta video())
+            const tieneVideo = typeof modulo.video === 'function' && Boolean(modulo.video());
+            const videoUrl = tieneVideo ? modulo.video() : '';
+            const videoBotonHTML = tieneVideo ? `
+                <a href="${videoUrl}" target="_blank" rel="noopener noreferrer" class="r2p-video-btn" title="Ver video explicativo en YouTube">
+                  <svg class="r2p-yt-icon" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+                    <path fill="#FFFFFF" d="m9.545 15.568 6.273-3.568-6.273-3.568z"/>
+                  </svg>
+                </a>` : '';
+
+            // Botón para generar problema con IA (debajo de los iconos, visible solo si hay API Key almacenada)
+            const botonGenerarProblemaHTML = (tieneDirectivaIA && tieneApiKeyGuardada) ? `
+                <div class="r2p-generar-problema-wrapper">
+                    <button type="button" class="r2p-btn-generar-problema" id="btn-generar-problema-ia">
+                        📝 Generar problema tipo examen con IA
+                    </button>
+                    <div id="r2p-problema-ia-box" class="r2p-problema-ia-container" style="display: none;"></div>
+                </div>` : '';
+
+            const barraHerramientasHTML = (iaBotonHTML || videoBotonHTML) ? `
+              <center>
+                <div class="r2p-header-tools-bar">
+                  ${videoBotonHTML}
+                  ${iaBotonHTML}
+                </div>
+                ${botonGenerarProblemaHTML}
+              </center>` : '';
 
             this.container.innerHTML = `
         <table class="r2pi-head">
@@ -227,6 +268,7 @@ class R2PDinamico extends HTMLElement {
               <center><h2>Tema: ${tema} ${modulo.name()}</h2></center>
               <center><h3 style="color:blue;">Fecha: ${fechaStr} ${horaStr}</h3></center>
               <center><h3>Docente: <span id='docente'>${this.docente}<span></h3></center>
+              ${barraHerramientasHTML}
             </td>
           </tr>
         </table>
@@ -259,6 +301,59 @@ class R2PDinamico extends HTMLElement {
 
             this.container.innerHTML += lienzo;
             coreModule.setupEvents();
+
+            if (tieneDirectivaIA) {
+                const btnConfigIA = this.container.querySelector('#btn-config-ia');
+                if (btnConfigIA) {
+                    btnConfigIA.addEventListener('click', async () => {
+                        const nuevaClave = await iaModule.solicitarApiKeySiNecesario(true);
+                        // Refrescar para reflejar si ahora hay o no clave
+                        this.cargarTema(this.tema);
+                    });
+                }
+
+                const btnGenerarProblema = this.container.querySelector('#btn-generar-problema-ia');
+                const problemaIABox = this.container.querySelector('#r2p-problema-ia-box');
+
+                if (btnGenerarProblema && problemaIABox) {
+                    btnGenerarProblema.addEventListener('click', async () => {
+                        const key = iaModule.getApiKey();
+                        if (!key) {
+                            await iaModule.solicitarApiKeySiNecesario(true);
+                            return;
+                        }
+
+                        problemaIABox.style.display = 'block';
+                        problemaIABox.className = 'r2p-problema-ia-container loading';
+                        problemaIABox.innerHTML = '🤖 Diseñando un problema tipo examen original con base en este tema... por favor espera.';
+
+                        try {
+                            // Cargar la directiva pedagógica general del curso si existe
+                            let dirCurso = '';
+                            const cursoNombre = this._obtenerCurso();
+                            if (cursoNombre) {
+                                try {
+                                    const modDir = await import(`../${cursoNombre}/src/directiva.js`);
+                                    dirCurso = modDir.directivaCurso || '';
+                                } catch (e) { }
+                            }
+
+                            // La directiva específica proviene directamente de la función del tema actual
+                            const dirTema = modulo.directivaIA();
+                            const systemInstruction = dirCurso ? `${dirCurso}\n\nDIRECTIVA ESPECÍFICA:\n${dirTema}` : dirTema;
+
+                            const prompt = `Diseña ahora un problema original tipo examen para el tema "${modulo.name()}" siguiendo estrictamente las instrucciones pedagógicas.`;
+
+                            const respuesta = await iaModule.consultarIA({ prompt, systemInstruction, apiKey: key });
+                            problemaIABox.className = 'r2p-problema-ia-container';
+                            await iaModule.renderizarMarkdownMath(respuesta, problemaIABox);
+                        } catch (err) {
+                            problemaIABox.className = 'r2p-problema-ia-container error';
+                            problemaIABox.innerText = `Error al generar problema: ${err.message}`;
+                        }
+                    });
+                }
+            }
 
             if (tipo === 2 && modulo.renderGeoGebra) {
                 await modulo.renderGeoGebra(this.container, this.n, code);

@@ -264,3 +264,388 @@ math-field {
   border-bottom: 1px solid black;
 }
 }
+
+.r2p-header-tools-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.r2p-video-btn {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #0f172a;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+.r2p-video-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #dc2626;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+.r2p-yt-icon {
+  flex-shrink: 0;
+}
+
+.r2p-ia-config-btn {
+  background: #f0f4f8;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #334155;
+  transition: all 0.2s ease;
+  margin-top: 0;
+}
+.r2p-ia-config-btn:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+/* Botón y contenedor para generar problema tipo examen con IA */
+.r2p-generar-problema-wrapper {
+  margin-top: 10px;
+  max-width: 720px;
+  width: 95%;
+}
+
+.r2p-btn-generar-problema {
+  background: #f8fafc;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.92em;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+.r2p-btn-generar-problema:hover {
+  background: #f1f5f9;
+  border-color: #3b82f6;
+  color: #2563eb;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.r2p-problema-ia-container {
+  margin-top: 14px;
+  padding: 16px 20px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 5px solid #3b82f6;
+  border-radius: 8px;
+  font-size: 0.95em;
+  color: #1e293b;
+  line-height: 1.6;
+  text-align: left;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.r2p-problema-ia-container h3,
+.r2p-problema-ia-container h4 {
+  margin-top: 12px;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.r2p-problema-ia-container p {
+  margin: 8px 0;
+}
+
+.r2p-problema-ia-container ul,
+.r2p-problema-ia-container ol {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.r2p-problema-ia-container.loading {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  border-left-color: #3b82f6;
+  color: #475569;
+  font-style: italic;
+}
+
+.r2p-problema-ia-container.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  border-left-color: #dc2626;
+  color: #991b1b;
+}
+
+.r2p-ia-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+  backdrop-filter: blur(2px);
+}
+
+.r2p-ia-modal {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  max-width: 520px;
+  width: 90%;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  box-sizing: border-box;
+}
+
+.r2p-ia-modal h3 {
+  margin-top: 0;
+  color: #0f172a;
+}
+
+.r2p-ia-aviso-privacidad {
+  background: #f8fafc;
+  border-left: 4px solid #3b82f6;
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 0.88em;
+  color: #334155;
+  margin-bottom: 15px;
+}
+
+.r2p-ia-aviso-privacidad ul {
+  padding-left: 18px;
+  margin: 6px 0;
+}
+
+.r2p-ia-aviso-privacidad li {
+  margin-bottom: 6px;
+}
+
+.r2p-ia-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 0.95em;
+  margin-bottom: 5px;
+}
+
+.r2p-ia-modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.r2p-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95em;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s;
+}
+
+.r2p-btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+.r2p-btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.r2p-btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+.r2p-btn-danger:hover {
+  background: #dc2626;
+}
+
+/* Icono estilizado T-800 (Cybernetic Skull) */
+.r2p-t800-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.r2p-t800-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+.r2p-ia-config-btn:hover .r2p-t800-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.7));
+}
+
+/* Barra de acciones de IA por pregunta */
+.r2p-ia-actions-bar {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.r2p-ia-action-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.88em;
+  font-weight: 500;
+  cursor: pointer;
+  color: #1e293b;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.r2p-ia-action-btn:hover {
+  background: #f1f5f9;
+  border-color: #3b82f6;
+  color: #2563eb;
+}
+
+.r2p-procedimiento-box {
+  margin-top: 10px;
+  padding: 14px 16px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid #2563eb;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.r2p-ia-feedback-box {
+  margin-top: 10px;
+  padding: 14px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #16a34a;
+  border-radius: 6px;
+  font-size: 0.95em;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.r2p-ia-feedback-box h3,
+.r2p-ia-feedback-box h4 {
+  margin-top: 10px;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.r2p-ia-feedback-box p {
+  margin: 6px 0;
+}
+
+.r2p-ia-feedback-box ul,
+.r2p-ia-feedback-box ol {
+  margin: 6px 0;
+  padding-left: 20px;
+}
+
+/* Acordeón interactivo para Solución y Mark Scheme */
+.r2p-ia-solution-details {
+  margin-top: 15px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.r2p-ia-solution-summary {
+  padding: 10px 14px;
+  background: #f8fafc;
+  font-weight: 600;
+  font-size: 0.92em;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid transparent;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.r2p-ia-solution-summary::-webkit-details-marker {
+  display: none;
+}
+
+.r2p-ia-solution-summary:hover {
+  background: #f1f5f9;
+  color: #0284c7;
+}
+
+.r2p-ia-solution-details[open] .r2p-ia-solution-summary {
+  background: #e2e8f0;
+  border-bottom-color: #cbd5e1;
+}
+
+.r2p-ia-solution-details[open] .r2p-ia-solution-summary span::after {
+  content: ' (Clic para ocultar)';
+  font-weight: normal;
+  color: #64748b;
+  font-size: 0.9em;
+}
+
+.r2p-ia-solution-content {
+  padding: 14px 16px;
+  background: #fafaf9;
+  border-top: 1px solid #e2e8f0;
+}
+
+.r2p-ia-feedback-box.error {
+  background: #fef2f2;
+  border-color: #fecaca;
+  border-left-color: #dc2626;
+  color: #991b1b;
+}
+
+.r2p-ia-feedback-box.loading {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+  border-left-color: #3b82f6;
+  color: #475569;
+  font-style: italic;
+}
+
